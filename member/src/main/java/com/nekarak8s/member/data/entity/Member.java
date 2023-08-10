@@ -2,12 +2,15 @@ package com.nekarak8s.member.data.entity;
 
 import com.nekarak8s.member.common.Role;
 import lombok.Data;
-
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
 @Data
+@EntityListeners(AuditingEntityListener.class)
 @Table(name = "members")
 public class Member {
 
@@ -32,11 +35,13 @@ public class Member {
     @Column(name = "isDeleted", nullable = false)
     private Boolean isDeleted = false;
 
-    @Column(name = "createdDate", nullable = false)
-    private LocalDateTime createdDate = LocalDateTime.now();
+    @CreatedDate
+    @Column(name = "createdDate")
+    private LocalDateTime createdDate;
 
+    @LastModifiedDate
     @Column(name = "modifiedDate", nullable = false)
-    private LocalDateTime modifiedDate = LocalDateTime.now();
+    private LocalDateTime modifiedDate;
 
     @Column(name = "lastDate", nullable = false)
     private LocalDateTime lastDate = LocalDateTime.now();

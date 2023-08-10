@@ -9,6 +9,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Map;
+
 @Slf4j
 @RequiredArgsConstructor
 @RestController
@@ -20,7 +24,9 @@ public class MemberController {
 
     @GetMapping("/health")
     public String health() {
-        return "ok";
+        LocalDateTime now = LocalDateTime.now();
+        String result = now.format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 HH시 mm분 ss초"));
+        return result + " : ok";
     }
 
     @GetMapping("/login")
@@ -34,11 +40,14 @@ public class MemberController {
 
     @PostMapping("/callback")
     public ResponseEntity<?> getToken(@RequestParam(value = "type") String type, @RequestParam(value = "code") String code) {
-        String memberToken = memberService.checkAndJoinMember(code);
+        Map accessTokenAndLoginRespone = memberService.checkAndJoinMember(code);
+
+        // Todo : Cookie에 JWT 담는 로직 필요
+        String accessToken = (String) accessTokenAndLoginRespone.get("accessToken");
 
         ApiResponse apiResponse = ApiResponse.builder()
-                .message("로그인 성공")
-                .data(memberToken) 
+                .message("성공")
+                .data(accessTokenAndLoginRespone.get("LoginResponse"))
                 .build();
         return ResponseEntity.ok(apiResponse);
     }
