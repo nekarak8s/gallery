@@ -50,7 +50,7 @@ public class MemberController {
     @PostMapping("/callback")
     public ResponseEntity<?> getToken(@RequestParam(value = "type") String type, @RequestParam(value = "code") String code) {
         Map accessTokenAndLoginRespone = memberService.checkAndJoinMember(code);
-        
+
         String accessToken = (String) accessTokenAndLoginRespone.get("accessToken");
 
         ApiResponse apiResponse = ApiResponse.builder()
