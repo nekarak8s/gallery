@@ -1,5 +1,6 @@
 package com.nekarak8s.member.service.impl;
 
+import com.nekarak8s.member.common.exception.CustomException;
 import com.nekarak8s.member.service.AuthService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -52,10 +53,9 @@ public class AuthServiceImpl implements AuthService {
 
         if (response.getStatusCode().is2xxSuccessful()) {
             String kakaoAccessToken = (String) response.getBody().get("access_token");
-            log.debug("kakao AccessToken : {}", kakaoAccessToken);
             return kakaoAccessToken;
         } else {
-            return "실패";
+            throw new RuntimeException("카카오 서버 통신 에러 발생 !!!");
         }
     }
 
@@ -73,9 +73,24 @@ public class AuthServiceImpl implements AuthService {
         if (userInfoResponse.getStatusCode().is2xxSuccessful()) {
             return userInfoResponse.getBody();
         } else {
-            // Todo : 커스텀 예외처리 필요
             throw new RuntimeException("카카오 서버 통신 에러");
         }
+    }
+
+    @Override
+    public String getOAuthNickname(String token) {
+        Map kakaoUserInfo = getOAuthMemberInfo(token);
+        Map kakaoAccount = (Map) kakaoUserInfo.get("kakao_account");
+        Map kakaoProfile = (Map) kakaoAccount.get("profile");
+        String kakaoNickname = (String) kakaoProfile.get("nickname");
+        return kakaoNickname;
+    }
+
+    @Override
+    public long getOAuthId(String token) {
+        Map kakaoUserInfo = getOAuthMemberInfo(token);
+        long kakaoId = (long) kakaoUserInfo.get("id");
+        return kakaoId;
     }
 
 

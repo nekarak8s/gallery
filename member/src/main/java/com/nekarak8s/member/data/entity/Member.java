@@ -1,7 +1,10 @@
 package com.nekarak8s.member.data.entity;
 
 import com.nekarak8s.member.common.Role;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -10,6 +13,9 @@ import java.time.LocalDateTime;
 
 @Entity
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "members")
 public class Member {
@@ -30,13 +36,13 @@ public class Member {
     private Role role;
 
     @Column(name = "isDormant", nullable = false)
-    private Boolean isDormant = false;
+    private Boolean isDormant;
 
     @Column(name = "isDeleted", nullable = false)
-    private Boolean isDeleted = false;
+    private Boolean isDeleted;
 
     @CreatedDate
-    @Column(name = "createdDate")
+    @Column(name = "createdDate", nullable = false)
     private LocalDateTime createdDate;
 
     @LastModifiedDate
@@ -44,7 +50,7 @@ public class Member {
     private LocalDateTime modifiedDate;
 
     @Column(name = "lastDate", nullable = false)
-    private LocalDateTime lastDate = LocalDateTime.now();
+    private LocalDateTime lastDate;
 
     @Column(name = "deletedDate")
     private LocalDateTime deletedDate;

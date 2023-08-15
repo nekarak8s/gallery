@@ -12,4 +12,8 @@ public interface AuthService {
     String getAccessToken(String code);
 
     Map getOAuthMemberInfo(String token);
+
+    String getOAuthNickname(String token);
+
+    long getOAuthId(String token);
 }

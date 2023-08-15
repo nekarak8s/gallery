@@ -3,10 +3,10 @@ package com.nekarak8s.member.data.dto.response;
 import lombok.Builder;
 import lombok.Data;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 
 @Data
 @Builder
 public class LoginResponse {
-    private LocalDateTime expirationDate;
+    private Date expirationDate;
 }
