@@ -10,6 +10,7 @@ import com.nekarak8s.member.service.MemberService;
 import com.nekarak8s.member.util.jwt.JwtProperties;
 import com.nekarak8s.member.util.jwt.JwtUtils;
 import com.nekarak8s.member.util.jwt.TokenMember;
+import com.nekarak8s.member.util.nickname.NicknameUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -27,6 +28,7 @@ public class MemberServiceImpl implements MemberService{
     private final MemberRepository memberRepository;
     private final JwtUtils jwtUtils;
     private final JwtProperties jwtProperties;
+    private final NicknameUtils nicknameUtils;
 
     @Override
     public Map checkAndJoinMember(String code) throws CustomException {
@@ -35,10 +37,10 @@ public class MemberServiceImpl implements MemberService{
         long kakaoId = authService.getOAuthId(kakaoAccessToken);
         String kakaoNickname = authService.getOAuthNickname(kakaoAccessToken);
 
-        Random random = new Random();
-        int number = random.nextInt(10000);
-        String nickname = kakaoNickname + number;
+        String nickname = nicknameUtils.generate(kakaoNickname);
         log.info("유니크 닉네임 생성 : {}", nickname);
+
+        // Todo : 닉네임 중복 검사
 
         if (!isMemberByKakaoId(kakaoId)) { // 신규 회원
             log.debug("신규 회원 !!!");
