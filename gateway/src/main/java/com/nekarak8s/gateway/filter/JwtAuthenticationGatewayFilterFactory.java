@@ -14,7 +14,6 @@ import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
 
 import java.nio.charset.StandardCharsets;
-import java.time.Duration;
 import java.util.Collections;
 import java.util.List;
 
@@ -48,42 +47,41 @@ public class JwtAuthenticationGatewayFilterFactory extends
             String method = request.getMethodValue();
             int port = request.getURI().getPort();
 
-            log.info("uri : {}", uri);
-            log.info("method : {}", method);
-            log.info("port : {}", port);
+            log.info("uri : {}, method : {}, port : {}", uri, method, port);
 
             if (shoudValidateJwt(uri, port, method)) {
                 log.info("허용 URI 입니다.");
                 return chain.filter(exchange);
             } else {
                 log.info("토큰 검증 시작 ");
+                if (!containsCookie(request)) {
+                    return onError_v2(response, "missing cookie", HttpStatus.BAD_REQUEST);
+                }
+
+                if (!containsToken(request)) {
+                    return onError_v2(response, "missing token", HttpStatus.UNAUTHORIZED);
+                }
+
                 String token = extractToken(request);
                 log.info("token : {}", token);
+
+                if (!jwtUtils.isValid(token)) {
+                    return onError_v2(response, "invalid token", HttpStatus.BAD_REQUEST);
+                }
+
+                return chain.filter(exchange);
             }
-//            if (!containsCookie(request)) {
-//                return onError_v2(response, "missing cookie", HttpStatus.BAD_REQUEST);
-//            }
-//
-//            if (!containsToken(request)) {
-//                return onError_v2(response, "missing token", HttpStatus.UNAUTHORIZED);
-//            }
-//
-//            String token = extractToken(request);
-//
-//            if (!jwtUtils.isValid(token)) {
-//                return onError_v2(response, "invalid authorization header", HttpStatus.BAD_REQUEST);
-//            }
-//
+
 //            TokenMember tokenMember = jwtUtils.decode(token);
 //            if (!hasRole(tokenMember, config.role)) {
 //                return onError_v2(response, "invalid role", HttpStatus.FORBIDDEN);
 //            }
 
-            TokenMember tokenMember = new TokenMember();
+//            TokenMember tokenMember = new TokenMember();
 
-            addCookie(response, tokenMember);
+//            addCookie(response, tokenMember);
 
-            return chain.filter(exchange);
+//            return chain.filter(exchange);
         };
     }
 
@@ -112,27 +110,20 @@ public class JwtAuthenticationGatewayFilterFactory extends
         return role.equals(tokenMember.getRole());
     }
 
-    private void addCookie(ServerHttpResponse response, TokenMember tokenMember) {
-        String token = "thisistoken";
-
-        // netty 기반이므로 ResponseCookie 사용 Webflux가 아니라면 HttpCookie 사용
-        ResponseCookie cookie = ResponseCookie.from(COOKIE_NAME, token)
-                .path("/")
-                .httpOnly(true)
-                .secure(false) // HTTPS를 사용할 경우 true로 변경
-                .maxAge(Duration.ofDays(7))
-                .build();
-
-        response.addCookie(cookie);
-    }
-
-    // 헤더 방식
-//    private void addAuthorizationHeaders(ServerHttpRequest request, TokenMember tokenMember) {
-//        request.mutate()
-//                .header("X-Authorization-Id", tokenMember.getId())
-//                .header("X-Authorization-Role", tokenMember.getRole())
+//    private void addCookie(ServerHttpResponse response, TokenMember tokenMember) {
+//        String token = "thisistoken";
+//
+//        // netty 기반이므로 ResponseCookie 사용 Webflux가 아니라면 HttpCookie 사용
+//        ResponseCookie cookie = ResponseCookie.from(COOKIE_NAME, token)
+//                .path("/")
+//                .httpOnly(true)
+//                .secure(false) // HTTPS를 사용할 경우 true로 변경
+//                .maxAge(Duration.ofDays(7))
 //                .build();
+//
+//        response.addCookie(cookie);
 //    }
+
 
 //    private Mono<Void> onError(ServerHttpResponse response, String message, HttpStatus status) {
 //        response.setStatusCode(status);
@@ -146,7 +137,7 @@ public class JwtAuthenticationGatewayFilterFactory extends
         //if (uri.startsWith("/login") && port == 8001 && method.equals("POST"))
         if (uri.contains("/health") && method.equals("GET")) {
             return true;
-        } else if (uri.contains("/login") && method.equals("GET")) {
+        } else if (uri.contains("/login") && method.equals("POST")) {
             return true;
         } else if (uri.contains("/callback") && method.equals("POST")) {
             return true;

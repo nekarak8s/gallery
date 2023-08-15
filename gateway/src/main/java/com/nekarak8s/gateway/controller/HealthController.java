@@ -1,8 +1,6 @@
 package com.nekarak8s.gateway.controller;
 
-import com.nekarak8s.gateway.util.jwt.JwtProperties;
 import com.nekarak8s.gateway.util.jwt.JwtUtils;
-import com.nekarak8s.gateway.util.jwt.TokenMember;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.CookieValue;
@@ -21,6 +19,7 @@ public class HealthController {
         return "ok";
     }
 
+    // 쿠키 테스트용 컨트롤러
     @GetMapping("/check")
     public String tokenInCookieCheck(@CookieValue(value = "gallery_cookie") String token) {
         log.info("is Valid? : {}", jwtUtils.isValid(token));
