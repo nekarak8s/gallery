@@ -69,6 +69,9 @@ public class JwtAuthenticationGatewayFilterFactory extends
                     return onError_v2(response, "invalid token", HttpStatus.BAD_REQUEST);
                 }
 
+                TokenMember tokenMember = jwtUtils.decode(token);
+                exchange.getRequest().mutate().header("X-Member-ID", tokenMember.getId());
+
                 return chain.filter(exchange);
             }
 
