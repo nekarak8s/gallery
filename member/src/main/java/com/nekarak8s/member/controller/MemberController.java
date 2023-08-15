@@ -5,6 +5,7 @@ import com.nekarak8s.member.data.dto.response.ApiResponse;
 import com.nekarak8s.member.data.dto.response.LoginResponse;
 import com.nekarak8s.member.service.AuthService;
 import com.nekarak8s.member.service.MemberService;
+import com.nekarak8s.member.util.param.ParamUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -20,6 +21,7 @@ import java.util.Map;
 public class MemberController {
     private final MemberService memberService;
     private final AuthService authService;
+    private final ParamUtils paramUtils;
 
     @GetMapping("/health")
     public String health(){
@@ -30,9 +32,7 @@ public class MemberController {
 
     @PostMapping("/login")
     public ResponseEntity<?> redirect(@RequestParam(value = "type", required = false) String type) throws CustomException {
-        if (type == null) {
-            throw new CustomException(HttpStatus.BAD_REQUEST, "type을 확인해주세요");
-        }
+        paramUtils.checkParam(type);
 
         log.info("로그인 요청옴");
 
@@ -43,14 +43,9 @@ public class MemberController {
 
     @PostMapping("/callback")
     public ResponseEntity<?> getToken(@RequestParam(value = "type", required = false) String type, @RequestParam(value = "code") String code) throws CustomException{
-        if (type == null || type.isEmpty()) {
-            throw new CustomException(HttpStatus.BAD_REQUEST, "type을 확인해주세요");
-        }
-
-        if (code == null || code.isEmpty()) {
-            throw new CustomException(HttpStatus.BAD_REQUEST, "code를 확인해주세요");
-        }
-
+        paramUtils.checkParam(type);
+        paramUtils.checkParam(code);
+        
         log.info("콜백 요청옴");
 
         Map accessTokenAndLoginRespone = memberService.checkAndJoinMember(code); // accessToken, loginResponse return
