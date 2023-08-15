@@ -3,6 +3,7 @@ package com.nekarak8s.member.controller;
 import com.nekarak8s.member.common.exception.CustomException;
 import com.nekarak8s.member.data.dto.response.ApiResponse;
 import com.nekarak8s.member.data.dto.response.LoginResponse;
+import com.nekarak8s.member.data.dto.response.MemberDTO;
 import com.nekarak8s.member.service.AuthService;
 import com.nekarak8s.member.service.MemberService;
 import com.nekarak8s.member.util.cookie.CookieUtils;
@@ -60,6 +61,19 @@ public class MemberController {
         ApiResponse apiResponse = ApiResponse.builder()
                 .message("로그인 성공")
                 .data(loginResponse)
+                .build();
+        return ResponseEntity.ok(apiResponse);
+    }
+
+    @GetMapping
+    public ResponseEntity<?> getMemberInfo(@RequestHeader(value = "X-Member-ID", required = false) long memberId) throws CustomException{
+        paramUtils.checkParam(String.valueOf(memberId));
+        log.info("member ID : {}", memberId);
+        MemberDTO memberDTO = memberService.findMemberById(memberId);
+
+        ApiResponse apiResponse = ApiResponse.builder()
+                .message("회원 정보 조회 성공")
+                .data(memberDTO)
                 .build();
         return ResponseEntity.ok(apiResponse);
     }

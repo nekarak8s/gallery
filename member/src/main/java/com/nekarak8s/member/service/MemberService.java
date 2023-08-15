@@ -3,6 +3,7 @@ package com.nekarak8s.member.service;
 
 import com.nekarak8s.member.common.exception.CustomException;
 import com.nekarak8s.member.data.dto.response.LoginResponse;
+import com.nekarak8s.member.data.dto.response.MemberDTO;
 import com.nekarak8s.member.data.entity.Member;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +19,7 @@ public interface MemberService {
      * @param memberId
      * @return Member
      */
-    Member findMemberById(long memberId);
+    MemberDTO findMemberById(long memberId) throws CustomException;
 
     boolean isMemberByKakaoId(long kakaoId);
 }

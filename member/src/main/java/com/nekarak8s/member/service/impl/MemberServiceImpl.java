@@ -3,6 +3,7 @@ package com.nekarak8s.member.service.impl;
 import com.nekarak8s.member.common.Role;
 import com.nekarak8s.member.common.exception.CustomException;
 import com.nekarak8s.member.data.dto.response.LoginResponse;
+import com.nekarak8s.member.data.dto.response.MemberDTO;
 import com.nekarak8s.member.data.entity.Member;
 import com.nekarak8s.member.data.repository.MemberRepository;
 import com.nekarak8s.member.service.AuthService;
@@ -82,8 +83,17 @@ public class MemberServiceImpl implements MemberService{
     }
 
     @Override
-    public Member findMemberById(long memberId) {
-        return null;
+    public MemberDTO findMemberById(long memberId) throws CustomException {
+        Member member = memberRepository.findById(memberId).orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "회원 정보 존재 안함"));
+        log.info("member : {}", member);
+
+        MemberDTO memberDTO = MemberDTO.builder()
+                .nickname(member.getNickname())
+                .role(member.getRole())
+                .createdDate(member.getCreatedDate())
+                .build();
+
+        return memberDTO;
     }
 
     @Override
