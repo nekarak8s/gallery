@@ -1,4 +1,4 @@
-package com.nekarak8s.member.config;
+package com.nekarak8s.member.common.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;

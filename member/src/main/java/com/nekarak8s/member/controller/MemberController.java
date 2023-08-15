@@ -5,13 +5,14 @@ import com.nekarak8s.member.data.dto.response.ApiResponse;
 import com.nekarak8s.member.data.dto.response.LoginResponse;
 import com.nekarak8s.member.service.AuthService;
 import com.nekarak8s.member.service.MemberService;
+import com.nekarak8s.member.util.cookie.CookieUtils;
 import com.nekarak8s.member.util.param.ParamUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 
 @Slf4j
@@ -22,6 +23,7 @@ public class MemberController {
     private final MemberService memberService;
     private final AuthService authService;
     private final ParamUtils paramUtils;
+    private final CookieUtils cookieUtils;
 
     @GetMapping("/health")
     public String health(){
@@ -42,10 +44,10 @@ public class MemberController {
     }
 
     @PostMapping("/callback")
-    public ResponseEntity<?> getToken(@RequestParam(value = "type", required = false) String type, @RequestParam(value = "code") String code) throws CustomException{
+    public ResponseEntity<?> getToken(HttpServletResponse response, @RequestParam(value = "type", required = false) String type, @RequestParam(value = "code") String code) throws CustomException{
         paramUtils.checkParam(type);
         paramUtils.checkParam(code);
-        
+
         log.info("콜백 요청옴");
 
         Map accessTokenAndLoginRespone = memberService.checkAndJoinMember(code); // accessToken, loginResponse return
@@ -53,7 +55,7 @@ public class MemberController {
         String accessToken = (String) accessTokenAndLoginRespone.get("accessToken");
         LoginResponse loginResponse = (LoginResponse) accessTokenAndLoginRespone.get("loginResponse");
 
-        // Todo : Cookie에 담는 로직
+        cookieUtils.addCookie(response, accessToken);
 
         ApiResponse apiResponse = ApiResponse.builder()
                 .message("로그인 성공")
