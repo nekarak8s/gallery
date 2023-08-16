@@ -10,6 +10,7 @@ module.exports = {
     publicPath: '/',
   },
   resolve: {
+    modules: [path.resolve(__dirname, 'node_modules')],
     extensions: ['.js', '.jsx', '.ts', '.tsx'],
     alias: {
       '@': path.resolve(__dirname, 'src'),
@@ -25,9 +26,8 @@ module.exports = {
       },
       {
         test: /\.(js|jsx)$/,
-        exclude: '/node_modules/',
+        exclude: /node_modules\/(?!(axios))/,
         loader: 'babel-loader',
-        options: { presets: ['@babel/env', '@babel/preset-react'] },
       },
       {
         test: /\.css$/,
