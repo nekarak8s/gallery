@@ -1,4 +1,9 @@
 .flexbox {
   display: flex;
   height: 30vh;
+
+  svg {
+    width: 10vh;
+    height: 10vh;
+  }
 }

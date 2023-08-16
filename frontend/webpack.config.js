@@ -38,7 +38,7 @@ module.exports = {
         use: ['style-loader', 'css-loader', 'sass-loader'],
       },
       {
-        test: /\.(jpg|png|gif|svg|webp)$/,
+        test: /\.(jpg|png|gif|webp)$/,
         use: {
           loader: 'url-loader',
           options: {
@@ -46,6 +46,20 @@ module.exports = {
             limit: 10 * 1024, // 10kb
           },
         },
+      },
+      {
+        test: /\.svg$/,
+        use: [
+          {
+            loader: 'babel-loader',
+          },
+          {
+            loader: 'react-svg-loader',
+            options: {
+              jsx: true, // true outputs JSX tags
+            },
+          },
+        ],
       },
     ],
   },

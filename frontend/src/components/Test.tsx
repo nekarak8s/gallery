@@ -7,7 +7,8 @@ import './Test.scss'
 export default function Test() {
   return (
     <div className="flexbox">
-      <img src={GoogleLogo} alt="google_logo" />
+      <GoogleLogo />
+
       <img src={MountainImage} alt="mountain_image" />
     </div>
   )
