@@ -7,6 +7,7 @@ import com.nekarak8s.member.data.dto.response.MemberDTO;
 import com.nekarak8s.member.service.AuthService;
 import com.nekarak8s.member.service.MemberService;
 import com.nekarak8s.member.util.cookie.CookieUtils;
+import com.nekarak8s.member.util.pair.Pair;
 import com.nekarak8s.member.util.param.ParamUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -51,10 +52,10 @@ public class MemberController {
 
         log.info("콜백 요청옴");
 
-        Map accessTokenAndLoginRespone = memberService.checkAndJoinMember(code); // accessToken, loginResponse return
+        Pair<String, LoginResponse> pair = memberService.checkAndJoinMember(code); // accessToken, loginResponse return
 
-        String accessToken = (String) accessTokenAndLoginRespone.get("accessToken");
-        LoginResponse loginResponse = (LoginResponse) accessTokenAndLoginRespone.get("loginResponse");
+        String accessToken = pair.getFirst();
+        LoginResponse loginResponse = pair.getSecond();
 
         cookieUtils.addCookie(response, accessToken);
 

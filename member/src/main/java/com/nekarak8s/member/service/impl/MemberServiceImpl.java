@@ -12,6 +12,7 @@ import com.nekarak8s.member.util.jwt.JwtProperties;
 import com.nekarak8s.member.util.jwt.JwtUtils;
 import com.nekarak8s.member.util.jwt.TokenMember;
 import com.nekarak8s.member.util.nickname.NicknameUtils;
+import com.nekarak8s.member.util.pair.Pair;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -32,7 +33,7 @@ public class MemberServiceImpl implements MemberService{
     private final NicknameUtils nicknameUtils;
 
     @Override
-    public Map checkAndJoinMember(String code) throws CustomException {
+    public Pair<String, LoginResponse> checkAndJoinMember(String code) throws CustomException {
         String kakaoAccessToken = authService.getAccessToken(code);
 
         long kakaoId = authService.getOAuthId(kakaoAccessToken);
@@ -62,11 +63,8 @@ public class MemberServiceImpl implements MemberService{
         Member member = memberRepository.findMemberByKakaoId(kakaoId)
                 .orElseThrow(() -> new CustomException(HttpStatus.NO_CONTENT, "Not Found"));
 
-        log.info("회원 조회 : {}", member);
-
         TokenMember tokenMember = new TokenMember(String.valueOf(member.getMemberId()), String.valueOf(member.getRole()));
         String accessToken = jwtUtils.generate(tokenMember);
-        log.info("accessToken : {}", accessToken);
 
         Date now = new Date();
         Date expiresAt = new Date(now.getTime() + jwtProperties.getExpiration() * 60 * 1000);
@@ -75,11 +73,12 @@ public class MemberServiceImpl implements MemberService{
                 .expirationDate(expiresAt)
                 .build();
 
-        Map<String, Object> accessTokenAndLoginResponse = new HashMap<>();
-        accessTokenAndLoginResponse.put("loginResponse", loginResponse);
-        accessTokenAndLoginResponse.put("accessToken", accessToken);
+        Pair<String, LoginResponse> pair = Pair.<String, LoginResponse>builder()
+                .first(accessToken)
+                .second(loginResponse)
+                .build();
 
-        return accessTokenAndLoginResponse;
+        return pair;
     }
 
     @Override
