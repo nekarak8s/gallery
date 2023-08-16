@@ -9,22 +9,23 @@
     "forceConsistentCasingInFileNames": true,
     "noImplicitReturns": true,
     "noImplicitThis": true,
-    "noUnusedLocals": true,
+    "noUnusedLocals": false, // no unsed imports / variables
     "noUnusedParameters": true,
     "noImplicitAny": true,
     "moduleResolution": "node",
-    "baseUrl": "./src",
+    "baseUrl": "src/",
     "paths": {
-      "*": ["src/*"]
+      "@/*": ["./*"]
     },
     "lib": ["dom", "esnext"],
-    "allowJs": true,
     "allowSyntheticDefaultImports": true,
+    // "allowImportingTsExtensions": true, // Don't do this. Instead remove extensions(.tsx) in the code && Add to webpack resolove extension
     "resolveJsonModule": true,
     "isolatedModules": true,
     "strictNullChecks": true
+    // "typeRoots": ["./node_modules/@types", "types"]
   },
-  "include": ["src/**/*.ts", "src/**/*.tsx"],
+  "include": ["src/*.ts", "src/*.tsx", "src/**/*.ts", "src/**/*.tsx"],
   "exclude": ["node_modules", "dist", "public"]
 }
 
