@@ -2,4 +2,7 @@ dist
 public
 coverage
 
+.eslintrc.js
+webpack.config.js
+
 **/assets/*
