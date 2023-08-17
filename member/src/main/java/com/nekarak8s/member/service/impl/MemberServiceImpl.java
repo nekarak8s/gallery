@@ -103,5 +103,12 @@ public class MemberServiceImpl implements MemberService{
 
     }
 
+    @Override
+    public boolean isNicknameUnique(String nickname) throws CustomException {
+        Optional<Member> optionalMember = memberRepository.findByNickname(nickname);
+
+        return optionalMember.isEmpty();
+    }
+
 
 }
