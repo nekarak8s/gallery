@@ -79,12 +79,6 @@ public class JwtAuthenticationGatewayFilterFactory extends
 //            if (!hasRole(tokenMember, config.role)) {
 //                return onError_v2(response, "invalid role", HttpStatus.FORBIDDEN);
 //            }
-
-//            TokenMember tokenMember = new TokenMember();
-
-//            addCookie(response, tokenMember);
-
-//            return chain.filter(exchange);
         };
     }
 
@@ -113,21 +107,6 @@ public class JwtAuthenticationGatewayFilterFactory extends
         return role.equals(tokenMember.getRole());
     }
 
-//    private void addCookie(ServerHttpResponse response, TokenMember tokenMember) {
-//        String token = "thisistoken";
-//
-//        // netty 기반이므로 ResponseCookie 사용 Webflux가 아니라면 HttpCookie 사용
-//        ResponseCookie cookie = ResponseCookie.from(COOKIE_NAME, token)
-//                .path("/")
-//                .httpOnly(true)
-//                .secure(false) // HTTPS를 사용할 경우 true로 변경
-//                .maxAge(Duration.ofDays(7))
-//                .build();
-//
-//        response.addCookie(cookie);
-//    }
-
-
 //    private Mono<Void> onError(ServerHttpResponse response, String message, HttpStatus status) {
 //        response.setStatusCode(status);
 //        DataBuffer buffer = response.bufferFactory().wrap(message.getBytes(StandardCharsets.UTF_8));
@@ -137,12 +116,13 @@ public class JwtAuthenticationGatewayFilterFactory extends
     // JWT 허용 (없어도 허용)
     private boolean shoudValidateJwt(String uri, int port, String method) {
         // 허용할 경로면 true
-        //if (uri.startsWith("/login") && port == 8001 && method.equals("POST"))
         if (uri.contains("/health") && method.equals("GET")) {
             return true;
         } else if (uri.contains("/login") && method.equals("POST")) {
             return true;
         } else if (uri.contains("/callback") && method.equals("POST")) {
+            return true;
+        } else if (uri.contains("/check/nickname") && method.equals("GET")) {
             return true;
         }
         // 아니면 false
