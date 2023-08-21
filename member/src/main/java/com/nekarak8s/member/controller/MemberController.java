@@ -133,4 +133,17 @@ public class MemberController {
                 .build();
         return ResponseEntity.ok(apiResponse);
     }
+
+    @DeleteMapping
+    public ResponseEntity<?> deleteMember(@RequestHeader(value = "X-Member-ID", required = false) long memberId) throws CustomException {
+        log.debug("회원 삭제 요청옴");
+        log.debug("게이트웨이에서 넘어온 member ID : {}", memberId);
+
+        memberService.deleteMember(memberId);
+
+        ApiResponse apiResponse = ApiResponse.builder()
+                .message("삭제함")
+                .build();
+        return ResponseEntity.ok(apiResponse);
+    }
 }

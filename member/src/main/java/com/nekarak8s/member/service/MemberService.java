@@ -21,4 +21,6 @@ public interface MemberService {
     boolean isNicknameUnique(String nickname) throws CustomException;
 
     void modifyMemberInfo(long memberId, MemberModifyDTO request) throws CustomException;
+
+    void deleteMember(long memberId) throws CustomException;
 }

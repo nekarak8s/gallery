@@ -116,6 +116,18 @@ public class MemberServiceImpl implements MemberService{
         memberRepository.save(member);
     }
 
+    @Override
+    public void deleteMember(long memberId) throws CustomException {
+        Member member = memberRepository.findById(memberId).orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "GA007", "사용자 정보가 없습니다"));
+
+        // 삭제된 회원인지 체크 : 삭제된 상태 -> Custom Exception
+        checkDeletedMember(member);
+
+        member.setIsDeleted(true);
+        member.setDeletedDate(LocalDateTime.now());
+        memberRepository.save(member);
+    }
+
     public String retryGenerateNickname(String kakaoNickname) throws CustomException {
         String nickname = "";
 
@@ -128,6 +140,14 @@ public class MemberServiceImpl implements MemberService{
             }
         }
         throw new CustomException(HttpStatus.CONFLICT, "GA006","닉네임 생성 도중 서버 에러 발생");
+    }
+
+    public void checkDeletedMember(Member member) throws CustomException {
+        boolean isDeleted = member.getIsDeleted();
+
+        if (isDeleted) {
+            throw new CustomException(HttpStatus.NOT_FOUND, "GA007", "사용자 정보가 없습니다");
+        }
     }
 
 }
