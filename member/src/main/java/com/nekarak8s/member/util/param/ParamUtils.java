@@ -12,7 +12,7 @@ public class ParamUtils {
     public void checkParam(String param) throws CustomException {
         if (param == null || param.isBlank()) {
             log.debug("잘못된 파라미터 형식입니다.");
-            throw new CustomException(HttpStatus.BAD_REQUEST, "파라미터를 확인해주세요");
+            throw new CustomException(HttpStatus.BAD_REQUEST, "GA004", "파라미터를 확인해주세요");
         }
     }
 }

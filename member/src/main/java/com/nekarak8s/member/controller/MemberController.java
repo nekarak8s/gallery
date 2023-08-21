@@ -40,7 +40,7 @@ public class MemberController {
     public ResponseEntity<?> redirect(@RequestParam(value = "type", required = false) String type) throws CustomException {
         paramUtils.checkParam(type);
 
-        log.info("로그인 요청옴");
+        log.debug("로그인 요청옴");
 
         String authorizationUrl = authService.getAuthorizationUrl();
 
@@ -52,7 +52,7 @@ public class MemberController {
         paramUtils.checkParam(type);
         paramUtils.checkParam(code);
 
-        log.info("콜백 요청옴");
+        log.debug("콜백 요청옴");
 
         Pair<String, LoginResponse> pair = memberService.checkAndJoinMember(code); // accessToken, loginResponse return
 
@@ -71,7 +71,7 @@ public class MemberController {
     @GetMapping
     public ResponseEntity<?> getMemberInfo(@RequestHeader(value = "X-Member-ID", required = false) long memberId) throws CustomException{
         paramUtils.checkParam(String.valueOf(memberId));
-        log.info("member ID : {}", memberId);
+        log.debug("게이트웨이에서 넘어온 member ID : {}", memberId);
         MemberDTO memberDTO = memberService.findMemberById(memberId);
 
         ApiResponse apiResponse = ApiResponse.builder()
@@ -83,12 +83,14 @@ public class MemberController {
 
     @GetMapping("/check/nickname")
     public ResponseEntity<?> checkNickname(@RequestParam(value = "nickname", required = false) String nickname) throws CustomException {
+        log.debug("닉네임 중복 검사 요청옴");
+
         // 공백, null 검사
         paramUtils.checkParam(nickname);
 
         // 닉네임 형식 검사
         if (!nicknameUtils.isValid(nickname)) {
-            throw new CustomException(HttpStatus.BAD_REQUEST, "닉네임은 한글, 영어, 숫자 조합 2~10자로 입력해주세요");
+            throw new CustomException(HttpStatus.BAD_REQUEST, "GA005" ,"닉네임은 한글, 영어, 숫자 조합 2~10자로 입력해주세요");
         }
 
         boolean isUnique = memberService.isNicknameUnique(nickname);
@@ -99,7 +101,7 @@ public class MemberController {
                     .build();
             return ResponseEntity.ok(apiResponse);
         } else {
-            throw new CustomException(HttpStatus.CONFLICT, "이미 존재하는 닉네임 입니다");
+            throw new CustomException(HttpStatus.CONFLICT, "GA006", "이미 사용중인 닉네임 입니다");
         }
     }
 }

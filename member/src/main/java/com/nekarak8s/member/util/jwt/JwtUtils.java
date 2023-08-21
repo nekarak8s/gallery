@@ -25,14 +25,14 @@ public class JwtUtils implements InitializingBean {
     @Override
     public void afterPropertiesSet() throws Exception {
         this.algorithm = Algorithm.HMAC512(jwtProperties.getSecret());
-        log.info("시크릿 키 : {}", jwtProperties.getSecret());
         this.jwtVerifier = JWT.require(algorithm).acceptLeeway(5).build(); // 여유 시간 5분 설정
     }
 
     public String generate(TokenMember member) {
         Date now = new Date();
-        log.info("시간(ms) : {}", jwtProperties.getExpiration() * 60 * 1000);
-        log.info("시간(분) : {}", jwtProperties.getExpiration());
+        log.debug("갤러리 accessToken 생성 시작");
+        log.debug("[<-->]토큰 만료 시간(ms) : {}ms", jwtProperties.getExpiration() * 60 * 1000);
+        log.debug("[<-->]토큰 만료 시간(분) : {}분", jwtProperties.getExpiration());
         Date expiresAt = new Date(now.getTime() + jwtProperties.getExpiration() * 60 * 1000);
 
         return JWT.create()

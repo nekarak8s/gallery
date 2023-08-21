@@ -12,11 +12,6 @@ public interface MemberService {
 
     Pair<String, LoginResponse> checkAndJoinMember(String code) throws CustomException;
 
-    /**
-     * 회원 조회
-     * @param memberId
-     * @return Member
-     */
     MemberDTO findMemberById(long memberId) throws CustomException;
 
     boolean isMemberByKakaoId(long kakaoId);

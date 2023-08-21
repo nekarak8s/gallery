@@ -24,9 +24,9 @@ public class CustomExceptionHandler {
         log.debug("Advice 내 handleException호출, {}, {}", request.getRequestURI(), e.getMessage());
 
         Map<String, String> map = new HashMap<>();
-        map.put("error type", httpStatus.getReasonPhrase());
-        map.put("code", "500");
-        map.put("message", "서버 에러가 발생했습니다");
+        map.put("errorType", httpStatus.getReasonPhrase());
+        map.put("erroCode", "GA001");
+        map.put("message", e.getMessage());
 
         return new ResponseEntity<>(map, responseHeaders, httpStatus);
 
@@ -40,8 +40,9 @@ public class CustomExceptionHandler {
         log.debug("Advice 내 handleException호출, {}, {}", request.getRequestURI(), e.getMessage());
 
         Map<String, String> map = new HashMap<>();
-        map.put("error type", e.getHttpStatusType());
-        map.put("code", Integer.toString(e.getHttpStatusCode()));
+        map.put("errorType", e.getHttpStatusType());
+        //map.put("errorCode", Integer.toString(e.getHttpStatusCode()));
+        map.put("errorCode", e.getCode());
         map.put("message", e.getMessage());
 
         return new ResponseEntity<>(map, responseHeaders, e.getHttpStatus());

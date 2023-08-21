@@ -34,18 +34,17 @@ public class MemberServiceImpl implements MemberService{
 
     @Override
     public Pair<String, LoginResponse> checkAndJoinMember(String code) throws CustomException {
-        String kakaoAccessToken = authService.getAccessToken(code);
-
-        long kakaoId = authService.getOAuthId(kakaoAccessToken);
-        String kakaoNickname = authService.getOAuthNickname(kakaoAccessToken);
-
-        String nickname = nicknameUtils.generate(kakaoNickname);
-        log.info("유니크 닉네임 생성 : {}", nickname);
-
-        // Todo : 닉네임 중복 검사
+        String  kakaoAccessToken    = authService.getAccessToken(code);
+        long    kakaoId             = authService.getOAuthId(kakaoAccessToken);
+        String  kakaoNickname       = authService.getOAuthNickname(kakaoAccessToken);
 
         if (!isMemberByKakaoId(kakaoId)) { // 신규 회원
-            log.debug("신규 회원 !!!");
+            log.debug("신규 회원");
+
+            String nickname = retryGenerateNickname(kakaoNickname);
+
+            log.debug("유니크 닉네임 생성 완료 : {}", nickname);
+
             Member member = Member.builder()
                     .kakaoId(kakaoId)
                     .role(Role.ROLE_USER)
@@ -57,14 +56,13 @@ public class MemberServiceImpl implements MemberService{
 
             memberRepository.save(member);
         } else { // 기존 회원
-            log.debug("기존 회원 !!!");
+            log.debug("기존 회원");
         }
 
-        Member member = memberRepository.findMemberByKakaoId(kakaoId)
-                .orElseThrow(() -> new CustomException(HttpStatus.NO_CONTENT, "Not Found"));
+        Member member = memberRepository.findMemberByKakaoId(kakaoId).get();
 
         TokenMember tokenMember = new TokenMember(String.valueOf(member.getMemberId()), String.valueOf(member.getRole()));
-        String accessToken = jwtUtils.generate(tokenMember);
+        String accessToken = jwtUtils.generate(tokenMember); // 갤러리 서비스 토큰 발급
 
         Date now = new Date();
         Date expiresAt = new Date(now.getTime() + jwtProperties.getExpiration() * 60 * 1000);
@@ -83,8 +81,7 @@ public class MemberServiceImpl implements MemberService{
 
     @Override
     public MemberDTO findMemberById(long memberId) throws CustomException {
-        Member member = memberRepository.findById(memberId).orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "회원 정보 존재 안함"));
-        log.info("member : {}", member);
+        Member member = memberRepository.findById(memberId).orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "GA007", "사용자 정보가 없습니다"));
 
         MemberDTO memberDTO = MemberDTO.builder()
                 .nickname(member.getNickname())
@@ -110,5 +107,18 @@ public class MemberServiceImpl implements MemberService{
         return optionalMember.isEmpty();
     }
 
+    public String retryGenerateNickname(String kakaoNickname) throws CustomException {
+        String nickname = "";
+
+        for (int digit=4; digit<=7; digit++) {
+            nickname = nicknameUtils.generate(kakaoNickname, digit);
+
+            // Todo : DB말고 Redis에서 확인하도록 변경 예정
+            if (isNicknameUnique(nickname)) {
+                return nickname;
+            }
+        }
+        throw new CustomException(HttpStatus.CONFLICT, "GA006","닉네임 생성 도중 서버 에러 발생");
+    }
 
 }

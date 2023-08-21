@@ -9,6 +9,6 @@ import lombok.Data;
 public class ApiResponse {
     private String message;
 
-    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @JsonInclude(JsonInclude.Include.NON_NULL) // 값이 null 이면, 제외
     private Object data;
 }

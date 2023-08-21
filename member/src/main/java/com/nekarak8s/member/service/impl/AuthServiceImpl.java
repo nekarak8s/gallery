@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -35,7 +36,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public String getAccessToken(String code) {
+    public String getAccessToken(String code) throws CustomException {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 
@@ -49,13 +50,20 @@ public class AuthServiceImpl implements AuthService {
 
         RestTemplate restTemplate = new RestTemplate();
 
-        ResponseEntity<Map> response = restTemplate.postForEntity(tokenUri, null, Map.class);
+        try {
+            ResponseEntity<Map> response = restTemplate.postForEntity(tokenUri, null, Map.class);
 
-        if (response.getStatusCode().is2xxSuccessful()) {
-            String kakaoAccessToken = (String) response.getBody().get("access_token");
-            return kakaoAccessToken;
-        } else {
-            throw new RuntimeException("카카오 서버 통신 에러 발생 !!!");
+            if (response.getStatusCode().is2xxSuccessful()) {
+                return (String) response.getBody().get("access_token");
+            } else {
+                throw new RuntimeException("서버 통신 에러");
+            }
+        } catch (HttpClientErrorException e) {
+            log.debug("유효하지 않은 인가코드");
+            throw new CustomException(HttpStatus.BAD_REQUEST, "GA005" , "유효하지 않은 인가 코드 입니다");
+        } catch (Exception e) {
+            log.debug("서버 에러");
+            throw new RuntimeException("서버 에러");
         }
     }
 
