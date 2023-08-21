@@ -56,11 +56,21 @@ public class MemberServiceImpl implements MemberService{
                     .build();
 
             memberRepository.save(member);
-        } else { // 기존 회원
-            log.debug("기존 회원");
+        } else { // 기존 회원 (삭제 상태 체크)
+            Member member = memberRepository.findByKakaoId(kakaoId).get();
+            if (member.getIsDeleted()) { // 삭제 상태
+                log.debug("삭제 상태 회원");
+                String nickname = retryGenerateNickname(kakaoNickname);
+                member.setNickname(nickname);
+                member.setIsDeleted(false);
+                member.setDeletedDate(null);
+                memberRepository.save(member);
+            } else {
+                log.debug("기존 회원");
+            }
         }
 
-        Member member = memberRepository.findMemberByKakaoId(kakaoId).get();
+        Member member = memberRepository.findByKakaoId(kakaoId).get();
 
         TokenMember tokenMember = new TokenMember(String.valueOf(member.getMemberId()), String.valueOf(member.getRole()));
         String accessToken = jwtUtils.generate(tokenMember); // 갤러리 서비스 토큰 발급
@@ -82,7 +92,7 @@ public class MemberServiceImpl implements MemberService{
 
     @Override
     public MemberDTO findMemberById(long memberId) throws CustomException {
-        Member member = memberRepository.findById(memberId).orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "GA007", "사용자 정보가 없습니다"));
+        Member member = memberRepository.findByMemberIdAndIsDeletedFalse(memberId).orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "GA007", "사용자 정보가 없습니다"));
 
         MemberDTO memberDTO = MemberDTO.builder()
                 .nickname(member.getNickname())
@@ -95,22 +105,21 @@ public class MemberServiceImpl implements MemberService{
 
     @Override
     public boolean isMemberByKakaoId(long kakaoId) {
-        Optional<Member> optionalMember = memberRepository.findMemberByKakaoId(kakaoId);
+        Optional<Member> optionalMember = memberRepository.findByKakaoId(kakaoId);
 
         return optionalMember.isPresent();
-
     }
 
     @Override
     public boolean isNicknameUnique(String nickname) throws CustomException {
-        Optional<Member> optionalMember = memberRepository.findByNickname(nickname);
+        Optional<Member> optionalMember = memberRepository.findByNicknameAndIsDeletedFalse(nickname);
 
         return optionalMember.isEmpty();
     }
 
     @Override
     public void modifyMemberInfo(long memberId, MemberModifyDTO request) throws CustomException {
-        Member member = memberRepository.findById(memberId).orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "GA007", "사용자 정보가 없습니다"));
+        Member member = memberRepository.findByMemberIdAndIsDeletedFalse(memberId).orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "GA007", "사용자 정보가 없습니다"));
 
         member.setNickname(request.getNickname());
         memberRepository.save(member);

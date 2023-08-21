@@ -16,21 +16,25 @@ public class NicknameUtils {
     public String generate(String nickname, int digit) {
         Random random = new Random();
 
-        int bound = 10000;
+        int startBound = 1000;
+        int endBound = 10000;
 
         switch (digit) {
             case(5) :
-                bound = 100000;
+                startBound = 10000;
+                endBound = 100000;
                 break;
             case(6) :
-                bound = 1000000;
+                startBound = 100000;
+                endBound = 1000000;
                 break;
             case(7) :
-                bound = 10000000;
+                startBound = 1000000;
+                endBound = 10000000;
                 break;
         }
 
-        int randomNumber = random.nextInt(bound);
+        int randomNumber = random.nextInt(startBound, endBound);
 
         StringBuffer sb = new StringBuffer();
 
