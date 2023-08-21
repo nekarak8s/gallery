@@ -2,6 +2,7 @@ package com.nekarak8s.member.service.impl;
 
 import com.nekarak8s.member.common.Role;
 import com.nekarak8s.member.common.exception.CustomException;
+import com.nekarak8s.member.data.dto.request.MemberModifyDTO;
 import com.nekarak8s.member.data.dto.response.LoginResponse;
 import com.nekarak8s.member.data.dto.response.MemberDTO;
 import com.nekarak8s.member.data.entity.Member;
@@ -105,6 +106,14 @@ public class MemberServiceImpl implements MemberService{
         Optional<Member> optionalMember = memberRepository.findByNickname(nickname);
 
         return optionalMember.isEmpty();
+    }
+
+    @Override
+    public void modifyMemberInfo(long memberId, MemberModifyDTO request) throws CustomException {
+        Member member = memberRepository.findById(memberId).orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "GA007", "사용자 정보가 없습니다"));
+
+        member.setNickname(request.getNickname());
+        memberRepository.save(member);
     }
 
     public String retryGenerateNickname(String kakaoNickname) throws CustomException {

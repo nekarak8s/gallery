@@ -1,6 +1,7 @@
 package com.nekarak8s.member.controller;
 
 import com.nekarak8s.member.common.exception.CustomException;
+import com.nekarak8s.member.data.dto.request.MemberModifyDTO;
 import com.nekarak8s.member.data.dto.response.ApiResponse;
 import com.nekarak8s.member.data.dto.response.LoginResponse;
 import com.nekarak8s.member.data.dto.response.MemberDTO;
@@ -17,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -107,5 +109,28 @@ public class MemberController {
         } else {
             throw new CustomException(HttpStatus.CONFLICT, "GA006", "이미 사용중인 닉네임 입니다");
         }
+    }
+
+    @PatchMapping()
+    public ResponseEntity<?> modifyMemberInfo(@RequestHeader(value = "X-Member-ID", required = false) long memberId, @RequestBody @Valid final MemberModifyDTO request) throws CustomException{
+        log.debug("회원 정보 수정 요청옴");
+        log.debug("게이트웨이에서 넘어온 member ID : {}", memberId);
+
+        // 닉네임 형식 검사
+        if (!nicknameUtils.isValid(request.getNickname())) {
+            throw new CustomException(HttpStatus.BAD_REQUEST, "GA005" ,"닉네임은 한글, 영어, 숫자 조합 2~10자로 입력해주세요");
+        }
+
+        // 닉네임 중복 검사
+        if (!memberService.isNicknameUnique(request.getNickname())) {
+            throw new CustomException(HttpStatus.CONFLICT, "GA006", "이미 사용중인 닉네임입니다");
+        }
+
+        memberService.modifyMemberInfo(memberId, request);
+
+        ApiResponse apiResponse = ApiResponse.builder()
+                .message("성공적으로 변경되었습니다")
+                .build();
+        return ResponseEntity.ok(apiResponse);
     }
 }

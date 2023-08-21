@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -46,6 +47,21 @@ public class CustomExceptionHandler {
         map.put("message", e.getMessage());
 
         return new ResponseEntity<>(map, responseHeaders, e.getHttpStatus());
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<Map<String, String>> dtoValidation(final MethodArgumentNotValidException e, HttpServletRequest request) {
+        HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
+        HttpHeaders responseHeaders = new HttpHeaders();
+
+        log.debug("Advice 내 handleException호출, {}, {}", request.getRequestURI(), e.getMessage());
+
+        Map<String, String> map = new HashMap<>();
+        map.put("errorType", httpStatus.getReasonPhrase());
+        map.put("errorCode", "GA005");
+        map.put("message", "파라미터를 확인해주세요");
+
+        return new ResponseEntity<>(map, responseHeaders, httpStatus);
     }
 
 }
