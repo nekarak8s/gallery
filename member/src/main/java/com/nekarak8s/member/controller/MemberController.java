@@ -40,6 +40,10 @@ public class MemberController {
     public ResponseEntity<?> redirect(@RequestParam(value = "type", required = false) String type) throws CustomException {
         paramUtils.checkParam(type);
 
+        if (!type.equalsIgnoreCase("kakao")) {
+            throw new CustomException(HttpStatus.BAD_REQUEST, "GA005", "지원하지 않는 소셜 로그인입니다");
+        }
+
         log.debug("로그인 요청옴");
 
         String authorizationUrl = authService.getAuthorizationUrl();
