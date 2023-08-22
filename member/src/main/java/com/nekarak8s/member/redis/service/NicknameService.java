@@ -1,13 +1,17 @@
 package com.nekarak8s.member.redis.service;
 
+import com.nekarak8s.member.common.exception.CustomException;
 import com.nekarak8s.member.redis.entity.Nickname;
 import com.nekarak8s.member.redis.repository.NicknameRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class NicknameService {
 
@@ -25,10 +29,19 @@ public class NicknameService {
         nicknameRepository.save(nicknameObj);
     }
 
-    // Redis에서 Nickname Object 조회
-    public Nickname getNicknameInRedis(String nickname) {
-        Optional<Nickname> optionalNicknameObj = nicknameRepository.findById(nickname);
-        return optionalNicknameObj.orElse(null);
+    // Redis에서 Nickname 삭제
+    public void deleteNicknameInRedis(String nickname) {
+        nicknameRepository.deleteById(nickname);
+    }
+
+    // Redis에서 MemberId로 Nickname 조회
+    public String getNicknameInRedisByMemberId(long memberId) throws CustomException {
+        Optional<Nickname> optionalNickname = nicknameRepository.findByMemberId(memberId);
+        if (optionalNickname.isPresent()) {
+            return optionalNickname.get().getNickname();
+        } else {
+            throw new CustomException(HttpStatus.NOT_FOUND, "GA007", "사용자 정보가 없습니다");
+        }
     }
 
 }

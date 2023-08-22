@@ -12,5 +12,7 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     Optional<Member> findByMemberIdAndIsDeletedFalse(long memberId);
     Optional<Member> findByKakaoId(long kakaoId);
 
+    // 기존 : 닉네임 검사
+    // 변경 : Redis에서 확인하므로 사용 안함
     Optional<Member> findByNicknameAndIsDeletedFalse(String nickname);
 }

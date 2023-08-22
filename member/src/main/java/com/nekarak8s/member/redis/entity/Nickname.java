@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.redis.core.RedisHash;
-
+import org.springframework.data.redis.core.index.Indexed;
 
 
 // TTL 비활성화 : 영구 저장
@@ -18,5 +18,6 @@ public class Nickname {
     @Id
     private String nickname;
 
+    @Indexed
     private long memberId;
 }
