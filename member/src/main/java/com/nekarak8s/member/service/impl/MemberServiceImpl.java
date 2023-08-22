@@ -127,7 +127,7 @@ public class MemberServiceImpl implements MemberService{
 
     @Override
     public void deleteMember(long memberId) throws CustomException {
-        Member member = memberRepository.findById(memberId).orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "GA007", "사용자 정보가 없습니다"));
+        Member member = memberRepository.findById(memberId).orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "GA007", "삭제하려는 회원 정보가 존재하지 않습니다"));
 
         // 삭제된 회원인지 체크 : 삭제된 상태 -> Custom Exception
         checkDeletedMember(member);

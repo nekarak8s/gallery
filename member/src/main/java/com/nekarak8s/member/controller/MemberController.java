@@ -142,7 +142,7 @@ public class MemberController {
         memberService.deleteMember(memberId);
 
         ApiResponse apiResponse = ApiResponse.builder()
-                .message("삭제함")
+                .message("성공적으로 삭제되었습니다")
                 .build();
         return ResponseEntity.ok(apiResponse);
     }
