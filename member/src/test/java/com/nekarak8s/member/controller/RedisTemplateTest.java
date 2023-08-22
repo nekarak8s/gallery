@@ -23,14 +23,14 @@ public class RedisTemplateTest {
     void testStrings() {
         // given
         ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
-        String key = "stringKey2";
+        String key = "stringKey";
 
         // when
-        valueOperations.set(key, "hello2");
+        valueOperations.set(key, "hi");
 
         // then
-        String value = valueOperations.get(key);
-        assertThat(value).isEqualTo("hello2");
+        Object value = valueOperations.get(key);
+        assertThat(value).isEqualTo("hi");
 
         Objects.requireNonNull(redisTemplate.getConnectionFactory()).getConnection().flushDb();
 
@@ -40,7 +40,6 @@ public class RedisTemplateTest {
     void testGetRedisKeys() {
         // given
         ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
-
         // when
         Set<String> keys = redisTemplate.keys("*");
 
@@ -52,7 +51,7 @@ public class RedisTemplateTest {
 
         // then
         for (String key : keys) {
-            log.info("key : {} ", key);
+            log.info("key : {}", key);
         }
     }
 }
