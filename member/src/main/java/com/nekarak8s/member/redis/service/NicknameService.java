@@ -37,6 +37,8 @@ public class NicknameService {
     // Redis에서 MemberId로 Nickname 조회
     public String getNicknameInRedisByMemberId(long memberId) throws CustomException {
         Optional<Nickname> optionalNickname = nicknameRepository.findByMemberId(memberId);
+        log.info("memberId로 Redis 조회 시작 !!!!!!!!!");
+        log.info("레디스에서 조회한 회원 정보 : {}", optionalNickname.get());
         if (optionalNickname.isPresent()) {
             return optionalNickname.get().getNickname();
         } else {

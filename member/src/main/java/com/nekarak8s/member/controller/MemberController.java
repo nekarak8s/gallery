@@ -146,4 +146,13 @@ public class MemberController {
                 .build();
         return ResponseEntity.ok(apiResponse);
     }
+
+//    @PostMapping("/logout")
+//    public ResponseEntity<?> logout() {
+//        /**
+//         * 1. 토큰을 넘겨 받는다.
+//         * 2. 토큰을 블랙 리스트에 담는다.
+//         * 3. 이후 요청이 오면, API Gateway에서 블랙 리스트를 검사한다.
+//         */
+//    }
 }

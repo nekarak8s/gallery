@@ -39,6 +39,9 @@ public class MemberServiceImpl implements MemberService{
     private final NicknameUtils nicknameUtils;
     private final NicknameService nicknameService;
 
+    /**
+     * 로그인
+     */
     @Transactional
     @Override
     public Pair<String, LoginResponse> checkAndJoinMember(String code) throws CustomException {
@@ -98,10 +101,12 @@ public class MemberServiceImpl implements MemberService{
                 .first(accessToken)
                 .second(loginResponse)
                 .build();
-
         return pair;
     }
 
+    /**
+     * 아이디로 회원 조회
+     */
     @Override
     public MemberDTO findMemberById(long memberId) throws CustomException {
         Member member = memberRepository.findByMemberIdAndIsDeletedFalse(memberId).orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "GA007", "사용자 정보가 없습니다"));
@@ -118,6 +123,9 @@ public class MemberServiceImpl implements MemberService{
         return memberDTO;
     }
 
+    /**
+     * 카카오 아이디로 회원 조회
+     */
     @Override
     public boolean isMemberByKakaoId(long kakaoId) {
         Optional<Member> optionalMember = memberRepository.findByKakaoId(kakaoId);
@@ -125,33 +133,41 @@ public class MemberServiceImpl implements MemberService{
         return optionalMember.isPresent();
     }
 
+    /**
+     * 닉네임 중복 검사
+     */
     @Override
     public boolean isNicknameUnique(String nickname) throws CustomException {
-        // 기존 : RDBMS 조회
-        // Optional<Member> optionalMember = memberRepository.findByNicknameAndIsDeletedFalse(nickname);
-        // return optionalMember.isEmpty();
+        boolean isUnique = nicknameService.isNicknameUniqueInRedis(nickname);
 
+        if (!isUnique) { // Redis에 닉네임 없는 경우
+            if (memberRepository.findByNicknameAndIsDeletedFalse(nickname).isEmpty()) { // RDBMS 검색
+                isUnique = true;
+            }
+        }
 
-        // 변경 : Redis 조회
-        return nicknameService.isNicknameUniqueInRedis(nickname);
+        return isUnique;
     }
 
+    /**
+     * 회원 정보 수정
+     */
     @Transactional
     @Override
     public void modifyMemberInfo(long memberId, MemberModifyDTO request) throws CustomException {
         Member member = memberRepository.findByMemberIdAndIsDeletedFalse(memberId).orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "GA007", "사용자 정보가 없습니다"));
 
-        // 기존 : RDBMS update
-        // member.setNickname(request.getNickname());
-        // memberRepository.save(member);
-
-        // 변경 : Redis update -> Batch 작업으로 RDMBS 변경 예정
         String nickname = nicknameService.getNicknameInRedisByMemberId(memberId);
-        // Redis에 nickname 추가, 기존 닉네임 삭제
+
         nicknameService.deleteNicknameInRedis(nickname);
         nicknameService.saveNicknameInRedis(request.getNickname(), member.getMemberId());
+        member.setNickname(request.getNickname());
+        memberRepository.save(member);
     }
 
+    /**
+     * 회원 삭제
+     */
     @Transactional
     @Override
     public void deleteMember(long memberId) throws CustomException {
@@ -162,14 +178,15 @@ public class MemberServiceImpl implements MemberService{
 
         String nickname = nicknameService.getNicknameInRedisByMemberId(memberId);
 
-        // Redis에 있는 nickname 삭제시키기
         nicknameService.deleteNicknameInRedis(nickname);
-
         member.setIsDeleted(true);
         member.setDeletedDate(LocalDateTime.now());
         memberRepository.save(member);
     }
 
+    /**
+     * 유니크 닉네임 생성
+     */
     public String retryGenerateNickname(String kakaoNickname) throws CustomException {
         String nickname = "";
 
@@ -183,6 +200,9 @@ public class MemberServiceImpl implements MemberService{
         throw new CustomException(HttpStatus.CONFLICT, "GA006","닉네임 생성 도중 서버 에러 발생");
     }
 
+    /**
+     * 회원 삭제 상태 체크
+     */
     public void checkDeletedMember(Member member) throws CustomException {
         boolean isDeleted = member.getIsDeleted();
 
