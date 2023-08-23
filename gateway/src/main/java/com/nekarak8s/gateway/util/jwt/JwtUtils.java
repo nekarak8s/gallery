@@ -46,8 +46,9 @@ public class JwtUtils implements InitializingBean {
 
         String id = jwt.getSubject();
         String role = jwt.getClaim(ROLE_CLAIM_KEY).asString();
+        long expTime = jwt.getExpiresAt().getTime();
 
-        return new TokenMember(id, role);
+        return new TokenMember(id, role, expTime);
     }
 
 }

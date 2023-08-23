@@ -12,5 +12,5 @@ public class TokenMember {
 
     private String id;
     private String role;
-
+    private long expTime;
 }

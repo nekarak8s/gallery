@@ -79,7 +79,10 @@ public class JwtAuthenticationGatewayFilterFactory extends
 
                 if (uri.contains("/logout")) {
                     log.info("로그 아웃 요청옴");
+                    TokenMember tokenMember = jwtUtils.decode(token);
+                    long expTime = tokenMember.getExpTime();
                     exchange.getRequest().mutate().header("X-Access-Token", token);
+                    exchange.getRequest().mutate().header("X-Access-Token-Exp", String.valueOf(expTime));
                 } else {
                     TokenMember tokenMember = jwtUtils.decode(token);
                     exchange.getRequest().mutate().header("X-Member-ID", tokenMember.getId());
