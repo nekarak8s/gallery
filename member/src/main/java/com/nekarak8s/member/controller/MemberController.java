@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.util.Date;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -151,7 +152,8 @@ public class MemberController {
 
     @Transactional
     @PostMapping("/logout")
-    public ResponseEntity<?> logout(@RequestHeader(value = "X-Access-Token", required = false) String token) {
+    public ResponseEntity<?> logout(@RequestHeader(value = "X-Access-Token", required = false) String token,
+                                    @RequestHeader(value = "X-Access-Token-Exp", required = false) long expTime) {
         /**
          * 1. 토큰을 넘겨 받는다.
          * 2. 토큰을 블랙 리스트에 담는다. (redis)
@@ -160,7 +162,11 @@ public class MemberController {
         log.debug("로그아웃 요청옴");
         log.debug("게이트웨이에서 넘어온 ACCESS Token : {}", token);
 
-        tokenService.save(token); // blacklist에 token 추가
+        Date now = new Date();
+        long ttl = (expTime - now.getTime()) / 1000; // 초 단위 ex) 120 -> 2분
+        log.debug("ttl : {}", ttl);
+
+        tokenService.save(token, ttl); // blacklist에 token 추가, 남아있는 토큰 시간 만큼 ttl 설정
 
         ApiResponse apiResponse = ApiResponse.builder()
                 .message("로그아웃 되었습니다")

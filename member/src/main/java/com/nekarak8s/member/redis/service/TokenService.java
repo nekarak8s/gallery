@@ -13,8 +13,8 @@ public class TokenService {
 
     private final TokenRepository tokenRepository;
 
-    public void save(String accessToken) {
-        Token token = new Token(accessToken);
+    public void save(String accessToken, long expTime) {
+        Token token = new Token(accessToken, expTime);
         tokenRepository.save(token);
     }
 

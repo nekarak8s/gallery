@@ -5,13 +5,17 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.redis.core.RedisHash;
+import org.springframework.data.redis.core.TimeToLive;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@RedisHash(value = "blacklist", timeToLive = -1)
+@RedisHash(value = "blacklist")
 public class Token {
 
     @Id
     private String accessToken;
+
+    @TimeToLive
+    private long expTime;
 }

@@ -16,7 +16,7 @@ public class CookieUtils {
 
         Cookie cookie = new Cookie(COOKIE_NAME, token);
         cookie.setSecure(false); // https 사용시 true로 변경
-        cookie.setMaxAge(3600);
+        cookie.setMaxAge(600 * 4); // 40분 = 2400초  (초 단위)
         cookie.setPath("/");
 
         response.addCookie(cookie);
