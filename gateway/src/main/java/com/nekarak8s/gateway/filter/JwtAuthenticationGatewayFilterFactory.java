@@ -1,5 +1,6 @@
 package com.nekarak8s.gateway.filter;
 
+import com.nekarak8s.gateway.service.JwtBlacklistService;
 import com.nekarak8s.gateway.util.jwt.JwtUtils;
 import com.nekarak8s.gateway.util.jwt.TokenMember;
 import lombok.Setter;
@@ -25,10 +26,12 @@ public class JwtAuthenticationGatewayFilterFactory extends
     private static final String ROLE_KEY = "role";
     private static final String COOKIE_NAME = "gallery_cookie";
 
+    private final JwtBlacklistService jwtBlacklistService;
     private final JwtUtils jwtUtils;
 
-    public JwtAuthenticationGatewayFilterFactory(JwtUtils jwtUtils) {
+    public JwtAuthenticationGatewayFilterFactory(JwtBlacklistService jwtBlacklistService, JwtUtils jwtUtils) {
         super(Config.class);
+        this.jwtBlacklistService = jwtBlacklistService;
         this.jwtUtils = jwtUtils;
     }
 
@@ -51,7 +54,7 @@ public class JwtAuthenticationGatewayFilterFactory extends
 
             if (shoudValidateJwt(uri, port, method)) {
                 log.info("허용 URI 입니다.");
-                return chain.filter(exchange);
+                return chain.filter(exchange); // JWT 검사 없이 통과
             } else {
                 log.info("토큰 검증 시작 ");
                 if (!containsCookie(request)) {
@@ -63,14 +66,24 @@ public class JwtAuthenticationGatewayFilterFactory extends
                 }
 
                 String token = extractToken(request);
-                log.info("token : {}", token);
-
                 if (!jwtUtils.isValid(token)) {
                     return onError_v2(response, "invalid token", HttpStatus.BAD_REQUEST);
                 }
 
-                TokenMember tokenMember = jwtUtils.decode(token);
-                exchange.getRequest().mutate().header("X-Member-ID", tokenMember.getId());
+                if (jwtBlacklistService.isTokenBlacklisted(token)) {
+                    log.info("블랙리스트 토큰임");
+                    return onError_v2(response, "invalid token(black)", HttpStatus.BAD_REQUEST);
+                }
+
+                log.info("토큰 검증 완료");
+
+                if (uri.contains("/logout")) {
+                    log.info("로그 아웃 요청옴");
+                    exchange.getRequest().mutate().header("X-Access-Token", token);
+                } else {
+                    TokenMember tokenMember = jwtUtils.decode(token);
+                    exchange.getRequest().mutate().header("X-Member-ID", tokenMember.getId());
+                }
 
                 return chain.filter(exchange);
             }
@@ -135,7 +148,7 @@ public class JwtAuthenticationGatewayFilterFactory extends
         response.setStatusCode(status);
         response.getHeaders().setContentType(MediaType.APPLICATION_JSON);
 
-        String responseBody = "{\"code\": \"" + status.value() + "\", \"error type\": \"" + status.getReasonPhrase() + "\", \"message\": \"" + message + "\"}";
+        String responseBody = "{\"errorCode\": \"" + status.value() + "\", \"errorType\": \"" + status.getReasonPhrase() + "\", \"message\": \"" + message + "\"}";
         byte[] responseBytes = responseBody.getBytes(StandardCharsets.UTF_8);
         DataBuffer buffer = response.bufferFactory().wrap(responseBytes);
 

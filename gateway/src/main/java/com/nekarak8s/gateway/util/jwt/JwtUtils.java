@@ -50,18 +50,4 @@ public class JwtUtils implements InitializingBean {
         return new TokenMember(id, role);
     }
 
-    public String generate(TokenMember member) {
-        Date now = new Date();
-        log.info("시간(ms) : {}", jwtProperties.getExpiration() * 60 * 1000);
-        log.info("시간(분) : {}", jwtProperties.getExpiration());
-        Date expiresAt = new Date(now.getTime() + jwtProperties.getExpiration() * 60 * 1000);
-
-        return JWT.create()
-                .withSubject(member.getId())
-                .withClaim(ROLE_CLAIM_KEY, member.getRole())
-                .withExpiresAt(expiresAt)
-                .withIssuedAt(now)
-                .sign(algorithm);
-    }
-
 }
