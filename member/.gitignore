@@ -4,6 +4,8 @@
 ### Spring yml ###
 application.yml
 application.properties
+resources/*.yml
+application-dev.yml
 
 ### Eclipse ###
 .metadata

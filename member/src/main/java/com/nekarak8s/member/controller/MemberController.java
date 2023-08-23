@@ -5,6 +5,7 @@ import com.nekarak8s.member.data.dto.request.MemberModifyDTO;
 import com.nekarak8s.member.data.dto.response.ApiResponse;
 import com.nekarak8s.member.data.dto.response.LoginResponse;
 import com.nekarak8s.member.data.dto.response.MemberDTO;
+import com.nekarak8s.member.redis.service.TokenService;
 import com.nekarak8s.member.service.AuthService;
 import com.nekarak8s.member.service.MemberService;
 import com.nekarak8s.member.util.cookie.CookieUtils;
@@ -15,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -30,6 +32,7 @@ public class MemberController {
     private final ParamUtils paramUtils;
     private final CookieUtils cookieUtils;
     private final NicknameUtils nicknameUtils;
+    private final TokenService tokenService;
 
     @GetMapping("/health")
     public String health(){
@@ -49,7 +52,6 @@ public class MemberController {
         log.debug("로그인 요청옴");
 
         String authorizationUrl = authService.getAuthorizationUrl();
-
         return ResponseEntity.ok(authorizationUrl);
     }
 
@@ -147,12 +149,22 @@ public class MemberController {
         return ResponseEntity.ok(apiResponse);
     }
 
-//    @PostMapping("/logout")
-//    public ResponseEntity<?> logout() {
-//        /**
-//         * 1. 토큰을 넘겨 받는다.
-//         * 2. 토큰을 블랙 리스트에 담는다.
-//         * 3. 이후 요청이 오면, API Gateway에서 블랙 리스트를 검사한다.
-//         */
-//    }
+    @Transactional
+    @PostMapping("/logout")
+    public ResponseEntity<?> logout(@RequestHeader(value = "X-Access-Token", required = false) String token) {
+        /**
+         * 1. 토큰을 넘겨 받는다.
+         * 2. 토큰을 블랙 리스트에 담는다. (redis)
+         * 3. 이후 요청이 오면, API Gateway에서 블랙 리스트를 검사한다.
+         */
+        log.debug("로그아웃 요청옴");
+        log.debug("게이트웨이에서 넘어온 ACCESS Token : {}", token);
+
+        tokenService.save(token); // blacklist에 token 추가
+
+        ApiResponse apiResponse = ApiResponse.builder()
+                .message("로그아웃 되었습니다")
+                .build();
+        return ResponseEntity.ok(apiResponse);
+    }
 }

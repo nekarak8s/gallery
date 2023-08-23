@@ -38,8 +38,6 @@ public class RedisTemplateTest {
 
     @Test
     void testGetRedisKeys() {
-        // given
-        ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
         // when
         Set<String> keys = redisTemplate.keys("*");
 
