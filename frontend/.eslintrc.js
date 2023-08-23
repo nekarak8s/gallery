@@ -6,7 +6,7 @@ module.exports = {
     browser: true,
     commonjs: true,
   },
-  ignorePatterns: ['.eslintrc.js', 'webpack.config.js', 'node_modules/'], // match with tsconfig.json
+  ignorePatterns: ['.eslintrc.js', 'webpack.*.js', 'node_modules/'], // match with tsconfig.json
   extends: [
     'eslint:recommended',
     'plugin:react/recommended',
@@ -19,11 +19,11 @@ module.exports = {
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
-    // typesciript setting
+    // typesciript settings
     project: true,
     tsconfigRootDir: './tsconfig.json',
     ecmaVersion: 6,
-    // other setting
+    // other settings
     sourceType: 'module',
     ecmaFeatures: {
       jsx: true,
@@ -40,14 +40,13 @@ module.exports = {
     react: {
       version: 'detect',
     },
-    // eslint-import-resolver-typescript
+    // typescirpt import parser
     'import/parsers': {
       '@typescript-eslint/parser': ['.ts', '.tsx'],
     },
+    // typescript import resolver(eslint-import-resolver-typescript)
     'import/resolver': {
-      // eslint-import-resolver-typescript
       typescript: {
-        // alwaysTryTypes: true,
         project: './tsconfig.json',
       },
       node: true,
@@ -63,26 +62,27 @@ module.exports = {
         ignore: ['\\.(jpg|gif|svg|png|webp)$', '\\.(css|scss)$'],
       },
     ],
+    // import/order
     'import/order': [
       2,
       {
         groups: ['builtin', 'external', 'internal'],
         pathGroups: [
           {
-            pattern: 'react*', // react 관련 모듈 가장 앞으로
+            pattern: 'react*',
             group: 'builtin',
             position: 'before',
           },
         ],
-        pathGroupsExcludedImportTypes: [], // pathGroups에 정의한 패턴 중 제외하고 싶은 것
+        pathGroupsExcludedImportTypes: [],
         alphabetize: {
-          order: 'asc', // 알파벳 내림차순 정렬
-          caseInsensitive: true, // 대소문작 구분 안함
+          order: 'asc',
+          caseInsensitive: true,
         },
-        'newlines-between': 'never', // import문은 모두 붙이기
+        'newlines-between': 'never',
       },
     ],
-    // import and unused
+    // unused-imports
     '@typescript-eslint/no-unused-vars': 0,
     'unused-imports/no-unused-imports': 2,
     'unused-imports/no-unused-vars': [

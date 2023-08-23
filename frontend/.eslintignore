@@ -1,8 +1,12 @@
+.eslintrc.js
+webpack.*.js
+
 dist
 public
 coverage
 
-.eslintrc.js
-webpack.config.js
-
-**/assets/*
+**/.git
+**/.svn
+**/.hg
+**/node_modules
+**/assets/* 

@@ -14,29 +14,10 @@ module.exports = {
     extensions: ['.js', '.jsx', '.ts', '.tsx'],
     alias: {
       '@': path.resolve(__dirname, 'src'),
-      '@components': path.resolve(__dirname, 'src/components'),
     },
   },
   module: {
     rules: [
-      {
-        test: /\.(ts|tsx)$/,
-        exclude: '/node_modules/',
-        loader: 'ts-loader',
-      },
-      {
-        test: /\.(js|jsx)$/,
-        exclude: /node_modules\/(?!(axios))/,
-        loader: 'babel-loader',
-      },
-      {
-        test: /\.css$/,
-        use: ['style-loader', 'css-loader'],
-      },
-      {
-        test: /\.s[ac]ss$/,
-        use: ['style-loader', 'css-loader', 'sass-loader'],
-      },
       {
         test: /\.(jpg|png|gif|webp)$/,
         use: {
@@ -57,6 +38,13 @@ module.exports = {
             loader: 'react-svg-loader',
             options: {
               jsx: true, // true outputs JSX tags
+              svgo: {
+                plugins: [
+                  {
+                    removeViewBox: false, // enable viewBox
+                  },
+                ],
+              },
             },
           },
         ],
@@ -69,10 +57,4 @@ module.exports = {
       template: './public/index.html',
     }),
   ],
-  devServer: {
-    host: 'localhost',
-    port: 3000,
-    hot: true,
-    open: true,
-  },
 }
