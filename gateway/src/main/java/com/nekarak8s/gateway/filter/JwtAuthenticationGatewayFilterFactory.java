@@ -58,21 +58,21 @@ public class JwtAuthenticationGatewayFilterFactory extends
             } else {
                 log.info("토큰 검증 시작 ");
                 if (!containsCookie(request)) {
-                    return onError_v2(response, "missing cookie", HttpStatus.BAD_REQUEST);
+                    return onError_v2(response, "missing cookie", HttpStatus.BAD_REQUEST, "GA004");
                 }
 
                 if (!containsToken(request)) {
-                    return onError_v2(response, "missing token", HttpStatus.UNAUTHORIZED);
+                    return onError_v2(response, "missing token", HttpStatus.UNAUTHORIZED, "GA002");
                 }
 
                 String token = extractToken(request);
                 if (!jwtUtils.isValid(token)) {
-                    return onError_v2(response, "invalid token", HttpStatus.BAD_REQUEST);
+                    return onError_v2(response, "invalid token", HttpStatus.UNAUTHORIZED, "GA003");
                 }
 
                 if (jwtBlacklistService.isTokenBlacklisted(token)) {
                     log.info("블랙리스트 토큰임");
-                    return onError_v2(response, "invalid token(black)", HttpStatus.BAD_REQUEST);
+                    return onError_v2(response, "invalid token(black)", HttpStatus.UNAUTHORIZED, "GA003");
                 }
 
                 log.info("토큰 검증 완료");
@@ -147,11 +147,12 @@ public class JwtAuthenticationGatewayFilterFactory extends
 
 
 
-    private Mono<Void> onError_v2(ServerHttpResponse response, String message, HttpStatus status) {
+    private Mono<Void> onError_v2(ServerHttpResponse response, String message, HttpStatus status, String errorCode) {
         response.setStatusCode(status);
         response.getHeaders().setContentType(MediaType.APPLICATION_JSON);
 
-        String responseBody = "{\"errorCode\": \"" + status.value() + "\", \"errorType\": \"" + status.getReasonPhrase() + "\", \"message\": \"" + message + "\"}";
+        // status.value = HTTP Status Code (나중에 사용할 수도?)
+        String responseBody = "{\"errorCode\": \"" + errorCode + "\", \"errorType\": \"" + status.getReasonPhrase() + "\", \"message\": \"" + message + "\"}";
         byte[] responseBytes = responseBody.getBytes(StandardCharsets.UTF_8);
         DataBuffer buffer = response.bufferFactory().wrap(responseBytes);
 
