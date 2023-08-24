@@ -54,6 +54,7 @@ module.exports = {
   },
   rules: {
     '@typescript-eslint/no-var-requires': 0, // allow commonJS
+    '@typescript-eslint/no-explicit-any': 0,
     'import/no-unresolved': [
       2,
       {

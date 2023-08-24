@@ -8,12 +8,12 @@ module.exports = merge(common, {
     rules: [
       {
         test: /\.(ts|tsx)$/,
-        exclude: '/node_modules/',
+        exclude: /node_modules/,
         loader: 'ts-loader',
       },
       {
         test: /\.(js|jsx)$/,
-        exclude: '/node_modules/',
+        exclude: /node_modules\/(?!(axios))/,
         loader: 'babel-loader',
       },
       {

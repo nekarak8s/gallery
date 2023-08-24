@@ -14,8 +14,8 @@
     "target": "es6",
     "jsx": "react",
     "module": "esnext",
-    "moduleResolution": "node",
-    "typeRoots": ["./node_modules/@types", "./src/types"],
+    "moduleResolution": "node16",
+    "typeRoots": ["./node_modules/@types", "./src/**/types"],
     "baseUrl": "src/",
     "paths": {
       "@/*": ["./*"]

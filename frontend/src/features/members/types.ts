@@ -1,0 +1,3 @@
+interface LoginResponse {
+  data: string
+}
