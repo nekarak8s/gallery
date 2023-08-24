@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from 'react'
-
-import axios, { AxiosError, AxiosResponse } from 'axios'
+import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import axios, { AxiosError, AxiosResponse } from 'axios'
 import { routes } from '@/App'
 
 // Create Axios Instance
