@@ -24,3 +24,27 @@ export function login(type: string) {
     }
   )
 }
+
+// import apiRequest from '../axiosInterceptor'
+
+// export function health() {
+//   return apiRequest.get('/member/health')
+// }
+
+// export function login(type) {
+//   return apiRequest
+//     .post(`/member/login?type=${type}`)
+//     .then((response) => {
+//       console.log(response.data)
+//       const redirectUrl = response.data
+//       window.location.href = redirectUrl // 브라우저 리다이렉트
+//     })
+//     .catch((error) => {
+//       console.log(2)
+//       console.error('Error:', error)
+//     })
+// }
+
+// export function loginCallback(type, code) {
+//   return apiRequest.post(`/member/callback?type=${type}&code=${code}`)
+// }

@@ -7,8 +7,13 @@ import MyPage from './pages/MyPage'
 
 import './App.scss'
 
+import '@/styles/_reset.scss'
+import '@/styles/_global.scss'
+import Guide from './pages/Guide'
+
 export const routes: Record<string, RouteElement> = {
   Home: { path: '/', element: <Home /> },
+  Guide: { path: '/guide', element: <Guide /> },
   MyPage: { path: '/mypage', element: <MyPage /> },
 }
 
