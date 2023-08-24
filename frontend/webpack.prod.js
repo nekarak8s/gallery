@@ -12,7 +12,7 @@ module.exports = merge(common, {
     rules: [
       {
         test: /\.(ts|tsx|js|jsx)$/,
-        exclude: '/node_modules/',
+        exclude: /node_modules\/(?!(axios))/,
         loader: 'babel-loader',
       },
       {

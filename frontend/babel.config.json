@@ -9,7 +9,7 @@
           "chrome": "67",
           "safari": "11.1"
         },
-        "modules": "cjs"
+        "modules": "auto"
       }
     ],
     "@babel/preset-react",

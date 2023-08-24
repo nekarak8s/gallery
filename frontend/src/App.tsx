@@ -6,6 +6,7 @@ import { Routes, Route } from 'react-router-dom'
 import Home from './pages/Home'
 import MyPage from './pages/MyPage'
 import Navbar from './layouts/Navbar/Navbar'
+import useAxiosInterceptor from './hooks/useAxiosInterceptor'
 
 export const routes: Record<string, RouteElement> = {
   Home: { path: '/', element: <Home /> },
@@ -13,6 +14,8 @@ export const routes: Record<string, RouteElement> = {
 }
 
 function App() {
+  useAxiosInterceptor()
+
   return (
     <Routes>
       <Route path="/" element={<Navbar />}>
