@@ -75,7 +75,7 @@
     "webpack-merge": "^5.9.0"
   },
   "lint-staged": {
-    "*.{ts,tsx}, !*.d.{ts}": [
+    "*.{ts,tsx}, !*.d.ts": [
       "npx eslint --fix",
       "npx prettier --write"
     ],
