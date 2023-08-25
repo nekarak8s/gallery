@@ -1,27 +1,34 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { NavLink, Outlet } from 'react-router-dom'
-import LogoIcon from '@/assets/gallery-logo.svg'
+import LogoIcon from '@/assets/svgs/gallery-logo.svg'
 import { routes } from '@/App'
 import './Navbar.scss'
 import { throttle } from 'lodash'
+import { useLogin } from '@/features/members/services'
 
 function Navbar() {
   const navbarRef = useRef<HTMLDivElement>(null)
+
+  const { mutate: login } = useLogin('kakao')
+
+  const handleClick = function () {
+    console.log('kakao')
+    login()
+  }
 
   /*
   Show navbar when scrolled down
   */
   useEffect(() => {
-    console.log(1)
     const navbarEle = navbarRef.current
     if (!navbarEle) return
 
     // Watch scroll position
-    let prevScrollY = scrollY
+    let prevScrollY = window.scrollY
     const handleScroll = () => {
-      const curScrollY = scrollY
+      const curScrollY = window.scrollY
       // Set the poistion
-      if (prevScrollY > scrollY) {
+      if (prevScrollY > window.scrollY) {
         navbarEle.style.transform = `translate(0, 0)`
       } else {
         navbarEle.style.transform = `translate(0, -120%)`
@@ -46,6 +53,9 @@ function Navbar() {
           </NavLink>
         </div>
         <ul className="navbar__menu">
+          <li>
+            <div onClick={handleClick}>로그인</div>
+          </li>
           <li>
             <NavLink to={routes['Guide'].path}>Guide</NavLink>
           </li>

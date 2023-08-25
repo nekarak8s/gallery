@@ -5,7 +5,7 @@ import { routes } from '@/App'
 
 // Create Axios Instance
 export const axiosInstance = axios.create({
-  baseURL: process.env.REACT_APP_API_BASE_URL,
+  baseURL: 'http://172.16.101.152:8000/',
   headers: {
     'Content-Type': 'application/json',
   },

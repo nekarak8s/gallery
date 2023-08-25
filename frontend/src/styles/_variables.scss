@@ -1,0 +1,11 @@
+// z-index
+$z-index: (
+  toast: 1000,
+  modal: 999,
+  navbar: 10,
+  base: 0,
+);
+
+@mixin z-index($key) {
+  z-index: map-get($z-index, $key);
+}
