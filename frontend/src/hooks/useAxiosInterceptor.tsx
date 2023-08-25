@@ -4,8 +4,12 @@ import axios, { AxiosError, AxiosResponse } from 'axios'
 import { routes } from '@/App'
 
 // Create Axios Instance
+const BASE_API_URL = process.env.REACT_APP_API_BASE_URL
+  ? process.env.REACT_APP_API_BASE_URL
+  : `http://${window.location.hostname}:${window.location.port}/`
+
 export const axiosInstance = axios.create({
-  baseURL: 'http://172.16.101.152:8000/',
+  baseURL: BASE_API_URL,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -17,11 +21,12 @@ function useAxiosInterceptor() {
 
   useEffect(() => {
     const responseInterceptor = (response: AxiosResponse) => {
-      console.log(response)
+      console.log('res', response)
+
       return response
     }
     const responseErrorInterceptor = (error: AxiosError<ErrorData>) => {
-      console.log(error)
+      console.log('err', error)
 
       // logout
       if (error.response?.data?.code === '401') {
