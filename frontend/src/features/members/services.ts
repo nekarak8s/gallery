@@ -1,3 +1,4 @@
+import { routes } from '@/App'
 import { axiosInstance } from '@/hooks/useAxiosInterceptor'
 import {
   useQuery,
@@ -9,14 +10,31 @@ import { useNavigate } from 'react-router-dom'
 import { useSetRecoilState } from 'recoil'
 
 // 로그인
-export function login(type: string) {
+export function useLogin(type: string) {
   const navigate = useNavigate()
   return useMutation<LoginResponse>(
-    () => axiosInstance.post(`/login?type=${type}`),
+    () => axiosInstance.post(`/member/login?type=${type}`),
     {
       onSuccess: (res) => {
         const redirectURL = res.data
-        navigate(redirectURL)
+        window.location.href = redirectURL
+        // navigate('/' + redirectURL)
+      },
+      onError: () => {
+        //   toast.addMessage('error', err.data.message)
+      },
+    }
+  )
+}
+
+export function useLoginCb(type: string, code: string) {
+  const navigate = useNavigate()
+  return useMutation<LoginResponse>(
+    () => axiosInstance.post(`/member/callback?type=${type}&code=${code}`),
+    {
+      onSuccess: () => {
+        navigate(routes['Home'].path)
+        // navigate('/' + redirectURL)
       },
       onError: () => {
         //   toast.addMessage('error', err.data.message)
