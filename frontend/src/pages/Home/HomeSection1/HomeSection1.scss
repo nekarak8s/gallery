@@ -3,10 +3,14 @@
 }
 
 .home-section-1__main {
-  height: 100vh;
   position: sticky;
   top: 0;
+  overflow: hidden;
+  width: 100vw;
+  height: 100vh;
   min-width: 1024px;
+  perspective: 2800px;
+  transform-style: preserve-3d;
 }
 
 .home-section-1__main .vignette {
@@ -33,16 +37,16 @@
 
 .home-section-1__forest-img {
   position: absolute;
-  width: 120%;
-  bottom: 20%;
-  left: -10%;
+  width: 110%;
+  bottom: 210px;
+  left: -5%;
 }
 
 .home-section-1__gallery-logo {
   position: absolute;
   width: 120%;
-  bottom: 30%;
-  left: -30%;
+  bottom: 280px;
+  left: -20%;
   color: white;
   font-size: 9rem;
   font-weight: 700;
@@ -51,23 +55,30 @@
 
 .home-section-1__architecture-img {
   position: absolute;
-  width: 120%;
-  bottom: -40%;
-  left: -10%;
+  width: 100%;
+  bottom: 100px;
+  left: 10%;
+}
+
+.home-section-1__reflection-img {
+  position: absolute;
+  width: 100%;
+  bottom: -330px;
+  left: 10%;
 }
 
 .home-section-1__left-tree-img {
   position: absolute;
-  width: 90%;
-  top: -10%;
-  left: -10%;
+  width: 600px;
+  top: -50px;
+  left: -50px;
   transform: translate(-50%, -50%);
 }
 
 .home-section-1__right-tree-img {
   position: absolute;
-  width: 90%;
-  top: -10%;
-  right: -20%;
+  width: 900px;
+  top: -50px;
+  right: -50px;
   transform: translate(-50%, -50%);
 }
