@@ -2,15 +2,14 @@ import React from 'react'
 import { Routes, Route } from 'react-router-dom'
 import useAxiosInterceptor from './hooks/useAxiosInterceptor'
 import Navbar from './layouts/Navbar/Navbar'
+import Guide from './pages/Guide'
 import Home from './pages/Home'
 import MyPage from './pages/MyPage'
+import OAuth from './pages/OAuth'
 
 import './App.scss'
-
 import '@/styles/_reset.scss'
 import '@/styles/_global.scss'
-import Guide from './pages/Guide'
-import OAuth from './pages/OAuth'
 
 export const routes: Record<string, RouteElement> = {
   Home: { path: '/', element: <Home /> },

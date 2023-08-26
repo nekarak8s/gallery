@@ -1,0 +1,236 @@
+// speed normalization
+$speed-normal: (
+  slow: 1000ms,
+  normal: 500ms,
+  fast: 200mz,
+);
+
+@mixin animation(
+  $delay,
+  $duration,
+  $animation,
+  $function,
+  $direction: normal,
+  $fillmode: forwards,
+  $iteration: 1
+) {
+  animation-delay: $delay;
+  animation-duration: $duration;
+  animation-name: $animation;
+  animation-timing-function: $function;
+  animation-direction: $direction;
+  animation-fill-mode: $fillmode;
+  animation-iteration-count: $iteration;
+}
+
+@mixin animation-slide-in-down(
+  $speed: map-get($speed-normal, normal),
+  $distance: 100%,
+  $delay: 0
+) {
+  @include animation($delay, $speed, animation-slide-in-down, ease-in-out);
+
+  @keyframes animation-slide-in-down {
+    0% {
+      opacity: 0;
+      transform: translateY(-$distance);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
+
+@mixin animation-slide-in-up(
+  $speed: map-get($speed-normal, normal),
+  $distance: 100%,
+  $delay: 0
+) {
+  @include animation($delay, $speed, animation-slide-in-up, ease-in-out);
+
+  @keyframes animation-slide-in-up {
+    0% {
+      opacity: 0;
+      transform: translateY($distance);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
+
+@mixin animation-slide-in-left(
+  $speed: map-get($speed-normal, normal),
+  $distance: 100%,
+  $delay: 0
+) {
+  @include animation($delay, $speed, animation-slide-in-left, ease-in);
+
+  @keyframes animation-slide-in-left {
+    0% {
+      opacity: 0;
+      transform: translateX($distance);
+    }
+    100% {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+}
+
+@mixin animation-slide-in-right(
+  $speed: map-get($speed-normal, normal),
+  $distance: 100%,
+  $delay: 0
+) {
+  @include animation($delay, $speed, animation-slide-in-right, ease-in);
+
+  @keyframes animation-slide-in-right {
+    0% {
+      opacity: 0;
+      transform: translateX(-$distance);
+    }
+    100% {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+}
+
+@mixin animation-slide-out-down(
+  $speed: map-get($speed-normal, normal),
+  $distance: 100%,
+  $delay: 0
+) {
+  @include animation($delay, $speed, animation-slide-out-down, ease-out);
+
+  @keyframes animation-slide-out-down {
+    0% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    100% {
+      opacity: 0;
+      transform: translateY($distance);
+    }
+  }
+}
+
+@mixin animation-slide-out-up(
+  $speed: map-get($speed-normal, normal),
+  $distance: 100%,
+  $delay: 0
+) {
+  @include animation($delay, $speed, animation-slide-out-up, ease-out);
+
+  @keyframes animation-slide-out-up {
+    0% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(-$distance);
+    }
+  }
+}
+
+@mixin animation-slide-out-left(
+  $speed: map-get($speed-normal, normal),
+  $distance: 100%,
+  $delay: 0
+) {
+  @include animation($delay, $speed, animation-slide-out-left, ease-out);
+
+  @keyframes animation-slide-out-left {
+    0% {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    100% {
+      opacity: 0;
+      transform: translateX(-$distance);
+    }
+  }
+}
+
+@mixin animation-slide-out-right(
+  $speed: map-get($speed-normal, normal),
+  $distance: 100%,
+  $delay: 0
+) {
+  @include animation($delay, $speed, animation-slide-out-right, ease-out);
+
+  @keyframes animation-slide-out-right {
+    0% {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    100% {
+      opacity: 0;
+      transform: translateX($distance);
+    }
+  }
+}
+
+@mixin animation-clear($speed: map-get($speed-normal, normal), $delay: 0) {
+  @include animation($delay, $speed, animation-clear, ease-out);
+
+  @keyframes animation-clear {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+}
+
+@mixin animation-floating($speed: 2s, $distance: 100%, $delay: 0s) {
+  @include animation(
+    $delay,
+    $speed,
+    animation-floating,
+    ease-in-out,
+    alternate,
+    none,
+    infinite
+  );
+
+  @content;
+
+  @keyframes animation-floating {
+    0% {
+      transform: translateY(-$distance);
+    }
+
+    100% {
+      transform: translateY($distance);
+    }
+  }
+}
+
+// 시계 방향으로 회전하는 애니메이션
+@mixin animation-rotate-clockwise($speed: 10s, $delay: 0s) {
+  @include animation(
+    $delay,
+    $speed,
+    animation-rotate-clockwise,
+    linear,
+    normal,
+    none,
+    infinite
+  );
+
+  @keyframes animation-rotate-clockwise {
+    0% {
+      transform: rotate(0);
+    }
+
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+}

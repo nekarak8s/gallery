@@ -1,3 +1,5 @@
+@import '@/styles/_responsive.scss';
+
 .home-section-1 {
   height: 500vh;
 }
@@ -8,9 +10,19 @@
   overflow: hidden;
   width: 100vw;
   height: 100vh;
-  min-width: 1024px;
   perspective: 2800px;
   transform-style: preserve-3d;
+}
+
+.home-section-1__main .white-fade {
+  position: absolute;
+  z-index: 3;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background: white;
+  opacity: 0;
 }
 
 .home-section-1__main .vignette {
@@ -27,58 +39,272 @@
   );
 }
 
+.home-section-1__main .parallax {
+  transition: transform 0.45s cubic-bezier(0.2, 0.49, 0.32, 0.99);
+}
+
 .home-section-1__sky-img {
   position: absolute;
-  width: 120%;
-  height: 120%;
-  top: -10%;
-  left: -10%;
+  width: 110%;
+  height: auto;
+  top: 50%;
+  right: auto;
+  bottom: auto;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .home-section-1__forest-img {
   position: absolute;
   width: 110%;
-  bottom: 210px;
-  left: -5%;
+  height: auto;
+  top: calc(50% - 15%);
+  right: auto;
+  bottom: auto;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .home-section-1__gallery-logo {
   position: absolute;
-  width: 120%;
-  bottom: 280px;
-  left: -20%;
+  top: calc(50% - 2%);
+  right: auto;
+  bottom: auto;
+  left: calc(50% - 10%);
+  transform: translate(-50%, -50%);
   color: white;
-  font-size: 9rem;
+  font-size: 10vw;
   font-weight: 700;
   text-align: center;
 }
 
+.home-section-1__gallery-logo .preposition {
+  font-size: 3.5rem;
+  display: block;
+  text-align: left;
+}
+
 .home-section-1__architecture-img {
   position: absolute;
-  width: 100%;
-  bottom: 100px;
-  left: 10%;
+  width: 110%;
+  height: auto;
+  top: calc(50% + 15%);
+  right: auto;
+  bottom: auto;
+  left: calc(50% + 10%);
+  transform: translate(-50%, -50%);
 }
 
 .home-section-1__reflection-img {
   position: absolute;
-  width: 100%;
-  bottom: -330px;
-  left: 10%;
+  width: 110%;
+  height: auto;
+  top: calc(50% + 55%);
+  right: auto;
+  bottom: auto;
+  left: calc(50% + 10%);
+  transform: translate(-50%, -50%);
 }
 
 .home-section-1__left-tree-img {
   position: absolute;
-  width: 600px;
-  top: -50px;
-  left: -50px;
+  width: 40%;
+  height: auto;
+  top: calc(50% - 10%);
+  right: auto;
+  bottom: auto;
+  left: calc(50% - 30%);
   transform: translate(-50%, -50%);
 }
 
 .home-section-1__right-tree-img {
   position: absolute;
-  width: 900px;
-  top: -50px;
-  right: -50px;
+  width: 60%;
+  height: auto;
+  top: calc(50% - 10%);
+  right: auto;
+  bottom: auto;
+  left: calc(50% + 20%);
   transform: translate(-50%, -50%);
+}
+
+// 1280px
+@include laptop {
+  .home-section-1__sky-img {
+    width: 1350px;
+    top: 50%;
+    right: auto;
+    bottom: auto;
+    left: 50%;
+  }
+
+  .home-section-1__forest-img {
+    width: 1350px;
+    top: calc(50% - 80px);
+    right: auto;
+    bottom: auto;
+    left: 50%;
+  }
+
+  .home-section-1__gallery-logo {
+    font-size: 8rem;
+    top: calc(50% - 5px);
+    right: auto;
+    bottom: auto;
+    left: calc(50% - 100px);
+  }
+
+  .home-section-1__architecture-img {
+    width: 1350px;
+    top: calc(50% + 110px);
+    right: auto;
+    bottom: auto;
+    left: calc(50% + 100px);
+  }
+
+  .home-section-1__reflection-img {
+    width: 1350px;
+    top: calc(50% + 390px);
+    right: auto;
+    bottom: auto;
+    left: calc(50% + 100px);
+  }
+
+  .home-section-1__left-tree-img {
+    width: 520px;
+    top: calc(50% - 50px);
+    right: auto;
+    bottom: auto;
+    left: calc(50% - 400px);
+  }
+
+  .home-section-1__right-tree-img {
+    width: 830px;
+    top: calc(50% - 50px);
+    right: auto;
+    bottom: auto;
+    left: calc(50% + 300px);
+  }
+}
+
+// 992px
+// stick to the edges & depend on vh unit
+@include tablet {
+  .home-section-1__sky-img {
+    width: auto;
+    height: 120%;
+    top: 50%;
+    right: auto;
+    bottom: auto;
+    left: 50%;
+  }
+
+  .home-section-1__forest-img {
+    width: 1100px;
+    top: auto;
+    right: auto;
+    bottom: calc(15vh);
+    left: 50%;
+  }
+
+  .home-section-1__gallery-logo {
+    font-size: 7rem;
+    top: auto;
+    right: auto;
+    bottom: calc(150px + 15vh);
+    left: calc(50% - 100px);
+  }
+
+  .home-section-1__architecture-img {
+    width: 1100px;
+    top: auto;
+    right: auto;
+    bottom: calc(-10px + 15vh);
+    left: calc(50% + 90px);
+  }
+
+  .home-section-1__reflection-img {
+    width: 1100px;
+    top: auto;
+    right: auto;
+    bottom: calc(-420px + 15vh);
+    left: calc(50% + 90px);
+  }
+
+  .home-section-1__left-tree-img {
+    width: 500px;
+    top: calc(-10px + 20vh);
+    right: auto;
+    bottom: auto;
+    left: calc(50px + 10vh);
+  }
+
+  .home-section-1__right-tree-img {
+    width: 800px;
+    top: calc(-20px + 20vh);
+    right: calc(-250px - 10vh);
+    bottom: auto;
+    left: auto;
+  }
+}
+
+// 640px
+// stick to the edges & depend on vh unit
+@include mobile {
+  .home-section-1__sky-img {
+    width: auto;
+    height: 120%;
+    top: 50%;
+    right: auto;
+    bottom: auto;
+    left: 50%;
+  }
+
+  .home-section-1__forest-img {
+    width: 720px;
+    top: auto;
+    right: auto;
+    bottom: calc(15vh);
+    left: 50%;
+  }
+
+  .home-section-1__gallery-logo {
+    font-size: 3rem;
+    top: auto;
+    right: auto;
+    bottom: calc(100px + 15vh);
+    left: calc(50% - 70px);
+  }
+
+  .home-section-1__architecture-img {
+    width: 720px;
+    top: auto;
+    right: auto;
+    bottom: calc(5px + 15vh);
+    left: calc(50% + 40px);
+  }
+
+  .home-section-1__reflection-img {
+    width: 720px;
+    top: auto;
+    right: auto;
+    bottom: calc(-250px + 15vh);
+    left: calc(50% + 40px);
+  }
+
+  .home-section-1__left-tree-img {
+    width: 300px;
+    top: calc(-20px + 20vh);
+    right: auto;
+    bottom: auto;
+    left: calc(-20px + 10vh);
+  }
+
+  .home-section-1__right-tree-img {
+    width: 600px;
+    top: calc(-30px + 20vh);
+    right: calc(-250px - 10vh);
+    bottom: auto;
+    left: auto;
+  }
 }
