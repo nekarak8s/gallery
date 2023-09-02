@@ -1,3 +1,5 @@
+const path = require('path')
+
 const { merge } = require('webpack-merge')
 const common = require('./webpack.common.js')
 
@@ -5,9 +7,15 @@ const TerserPlugin = require('terser-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
 const ImageMinimizerPlugin = require('image-minimizer-webpack-plugin')
+const Dotenv = require('dotenv-webpack')
 
 module.exports = merge(common, {
   mode: 'production',
+  output: {
+    path: path.resolve(__dirname, 'dist'),
+    filename: 'main.js',
+    publicPath: './',
+  },
   module: {
     rules: [
       {
@@ -16,12 +24,48 @@ module.exports = merge(common, {
         loader: 'babel-loader',
       },
       {
-        test: /\.css$/,
-        use: [MiniCssExtractPlugin.loader, 'css-loader'],
+        test: /\.module\.s(a|c)ss$/,
+        use: [
+          MiniCssExtractPlugin.loader,
+          {
+            loader: 'css-loader',
+            options: {
+              modules: {
+                localIdentName: '[name]__[local]--[hash:base64:5]',
+                exportLocalsConvention: 'camelCase',
+              },
+              sourceMap: true,
+              importLoaders: 2,
+            },
+          },
+          'resolve-url-loader',
+          {
+            loader: 'sass-loader',
+            options: {
+              sourceMap: true,
+            },
+          },
+        ],
       },
       {
-        test: /\.s[ac]ss$/,
-        use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
+        test: /\.s(a|c)ss$/,
+        exclude: /\.module.(s(a|c)ss)$/,
+        use: [
+          MiniCssExtractPlugin.loader,
+          {
+            loader: 'css-loader',
+            options: {
+              importLoaders: 2,
+            },
+          },
+          'resolve-url-loader',
+          {
+            loader: 'sass-loader',
+            options: {
+              sourceMap: true,
+            },
+          },
+        ],
       },
     ],
   },
@@ -69,5 +113,10 @@ module.exports = merge(common, {
       }),
     ],
   },
-  plugins: [new MiniCssExtractPlugin()],
+  plugins: [
+    new Dotenv({
+      path: '.env.production',
+    }),
+    new MiniCssExtractPlugin({ filename: 'main.css' }),
+  ],
 })

@@ -1,0 +1,329 @@
+@import '@/styles/_responsive.scss';
+
+.background {
+  height: 300vh;
+}
+
+.main {
+  position: sticky;
+  top: 0;
+  overflow: hidden;
+  width: 100vw;
+  height: 100vh;
+  perspective: 2800px;
+  transform-style: preserve-3d;
+}
+
+.white-fade {
+  position: absolute;
+  z-index: 3;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background: rgb(36, 36, 36);
+  opacity: 0;
+}
+
+.vignette {
+  position: absolute;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background: radial-gradient(
+    ellipse at center,
+    rgb(0, 0, 0, 0) 70%,
+    rgba(0, 0, 0, 0.3)
+  );
+}
+
+.main > * {
+  transition: transform 0.45s cubic-bezier(0.2, 0.49, 0.32, 0.99);
+}
+
+.sky-img {
+  position: absolute;
+  width: 120%;
+  height: auto;
+  top: 50%;
+  right: auto;
+  bottom: auto;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.forest-img {
+  position: absolute;
+  width: 110%;
+  height: auto;
+  top: calc(50% - 10%);
+  right: auto;
+  bottom: auto;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.gallery-logo {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  margin: auto;
+  width: 100px;
+  height: 20px;
+  top: calc(50% + 5%);
+  right: auto;
+  bottom: auto;
+  left: calc(50% - 15%);
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 10vw;
+  font-weight: 700;
+  text-align: center;
+}
+
+.gallery-logo__preposition {
+  font-size: 3.5rem;
+  text-align: left;
+  align-self: flex-start;
+}
+
+.architecture-img {
+  position: absolute;
+  width: 110%;
+  height: auto;
+  top: calc(50% + 20%);
+  right: auto;
+  bottom: auto;
+  left: calc(50%);
+  transform: translate(-50%, -50%);
+}
+
+.reflection-img {
+  position: absolute;
+  width: 110%;
+  height: auto;
+  top: calc(50% + 67%);
+  right: auto;
+  bottom: auto;
+  left: calc(50%);
+  transform: translate(-50%, -50%);
+}
+
+.left-tree-img {
+  position: absolute;
+  width: 40%;
+  height: auto;
+  top: calc(50% - 10%);
+  right: auto;
+  bottom: auto;
+  left: calc(50% - 35%);
+  transform: translate(-50%, -50%);
+}
+
+.right-tree-img {
+  position: absolute;
+  width: 60%;
+  height: auto;
+  top: calc(50% - 10%);
+  right: auto;
+  bottom: auto;
+  left: calc(50% + 20%);
+  transform: translate(-50%, -50%);
+}
+
+// 1280px
+@include laptop {
+  .sky-img {
+    width: 1350px;
+    top: 50%;
+    right: auto;
+    bottom: auto;
+    left: 50%;
+  }
+
+  .forest-img {
+    width: 1350px;
+    top: calc(50% - 80px);
+    right: auto;
+    bottom: auto;
+    left: 50%;
+  }
+
+  .gallery-logo {
+    font-size: 8rem;
+    top: calc(50% + 40px);
+    right: auto;
+    bottom: auto;
+    left: calc(50% - 100px);
+  }
+
+  .gallery-logo__preposition {
+    font-size: 3rem;
+  }
+
+  .architecture-img {
+    width: 1350px;
+    top: calc(50% + 130px);
+    right: auto;
+    bottom: auto;
+    left: calc(50% + 50px);
+  }
+
+  .reflection-img {
+    width: 1350px;
+    top: calc(50% + 420px);
+    right: auto;
+    bottom: auto;
+    left: calc(50% + 50px);
+  }
+
+  .left-tree-img {
+    width: 520px;
+    top: calc(50% - 50px);
+    right: auto;
+    bottom: auto;
+    left: calc(50% - 420px);
+  }
+
+  .right-tree-img {
+    width: 830px;
+    top: calc(50% - 50px);
+    right: auto;
+    bottom: auto;
+    left: calc(50% + 280px);
+  }
+}
+
+// 992px
+// stick to the edges & depend on vh unit
+@include tablet {
+  .sky-img {
+    width: auto;
+    height: 120%;
+    top: 50%;
+    right: auto;
+    bottom: auto;
+    left: 50%;
+  }
+
+  .forest-img {
+    width: 1100px;
+    top: auto;
+    right: auto;
+    bottom: calc(-50px + 15vh);
+    left: 50%;
+  }
+
+  .gallery-logo {
+    font-size: 7rem;
+    top: auto;
+    right: auto;
+    bottom: calc(240px + 15vh);
+    left: calc(50% - 100px);
+  }
+
+  .gallery-logo__preposition {
+    font-size: 2.5rem;
+  }
+
+  .architecture-img {
+    width: 1100px;
+    top: auto;
+    right: auto;
+    bottom: calc(-20px + 15vh);
+    left: calc(50%);
+  }
+
+  .reflection-img {
+    width: 1100px;
+    top: auto;
+    right: auto;
+    bottom: calc(-480px + 15vh);
+    left: calc(50%);
+  }
+
+  .left-tree-img {
+    width: 500px;
+    top: calc(160px + 10vh);
+    right: auto;
+    bottom: auto;
+    left: calc(70px + 8vh);
+  }
+
+  .right-tree-img {
+    width: 800px;
+    top: calc(80px + 10vh);
+    right: calc(-500px + 10vh);
+    bottom: auto;
+    left: auto;
+  }
+}
+
+// 640px
+// stick to the edges & depend on vh unit
+@include mobile {
+  .sky-img {
+    width: auto;
+    height: 120%;
+    top: 50%;
+    right: auto;
+    bottom: auto;
+    left: 50%;
+  }
+
+  .forest-img {
+    width: 680px;
+    top: auto;
+    right: auto;
+    bottom: calc(15vh);
+    left: 50%;
+  }
+
+  .gallery-logo {
+    font-size: 3rem;
+    top: auto;
+    right: auto;
+    bottom: calc(160px + 15vh);
+    left: calc(50% - 60px);
+  }
+
+  .gallery-logo__preposition {
+    font-size: 1rem;
+  }
+
+  .architecture-img {
+    width: 680px;
+    top: auto;
+    right: auto;
+    bottom: calc(20px + 15vh);
+    left: calc(50% + 20px);
+  }
+
+  .reflection-img {
+    width: 680px;
+    top: auto;
+    right: auto;
+    bottom: calc(-270px + 15vh);
+    left: calc(50% + 20px);
+  }
+
+  .left-tree-img {
+    width: 300px;
+    top: calc(120px + 10vh);
+    right: auto;
+    bottom: auto;
+    left: calc(10px + 8vh);
+  }
+
+  .right-tree-img {
+    width: 600px;
+    top: calc(50px + 10vh);
+    right: calc(-420px + 10vh);
+    bottom: auto;
+    left: auto;
+  }
+}

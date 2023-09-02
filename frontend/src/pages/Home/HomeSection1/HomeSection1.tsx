@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { throttle } from 'lodash'
 import architectureImg from '@/assets/images/home-section-1/architecture.webp'
 import forestImg from '@/assets/images/home-section-1/forest.webp'
@@ -7,51 +7,112 @@ import reflectionImg from '@/assets/images/home-section-1/reflection.webp'
 import rightTreeImg from '@/assets/images/home-section-1/right-tree.webp'
 import skyImg from '@/assets/images/home-section-1/sky.webp'
 
-import './HomeSection1.scss'
+import styles from './HomeSection1.module.scss'
+
+const LAYER_DEPTH = 50 // css 3d-preserve depth multiplication factor
 
 function HomeSection1() {
+  // element refs
   const backgroundRef = useRef<HTMLDivElement>(null)
   const stickyRef = useRef<HTMLDivElement>(null)
+  const logoRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
+    // get the elements
     const background = backgroundRef.current as HTMLDivElement
     const sticky = stickyRef.current as HTMLDivElement
-    const parallexEles = document.querySelectorAll(
-      '.parallax'
-    ) as NodeListOf<HTMLElement>
+    const logo = logoRef.current as HTMLDivElement
+    const parallexEles = Array.from(
+      document.querySelector(`.${styles.main}`)
+        ?.children as HTMLCollectionOf<HTMLElement>
+    )
 
+    // init the data
     let scrollStart = 0
     let scrollEnd = 0
-    const init = function setScrollEnds() {
-      scrollStart = background.offsetTop
-      scrollEnd =
-        background.offsetTop + background.offsetHeight - sticky.offsetHeight
+    const logoPosition = {
+      top: 0,
+      right: 0,
+      bottom: 0,
+      left: 0,
+    }
+    const init = function setInitialPositionData1() {
+      const backgroundTop =
+        window.pageYOffset + background.getBoundingClientRect().top
+      scrollStart = backgroundTop
+      scrollEnd = backgroundTop + background.offsetHeight - sticky.offsetHeight
+
+      logoPosition.top = Number(getComputedStyle(logo).top.replace('px', ''))
+      logoPosition.right = Number(
+        getComputedStyle(logo).right.replace('px', '')
+      )
+      logoPosition.bottom = Number(
+        getComputedStyle(logo).bottom.replace('px', '')
+      )
+      logoPosition.left = Number(getComputedStyle(logo).left.replace('px', ''))
     }
 
-    const handleScroll = function () {
+    // move elements according to scroll position
+    let hasListener = false
+    const handleScroll = function setElementsPosition1() {
       const scrollTop = window.scrollY
+      const backgroundBottom =
+        window.pageYOffset + background.getBoundingClientRect().bottom
 
-      if (scrollTop < scrollStart + 10) {
-        window.addEventListener('mousemove', throttledHandleMouseMove)
-        window.addEventListener('touchmove', throttledHandleMouseMove)
-      } else {
-        window.removeEventListener('mousemove', throttledHandleMouseMove)
-        window.removeEventListener('touchmove', throttledHandleMouseMove)
+      if (backgroundBottom < scrollTop) return
+
+      // whether to move elements
+      if (scrollTop < scrollStart + 300) {
+        !hasListener &&
+          window.addEventListener('mousemove', throttledHandleMouseMove)
+        hasListener = true
+        logo.style.transition = `transform 0.45s cubic-bezier(0.2, 0.49, 0.32, 0.99)`
+        return
       }
 
+      hasListener &&
+        window.removeEventListener('mousemove', throttledHandleMouseMove)
+      hasListener = false
+      logo.style.transition = `transform 0s linear`
+
+      const factor = (scrollTop - scrollStart) / (scrollEnd - scrollStart)
+      // move elements
       parallexEles.forEach((el) => {
-        const factor = (scrollTop - scrollStart) / (scrollEnd - scrollStart)
-        if (el.classList.contains('scroll-left')) {
+        const layer = Number(el.dataset.layer) * LAYER_DEPTH
+        if (el.classList.contains('scroll-down')) {
           el.style.transform = `
-          translate(calc(-50% - ${100 * factor}vw), -50%)
+          translate(-50%, calc(-50% + ${factor * 80}px + ${
+            factor * 4
+          }vh )) translateZ(${layer}px)
+          `
+        } else if (el.classList.contains('scroll-left')) {
+          el.style.transform = `
+          translate(calc(-50% - ${100 * factor}vw), -50%) translateZ(${layer}px)
           `
         } else if (el.classList.contains('scroll-right')) {
           el.style.transform = `
-          translate(calc(-50% + ${100 * factor}vw), -50%)
+          translate(calc(-50% + ${100 * factor}vw), -50%) translateZ(${layer}px)
           `
-        } else if (el.classList.contains('scroll-magnify')) {
+        } else if (el.classList.contains('scroll-magnify-center')) {
+          el.style.top = `
+          ${(1 - factor) * logoPosition.top}px
+          `
+          el.style.right = `
+          ${(1 - factor) * logoPosition.right}px
+          `
+          el.style.bottom = `
+          ${(1 - factor) * logoPosition.bottom}px
+          `
+          el.style.left = `
+          ${(1 - factor) * logoPosition.left}px
+          `
           el.style.transform = `
-          translate(-50% , -50%) translateZ(${3000 * factor * factor}px)
+          translate(-${(1 - factor) * 50}%, -${
+            (1 - factor) * 50
+          }%) translateZ(${2500 * factor * factor + layer}px)  
+          `
+          el.style.zIndex = `
+          ${Math.floor(2 * factor)}
           `
         } else if (el.classList.contains('scroll-fade-in')) {
           el.style.opacity = `${factor * factor * factor * factor}`
@@ -59,6 +120,7 @@ function HomeSection1() {
       })
     }
 
+    // move elements according to mouse movement
     const handleMouseMove = function moveImagesInteractively(
       e: MouseEvent | TouchEvent
     ) {
@@ -72,8 +134,8 @@ function HomeSection1() {
         const speedx = Number(el.dataset.speedx)
         const speedy = Number(el.dataset.speedy)
         const speedz = Number(el.dataset.speedz)
-        const rotation = Number(el.dataset.rotation) * 2
-        const layer = Number(el.dataset.layer) * 100
+        const rotation = Number(el.dataset.rotation)
+        const layer = Number(el.dataset.layer) * LAYER_DEPTH
 
         const leftX = parseFloat(
           getComputedStyle(el).left + getComputedStyle(el).right
@@ -91,27 +153,29 @@ function HomeSection1() {
 
     init()
 
+    // throttle the functions
     const throttledHandleMouseMove = throttle(handleMouseMove, 10)
     const throttledHandleScroll = throttle(handleScroll, 10)
+
     window.addEventListener('resize', init)
     window.addEventListener('scroll', throttledHandleScroll)
     window.addEventListener('mousemove', throttledHandleMouseMove)
-    window.addEventListener('touchmove', throttledHandleMouseMove)
+    hasListener = true
     return () => {
       window.removeEventListener('resize', init)
       window.removeEventListener('scroll', throttledHandleScroll)
       window.removeEventListener('mousemove', throttledHandleMouseMove)
-      window.removeEventListener('touchmove', throttledHandleMouseMove)
+      hasListener = false
     }
   }, [])
 
   return (
-    <div className="home-section-1" ref={backgroundRef}>
-      <div className="home-section-1__main" ref={stickyRef}>
-        <div className="white-fade parallax scroll-fade-in"></div>
-        <div className="vignette"></div>
+    <div className={styles.background} ref={backgroundRef}>
+      <div className={styles.main} ref={stickyRef}>
+        <div className={styles.vignette}></div>
+        <div className={`${styles.whiteFade} scroll-fade-in`}></div>
         <img
-          className="home-section-1__sky-img parallax"
+          className={styles.skyImg}
           data-speedx="0.2"
           data-speedy="0.25"
           data-speedz="0"
@@ -120,8 +184,8 @@ function HomeSection1() {
           src={skyImg}
         ></img>
         <img
-          className="home-section-1__forest-img parallax scroll-magnify"
-          data-speedx="0.15"
+          className={`${styles.forestImg} scroll-down`}
+          data-speedx="0.13"
           data-speedy="0.2"
           data-speedz="0"
           data-rotation="0.1"
@@ -129,18 +193,19 @@ function HomeSection1() {
           src={forestImg}
         ></img>
         <div
-          className="home-section-1__gallery-logo parallax scroll-magnify"
-          data-speedx="0.2"
+          className={`${styles.galleryLogo} scroll-magnify-center`}
+          data-speedx="0.15"
           data-speedy="0.17"
           data-speedz="0"
           data-rotation="0.1"
           data-layer="3"
+          ref={logoRef}
         >
-          <span className="preposition">The</span>
-          Gallery
+          {/* <span className="preposition">The</span> */}
+          <span>Gallery</span>
         </div>
         <img
-          className="home-section-1__architecture-img parallax scroll-magnify"
+          className={`${styles.architectureImg} scroll-down`}
           data-speedx="0.1"
           data-speedy="0.15"
           data-speedz="0"
@@ -149,16 +214,16 @@ function HomeSection1() {
           src={architectureImg}
         ></img>
         <img
-          className="home-section-1__reflection-img parallax scroll-magnify"
+          className={`${styles.reflectionImg} scroll-down`}
           data-speedx="0.1"
-          data-speedy="0.13"
+          data-speedy="0.12"
           data-speedz="0"
           data-rotation="0.1"
           data-layer="5"
           src={reflectionImg}
         ></img>
         <img
-          className="home-section-1__left-tree-img parallax scroll-left"
+          className={`${styles.leftTreeImg} scroll-left`}
           data-speedx="0.07"
           data-speedy="0.1"
           data-speedz="0.05"
@@ -167,7 +232,7 @@ function HomeSection1() {
           src={leftTreeImg}
         ></img>
         <img
-          className="home-section-1__right-tree-img parallax scroll-right"
+          className={`${styles.rightTreeImg} scroll-right`}
           data-speedx="0.07"
           data-speedy="0.1"
           data-speedz="0.05"

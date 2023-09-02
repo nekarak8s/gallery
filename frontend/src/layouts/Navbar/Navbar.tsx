@@ -12,7 +12,6 @@ function Navbar() {
   const { mutate: login } = useLogin('kakao')
 
   const handleClick = function () {
-    console.log('kakao')
     login()
   }
 

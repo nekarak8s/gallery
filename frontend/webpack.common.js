@@ -6,11 +6,6 @@ const Dotenv = require('dotenv-webpack')
 
 module.exports = {
   entry: './src/index.tsx',
-  output: {
-    path: path.resolve(__dirname, 'dist'),
-    filename: 'main.js',
-    publicPath: '/',
-  },
   resolve: {
     modules: [path.resolve(__dirname, 'node_modules')],
     extensions: ['.js', '.jsx', '.ts', '.tsx'],
@@ -21,14 +16,8 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.(jpg|png|gif|webp)$/,
-        use: {
-          loader: 'url-loader',
-          options: {
-            name: 'assets/images/[name].[hash:8].[ext]',
-            limit: 10 * 1024, // 10kb
-          },
-        },
+        test: /\.(jpg|png|gif|webp|webm)$/,
+        type: 'asset', // https://webpack.js.org/guides/asset-modules/
       },
       {
         test: /\.svg$/,
