@@ -58,21 +58,21 @@ public class JwtAuthenticationGatewayFilterFactory extends
             } else {
                 log.info("토큰 검증 시작 ");
                 if (!containsCookie(request)) {
-                    return onError_v2(response, "missing cookie", HttpStatus.BAD_REQUEST, "GA004");
+                    return onError_v2(response, "missing cookie", HttpStatus.BAD_REQUEST, "GATE004");
                 }
 
                 if (!containsToken(request)) {
-                    return onError_v2(response, "missing token", HttpStatus.UNAUTHORIZED, "GA002");
+                    return onError_v2(response, "missing token", HttpStatus.UNAUTHORIZED, "GATE002");
                 }
 
                 String token = extractToken(request);
                 if (!jwtUtils.isValid(token)) {
-                    return onError_v2(response, "invalid token", HttpStatus.UNAUTHORIZED, "GA003");
+                    return onError_v2(response, "invalid token", HttpStatus.UNAUTHORIZED, "GATE003");
                 }
 
                 if (jwtBlacklistService.isTokenBlacklisted(token)) {
                     log.info("블랙리스트 토큰임");
-                    return onError_v2(response, "invalid token(black)", HttpStatus.UNAUTHORIZED, "GA003");
+                    return onError_v2(response, "invalid token(blacklist)", HttpStatus.UNAUTHORIZED, "GATE003");
                 }
 
                 log.info("토큰 검증 완료");
