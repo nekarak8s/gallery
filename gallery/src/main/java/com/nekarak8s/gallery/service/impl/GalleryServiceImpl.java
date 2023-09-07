@@ -1,6 +1,7 @@
 package com.nekarak8s.gallery.service.impl;
 
 import com.nekarak8s.gallery.data.dto.GalleryCreateRequestDTO;
+import com.nekarak8s.gallery.data.dto.GalleryInfoResponseDTO;
 import com.nekarak8s.gallery.data.entity.Gallery;
 import com.nekarak8s.gallery.data.repository.GalleryRepositoy;
 import com.nekarak8s.gallery.exception.CustomException;
@@ -11,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -52,5 +54,13 @@ public class GalleryServiceImpl implements GalleryService {
         Optional<Gallery> optionalGallery = galleryRepositoy.findByName(name);
 
         return optionalGallery.isEmpty();
+    }
+
+    @Override
+    public List<GalleryInfoResponseDTO> findGalleryListByMemberId(long memberId) {
+        List<GalleryInfoResponseDTO> galleryInfoResponseDTOS = galleryRepositoy.findByMemberId(memberId);
+        log.info("갤러리 목록 조회 결과 : {}", galleryInfoResponseDTOS);
+
+        return galleryInfoResponseDTOS;
     }
 }

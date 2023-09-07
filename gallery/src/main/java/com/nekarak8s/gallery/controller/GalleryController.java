@@ -3,6 +3,7 @@ package com.nekarak8s.gallery.controller;
 import com.nekarak8s.gallery.data.dto.ApiResponse;
 import com.nekarak8s.gallery.data.dto.GalleryCreateRequestDTO;
 import com.nekarak8s.gallery.data.dto.GalleryCreateResponseDTO;
+import com.nekarak8s.gallery.data.dto.GalleryInfoResponseDTO;
 import com.nekarak8s.gallery.exception.CustomException;
 import com.nekarak8s.gallery.service.GalleryService;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @Slf4j
@@ -26,10 +28,11 @@ public class GalleryController {
         return "ok";
     }
 
+    // 갤러리 생성
     @PostMapping()
     public ResponseEntity<ApiResponse> createGallery(@RequestHeader(value = "X-Member-ID", required = false) long memberId, @RequestBody @Valid GalleryCreateRequestDTO requestDTO) throws CustomException {
-        log.info("갤러리 생성 요청옴");
-        log.info("게이트웨이에서 넘어온 member ID : {}", memberId);
+        log.debug("갤러리 생성 요청옴");
+        log.debug("게이트웨이에서 넘어온 member ID : {}", memberId);
         long galleryId = galleryService.createGallery(memberId, requestDTO);
 
         GalleryCreateResponseDTO galleryCreateResponseDTO = GalleryCreateResponseDTO.builder()
@@ -43,4 +46,23 @@ public class GalleryController {
 
         return ResponseEntity.ok(apiResponse);
     }
+
+    // 보유한 갤러리 목록 조회
+    @GetMapping("/list")
+    public ResponseEntity<ApiResponse> findGalleryList(@RequestHeader(value = "X-Member-ID", required = false) long memberId) throws CustomException {
+        log.debug("보유한 갤러리 목록 조회 요청옴");
+        log.debug("게이트웨이에서 넘어온 member ID : {}", memberId);
+
+        List<GalleryInfoResponseDTO> galleryInfoResponseDTOList = galleryService.findGalleryListByMemberId(memberId);
+
+        ApiResponse apiResponse = ApiResponse.builder()
+                .message("갤러리 목록 조회를 성공했습니다")
+                .data(galleryInfoResponseDTOList)
+                .build();
+
+        return ResponseEntity.ok(apiResponse);
+    }
+
+
+
 }
