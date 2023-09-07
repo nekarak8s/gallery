@@ -3,6 +3,7 @@ package com.nekarak8s.gateway.filter;
 import com.nekarak8s.gateway.service.JwtBlacklistService;
 import com.nekarak8s.gateway.util.jwt.JwtUtils;
 import com.nekarak8s.gateway.util.jwt.TokenMember;
+import com.nekarak8s.gateway.util.uri.WhitelistManager;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
@@ -15,8 +16,7 @@ import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
 
 import java.nio.charset.StandardCharsets;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 @Component
 @Slf4j
@@ -28,11 +28,13 @@ public class JwtAuthenticationGatewayFilterFactory extends
 
     private final JwtBlacklistService jwtBlacklistService;
     private final JwtUtils jwtUtils;
+    private final WhitelistManager whitelistManager;
 
-    public JwtAuthenticationGatewayFilterFactory(JwtBlacklistService jwtBlacklistService, JwtUtils jwtUtils) {
+    public JwtAuthenticationGatewayFilterFactory(JwtBlacklistService jwtBlacklistService, JwtUtils jwtUtils, WhitelistManager whitelistManager) {
         super(Config.class);
         this.jwtBlacklistService = jwtBlacklistService;
         this.jwtUtils = jwtUtils;
+        this.whitelistManager = whitelistManager;
     }
 
     @Override
@@ -46,15 +48,22 @@ public class JwtAuthenticationGatewayFilterFactory extends
             ServerHttpRequest request = exchange.getRequest();
             ServerHttpResponse response = exchange.getResponse();
 
+
             String uri = request.getURI().toString();
             String method = request.getMethodValue();
             int port = request.getURI().getPort();
 
             log.info("uri : {}, method : {}, port : {}", uri, method, port);
 
-            if (shoudValidateJwt(uri, port, method)) {
+            String galleryPathVariable = whitelistManager.extractGalleryPathVariable(uri);
+            log.info("galleryPathVariable : {}", galleryPathVariable);
+
+            if (whitelistManager.shouldValidateJwt(uri, method)) {
                 log.info("허용 URI 입니다.");
                 return chain.filter(exchange); // JWT 검사 없이 통과
+            } else if (uri.contains("/gallery") && method.equals("GET") && isNumeric(galleryPathVariable)) {
+                log.info("허용 URI 입니다.");
+                return chain.filter(exchange);
             } else {
                 log.info("토큰 검증 시작 ");
                 if (!containsCookie(request)) {
@@ -130,22 +139,22 @@ public class JwtAuthenticationGatewayFilterFactory extends
 //    }
 
     // JWT 허용 (없어도 허용)
-    private boolean shoudValidateJwt(String uri, int port, String method) {
-        // 허용할 경로면 true
-        if (uri.contains("/health") && method.equals("GET")) {
-            return true;
-        } else if (uri.contains("/login") && method.equals("POST")) {
-            return true;
-        } else if (uri.contains("/callback") && method.equals("POST")) {
-            return true;
-        } else if (uri.contains("/check/nickname") && method.equals("GET")) {
-            return true;
-        } else if (uri.contains("/place/list") && method.equals("GET")) {
-            return true;
-        }
-        // 아니면 false
-        return false;
-    }
+//    private boolean shoudValidateJwt(String uri, int port, String method) {
+//        // 허용할 경로면 true
+//        if (uri.contains("/health") && method.equals("GET")) {
+//            return true;
+//        } else if (uri.contains("/login") && method.equals("POST")) {
+//            return true;
+//        } else if (uri.contains("/callback") && method.equals("POST")) {
+//            return true;
+//        } else if (uri.contains("/check/nickname") && method.equals("GET")) {
+//            return true;
+//        } else if (uri.contains("/place/list") && method.equals("GET")) {
+//            return true;
+//        }
+//        // 아니면 false
+//        return false;
+//    }
 
 
 
@@ -160,6 +169,15 @@ public class JwtAuthenticationGatewayFilterFactory extends
 
         return response.writeWith(Mono.just(buffer));
     }
+
+    public static boolean isNumeric(String str) {
+        if (str == null || str.isEmpty()) {
+            return false;
+        }
+        return str.matches("\\d+");
+    }
+
+
 
     @Setter
     public static class Config {
