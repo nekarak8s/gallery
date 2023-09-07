@@ -28,7 +28,7 @@ public class GalleryServiceImpl implements GalleryService {
 
     @Override
     public long createGallery(long memberId, GalleryCreateRequestDTO requestDTO) throws CustomException {
-        boolean isUnique = isGalleryNameUnique(requestDTO.getName());
+        boolean isUnique = isGalleryNameUnique(requestDTO.getName(), memberId);
 
         if (!placeUtil.isExist(requestDTO.getPlaceId())) {
             log.info("존재하지 않는 공간 아이디 입니다 !!!");
@@ -53,8 +53,8 @@ public class GalleryServiceImpl implements GalleryService {
     }
 
     @Override
-    public boolean isGalleryNameUnique(String name){
-        Optional<Gallery> optionalGallery = galleryRepositoy.findByName(name);
+    public boolean isGalleryNameUnique(String name, long memberId){
+        Optional<Gallery> optionalGallery = galleryRepositoy.findByNameAndMemberId(name, memberId);
 
         return optionalGallery.isEmpty();
     }

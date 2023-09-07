@@ -10,26 +10,52 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @RestControllerAdvice
 @Slf4j
 public class CustomExceptionHandler {
 
     // 비정상적인 서버 에러 핸들러
-    @ExceptionHandler(value = RuntimeException.class)
-    public ResponseEntity<Map<String, String>> handleRuntimeException(RuntimeException e, HttpServletRequest request) {
+//    @ExceptionHandler(value = RuntimeException.class)
+//    public ResponseEntity<Map<String, String>> handleRuntimeException(RuntimeException e, HttpServletRequest request) {
+//        HttpHeaders responseHeaders = new HttpHeaders();
+//        HttpStatus httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+//
+//        log.debug("Advice 내 handleException호출, {}, {}", request.getRequestURI(), e.getMessage());
+//
+//        Map<String, String> map = new HashMap<>();
+//        map.put("errorType", httpStatus.getReasonPhrase());
+//        map.put("erroCode", "GG001");
+//        map.put("message", e.getMessage());
+//
+//        return new ResponseEntity<>(map, responseHeaders, httpStatus);
+//    }
+
+    @ExceptionHandler(value = ConstraintViolationException.class)
+    public ResponseEntity<Map<String, String>> handleRuntimeException(ConstraintViolationException e, HttpServletRequest request) {
         HttpHeaders responseHeaders = new HttpHeaders();
-        HttpStatus httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+        HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
+
+        //log.debug("{}", e.getConstraintViolations());
+        String defaultMessage = "";
+
+        Set<ConstraintViolation<?>> violations = e.getConstraintViolations();
+        for (ConstraintViolation<?> violation : violations) {
+            defaultMessage = violation.getMessageTemplate();
+        }
 
         log.debug("Advice 내 handleException호출, {}, {}", request.getRequestURI(), e.getMessage());
 
         Map<String, String> map = new HashMap<>();
         map.put("errorType", httpStatus.getReasonPhrase());
-        map.put("erroCode", "GG001");
-        map.put("message", e.getMessage());
+        map.put("erroCode", "GG005");
+        map.put("message", defaultMessage);
 
         return new ResponseEntity<>(map, responseHeaders, httpStatus);
     }

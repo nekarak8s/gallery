@@ -15,7 +15,7 @@ public interface GalleryService {
     long createGallery(long memberId, GalleryCreateRequestDTO requestDTO) throws CustomException;
 
     // 갤러리 이름 중복 검사
-    boolean isGalleryNameUnique(String name);
+    boolean isGalleryNameUnique(String name, long memberId);
 
     // 보유한 갤러리 목록 조회
     List<GalleryInfoResponseDTO> findGalleryListByMemberId(long memberId);

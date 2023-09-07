@@ -11,7 +11,7 @@ import java.util.Optional;
 
 @Repository
 public interface GalleryRepositoy extends JpaRepository<Gallery, Long> {
-    Optional<Gallery> findByName(String name);
+    Optional<Gallery> findByNameAndMemberId(String name, long memberId);
 
     @Query("SELECT new com.nekarak8s.gallery.data.dto.GalleryInfoResponseDTO(g.galleryId, g.name, g.content, g.createdDate, g.modifiedDate, p) " +
             "FROM Gallery g " +
