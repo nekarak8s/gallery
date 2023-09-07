@@ -1,5 +1,6 @@
 package com.nekarak8s.gallery.data.dto;
 
+import com.nekarak8s.gallery.validation.NoWhitespace;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,6 +17,7 @@ public class GalleryCreateRequestDTO {
     private Long placeId;
 
     @NotBlank(message = "갤러리 이름은 최소 1자 이상 작성해주세요")
+    @NoWhitespace(message = "갤러리 이름은 좌우 공백 없이 입력해주세요")
     private String name;
 
     private String content;
