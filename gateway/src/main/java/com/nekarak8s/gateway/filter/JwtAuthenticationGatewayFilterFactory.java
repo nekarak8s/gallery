@@ -140,6 +140,8 @@ public class JwtAuthenticationGatewayFilterFactory extends
             return true;
         } else if (uri.contains("/check/nickname") && method.equals("GET")) {
             return true;
+        } else if (uri.contains("/place/list") && method.equals("GET")) {
+            return true;
         }
         // 아니면 false
         return false;
