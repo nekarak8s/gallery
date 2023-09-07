@@ -3,7 +3,9 @@ package com.nekarak8s.gallery.service.impl;
 import com.nekarak8s.gallery.data.dto.GalleryCreateRequestDTO;
 import com.nekarak8s.gallery.data.dto.GalleryInfoResponseDTO;
 import com.nekarak8s.gallery.data.entity.Gallery;
+import com.nekarak8s.gallery.data.entity.Place;
 import com.nekarak8s.gallery.data.repository.GalleryRepositoy;
+import com.nekarak8s.gallery.data.repository.PlaceRepository;
 import com.nekarak8s.gallery.exception.CustomException;
 import com.nekarak8s.gallery.service.GalleryService;
 import com.nekarak8s.gallery.util.PlaceUtil;
@@ -22,6 +24,7 @@ public class GalleryServiceImpl implements GalleryService {
 
     private final GalleryRepositoy galleryRepositoy;
     private final PlaceUtil placeUtil;
+    private final PlaceRepository placeRepository;
 
     @Override
     public long createGallery(long memberId, GalleryCreateRequestDTO requestDTO) throws CustomException {
@@ -62,5 +65,10 @@ public class GalleryServiceImpl implements GalleryService {
         log.info("갤러리 목록 조회 결과 : {}", galleryInfoResponseDTOS);
 
         return galleryInfoResponseDTOS;
+    }
+
+    @Override
+    public List<Place> selectPlaceList() {
+        return placeRepository.findAll();
     }
 }

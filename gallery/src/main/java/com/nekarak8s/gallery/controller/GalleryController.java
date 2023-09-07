@@ -4,6 +4,7 @@ import com.nekarak8s.gallery.data.dto.ApiResponse;
 import com.nekarak8s.gallery.data.dto.GalleryCreateRequestDTO;
 import com.nekarak8s.gallery.data.dto.GalleryCreateResponseDTO;
 import com.nekarak8s.gallery.data.dto.GalleryInfoResponseDTO;
+import com.nekarak8s.gallery.data.entity.Place;
 import com.nekarak8s.gallery.exception.CustomException;
 import com.nekarak8s.gallery.service.GalleryService;
 import lombok.RequiredArgsConstructor;
@@ -63,6 +64,20 @@ public class GalleryController {
         return ResponseEntity.ok(apiResponse);
     }
 
+    // 공간 목록 조회
+    @GetMapping("/place/list")
+    public ResponseEntity<ApiResponse> selectPlaceList() {
+        log.debug("공간 목록 조회 요청옴");
+
+        List<Place> placeList = galleryService.selectPlaceList();
+
+        ApiResponse apiResponse = ApiResponse.builder()
+                .message("공간 정보가 조회되었습니다.")
+                .data(placeList)
+                .build();
+
+        return ResponseEntity.ok(apiResponse);
+    }
 
 
 }

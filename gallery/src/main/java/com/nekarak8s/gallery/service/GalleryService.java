@@ -2,6 +2,7 @@ package com.nekarak8s.gallery.service;
 
 import com.nekarak8s.gallery.data.dto.GalleryCreateRequestDTO;
 import com.nekarak8s.gallery.data.dto.GalleryInfoResponseDTO;
+import com.nekarak8s.gallery.data.entity.Place;
 import com.nekarak8s.gallery.exception.CustomException;
 import org.springframework.stereotype.Service;
 
@@ -18,4 +19,7 @@ public interface GalleryService {
 
     // 보유한 갤러리 목록 조회
     List<GalleryInfoResponseDTO> findGalleryListByMemberId(long memberId);
+
+    // 공간 목록 조회
+    List<Place> selectPlaceList();
 }
