@@ -74,17 +74,8 @@ public class GalleryServiceImpl implements GalleryService {
 
     @Override
     public GalleryInfoResponseDTO findGalleryByGalleryId(long galleryId) throws CustomException{
-        Gallery gallery = galleryRepository.findByGalleryId(galleryId)
+        GalleryInfoResponseDTO galleryInfoResponseDTO = galleryRepository.findByGalleryId(galleryId)
                 .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "GG007", "해당 갤러리 정보가 없습니다"));
-
-        GalleryInfoResponseDTO galleryInfoResponseDTO = GalleryInfoResponseDTO.builder()
-                .galleryId(galleryId)
-                .name(gallery.getName())
-                .content(gallery.getContent())
-                .createdDate(gallery.getCreatedDate())
-                .modifiedDate(gallery.getModifiedDate())
-                .place(gallery.getPlaceId())
-                .build();
 
         return galleryInfoResponseDTO;
     }
