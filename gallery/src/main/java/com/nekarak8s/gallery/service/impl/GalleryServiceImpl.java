@@ -4,7 +4,7 @@ import com.nekarak8s.gallery.data.dto.GalleryCreateRequestDTO;
 import com.nekarak8s.gallery.data.dto.GalleryInfoResponseDTO;
 import com.nekarak8s.gallery.data.entity.Gallery;
 import com.nekarak8s.gallery.data.entity.Place;
-import com.nekarak8s.gallery.data.repository.GalleryRepositoy;
+import com.nekarak8s.gallery.data.repository.GalleryRepository;
 import com.nekarak8s.gallery.data.repository.PlaceRepository;
 import com.nekarak8s.gallery.exception.CustomException;
 import com.nekarak8s.gallery.service.GalleryService;
@@ -22,7 +22,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class GalleryServiceImpl implements GalleryService {
 
-    private final GalleryRepositoy galleryRepositoy;
+    private final GalleryRepository galleryRepository;
     private final PlaceUtil placeUtil;
     private final PlaceRepository placeRepository;
 
@@ -47,21 +47,21 @@ public class GalleryServiceImpl implements GalleryService {
                 .content(requestDTO.getContent())
                 .build();
 
-        galleryRepositoy.save(gallery);
+        galleryRepository.save(gallery);
 
         return gallery.getGalleryId();
     }
 
     @Override
     public boolean isGalleryNameUnique(String name, long memberId){
-        Optional<Gallery> optionalGallery = galleryRepositoy.findByNameAndMemberId(name, memberId);
+        Optional<Gallery> optionalGallery = galleryRepository.findByNameAndMemberId(name, memberId);
 
         return optionalGallery.isEmpty();
     }
 
     @Override
     public List<GalleryInfoResponseDTO> findGalleryListByMemberId(long memberId) {
-        List<GalleryInfoResponseDTO> galleryInfoResponseDTOS = galleryRepositoy.findByMemberId(memberId);
+        List<GalleryInfoResponseDTO> galleryInfoResponseDTOS = galleryRepository.findByMemberId(memberId);
         log.info("갤러리 목록 조회 결과 : {}", galleryInfoResponseDTOS);
 
         return galleryInfoResponseDTOS;
@@ -70,5 +70,22 @@ public class GalleryServiceImpl implements GalleryService {
     @Override
     public List<Place> selectPlaceList() {
         return placeRepository.findAll();
+    }
+
+    @Override
+    public GalleryInfoResponseDTO findGalleryByGalleryId(long galleryId) throws CustomException{
+        Gallery gallery = galleryRepository.findByGalleryId(galleryId)
+                .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "GG007", "해당 갤러리 정보가 없습니다"));
+
+        GalleryInfoResponseDTO galleryInfoResponseDTO = GalleryInfoResponseDTO.builder()
+                .galleryId(galleryId)
+                .name(gallery.getName())
+                .content(gallery.getContent())
+                .createdDate(gallery.getCreatedDate())
+                .modifiedDate(gallery.getModifiedDate())
+                .place(gallery.getPlaceId())
+                .build();
+
+        return galleryInfoResponseDTO;
     }
 }

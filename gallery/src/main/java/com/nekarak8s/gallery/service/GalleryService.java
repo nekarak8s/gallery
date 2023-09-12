@@ -22,4 +22,7 @@ public interface GalleryService {
 
     // 공간 목록 조회
     List<Place> selectPlaceList();
+
+    // 갤러리 단일 조회
+    GalleryInfoResponseDTO findGalleryByGalleryId(long galleryId) throws  CustomException;
 }

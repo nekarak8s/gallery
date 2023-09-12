@@ -10,11 +10,13 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface GalleryRepositoy extends JpaRepository<Gallery, Long> {
+public interface GalleryRepository extends JpaRepository<Gallery, Long> {
     Optional<Gallery> findByNameAndMemberId(String name, long memberId);
 
     @Query("SELECT new com.nekarak8s.gallery.data.dto.GalleryInfoResponseDTO(g.galleryId, g.name, g.content, g.createdDate, g.modifiedDate, p) " +
             "FROM Gallery g " +
             "JOIN Place p ON p.placeId = g.placeId WHERE g.memberId = :memberId")
     List<GalleryInfoResponseDTO> findByMemberId(long memberId);
+
+    Optional<Gallery> findByGalleryId(long galleryId);
 }

@@ -84,6 +84,7 @@ public class GalleryController {
         return ResponseEntity.ok(apiResponse);
     }
 
+    // 갤러리 이름 중복 검사
     @GetMapping("check/name")
     public ResponseEntity<ApiResponse> checkNameUnique(@RequestHeader(value = "X-Member-ID", required = false) long memberId,
                                                        @RequestParam(value = "name")
@@ -102,6 +103,20 @@ public class GalleryController {
         }
     }
 
+    // 갤러리 단일 조회
+    @GetMapping("/{galleryId}")
+    public ResponseEntity<ApiResponse> findGallery(@PathVariable(value = "galleryId", required = false) long galleryId) throws CustomException {
+        log.debug("갤러리 단일 조회 요청옴");
+        log.debug("galleryId : {}", galleryId);
+
+        GalleryInfoResponseDTO galleryInfoResponseDTO = galleryService.findGalleryByGalleryId(galleryId);
+
+        ApiResponse apiResponse = ApiResponse.builder()
+                .message("단일 조회")
+                .data(galleryInfoResponseDTO)
+                .build();
+        return ResponseEntity.ok(apiResponse);
+    }
 
 
 }
