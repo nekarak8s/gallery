@@ -3,7 +3,8 @@ import { NavLink, Outlet } from 'react-router-dom'
 import LogoIcon from '@/assets/svgs/gallery-logo.svg'
 import { routes } from '@/App'
 import './Navbar.scss'
-import { throttle } from 'lodash'
+import throttle from 'lodash/throttle'
+
 import { useLogin } from '@/features/members/services'
 
 function Navbar() {
@@ -46,14 +47,15 @@ function Navbar() {
   return (
     <div className="navbar--layout">
       <nav className="navbar" ref={navbarRef}>
-        <div className="navbar__logo">
-          <NavLink to={routes['Home'].path}>
+        <NavLink to={routes['Home'].path}>
+          <div className="navbar__logo">
             <LogoIcon />
-          </NavLink>
-        </div>
+            Gallery
+          </div>
+        </NavLink>
         <ul className="navbar__menu">
           <li>
-            <div onClick={handleClick}>로그인</div>
+            <div onClick={handleClick}>Login</div>
           </li>
           <li>
             <NavLink to={routes['Guide'].path}>Guide</NavLink>

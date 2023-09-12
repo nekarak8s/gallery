@@ -1,123 +1,57 @@
-import React, { useEffect, useRef, useState } from 'react'
-import { throttle } from 'lodash'
-import architectureImg from '@/assets/images/home-section-1/architecture.webp'
-import forestImg from '@/assets/images/home-section-1/forest.webp'
-import leftTreeImg from '@/assets/images/home-section-1/left-tree.webp'
-import reflectionImg from '@/assets/images/home-section-1/reflection.webp'
-import rightTreeImg from '@/assets/images/home-section-1/right-tree.webp'
+import React, { useEffect, useRef } from 'react'
+import throttle from 'lodash/throttle'
+import cloud1Img from '@/assets/images/home-section-1/cloud1.webp'
+import cloud2Img from '@/assets/images/home-section-1/cloud2.webp'
+import cloud3Img from '@/assets/images/home-section-1/cloud3.webp'
+import architectureImg from '@/assets/images/home-section-1/concrete.webp'
+import islandImg from '@/assets/images/home-section-1/island.webp'
+import oceanImg from '@/assets/images/home-section-1/ocean.webp'
 import skyImg from '@/assets/images/home-section-1/sky.webp'
+import ScrollDown from '@/atoms/ui/ScrollDown'
 
+import OceanFiltered from './OceanFiltered'
 import styles from './HomeSection1.module.scss'
 
-const LAYER_DEPTH = 50 // css 3d-preserve depth multiplication factor
+const LAYER_DEPTH = 50 // css 3d-preserve factor: layer -> tranlsateZ
+const SCROLL_OFFSET = 200 // offset for handlescroll
 
 function HomeSection1() {
   // element refs
   const backgroundRef = useRef<HTMLDivElement>(null)
   const stickyRef = useRef<HTMLDivElement>(null)
+  const gradientRef = useRef<HTMLDivElement>(null)
   const logoRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     // get the elements
     const background = backgroundRef.current as HTMLDivElement
     const sticky = stickyRef.current as HTMLDivElement
-    const logo = logoRef.current as HTMLDivElement
+    const gradientFade = gradientRef.current as HTMLDivElement
     const parallexEles = Array.from(
-      document.querySelector(`.${styles.main}`)
+      document.querySelector(`.${styles.mouseMove}`)
         ?.children as HTMLCollectionOf<HTMLElement>
     )
 
-    // init the data
+    // intiate scroll data
     let scrollStart = 0
     let scrollEnd = 0
-    const logoPosition = {
-      top: 0,
-      right: 0,
-      bottom: 0,
-      left: 0,
-    }
     const init = function setInitialPositionData1() {
       const backgroundTop =
         window.pageYOffset + background.getBoundingClientRect().top
       scrollStart = backgroundTop
       scrollEnd = backgroundTop + background.offsetHeight - sticky.offsetHeight
-
-      logoPosition.top = Number(getComputedStyle(logo).top.replace('px', ''))
-      logoPosition.right = Number(
-        getComputedStyle(logo).right.replace('px', '')
-      )
-      logoPosition.bottom = Number(
-        getComputedStyle(logo).bottom.replace('px', '')
-      )
-      logoPosition.left = Number(getComputedStyle(logo).left.replace('px', ''))
     }
 
     // move elements according to scroll position
     let hasListener = false
     const handleScroll = function setElementsPosition1() {
       const scrollTop = window.scrollY
-      const backgroundBottom =
-        window.pageYOffset + background.getBoundingClientRect().bottom
 
-      if (backgroundBottom < scrollTop) return
+      if (scrollTop > scrollEnd + sticky.offsetHeight) return
 
-      // whether to move elements
-      if (scrollTop < scrollStart + 300) {
-        !hasListener &&
-          window.addEventListener('mousemove', throttledHandleMouseMove)
-        hasListener = true
-        logo.style.transition = `transform 0.45s cubic-bezier(0.2, 0.49, 0.32, 0.99)`
-        return
-      }
-
-      hasListener &&
-        window.removeEventListener('mousemove', throttledHandleMouseMove)
-      hasListener = false
-      logo.style.transition = `transform 0s linear`
-
-      const factor = (scrollTop - scrollStart) / (scrollEnd - scrollStart)
-      // move elements
-      parallexEles.forEach((el) => {
-        const layer = Number(el.dataset.layer) * LAYER_DEPTH
-        if (el.classList.contains('scroll-down')) {
-          el.style.transform = `
-          translate(-50%, calc(-50% + ${factor * 80}px + ${
-            factor * 4
-          }vh )) translateZ(${layer}px)
-          `
-        } else if (el.classList.contains('scroll-left')) {
-          el.style.transform = `
-          translate(calc(-50% - ${100 * factor}vw), -50%) translateZ(${layer}px)
-          `
-        } else if (el.classList.contains('scroll-right')) {
-          el.style.transform = `
-          translate(calc(-50% + ${100 * factor}vw), -50%) translateZ(${layer}px)
-          `
-        } else if (el.classList.contains('scroll-magnify-center')) {
-          el.style.top = `
-          ${(1 - factor) * logoPosition.top}px
-          `
-          el.style.right = `
-          ${(1 - factor) * logoPosition.right}px
-          `
-          el.style.bottom = `
-          ${(1 - factor) * logoPosition.bottom}px
-          `
-          el.style.left = `
-          ${(1 - factor) * logoPosition.left}px
-          `
-          el.style.transform = `
-          translate(-${(1 - factor) * 50}%, -${
-            (1 - factor) * 50
-          }%) translateZ(${2500 * factor * factor + layer}px)  
-          `
-          el.style.zIndex = `
-          ${Math.floor(2 * factor)}
-          `
-        } else if (el.classList.contains('scroll-fade-in')) {
-          el.style.opacity = `${factor * factor * factor * factor}`
-        }
-      })
+      gradientFade.style.opacity = `${
+        (scrollTop - scrollStart) / (scrollEnd - scrollStart - SCROLL_OFFSET)
+      }`
     }
 
     // move elements according to mouse movement
@@ -143,11 +77,12 @@ function HomeSection1() {
         const isInLeft = leftX < window.innerWidth ? 1 : -1
         const zValue = event.clientX - leftX * isInLeft * 0.1
 
-        el.style.transform = `rotateY(${
-          rotateDeg * rotation
-        }deg) translate(calc(-50% + ${xValue * speedx}px), calc(-50% + ${
-          yValue * speedy
-        }px)) translateZ(${zValue * speedz + layer}px)`
+        el.style.transform = `
+        rotateY(${rotateDeg * rotation}deg)
+        translate(
+          calc(-50% + ${xValue * speedx}px),
+          calc(-50% + ${yValue * speedy}px))
+        translateZ(${zValue * speedz + layer}px)`
       })
     }
 
@@ -172,74 +107,88 @@ function HomeSection1() {
   return (
     <div className={styles.background} ref={backgroundRef}>
       <div className={styles.main} ref={stickyRef}>
-        <div className={styles.vignette}></div>
-        <div className={`${styles.whiteFade} scroll-fade-in`}></div>
-        <img
-          className={styles.skyImg}
-          data-speedx="0.2"
-          data-speedy="0.25"
-          data-speedz="0"
-          data-rotation="0"
-          data-layer="1"
-          src={skyImg}
-        ></img>
-        <img
-          className={`${styles.forestImg} scroll-down`}
-          data-speedx="0.13"
-          data-speedy="0.2"
-          data-speedz="0"
-          data-rotation="0.1"
-          data-layer="2"
-          src={forestImg}
-        ></img>
-        <div
-          className={`${styles.galleryLogo} scroll-magnify-center`}
-          data-speedx="0.15"
-          data-speedy="0.17"
-          data-speedz="0"
-          data-rotation="0.1"
-          data-layer="3"
-          ref={logoRef}
-        >
-          {/* <span className="preposition">The</span> */}
-          <span>Gallery</span>
+        <div ref={gradientRef} className={styles.gradientFade}></div>
+        <div className={styles.scrollDown}>
+          <ScrollDown />
         </div>
-        <img
-          className={`${styles.architectureImg} scroll-down`}
-          data-speedx="0.1"
-          data-speedy="0.15"
-          data-speedz="0"
-          data-rotation="0.1"
-          data-layer="4"
-          src={architectureImg}
-        ></img>
-        <img
-          className={`${styles.reflectionImg} scroll-down`}
-          data-speedx="0.1"
-          data-speedy="0.12"
-          data-speedz="0"
-          data-rotation="0.1"
-          data-layer="5"
-          src={reflectionImg}
-        ></img>
-        <img
-          className={`${styles.leftTreeImg} scroll-left`}
-          data-speedx="0.07"
-          data-speedy="0.1"
-          data-speedz="0.05"
-          data-rotation="0.1"
-          data-layer="6"
-          src={leftTreeImg}
-        ></img>
-        <img
-          className={`${styles.rightTreeImg} scroll-right`}
-          data-speedx="0.07"
-          data-speedy="0.1"
-          data-speedz="0.05"
-          data-rotation="0.1"
-          data-layer="7"
-          src={rightTreeImg}
-        ></img>
+        <div className={styles.mouseMove}>
+          <img
+            className={styles.skyImg}
+            data-speedx="0"
+            data-speedy="0"
+            data-speedz="0"
+            data-rotation="0"
+            data-layer="0"
+            src={skyImg}
+          ></img>
+          <img
+            className={styles.cloud1Img}
+            data-speedx="0.05"
+            data-speedy="0.05"
+            data-speedz="0"
+            data-rotation="0.03"
+            data-layer="1"
+            src={cloud1Img}
+          ></img>
+          <img
+            className={styles.cloud2Img}
+            data-speedx="0.08"
+            data-speedy="0.06"
+            data-speedz="0"
+            data-rotation="0.05"
+            data-layer="1"
+            src={cloud2Img}
+          ></img>
+          <img
+            className={styles.cloud3Img}
+            data-speedx="0.03"
+            data-speedy="0.03"
+            data-speedz="0"
+            data-rotation="0.02"
+            data-layer="1"
+            src={cloud3Img}
+          ></img>
+          <img
+            className={styles.islandImg}
+            data-speedx="0.1"
+            data-speedy="0.08"
+            data-speedz="0"
+            data-rotation="0.08"
+            data-layer="2"
+            src={islandImg}
+          ></img>
+          <div
+            className={`${styles.oceanImg} scroll-down`}
+            data-speedx="0.12"
+            data-speedy="0.1"
+            data-speedz="0"
+            data-rotation="0.09"
+            data-layer="2"
+          >
+            <OceanFiltered imgSrc={oceanImg} />
+          </div>
+          <div
+            className={`${styles.galleryLogo} scroll-magnify-center`}
+            data-speedx="0.15"
+            data-speedy="0.12"
+            data-speedz="0"
+            data-rotation="0.1"
+            data-layer="3"
+            ref={logoRef}
+          >
+            <p className={`${styles.galleryLogoPreposition}`}>The</p>
+            <p>Gallery</p>
+          </div>
+          <img
+            className={`${styles.architectureImg} scroll-down`}
+            data-speedx="0.18"
+            data-speedy="0.15"
+            data-speedz="0"
+            data-rotation="0"
+            data-layer="4"
+            src={architectureImg}
+          ></img>
+        </div>
       </div>
     </div>
   )

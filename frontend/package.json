@@ -8,7 +8,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "webpack-dev-server --config webpack.dev.js",
     "build": "webpack --config webpack.prod.js",
-    "deploy": "gh-pages -d dist"
+    "deploy": "gh-pages -d dist",
+    "profile": "npm run build -- --stats && npx webpack-bundle-analyzer ./dist/bundle-stats.json"
   },
   "keywords": [],
   "author": "",

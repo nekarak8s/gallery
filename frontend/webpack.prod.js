@@ -9,6 +9,9 @@ const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
 const ImageMinimizerPlugin = require('image-minimizer-webpack-plugin')
 const Dotenv = require('dotenv-webpack')
 
+const BundleAnalyzerPlugin =
+  require('webpack-bundle-analyzer').BundleAnalyzerPlugin
+
 module.exports = merge(common, {
   mode: 'production',
   output: {
@@ -118,5 +121,6 @@ module.exports = merge(common, {
       path: '.env.production',
     }),
     new MiniCssExtractPlugin({ filename: 'main.css' }),
+    new BundleAnalyzerPlugin(),
   ],
 })

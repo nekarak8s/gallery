@@ -1,7 +1,7 @@
 @import '@/styles/_responsive.scss';
 
 .background {
-  height: 300vh;
+  height: 180vh;
 }
 
 .main {
@@ -14,33 +14,31 @@
   transform-style: preserve-3d;
 }
 
-.white-fade {
+.mouse-move > * {
+  transition: transform 0.45s cubic-bezier(0.2, 0.49, 0.32, 0.99);
+}
+
+.gradient-fade {
   position: absolute;
   z-index: 3;
   width: 100%;
   height: 100%;
   top: 0;
   left: 0;
-  background: rgb(36, 36, 36);
+  background: linear-gradient(
+    180deg,
+    rgba(2, 0, 36, 0) 40%,
+    var(--background-color, rgb(122, 200, 219)) 90%,
+    var(--background-color, rgb(122, 200, 219)) 100%
+  );
   opacity: 0;
 }
 
-.vignette {
+.scroll-down {
   position: absolute;
-  z-index: 2;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  background: radial-gradient(
-    ellipse at center,
-    rgb(0, 0, 0, 0) 70%,
-    rgba(0, 0, 0, 0.3)
-  );
-}
-
-.main > * {
-  transition: transform 0.45s cubic-bezier(0.2, 0.49, 0.32, 0.99);
+  z-index: 3;
+  left: 50%;
+  bottom: 5%;
 }
 
 .sky-img {
@@ -54,30 +52,73 @@
   transform: translate(-50%, -50%);
 }
 
-.forest-img {
+.cloud-1-img {
   position: absolute;
-  width: 110%;
+  width: 80%;
+  height: auto;
+  top: calc(50% - 40%);
+  right: auto;
+  bottom: auto;
+  left: calc(90%);
+  transform: translate(-50%, -50%);
+}
+
+.cloud-2-img {
+  position: absolute;
+  width: 80%;
+  height: auto;
+  top: calc(50% - 40%);
+  right: auto;
+  bottom: auto;
+  left: calc(20%);
+  transform: translate(-50%, -50%);
+}
+
+.cloud-3-img {
+  position: absolute;
+  width: 40%;
   height: auto;
   top: calc(50% - 10%);
   right: auto;
   bottom: auto;
-  left: 50%;
+  left: calc(70%);
   transform: translate(-50%, -50%);
+}
+
+.island-img {
+  position: absolute;
+  width: 35%;
+  height: auto;
+  top: calc(50% - 7%);
+  right: auto;
+  bottom: auto;
+  left: calc(50% + 40%);
+  transform: translate(-50%, -50%);
+}
+
+.ocean-img {
+  position: absolute;
+  width: 110%;
+  height: 60%;
+  top: calc(50% + 30%);
+  right: auto;
+  bottom: auto;
+  left: calc(50%);
+  transform: translate(-50%, -50%);
+  overflow: hidden;
 }
 
 .gallery-logo {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
+  align-items: flex-end;
   position: absolute;
   margin: auto;
-  width: 100px;
-  height: 20px;
-  top: calc(50% + 5%);
+  top: calc(45%);
   right: auto;
   bottom: auto;
-  left: calc(50% - 15%);
+  left: calc(50% - 10%);
   transform: translate(-50%, -50%);
   color: white;
   font-size: 10vw;
@@ -86,7 +127,7 @@
 }
 
 .gallery-logo__preposition {
-  font-size: 3.5rem;
+  font-size: 3.5vw;
   text-align: left;
   align-self: flex-start;
 }
@@ -95,70 +136,66 @@
   position: absolute;
   width: 110%;
   height: auto;
-  top: calc(50% + 20%);
+  top: calc(50% + 30%);
   right: auto;
   bottom: auto;
   left: calc(50%);
-  transform: translate(-50%, -50%);
-}
-
-.reflection-img {
-  position: absolute;
-  width: 110%;
-  height: auto;
-  top: calc(50% + 67%);
-  right: auto;
-  bottom: auto;
-  left: calc(50%);
-  transform: translate(-50%, -50%);
-}
-
-.left-tree-img {
-  position: absolute;
-  width: 40%;
-  height: auto;
-  top: calc(50% - 10%);
-  right: auto;
-  bottom: auto;
-  left: calc(50% - 35%);
-  transform: translate(-50%, -50%);
-}
-
-.right-tree-img {
-  position: absolute;
-  width: 60%;
-  height: auto;
-  top: calc(50% - 10%);
-  right: auto;
-  bottom: auto;
-  left: calc(50% + 20%);
   transform: translate(-50%, -50%);
 }
 
 // 1280px
 @include laptop {
   .sky-img {
-    width: 1350px;
-    top: 50%;
-    right: auto;
-    bottom: auto;
-    left: 50%;
+    width: 1400px;
   }
 
-  .forest-img {
-    width: 1350px;
-    top: calc(50% - 80px);
+  .cloud-1-img {
+    width: 920px;
+    top: calc(50% - 300px);
     right: auto;
     bottom: auto;
-    left: 50%;
+    left: calc(50% + 600px);
+  }
+
+  .cloud-2-img {
+    width: 920px;
+    top: calc(50% - 300px);
+    right: auto;
+    bottom: auto;
+    left: calc(50% - 400px);
+  }
+
+  .cloud-3-img {
+    width: 500px;
+    top: calc(50% - 100px);
+    right: auto;
+    bottom: auto;
+    left: calc(50% + 220px);
+  }
+
+  .island-img {
+    width: 360px;
+    top: calc(50% - 70px);
+    right: auto;
+    bottom: auto;
+    left: calc(50% + 500px);
+  }
+
+  .ocean-img {
+    width: 1400px;
+    top: calc(50% + 180px);
+    right: auto;
+    bottom: auto;
+    left: calc(50%);
   }
 
   .gallery-logo {
-    font-size: 8rem;
-    top: calc(50% + 40px);
+    top: calc(50% - 50px);
     right: auto;
     bottom: auto;
     left: calc(50% - 100px);
+    color: white;
+    font-size: 7rem;
   }
 
   .gallery-logo__preposition {
@@ -166,35 +203,11 @@
   }
 
   .architecture-img {
-    width: 1350px;
-    top: calc(50% + 130px);
+    width: 1400px;
+    top: calc(50% + 200px);
     right: auto;
     bottom: auto;
-    left: calc(50% + 50px);
-  }
-
-  .reflection-img {
-    width: 1350px;
-    top: calc(50% + 420px);
-    right: auto;
-    bottom: auto;
-    left: calc(50% + 50px);
-  }
-
-  .left-tree-img {
-    width: 520px;
-    top: calc(50% - 50px);
-    right: auto;
-    bottom: auto;
-    left: calc(50% - 420px);
-  }
-
-  .right-tree-img {
-    width: 830px;
-    top: calc(50% - 50px);
-    right: auto;
-    bottom: auto;
-    left: calc(50% + 280px);
+    left: calc(50%);
   }
 }
 
@@ -202,27 +215,54 @@
 // stick to the edges & depend on vh unit
 @include tablet {
   .sky-img {
-    width: auto;
-    height: 120%;
-    top: 50%;
-    right: auto;
-    bottom: auto;
-    left: 50%;
+    width: 2000px;
   }
 
-  .forest-img {
+  .cloud-1-img {
+    width: 800px;
+    top: calc(50% - 350px);
+    right: calc(-500px);
+    bottom: auto;
+    left: auto;
+  }
+
+  .cloud-2-img {
+    width: 800px;
+    top: calc(50% - 350px);
+    right: auto;
+    bottom: auto;
+    left: calc(50% - 300px);
+  }
+
+  .cloud-3-img {
+    width: 500px;
+    top: calc(50% - 150px);
+    right: auto;
+    bottom: auto;
+    left: calc(50% - 10px);
+  }
+
+  .island-img {
+    width: 400px;
+    top: auto;
+    right: auto;
+    bottom: calc(300px);
+    left: calc(50% + 270px);
+  }
+
+  .ocean-img {
     width: 1100px;
     top: auto;
     right: auto;
-    bottom: calc(-50px + 15vh);
-    left: 50%;
+    bottom: calc(-550px);
+    left: calc(50%);
   }
 
   .gallery-logo {
-    font-size: 7rem;
+    font-size: 6rem;
     top: auto;
     right: auto;
-    bottom: calc(240px + 15vh);
+    bottom: calc(400px);
     left: calc(50% - 100px);
   }
 
@@ -234,32 +274,8 @@
     width: 1100px;
     top: auto;
     right: auto;
-    bottom: calc(-20px + 15vh);
+    bottom: calc(-80px);
     left: calc(50%);
-  }
-
-  .reflection-img {
-    width: 1100px;
-    top: auto;
-    right: auto;
-    bottom: calc(-480px + 15vh);
-    left: calc(50%);
-  }
-
-  .left-tree-img {
-    width: 500px;
-    top: calc(160px + 10vh);
-    right: auto;
-    bottom: auto;
-    left: calc(70px + 8vh);
-  }
-
-  .right-tree-img {
-    width: 800px;
-    top: calc(80px + 10vh);
-    right: calc(-500px + 10vh);
-    bottom: auto;
-    left: auto;
   }
 }
 
