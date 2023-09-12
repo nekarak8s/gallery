@@ -1,0 +1,16 @@
+.media-card {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr auto;
+  height: 100%;
+  width: 100%;
+}
+
+.media-card__label {
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem 1rem;
+  width: 100%;
+  color: var(--font-color, rgb(255, 93, 52));
+  font-size: 1.2rem;
+}

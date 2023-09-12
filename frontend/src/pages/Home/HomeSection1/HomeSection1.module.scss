@@ -1,0 +1,345 @@
+@import '@/styles/_responsive.scss';
+
+.background {
+  height: 180vh;
+}
+
+.main {
+  position: sticky;
+  top: 0;
+  overflow: hidden;
+  width: 100vw;
+  height: 100vh;
+  perspective: 2800px;
+  transform-style: preserve-3d;
+}
+
+.mouse-move > * {
+  transition: transform 0.45s cubic-bezier(0.2, 0.49, 0.32, 0.99);
+}
+
+.gradient-fade {
+  position: absolute;
+  z-index: 3;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(2, 0, 36, 0) 40%,
+    var(--background-color, rgb(122, 200, 219)) 90%,
+    var(--background-color, rgb(122, 200, 219)) 100%
+  );
+  opacity: 0;
+}
+
+.scroll-down {
+  position: absolute;
+  z-index: 3;
+  left: 50%;
+  bottom: 5%;
+}
+
+.sky-img {
+  position: absolute;
+  width: 120%;
+  height: auto;
+  top: 50%;
+  right: auto;
+  bottom: auto;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.cloud-1-img {
+  position: absolute;
+  width: 80%;
+  height: auto;
+  top: calc(50% - 40%);
+  right: auto;
+  bottom: auto;
+  left: calc(90%);
+  transform: translate(-50%, -50%);
+}
+
+.cloud-2-img {
+  position: absolute;
+  width: 80%;
+  height: auto;
+  top: calc(50% - 40%);
+  right: auto;
+  bottom: auto;
+  left: calc(20%);
+  transform: translate(-50%, -50%);
+}
+
+.cloud-3-img {
+  position: absolute;
+  width: 40%;
+  height: auto;
+  top: calc(50% - 10%);
+  right: auto;
+  bottom: auto;
+  left: calc(70%);
+  transform: translate(-50%, -50%);
+}
+
+.island-img {
+  position: absolute;
+  width: 35%;
+  height: auto;
+  top: calc(50% - 7%);
+  right: auto;
+  bottom: auto;
+  left: calc(50% + 40%);
+  transform: translate(-50%, -50%);
+}
+
+.ocean-img {
+  position: absolute;
+  width: 110%;
+  height: 60%;
+  top: calc(50% + 30%);
+  right: auto;
+  bottom: auto;
+  left: calc(50%);
+  transform: translate(-50%, -50%);
+  overflow: hidden;
+}
+
+.gallery-logo {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end;
+  position: absolute;
+  margin: auto;
+  top: calc(45%);
+  right: auto;
+  bottom: auto;
+  left: calc(50% - 10%);
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 10vw;
+  font-weight: 700;
+  text-align: center;
+}
+
+.gallery-logo__preposition {
+  font-size: 3.5vw;
+  text-align: left;
+  align-self: flex-start;
+}
+
+.architecture-img {
+  position: absolute;
+  width: 110%;
+  height: auto;
+  top: calc(50% + 30%);
+  right: auto;
+  bottom: auto;
+  left: calc(50%);
+  transform: translate(-50%, -50%);
+}
+
+// 1280px
+@include laptop {
+  .sky-img {
+    width: 1400px;
+  }
+
+  .cloud-1-img {
+    width: 920px;
+    top: calc(50% - 300px);
+    right: auto;
+    bottom: auto;
+    left: calc(50% + 600px);
+  }
+
+  .cloud-2-img {
+    width: 920px;
+    top: calc(50% - 300px);
+    right: auto;
+    bottom: auto;
+    left: calc(50% - 400px);
+  }
+
+  .cloud-3-img {
+    width: 500px;
+    top: calc(50% - 100px);
+    right: auto;
+    bottom: auto;
+    left: calc(50% + 220px);
+  }
+
+  .island-img {
+    width: 360px;
+    top: calc(50% - 70px);
+    right: auto;
+    bottom: auto;
+    left: calc(50% + 500px);
+  }
+
+  .ocean-img {
+    width: 1400px;
+    top: calc(50% + 180px);
+    right: auto;
+    bottom: auto;
+    left: calc(50%);
+  }
+
+  .gallery-logo {
+    top: calc(50% - 50px);
+    right: auto;
+    bottom: auto;
+    left: calc(50% - 100px);
+    color: white;
+    font-size: 7rem;
+  }
+
+  .gallery-logo__preposition {
+    font-size: 3rem;
+  }
+
+  .architecture-img {
+    width: 1400px;
+    top: calc(50% + 200px);
+    right: auto;
+    bottom: auto;
+    left: calc(50%);
+  }
+}
+
+// 992px
+// stick to the edges & depend on vh unit
+@include tablet {
+  .sky-img {
+    width: 2000px;
+  }
+
+  .cloud-1-img {
+    width: 800px;
+    top: calc(50% - 350px);
+    right: calc(-500px);
+    bottom: auto;
+    left: auto;
+  }
+
+  .cloud-2-img {
+    width: 800px;
+    top: calc(50% - 350px);
+    right: auto;
+    bottom: auto;
+    left: calc(50% - 300px);
+  }
+
+  .cloud-3-img {
+    width: 500px;
+    top: calc(50% - 150px);
+    right: auto;
+    bottom: auto;
+    left: calc(50% - 10px);
+  }
+
+  .island-img {
+    width: 400px;
+    top: auto;
+    right: auto;
+    bottom: calc(300px);
+    left: calc(50% + 270px);
+  }
+
+  .ocean-img {
+    width: 1100px;
+    top: auto;
+    right: auto;
+    bottom: calc(-550px);
+    left: calc(50%);
+  }
+
+  .gallery-logo {
+    font-size: 6rem;
+    top: auto;
+    right: auto;
+    bottom: calc(400px);
+    left: calc(50% - 100px);
+  }
+
+  .gallery-logo__preposition {
+    font-size: 2.5rem;
+  }
+
+  .architecture-img {
+    width: 1100px;
+    top: auto;
+    right: auto;
+    bottom: calc(-80px);
+    left: calc(50%);
+  }
+}
+
+// 640px
+// stick to the edges & depend on vh unit
+@include mobile {
+  .sky-img {
+    width: auto;
+    height: 120%;
+    top: 50%;
+    right: auto;
+    bottom: auto;
+    left: 50%;
+  }
+
+  .forest-img {
+    width: 680px;
+    top: auto;
+    right: auto;
+    bottom: calc(15vh);
+    left: 50%;
+  }
+
+  .gallery-logo {
+    font-size: 3rem;
+    top: auto;
+    right: auto;
+    bottom: calc(160px + 15vh);
+    left: calc(50% - 60px);
+  }
+
+  .gallery-logo__preposition {
+    font-size: 1rem;
+  }
+
+  .architecture-img {
+    width: 680px;
+    top: auto;
+    right: auto;
+    bottom: calc(20px + 15vh);
+    left: calc(50% + 20px);
+  }
+
+  .reflection-img {
+    width: 680px;
+    top: auto;
+    right: auto;
+    bottom: calc(-270px + 15vh);
+    left: calc(50% + 20px);
+  }
+
+  .left-tree-img {
+    width: 300px;
+    top: calc(120px + 10vh);
+    right: auto;
+    bottom: auto;
+    left: calc(10px + 8vh);
+  }
+
+  .right-tree-img {
+    width: 600px;
+    top: calc(50px + 10vh);
+    right: calc(-420px + 10vh);
+    bottom: auto;
+    left: auto;
+  }
+}

@@ -175,6 +175,27 @@ $speed-normal: (
   }
 }
 
+@mixin animation-flowing($speed: 10s, $start: 0%, $end: 100%, $delay: 0s) {
+  @include animation(
+    $delay,
+    $speed,
+    animation-flowing,
+    linear,
+    normal,
+    none,
+    infinite
+  );
+
+  @keyframes animation-flowing {
+    0% {
+      transform: left($start);
+    }
+    100% {
+      transform: left(-$end);
+    }
+  }
+}
+
 @mixin animation-clear($speed: map-get($speed-normal, normal), $delay: 0) {
   @include animation($delay, $speed, animation-clear, ease-out);
 
@@ -205,14 +226,12 @@ $speed-normal: (
     0% {
       transform: translateY(-$distance);
     }
-
     100% {
       transform: translateY($distance);
     }
   }
 }
 
-// 시계 방향으로 회전하는 애니메이션
 @mixin animation-rotate-clockwise($speed: 10s, $delay: 0s) {
   @include animation(
     $delay,
@@ -228,7 +247,6 @@ $speed-normal: (
     0% {
       transform: rotate(0);
     }
-
     100% {
       transform: rotate(360deg);
     }

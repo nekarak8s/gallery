@@ -20,7 +20,11 @@ const queryClient = new QueryClient({
 
 createRoot(rootElement).render(
   <QueryClientProvider client={queryClient}>
-    <BrowserRouter>
+    <BrowserRouter
+      basename={
+        process.env.REACT_APP_BASE_URL ? process.env.REACT_APP_BASE_URL : ''
+      }
+    >
       <RecoilRoot>
         <App />
       </RecoilRoot>
