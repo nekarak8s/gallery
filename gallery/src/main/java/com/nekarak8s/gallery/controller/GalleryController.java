@@ -1,9 +1,6 @@
 package com.nekarak8s.gallery.controller;
 
-import com.nekarak8s.gallery.data.dto.ApiResponse;
-import com.nekarak8s.gallery.data.dto.GalleryCreateRequestDTO;
-import com.nekarak8s.gallery.data.dto.GalleryCreateResponseDTO;
-import com.nekarak8s.gallery.data.dto.GalleryInfoResponseDTO;
+import com.nekarak8s.gallery.data.dto.*;
 import com.nekarak8s.gallery.data.entity.Place;
 import com.nekarak8s.gallery.exception.CustomException;
 import com.nekarak8s.gallery.service.GalleryService;
@@ -112,11 +109,27 @@ public class GalleryController {
         GalleryInfoResponseDTO galleryInfoResponseDTO = galleryService.findGalleryByGalleryId(galleryId);
 
         ApiResponse apiResponse = ApiResponse.builder()
-                .message("단일 조회")
+                .message("갤러리 조회를 성공했습니다")
                 .data(galleryInfoResponseDTO)
                 .build();
         return ResponseEntity.ok(apiResponse);
     }
 
+    // 갤러리 수정
+    @PatchMapping("/{galleryId}")
+    public ResponseEntity<ApiResponse> modifyGallery(@RequestHeader(value = "X-Member-ID", required = false) long memberId,
+                                                     @PathVariable(value = "galleryId", required = false) long galleryId,
+                                                     @RequestBody @Valid GalleryModifyRequestDTO requestDTO) throws CustomException {
+        log.debug("갤러리 수정 요청옴");
+        log.debug("galleryId : {}", galleryId);
+        log.debug("게이트웨이에서 넘어온 member ID : {}", memberId);
+
+        galleryService.modifyGallery(memberId, galleryId, requestDTO);
+
+        ApiResponse apiResponse = ApiResponse.builder()
+                .message("갤러리 정보 수정을 성공했습니다")
+                .build();
+        return ResponseEntity.ok(apiResponse);
+    }
 
 }
