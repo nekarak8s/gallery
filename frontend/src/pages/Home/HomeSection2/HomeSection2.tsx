@@ -10,7 +10,6 @@ import MediaCard from './MediaCard'
 import styles from './HomeSection2.module.scss'
 
 const BACKGROUND_HEIGHT = 600 // vh
-const SCROLL_OFFSET = 200 // offset for handlescroll
 
 function HomeSection2() {
   const backgroundRef = useRef<HTMLDivElement>(null)
@@ -24,59 +23,63 @@ function HomeSection2() {
     const phrase = phraseRef.current as HTMLDivElement
     const media = mediaRef.current as HTMLDivElement
     const mediaEles = Array.from(
-      media.children as HTMLCollectionOf<HTMLElement>
+      media.children as HTMLCollectionOf<HTMLDivElement>
     )
 
+    // Set the background hieght
     background.style.setProperty(
       '--background-height',
       `${BACKGROUND_HEIGHT}vh`
     )
 
-    // initiate data on Resize
+    // Initiate data
     let scrollStart = 0
     let scrollEnd = 0
     const init = function setInitialPositionData2() {
-      // initiate scroll data
+      // Initiate scroll data
       const backgroundTop =
         window.pageYOffset + background.getBoundingClientRect().top
       scrollStart = backgroundTop
       scrollEnd = backgroundTop + background.offsetHeight - main.offsetHeight
 
-      // initiate media card position
+      // Initiate abosolute position
       mediaEles.forEach((el) => {
         const posx = Number(el.dataset.posx)
         const posy = Number(el.dataset.posy)
-        el.style.left = `${100 * posx}vw`
+        if (posx > 0) {
+          el.style.left = `${100 * posx}vw`
+        } else {
+          el.style.right = `${100 * -posx}vw`
+        }
+
         el.style.top = `${100 * posy}vh`
       })
     }
 
+    // Move media elements according to scrool
     const handleScroll = function setElementsPosition2() {
       const scrollTop = window.scrollY
 
-      // optimization
-      if (scrollTop < scrollStart - SCROLL_OFFSET || scrollTop > scrollEnd)
-        return
+      if (scrollTop < scrollStart || scrollTop > scrollEnd) return
 
-      // toggle phrase opacity
+      // Toggle phrase opacity
       if (scrollTop > scrollStart) {
         phrase.classList.add(styles.visible)
       } else {
         phrase.classList.remove(styles.visible)
       }
 
-      // scroll up media files
+      // Move media elements
       const factor = (scrollTop - scrollStart) / (scrollEnd - scrollStart)
       mediaEles.forEach((el) => {
         const speedy = Number(el.dataset.speedy)
         el.style.transform = `translateY(
-          -${factor * (BACKGROUND_HEIGHT - 100) * speedy}vh
+          calc(-50% - ${factor * (BACKGROUND_HEIGHT - 100) * speedy}vh)
           )`
 
-        const mediaCard = el.querySelector(
-          `.${styles.mediaItemCard}`
-        ) as HTMLDivElement
-        if (el.getBoundingClientRect().top < window.innerHeight * 0.8) {
+        // open the card
+        const mediaCard = el.firstElementChild as HTMLDivElement
+        if (mediaCard.getBoundingClientRect().top < window.innerHeight * 0.8) {
           mediaCard.classList.add(styles.open)
         }
       })
@@ -88,7 +91,7 @@ function HomeSection2() {
     const throttledHandleScroll = throttle(handleScroll, 10)
 
     window.addEventListener('resize', init)
-    window.addEventListener('scroll', throttledHandleScroll)
+    window.addEventListener('scroll', throttledHandleScroll, { passive: true })
     return () => {
       window.removeEventListener('resize', init)
       window.removeEventListener('scroll', throttledHandleScroll)
@@ -98,7 +101,7 @@ function HomeSection2() {
   return (
     <div className={styles.background} ref={backgroundRef}>
       <div className={styles.main} ref={mainRef}>
-        <div className={styles.phrase} ref={phraseRef}>
+        <div className={styles.mainPhrase} ref={phraseRef}>
           <p data-speedy="0" style={{ zIndex: 4 }}>
             하루에 몇 장의 사진을 찍고
           </p>
@@ -109,116 +112,107 @@ function HomeSection2() {
             하루에 몇 번을 공유 하나요
           </p>
         </div>
-        <div className={styles.media} ref={mediaRef}>
+        <div className={styles.mainMedia} ref={mediaRef}>
           <div
-            className={styles.mediaItem}
+            className={styles.mainMediaItem}
             data-posx="0.1"
-            data-posy="1.2"
+            data-posy="1.5"
             data-speedy="0.7"
-            style={{ zIndex: 3, width: '40vw', height: '30vw' }}
+            style={{ zIndex: 3 }}
           >
-            <div className={styles.mediaItemCard}>
+            <div className={styles.mainMediaItemCard}>
               <MediaCard
+                type="video"
+                alt="daily life clips"
+                src={vidSrc1}
+                width="clamp(230px, 40vw, 500px)"
+                height="clamp(172px, 30vw, 375px)"
                 description="My Wondeful Daily Life"
                 year="2019"
                 month="10"
                 date="21"
-              >
-                <video
-                  src={vidSrc1}
-                  autoPlay
-                  muted
-                  loop
-                  className={styles.mediaItemCardSrc}
-                />
-              </MediaCard>
+              />
             </div>
           </div>
           <div
-            className={styles.mediaItem}
-            data-posx="0.6"
-            data-posy="2.7"
+            className={styles.mainMediaItem}
+            data-posx="-0.1"
+            data-posy="3.3"
             data-speedy="1.4"
-            style={{ zIndex: 5, width: '30vw', height: '45vw' }}
+            style={{ zIndex: 5 }}
           >
-            <div className={styles.mediaItemCard}>
+            <div className={styles.mainMediaItemCard}>
               <MediaCard
+                alt="dog poster"
+                src={imgSrc1}
+                width="clamp(200px, 30vw, 500px)"
+                height="clamp(300px, 45vw, 750px)"
                 description="The Dog Poster"
                 year="2021"
                 month="6"
                 date="13"
-              >
-                <img src={imgSrc1} className={styles.mediaItemCardSrc} />
-              </MediaCard>
+              />
             </div>
           </div>
-
           <div
-            className={styles.mediaItem}
+            className={styles.mainMediaItem}
             data-posx="0.05"
-            data-posy="4.6"
-            data-speedy="1.6"
-            style={{ zIndex: 5, width: '40vw', height: '40vw' }}
+            data-posy="4.5"
+            data-speedy="1.5"
+            style={{ zIndex: 5 }}
           >
-            <div className={styles.mediaItemCard}>
+            <div className={styles.mainMediaItemCard}>
               <MediaCard
+                alt="Womman singing in the jazz bar"
+                src={imgSrc2}
+                width="clamp(250px, 30vw, 600px)"
+                height="clamp(250px, 30vw, 600px)"
                 description="Blue Night Jazz Club"
                 year="2018"
                 month="2"
                 date="16"
-              >
-                <img src={imgSrc2} className={styles.mediaItemCardSrc} />
-              </MediaCard>
+              />
             </div>
           </div>
           <div
-            className={styles.mediaItem}
-            data-posx="0.5"
-            data-posy="2.3"
+            className={styles.mainMediaItem}
+            data-posx="-0.15"
+            data-posy="3"
             data-speedy="0.8"
-            style={{ zIndex: 1, width: '40vw', height: '30vw' }}
+            style={{ zIndex: 1 }}
           >
-            <div className={styles.mediaItemCard}>
+            <div className={styles.mainMediaItemCard}>
               <MediaCard
+                type="video"
+                alt="travling video cllips"
+                src={vidSrc2}
+                width="clamp(230px, 40vw, 500px)"
+                height="clamp(172px, 30vw, 375px)"
                 description="My Wondeful Daily Life"
                 year="2019"
                 month="10"
                 date="21"
-              >
-                <video
-                  src={vidSrc2}
-                  autoPlay
-                  muted
-                  loop
-                  className={styles.mediaItemCardSrc}
-                />
-              </MediaCard>
+              />
             </div>
           </div>
           <div
-            className={styles.mediaItem}
+            className={styles.mainMediaItem}
             data-posx="0.05"
-            data-posy="5"
+            data-posy="5.5"
             data-speedy="1"
             style={{ zIndex: 7 }}
           >
-            <div
-              className={styles.mediaItemCardContainer}
-              style={{ width: '95vw' }}
-            >
-              <div
-                className={styles.mediaItemCard}
-                style={{ width: '50vh', height: '80vh' }}
-              >
-                <MediaCard
-                  description="My Wondeful Daily Life"
-                  year="2019"
-                  month="10"
-                  date="21"
-                >
-                  <img src={imgSrc3} className={styles.mediaItemCardSrc} />
-                </MediaCard>
-              </div>
+            <div className={styles.mainMediaItemCard} style={{ width: '95vw' }}>
+              <MediaCard
+                alt="The cloud poster"
+                src={imgSrc3}
+                width="clamp(190px, 50vw, 350px)"
+                height="clamp(304px, 70vw, 490px)"
+                description="The cloud poster"
+                year="2019"
+                month="10"
+                date="21"
+              />
               <div className={styles.mediaItemCardBlank}>
                 <p>
                   <span>T</span>he advancement of mobile devices has made it

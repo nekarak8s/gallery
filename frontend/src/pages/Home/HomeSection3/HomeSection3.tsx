@@ -3,7 +3,7 @@ import throttle from 'lodash/throttle'
 import videoSrc3 from '@/assets/videos/video3.webm'
 import styles from './HomeSection3.module.scss'
 
-const BACKGROUND_HEIGHT = 600 // vh
+const BACKGROUND_HEIGHT = 520 // vh
 const SCROLL_OFFSET = 200 // offset for handlescroll
 
 function HomeSection3() {

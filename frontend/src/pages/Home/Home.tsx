@@ -5,6 +5,7 @@ import HomeSection3 from './HomeSection3'
 
 import './Home.scss'
 import { getRandom } from '@/utils/math'
+import Loading from '@/atoms/ui/Loading'
 
 const BACKGROUND_COLORS = ['#87D7D0', '#CDF4F5', '#1B9CC6', '#016699']
 const FONT_COLORS = ['#FA937A', '#F74F48', '#F7A754', '#F7B5B7']
@@ -26,7 +27,6 @@ function Home() {
       <HomeSection1 />
       <HomeSection2 />
       <HomeSection3 />
-      {/* <HomeSection4 /> */}
     </div>
   )
 }

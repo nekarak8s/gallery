@@ -1,16 +1,43 @@
+@import '@/styles/_responsive.scss';
+
 .media-card {
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-template-rows: 1fr auto;
-  height: 100%;
-  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.media-card__src {
+  object-fit: cover;
+  object-position: 50% 50%;
+  display: inline-block;
 }
 
 .media-card__label {
   display: flex;
   justify-content: space-between;
-  padding: 1rem 1rem;
+  padding: 0.8rem 1rem;
   width: 100%;
   color: var(--font-color, rgb(255, 93, 52));
   font-size: 1.2rem;
+}
+
+@include laptop {
+  .media-card__label {
+    font-size: 1.1rem;
+    padding: 0.7rem 0.8rem;
+  }
+}
+
+@include tablet {
+  .media-card__label {
+    font-size: 1rem;
+    padding: 0.6rem 0.6rem;
+  }
+}
+
+@include mobile {
+  .media-card__label {
+    font-size: 0.8rem;
+    padding: 0.5rem 0.3rem;
+  }
 }

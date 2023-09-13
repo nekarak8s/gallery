@@ -1,0 +1,86 @@
+@import '@/styles/_animations.scss';
+@import '@/styles/_responsive.scss';
+
+.loading {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 2px;
+  color: #aaaaaa;
+}
+
+.loading svg {
+  @include animation-rotate-clockwise(2.5s, 2, ease-in-out);
+  width: 4rem;
+  height: 4rem;
+}
+
+.loading__phrase {
+  display: flex;
+  font-size: 1.3rem;
+  font-weight: 900;
+  justify-content: center;
+  align-items: center;
+  gap: 1px;
+}
+
+.loading__phrase > span {
+  display: inline-block;
+}
+
+@for $i from 1 through 7 {
+  .loading__phrase > span:nth-child(#{$i}) {
+    animation: loading-animtaion-scale
+      2.2s
+      ease-in-out
+      infinite
+      #{($i - 1) *
+      0.14}s;
+  }
+}
+
+@keyframes loading-animtaion-scale {
+  0% {
+    transform: translateY(0);
+  }
+  20% {
+    transform: translateY(-10%);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+@include laptop {
+  .loading svg {
+    width: 3.5rem;
+    height: 3.5rem;
+  }
+
+  .loading__phrase {
+    font-size: 1.2rem;
+  }
+}
+
+@include tablet {
+  .loading svg {
+    width: 3rem;
+    height: 3rem;
+  }
+
+  .loading__phrase {
+    font-size: 1rem;
+  }
+}
+
+@include mobile {
+  .loading svg {
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+
+  .loading__phrase {
+    font-size: 0.8rem;
+  }
+}
