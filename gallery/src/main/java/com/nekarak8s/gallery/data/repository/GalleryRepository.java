@@ -23,5 +23,5 @@ public interface GalleryRepository extends JpaRepository<Gallery, Long> {
             "JOIN Place p ON p.placeId = g.placeId WHERE g.galleryId = :galleryId")
     Optional<GalleryInfoResponseDTO> findByGalleryId(long galleryId);
 
-    Optional<Gallery> findByMemberIdAndGalleryId(long memberId, long galleryID);
+    Optional<Gallery> findByMemberIdAndGalleryId(long memberId, long galleryId);
 }

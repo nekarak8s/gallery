@@ -107,4 +107,14 @@ public class GalleryServiceImpl implements GalleryService {
         gallery.setPlaceId(requestDTO.getPlaceId());
 
     }
+
+    @Transactional
+    @Override
+    public void deleteGallery(long memberId, long galleryId) throws CustomException {
+
+        Gallery gallery = galleryRepository.findByMemberIdAndGalleryId(memberId, galleryId)
+                .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "GG007", "해당 갤러리 정보가 없습니다"));
+
+        galleryRepository.deleteById(galleryId);
+    }
 }

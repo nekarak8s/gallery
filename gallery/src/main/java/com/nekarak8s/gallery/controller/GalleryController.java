@@ -132,4 +132,20 @@ public class GalleryController {
         return ResponseEntity.ok(apiResponse);
     }
 
+    // 갤러리 삭제
+    @DeleteMapping("/{galleryId}")
+    public ResponseEntity<ApiResponse> deleteGallery(@RequestHeader(value = "X-Member-ID", required = false) long memberId,
+                                                     @PathVariable(value = "galleryId", required = false) long galleryId) throws CustomException {
+        log.debug("갤러리 삭제 요청옴");
+        log.debug("galleryId : {}", galleryId);
+        log.debug("게이트웨이에서 넘어온 member ID : {}", memberId);
+
+        galleryService.deleteGallery(memberId, galleryId);
+
+        ApiResponse apiResponse = ApiResponse.builder()
+                .message("갤러리가 삭제되었습니다")
+                .build();
+        return ResponseEntity.ok(apiResponse);
+    }
+
 }

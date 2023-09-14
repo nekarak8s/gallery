@@ -29,4 +29,7 @@ public interface GalleryService {
 
     // 갤러리 수정
     void modifyGallery(long memberId, long galleryId, GalleryModifyRequestDTO requestDTO) throws CustomException;
+
+    // 갤러리 삭제
+    void deleteGallery(long memberId, long galleryId) throws CustomException;
 }
