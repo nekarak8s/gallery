@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import throttle from 'lodash/throttle'
 import cloud1Img from '@/assets/images/home-section-1/cloud1.webp'
 import cloud2Img from '@/assets/images/home-section-1/cloud2.webp'
@@ -11,11 +11,27 @@ import ScrollDown from '@/atoms/ui/ScrollDown'
 
 import OceanFiltered from './OceanFiltered'
 import styles from './HomeSection1.module.scss'
+import Loading from '@/atoms/ui/Loading'
 
+const TOTAL_IMAGE = 7
 const LAYER_DEPTH = 50 // css 3d-preserve factor: layer -> tranlsateZ
 const SCROLL_OFFSET = 300
 
 function HomeSection1() {
+  const [imagesLoaded, setImagesLoaded] = useState(0)
+  const loadingRef = useRef<HTMLDivElement>(null)
+
+  const handleImageLoad = () => {
+    setImagesLoaded((num) => num + 1)
+  }
+
+  useEffect(() => {
+    if (imagesLoaded === TOTAL_IMAGE) {
+      const loading = loadingRef.current as HTMLDivElement
+      loading.style.opacity = '0'
+    }
+  }, [imagesLoaded])
+
   const backgroundRef = useRef<HTMLDivElement>(null)
   const mainRef = useRef<HTMLDivElement>(null)
   const gradientRef = useRef<HTMLDivElement>(null)
@@ -128,7 +144,8 @@ function HomeSection1() {
             data-layer="0"
             alt="sky"
             src={skyImg}
-          ></img>
+            onLoad={handleImageLoad}
+          />
           <img
             className={styles.mainInterCloud1}
             data-speedx="0.07"
@@ -138,7 +155,8 @@ function HomeSection1() {
             data-layer="1"
             alt="cloud 1"
             src={cloud1Img}
-          ></img>
+            onLoad={handleImageLoad}
+          />
           <img
             className={styles.mainInterCloud2}
             data-speedx="0.08"
@@ -148,7 +166,8 @@ function HomeSection1() {
             data-layer="1"
             alt="cloud 2"
             src={cloud2Img}
-          ></img>
+            onLoad={handleImageLoad}
+          />
           <img
             className={styles.mainInterCloud3}
             data-speedx="0.05"
@@ -158,7 +177,8 @@ function HomeSection1() {
             data-layer="1"
             alt="cloud 3"
             src={cloud3Img}
-          ></img>
+            onLoad={handleImageLoad}
+          />
           <img
             className={styles.mainInterIsland}
             data-speedx="0.1"
@@ -168,7 +188,8 @@ function HomeSection1() {
             data-layer="2"
             alt="island"
             src={islandImg}
-          ></img>
+            onLoad={handleImageLoad}
+          />
           <div
             className={`${styles.mainInterOcean} scroll-down`}
             data-speedx="0.1"
@@ -177,7 +198,11 @@ function HomeSection1() {
             data-rotation="0.09"
             data-layer="2"
           >
-            <OceanFiltered imgSrc={oceanImg} alt="ocean" />
+            <OceanFiltered
+              imgSrc={oceanImg}
+              alt="ocean"
+              onLoad={handleImageLoad}
+            />
           </div>
           <div
             className={`${styles.mainInterLogo} scroll-magnify-center`}
@@ -199,7 +224,11 @@ function HomeSection1() {
             data-layer="4"
             alt="architecture"
             src={architectureImg}
-          ></img>
+            onLoad={handleImageLoad}
+          />
+        </div>
+        <div className={styles.mainLoading} ref={loadingRef}>
+          <Loading />
         </div>
       </div>
     </div>

@@ -5,12 +5,18 @@ import styles from './OceanFiltered.module.scss'
 interface Props {
   imgSrc: string
   alt: string
+  onLoad: () => void
 }
 
-const OceanFiltered: React.FC<Props> = ({ imgSrc, alt }) => {
+const OceanFiltered: React.FC<Props> = ({ imgSrc, alt, onLoad }) => {
   return (
     <>
-      <img className={styles.targetImg} src={imgSrc} alt={alt} />
+      <img
+        className={styles.targetImg}
+        src={imgSrc}
+        alt={alt}
+        onLoad={onLoad}
+      />
       <svg
         width="200"
         height="200"

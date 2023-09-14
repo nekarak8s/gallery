@@ -222,15 +222,6 @@ function HomeSection2() {
                   moments but as material for sharing on social media or mere
                   fragments of memories.
                 </p>
-                <p>
-                  <span>H</span>owever, what we often overlook is that
-                  photographs capture moments from the past, each carrying its
-                  own emotions and significance. Some photos can remind us of
-                  significant moments in our lives and evoke deeper thoughts and
-                  emotions. Therefore, when taking photos with mobile devices,
-                  we should consider not only the beauty of the moment but also
-                  what that moment signifies.
-                </p>
               </div>
             </div>
           </div>

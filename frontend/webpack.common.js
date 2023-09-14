@@ -7,6 +7,9 @@ const Dotenv = require('dotenv-webpack')
 
 module.exports = {
   entry: './src/index.tsx',
+  output: {
+    assetModuleFilename: 'images/[name][hash][ext][query]',
+  },
   resolve: {
     modules: [path.resolve(__dirname, 'node_modules')],
     extensions: ['.js', '.jsx', '.ts', '.tsx'],
@@ -19,6 +22,11 @@ module.exports = {
       {
         test: /\.(jpg|png|gif|webp|webm)$/,
         type: 'asset', // https://webpack.js.org/guides/asset-modules/
+        parser: {
+          dataUrlCondition: {
+            maxSize: 4 * 1024, // 4kb
+          },
+        },
       },
       {
         test: /\.svg$/,
@@ -50,7 +58,15 @@ module.exports = {
       template: './public/index.html',
     }),
     new CopyPlugin({
-      patterns: [{ from: 'public', to: 'dist' }],
+      patterns: [
+        {
+          from: path.resolve(__dirname, 'public'),
+          to: path.resolve(__dirname, 'dist'),
+          globOptions: {
+            ignore: ['**/index.html'],
+          },
+        },
+      ],
     }),
   ],
 }

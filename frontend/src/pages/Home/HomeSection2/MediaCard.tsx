@@ -1,5 +1,4 @@
 import React from 'react'
-
 import styles from './MediaCard.module.scss'
 
 interface Props {
@@ -33,6 +32,7 @@ const MediaCard: React.FC<Props> = ({
           src={src}
           alt={alt}
           style={{ width, height }}
+          loading="lazy"
         />
       ) : (
         <video
