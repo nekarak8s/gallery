@@ -1,7 +1,7 @@
 @import '@/styles/_responsive.scss';
 
 .background {
-  height: 180vh;
+  height: 200vh;
 }
 
 .main {
@@ -14,11 +14,16 @@
   transform-style: preserve-3d;
 }
 
-.mouse-move > * {
-  transition: transform 0.45s cubic-bezier(0.2, 0.49, 0.32, 0.99);
+.main__loading {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: white;
 }
 
-.gradient-fade {
+.main__gradient-fade {
   position: absolute;
   z-index: 3;
   width: 100%;
@@ -34,14 +39,25 @@
   opacity: 0;
 }
 
-.scroll-down {
+.main__scroll-down {
   position: absolute;
   z-index: 3;
   left: 50%;
   bottom: 5%;
+  transform: translateX(-50%);
 }
 
-.sky-img {
+.main__inter {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.main__inter > * {
+  transition: transform 0.45s cubic-bezier(0.2, 0.49, 0.32, 0.99);
+}
+
+.main__inter__sky {
   position: absolute;
   width: 120%;
   height: auto;
@@ -52,7 +68,7 @@
   transform: translate(-50%, -50%);
 }
 
-.cloud-1-img {
+.main__inter__cloud1 {
   position: absolute;
   width: 80%;
   height: auto;
@@ -63,7 +79,7 @@
   transform: translate(-50%, -50%);
 }
 
-.cloud-2-img {
+.main__inter__cloud2 {
   position: absolute;
   width: 80%;
   height: auto;
@@ -74,7 +90,7 @@
   transform: translate(-50%, -50%);
 }
 
-.cloud-3-img {
+.main__inter__cloud3 {
   position: absolute;
   width: 40%;
   height: auto;
@@ -85,7 +101,7 @@
   transform: translate(-50%, -50%);
 }
 
-.island-img {
+.main__inter__island {
   position: absolute;
   width: 35%;
   height: auto;
@@ -96,9 +112,9 @@
   transform: translate(-50%, -50%);
 }
 
-.ocean-img {
+.main__inter__ocean {
   position: absolute;
-  width: 110%;
+  width: 120%;
   height: 60%;
   top: calc(50% + 30%);
   right: auto;
@@ -108,7 +124,7 @@
   overflow: hidden;
 }
 
-.gallery-logo {
+.main__inter__logo {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -118,7 +134,7 @@
   top: calc(45%);
   right: auto;
   bottom: auto;
-  left: calc(50% - 10%);
+  left: calc(50% - 15%);
   transform: translate(-50%, -50%);
   color: white;
   font-size: 10vw;
@@ -126,17 +142,17 @@
   text-align: center;
 }
 
-.gallery-logo__preposition {
+.main__inter__logo__preposition {
   font-size: 3.5vw;
   text-align: left;
   align-self: flex-start;
 }
 
-.architecture-img {
+.main__inter__architect {
   position: absolute;
-  width: 110%;
+  width: 130%;
   height: auto;
-  top: calc(50% + 30%);
+  top: calc(50% + 35%);
   right: auto;
   bottom: auto;
   left: calc(50%);
@@ -145,19 +161,19 @@
 
 // 1280px
 @include laptop {
-  .sky-img {
+  .main__inter__sky {
     width: 1400px;
   }
 
-  .cloud-1-img {
+  .main__inter__cloud1 {
     width: 920px;
     top: calc(50% - 300px);
     right: auto;
     bottom: auto;
-    left: calc(50% + 600px);
+    left: calc(50% + 500px);
   }
 
-  .cloud-2-img {
+  .main__inter__cloud2 {
     width: 920px;
     top: calc(50% - 300px);
     right: auto;
@@ -165,7 +181,7 @@
     left: calc(50% - 400px);
   }
 
-  .cloud-3-img {
+  .main__inter__cloud3 {
     width: 500px;
     top: calc(50% - 100px);
     right: auto;
@@ -173,38 +189,38 @@
     left: calc(50% + 220px);
   }
 
-  .island-img {
+  .main__inter__island {
     width: 360px;
-    top: calc(50% - 70px);
+    top: calc(50% - 20px);
     right: auto;
     bottom: auto;
-    left: calc(50% + 500px);
+    left: calc(50% + 480px);
   }
 
-  .ocean-img {
+  .main__inter__ocean {
     width: 1400px;
-    top: calc(50% + 180px);
+    top: calc(50% + 220px);
     right: auto;
     bottom: auto;
     left: calc(50%);
   }
 
-  .gallery-logo {
-    top: calc(50% - 50px);
+  .main__inter__logo {
+    top: calc(50% - 20px);
     right: auto;
     bottom: auto;
-    left: calc(50% - 100px);
+    left: calc(50% - 150px);
     color: white;
-    font-size: 7rem;
+    font-size: 7.5rem;
   }
 
-  .gallery-logo__preposition {
-    font-size: 3rem;
+  .main__inter__logo__preposition {
+    font-size: 2.7rem;
   }
 
-  .architecture-img {
+  .main__inter__architect {
     width: 1400px;
-    top: calc(50% + 200px);
+    top: calc(50% + 250px);
     right: auto;
     bottom: auto;
     left: calc(50%);
@@ -214,67 +230,67 @@
 // 992px
 // stick to the edges & depend on vh unit
 @include tablet {
-  .sky-img {
-    width: 2000px;
+  .main__inter__sky {
+    height: 100%;
   }
 
-  .cloud-1-img {
-    width: 800px;
-    top: calc(50% - 350px);
-    right: calc(-500px);
+  .main__inter__cloud1 {
+    width: 700px;
+    top: calc(60px + 9vh);
+    right: calc(-600px);
     bottom: auto;
     left: auto;
   }
 
-  .cloud-2-img {
-    width: 800px;
-    top: calc(50% - 350px);
+  .main__inter__cloud2 {
+    width: 700px;
+    top: calc(-180px + 50vh);
     right: auto;
     bottom: auto;
-    left: calc(50% - 300px);
+    left: calc(80px);
   }
 
-  .cloud-3-img {
-    width: 500px;
-    top: calc(50% - 150px);
-    right: auto;
+  .main__inter__cloud3 {
+    width: 400px;
+    top: calc(-200px + 76vh);
+    right: calc(-200px);
     bottom: auto;
-    left: calc(50% - 10px);
+    left: auto;
   }
 
-  .island-img {
+  .main__inter__island {
     width: 400px;
     top: auto;
     right: auto;
-    bottom: calc(300px);
+    bottom: calc(130px + 10vh);
     left: calc(50% + 270px);
   }
 
-  .ocean-img {
+  .main__inter__ocean {
     width: 1100px;
     top: auto;
     right: auto;
-    bottom: calc(-550px);
+    bottom: calc(200px - 80vh);
     left: calc(50%);
   }
 
-  .gallery-logo {
-    font-size: 6rem;
+  .main__inter__logo {
     top: auto;
     right: auto;
-    bottom: calc(400px);
+    bottom: calc(-120px + 40vh);
     left: calc(50% - 100px);
+    font-size: 6rem;
   }
 
-  .gallery-logo__preposition {
+  .main__inter__logo__preposition {
     font-size: 2.5rem;
   }
 
-  .architecture-img {
+  .main__inter__architect {
     width: 1100px;
     top: auto;
     right: auto;
-    bottom: calc(-80px);
+    bottom: calc(-100px - 9vh);
     left: calc(50%);
   }
 }
@@ -282,64 +298,67 @@
 // 640px
 // stick to the edges & depend on vh unit
 @include mobile {
-  .sky-img {
-    width: auto;
-    height: 120%;
-    top: 50%;
-    right: auto;
-    bottom: auto;
-    left: 50%;
+  .main__inter__sky {
+    height: 100%;
   }
 
-  .forest-img {
-    width: 680px;
-    top: auto;
-    right: auto;
-    bottom: calc(15vh);
-    left: 50%;
-  }
-
-  .gallery-logo {
-    font-size: 3rem;
-    top: auto;
-    right: auto;
-    bottom: calc(160px + 15vh);
-    left: calc(50% - 60px);
-  }
-
-  .gallery-logo__preposition {
-    font-size: 1rem;
-  }
-
-  .architecture-img {
-    width: 680px;
-    top: auto;
-    right: auto;
-    bottom: calc(20px + 15vh);
-    left: calc(50% + 20px);
-  }
-
-  .reflection-img {
-    width: 680px;
-    top: auto;
-    right: auto;
-    bottom: calc(-270px + 15vh);
-    left: calc(50% + 20px);
-  }
-
-  .left-tree-img {
-    width: 300px;
-    top: calc(120px + 10vh);
-    right: auto;
-    bottom: auto;
-    left: calc(10px + 8vh);
-  }
-
-  .right-tree-img {
-    width: 600px;
-    top: calc(50px + 10vh);
-    right: calc(-420px + 10vh);
+  .main__inter__cloud1 {
+    width: 400px;
+    top: calc(60px + 9vh);
+    right: calc(-240px);
     bottom: auto;
     left: auto;
+  }
+
+  .main__inter__cloud2 {
+    width: 400px;
+    top: calc(-150px + 55vh);
+    right: auto;
+    bottom: auto;
+    left: calc(80px);
+  }
+
+  .main__inter__cloud3 {
+    width: 300px;
+    top: calc(-200px + 80vh);
+    right: calc(-220px);
+    bottom: auto;
+    left: auto;
+  }
+
+  .main__inter__island {
+    width: 280px;
+    top: auto;
+    right: auto;
+    bottom: calc(30px + 20vh);
+    left: calc(50% + 200px);
+  }
+
+  .main__inter__ocean {
+    width: 800px;
+    top: auto;
+    right: auto;
+    bottom: calc(80px - 70vh);
+    left: calc(50%);
+  }
+
+  .main__inter__logo {
+    top: auto;
+    right: auto;
+    bottom: calc(-100px + 40vh);
+    left: calc(50% - 40px);
+    font-size: 4rem;
+  }
+
+  .main__inter__logo__preposition {
+    font-size: 2rem;
+  }
+
+  .main__inter__architect {
+    width: 800px;
+    top: auto;
+    right: auto;
+    bottom: calc(-60px - 10vh);
+    left: calc(50%);
   }
 }

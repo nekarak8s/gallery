@@ -2,14 +2,3 @@
   font-size: 100px;
   height: 500vh;
 }
-
-.ocean {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-image: url('../../assets/images/blue-ocean.jpg');
-  background-size: cover;
-  filter: url('#turbulence');
-}

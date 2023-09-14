@@ -232,12 +232,16 @@ $speed-normal: (
   }
 }
 
-@mixin animation-rotate-clockwise($speed: 10s, $delay: 0s) {
+@mixin animation-rotate-clockwise(
+  $speed: 10s,
+  $times: 1,
+  $time-function: linear
+) {
   @include animation(
-    $delay,
+    0s,
     $speed,
     animation-rotate-clockwise,
-    linear,
+    $time-function,
     normal,
     none,
     infinite
@@ -248,7 +252,8 @@ $speed-normal: (
       transform: rotate(0);
     }
     100% {
-      transform: rotate(360deg);
+      // prettier-ignore
+      transform: rotate(#{$times}turn);
     }
   }
 }
