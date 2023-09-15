@@ -1,0 +1,11 @@
+@import '@/styles/_z-index.scss';
+
+.modal {
+  @include z-index(modal);
+  border: none;
+  border-radius: 10px;
+}
+
+.modal::backdrop {
+  background-color: rgba(0, 0, 0, 0.3);
+}

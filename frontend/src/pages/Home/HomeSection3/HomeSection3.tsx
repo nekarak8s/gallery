@@ -23,6 +23,7 @@ function HomeSection3() {
   const videoRef = useRef<HTMLDivElement>(null)
   const videoLightRef = useRef<HTMLDivElement>(null)
   const videoFrameRef = useRef<HTMLDivElement>(null)
+  const videoLabelRef = useRef<HTMLDivElement>(null)
 
   /**
    * Handle MouuseMove Event
@@ -100,6 +101,7 @@ function HomeSection3() {
     const video = videoRef.current as HTMLDivElement
     const videoFrame = videoFrameRef.current as HTMLDivElement
     const videoLight = videoLightRef.current as HTMLDivElement
+    const videoLabel = videoLabelRef.current as HTMLDivElement
 
     // Set the background height
     background.style.setProperty(
@@ -162,8 +164,9 @@ function HomeSection3() {
         // play video
         videoSrc.play()
 
-        // unframe the video
+        // unframe the video & hide label
         videoFrame.classList.remove(styles.visible)
+        videoLabel.classList.remove(styles.visible)
 
         // disable tilt
         setIsTiltActivated(false)
@@ -188,8 +191,9 @@ function HomeSection3() {
         // stop video
         videoSrc.pause()
 
-        // frame the video
+        // frame the video & hide label
         videoFrame.classList.add(styles.visible)
+        videoLabel.classList.remove(styles.visible)
 
         // disable tilt
         setIsTiltActivated(false)
@@ -214,8 +218,9 @@ function HomeSection3() {
         // stop video
         videoSrc.pause()
 
-        // frame the video
+        // frame the video & show label
         videoFrame.classList.add(styles.visible)
+        videoLabel.classList.add(styles.visible)
 
         // enable tilt
         setIsTiltActivated(true)
@@ -293,7 +298,7 @@ function HomeSection3() {
             />
             <div className={styles.mainVideoLight} ref={videoLightRef} />
           </div>
-          <div className={styles.mainVideoLabel}>
+          <div className={styles.mainVideoLabel} ref={videoLabelRef}>
             <p>작품명</p>
             <p>마우스를 올려보세요</p>
           </div>

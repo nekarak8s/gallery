@@ -33,13 +33,22 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  font-size: 2rem;
-  font-weight: 800;
 }
 
 .navbar__logo svg {
   width: 2.8rem;
   height: 2.8rem;
+}
+
+.navbar__logo__title {
+  display: flex;
+  flex-direction: column;
+  font-size: 1.8rem;
+  font-weight: 800;
+}
+
+.navbar__logo__title > span {
+  font-size: 0.9rem;
 }
 
 .navbar__menu {
@@ -49,10 +58,14 @@
   font-weight: 800;
 }
 
+.navbar__menu > li {
+  cursor: pointer;
+}
+
 .navbar__toggle {
   display: none;
   position: absolute;
-  top: 0.6em;
+  top: 0.7em;
   right: 1em;
   cursor: pointer;
 
@@ -63,8 +76,12 @@
 }
 
 @include tablet {
-  .navbar__logo {
-    font-size: 1.8rem;
+  .navbar__logo__title {
+    font-size: 1.6rem;
+  }
+
+  .navbar__logo__title > span {
+    font-size: 0.7rem;
   }
 
   .navbar__logo svg {
@@ -85,8 +102,12 @@
     align-items: stretch;
   }
 
-  .navbar__logo {
-    font-size: 1.5rem;
+  .navbar__logo__title {
+    font-size: 1.2rem;
+  }
+
+  .navbar__logo__title > span {
+    font-size: 0.4rem;
   }
 
   .navbar__logo svg {
