@@ -6,26 +6,31 @@ import './Navbar.scss'
 import throttle from 'lodash/throttle'
 import BurgerLogo from '@/assets/svgs/burger.svg'
 
-import { useLogin } from '@/features/members/services'
+import Modal from '@/atoms/ui/Modal'
+import LoginForm from '@/features/members/components/LoginForm'
 
 function Navbar() {
   const navbarRef = useRef<HTMLDivElement>(null)
   const navbarMenuRef = useRef<HTMLUListElement>(null)
 
-  const { mutate: login } = useLogin('kakao')
-
-  const handleClick = function () {
-    login()
+  /**
+   * handle login button click
+   */
+  const [isLoginOpen, setIsLoginOpen] = useState(true)
+  const handleLoginClick = function () {
+    setIsLoginOpen(true)
   }
 
-  // 토글 버튼 눌렀을때 작동
+  /**
+   * handle toggle button click in mobile device size
+   */
   const handleToggleClick = useCallback(() => {
     navbarMenuRef.current?.classList.toggle('open')
   }, [])
 
-  /*
-  Show navbar when scrolled down
-  */
+  /**
+   * Show navbar when scrolled down
+   */
   useEffect(() => {
     const navbarEle = navbarRef.current as HTMLElement
 
@@ -42,39 +47,45 @@ function Navbar() {
     }
 
     const throttledHandleScroll = throttle(handleScroll, 100)
-
     window.addEventListener('scroll', throttledHandleScroll, { passive: true })
-
     return () => {
       window.removeEventListener('scroll', throttledHandleScroll)
     }
   }, [])
   return (
-    <div className="navbar--layout">
-      <nav className="navbar" ref={navbarRef}>
-        <NavLink to={routes['Home'].path}>
-          <div className="navbar__logo">
-            <LogoIcon />
-            Gallery
-          </div>
-        </NavLink>
-        <ul className="navbar__menu" ref={navbarMenuRef}>
-          <li>
-            <div onClick={handleClick}>Login</div>
-          </li>
-          <li>
-            <NavLink to={routes['Guide'].path}>Guide</NavLink>
-          </li>
-          <li>
-            <NavLink to={routes['MyPage'].path}>MyPage</NavLink>
-          </li>
-        </ul>
-        <button className="navbar__toggle" onClick={handleToggleClick}>
-          <BurgerLogo />
-        </button>
-      </nav>
-      <Outlet />
-    </div>
+    <>
+      <div className="navbar--layout">
+        <nav className="navbar" ref={navbarRef}>
+          <NavLink to={routes['Home'].path}>
+            <div className="navbar__logo">
+              <LogoIcon />
+              <p className="navbar__logo__title">
+                <span>The</span>
+                Gallery
+              </p>
+            </div>
+          </NavLink>
+          <ul className="navbar__menu" ref={navbarMenuRef}>
+            <li>
+              <div onClick={handleLoginClick}>Login</div>
+            </li>
+            <li>
+              <NavLink to={routes['Guide'].path}>Guide</NavLink>
+            </li>
+            <li>
+              <NavLink to={routes['MyPage'].path}>MyPage</NavLink>
+            </li>
+          </ul>
+          <button className="navbar__toggle" onClick={handleToggleClick}>
+            <BurgerLogo />
+          </button>
+        </nav>
+        <Outlet />
+      </div>
+      <Modal isOpen={isLoginOpen} onClose={() => setIsLoginOpen(false)}>
+        <LoginForm />
+      </Modal>
+    </>
   )
 }
 

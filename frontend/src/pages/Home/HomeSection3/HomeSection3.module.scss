@@ -133,14 +133,16 @@ $FRAME_COLOR: rgb(44, 5, 5);
   z-index: 4;
   opacity: 0;
   transition: opacity $BACKGROUND_CHANGE_TIME ease-in-out;
+  pointer-events: none;
 }
 
 .main__button.visible {
   opacity: 1;
+  pointer-events: auto;
 }
 
 .main__video--container {
-  position: fixed;
+  position: absolute;
   z-index: 3;
   top: 150vh;
   right: 20vw;
@@ -152,6 +154,7 @@ $FRAME_COLOR: rgb(44, 5, 5);
 }
 
 .main__video {
+  position: relative;
   width: 100%;
   height: 100%;
   transform-style: preserve-3d;
@@ -246,6 +249,7 @@ $FRAME_COLOR: rgb(44, 5, 5);
   position: absolute;
   bottom: -6em;
   left: 50%;
+  z-index: 1;
   transform: translateX(-50%);
   width: 10em;
   height: 5em;
@@ -260,8 +264,12 @@ $FRAME_COLOR: rgb(44, 5, 5);
   color: #222222;
   font-size: 18px;
   font-weight: 600;
-  opacity: 1;
+  opacity: 0;
   transition: opacity $BACKGROUND_CHANGE_TIME ease-in-out;
+}
+
+.main__video__label.visible {
+  opacity: 1;
 }
 
 .main__video__label > p {
@@ -285,7 +293,7 @@ $FRAME_COLOR: rgb(44, 5, 5);
   }
 
   .main__button {
-    top: 40%;
+    top: 42%;
   }
 
   .main__circle.visible svg:first-child {
@@ -329,10 +337,10 @@ $FRAME_COLOR: rgb(44, 5, 5);
   }
 
   .main__video__label {
-    font-size: 13px;
+    font-size: 11px;
   }
 
   .main__video__label > p:first-child {
-    font-size: 15px;
+    font-size: 13px;
   }
 }

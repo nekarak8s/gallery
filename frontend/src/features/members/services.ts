@@ -11,14 +11,12 @@ import { useSetRecoilState } from 'recoil'
 
 // 로그인
 export function useLogin(type: string) {
-  const navigate = useNavigate()
   return useMutation<LoginResponse>(
     () => axiosInstance.post(`/member/login?type=${type}`),
     {
       onSuccess: (res) => {
         const redirectURL = res.data
         window.location.href = redirectURL
-        // navigate('/' + redirectURL)
       },
       onError: () => {
         //   toast.addMessage('error', err.data.message)
