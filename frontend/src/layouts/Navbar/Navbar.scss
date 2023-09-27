@@ -5,6 +5,8 @@
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: auto 1fr;
+  background-color: #ffffff;
+  min-height: 100vh;
 }
 
 .navbar {

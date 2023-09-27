@@ -6,18 +6,18 @@ import { NavLink } from 'react-router-dom'
 
 interface Props {
   text: string
-  title: string
+  ariaLabel: string
   to?: string
-  color?: string
   size?: 'lg' | 'md' | 'sm'
+  color?: 'primary' | 'black' | 'white'
 }
 
 const MagneticButton: React.FC<Props> = ({
   text,
-  title,
+  ariaLabel,
   to = '',
-  color = '#176beb',
   size = 'md',
+  color = 'primary',
 }: Props) => {
   const buttonRef = useRef<HTMLAnchorElement>(null)
   const buttonTextRef = useRef<HTMLElement>(null)
@@ -66,11 +66,10 @@ const MagneticButton: React.FC<Props> = ({
   }, [])
   return (
     <NavLink
-      className={`${styles.button} ${styles[size]}`}
+      className={`${styles.button} ${styles[size]} ${styles[color]}`}
       to={to}
-      title={title}
+      aria-label={ariaLabel}
       ref={buttonRef}
-      style={{ backgroundColor: color }}
     >
       <span className={styles.buttonText} ref={buttonTextRef}>
         {text}

@@ -10,6 +10,7 @@ import OAuth from './pages/OAuth'
 import './App.scss'
 import '@/styles/_reset.scss'
 import '@/styles/_global.scss'
+import Cursor from './atoms/ui/Cursor'
 
 export const routes: Record<string, RouteElement> = {
   Home: { path: '/', element: <Home /> },
@@ -22,13 +23,16 @@ function App() {
   useAxiosInterceptor()
 
   return (
-    <Routes>
-      <Route path="/" element={<Navbar />}>
-        {Object.values(routes).map((route) => (
-          <Route key={route.path} path={route.path} element={route.element} />
-        ))}
-      </Route>
-    </Routes>
+    <>
+      <Routes>
+        <Route path="/" element={<Navbar />}>
+          {Object.values(routes).map((route) => (
+            <Route key={route.path} path={route.path} element={route.element} />
+          ))}
+        </Route>
+      </Routes>
+      <Cursor />
+    </>
   )
 }
 export default App

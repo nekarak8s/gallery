@@ -6,7 +6,7 @@ import { routes } from '@/App'
 // Create Axios Instance
 const BASE_API_URL = process.env.REACT_APP_API_BASE_URL
   ? process.env.REACT_APP_API_BASE_URL
-  : `http://${window.location.hostname}:${window.location.port}/`
+  : `http://${window.location.hostname}:${window.location.port}/api`
 
 export const axiosInstance = axios.create({
   baseURL: BASE_API_URL,
