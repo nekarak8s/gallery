@@ -1,3 +1,4 @@
+@use '@/styles/_animations.scss' as a;
 @import '@/styles/_colors.scss';
 
 .login-form {
@@ -13,8 +14,9 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  position: relative;
   font-size: 1.5em;
-  gap: 0.3em;
+  gap: 0.5em;
   color: $primary-color;
   font-weight: 800;
 }
@@ -22,6 +24,37 @@
 .login-form__logo svg {
   width: 5em;
   height: 5em;
+}
+
+.login-form__wave {
+  overflow: hidden;
+  position: absolute;
+  top: 80px;
+  left: 0;
+  width: 100%;
+  height: 50px;
+}
+
+.login-form__wave svg {
+  position: absolute;
+  width: 200%;
+}
+
+.login-form__wave svg:nth-child(1) {
+  @include a.animation-flowing-horizon('wave1', 5s, 0%, 50%, -1s);
+  top: 0;
+  right: 0;
+  height: 110%;
+}
+
+.login-form__wave svg:nth-child(2) {
+  @include a.animation-flowing-horizon('wave2', 6s, 0%, -50%, -3s);
+  top: 15%;
+  left: 0;
+  height: 100%;
+  path {
+    fill: white;
+  }
 }
 
 .login-form__menu {
@@ -41,8 +74,8 @@
   font-weight: 600;
   box-shadow:
     inset 0.17em 0.17em 0.17em rgba(0, 0, 0, 0.1),
-    inset -0.17em -0.17em 0.17em rgba(255, 255, 255, 0.1);
-  transition: all 0.15s ease-in;
+    inset -0.17em -0.17em 0.17em rgba(195, 195, 195, 0.1);
+  transition: all 0.15s ease-in-out;
   cursor: pointer;
 }
 
@@ -51,7 +84,7 @@
 
   box-shadow:
     inset -0.17em -0.17em 0.17em rgba(0, 0, 0, 0.1),
-    inset 0.17em 0.17em 0.17em rgba(255, 255, 255, 0.1);
+    inset 0.17em 0.17em 0.17em rgba(195, 195, 195, 0.1);
 }
 
 .login-form__menu__item svg {

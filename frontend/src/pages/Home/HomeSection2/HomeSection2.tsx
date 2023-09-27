@@ -9,7 +9,7 @@ import vidSrc2 from '@/assets/videos/video2.webm'
 import MediaCard from './MediaCard'
 import styles from './HomeSection2.module.scss'
 
-const BACKGROUND_HEIGHT = 600 // vh
+const BACKGROUND_HEIGHT = 800 // vh
 
 function HomeSection2() {
   const backgroundRef = useRef<HTMLDivElement>(null)
@@ -79,7 +79,7 @@ function HomeSection2() {
 
         // open the card
         const mediaCard = el.firstElementChild as HTMLDivElement
-        if (mediaCard.getBoundingClientRect().top < window.innerHeight * 0.8) {
+        if (mediaCard.getBoundingClientRect().top < window.innerHeight * 0.9) {
           mediaCard.classList.add(styles.open)
         }
       })
@@ -137,7 +137,7 @@ function HomeSection2() {
           <div
             className={styles.mainMediaItem}
             data-posx="-0.1"
-            data-posy="3.3"
+            data-posy="4.3"
             data-speedy="1.4"
             style={{ zIndex: 5 }}
           >
@@ -157,7 +157,7 @@ function HomeSection2() {
           <div
             className={styles.mainMediaItem}
             data-posx="0.05"
-            data-posy="4.5"
+            data-posy="6"
             data-speedy="1.5"
             style={{ zIndex: 5 }}
           >
@@ -177,7 +177,7 @@ function HomeSection2() {
           <div
             className={styles.mainMediaItem}
             data-posx="-0.15"
-            data-posy="3"
+            data-posy="5"
             data-speedy="0.8"
             style={{ zIndex: 1 }}
           >
@@ -198,7 +198,7 @@ function HomeSection2() {
           <div
             className={styles.mainMediaItem}
             data-posx="0.05"
-            data-posy="5.5"
+            data-posy="7.5"
             data-speedy="1"
             style={{ zIndex: 7 }}
           >

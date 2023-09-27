@@ -4,9 +4,10 @@ import videoSrc3 from '@/assets/videos/video3.webm'
 import styles from './HomeSection3.module.scss'
 import CircleLogo from '@/assets/svgs/circle.svg'
 import MagneticButton from '@/atoms/ui/MagneticButton'
+import Button from '@/atoms/ui/Button'
 
-const BACKGROUND_HEIGHT = 530 // vh
-const BACKGROUND_DIVISION_UNIT = 2 // * 100vh
+const BACKGROUND_HEIGHT = 230 // vh
+const SCROLL_OFFSET = 0.3 // * 100vh
 
 function HomeSection3() {
   // element refs
@@ -43,6 +44,9 @@ function HomeSection3() {
       const centerX = left - width / 2
       const centerY = top - height / 2
       const d = Math.sqrt(centerX ** 2 + centerY ** 2)
+
+      video.style.overflow = 'visible'
+
       video.style.boxShadow = `
         ${-centerX / 10}px  ${-centerY / 10}px 20px rgba(0, 0, 0, 0.3)
       `
@@ -112,18 +116,14 @@ function HomeSection3() {
     // Initiate the data
     let scrollStart = 0
     let scrollEnd = 0
-    let scrollFirstDivision = 0
-    let scrollSecondDivision = 0
+    let scrollDivision = 0
     const init = function setInitialPositionData2() {
       // Initiate scroll data
       const backgroundTop =
         window.pageYOffset + background.getBoundingClientRect().top
       scrollStart = backgroundTop
       scrollEnd = backgroundTop + background.offsetHeight - main.offsetHeight
-      scrollFirstDivision =
-        scrollStart + BACKGROUND_DIVISION_UNIT * main.offsetHeight
-      scrollSecondDivision =
-        scrollStart + 2 * BACKGROUND_DIVISION_UNIT * main.offsetHeight
+      scrollDivision = scrollEnd - SCROLL_OFFSET * main.offsetHeight
 
       // Initiate video position
       const posx = Number(videoContainer.dataset.posx)
@@ -135,12 +135,13 @@ function HomeSection3() {
     // Handle Scroll
     const handleScroll = function setElementsPosition() {
       const scrollTop = window.scrollY
+      console.log(scrollStart, scrollEnd, scrollDivision, window.scrollY)
 
       if (scrollTop < scrollStart || scrollTop > scrollEnd) return
 
       // move video
       let moveFactor =
-        (scrollTop - scrollStart) / (scrollFirstDivision - scrollStart)
+        (scrollTop - scrollStart) / (scrollDivision - scrollStart)
       moveFactor = moveFactor > 1 ? 1 : moveFactor
 
       videoContainer.style.transform = `
@@ -148,9 +149,8 @@ function HomeSection3() {
       `
 
       const videoSrc = video.querySelector('video') as HTMLVideoElement
-      if (scrollTop < scrollFirstDivision) {
+      if (scrollTop < scrollDivision) {
         // change background color
-        filter.classList.remove(styles.white)
         filter.classList.remove(styles.transparent)
         circle.classList.remove(styles.visible)
 
@@ -175,37 +175,9 @@ function HomeSection3() {
         video.style.overflow = 'hidden'
         video.style.boxShadow = ''
         videoLight.style.backgroundImage = ''
-      } else if (scrollTop < scrollSecondDivision) {
-        // change background color
-        filter.classList.add(styles.white)
-        filter.classList.remove(styles.transparent)
-        circle.classList.add(styles.visible)
-
-        // add mix-blend-mode
-        phrase.classList.add(styles.blend)
-        phrase.classList.remove(styles.next)
-
-        // hide button
-        button.classList.remove(styles.visible)
-
-        // stop video
-        videoSrc.pause()
-
-        // frame the video & hide label
-        videoFrame.classList.add(styles.visible)
-        videoLabel.classList.remove(styles.visible)
-
-        // disable tilt
-        setIsTiltActivated(false)
-
-        // 2D css
-        video.style.overflow = 'hidden'
-        video.style.boxShadow = ''
-        videoLight.style.backgroundImage = ''
       } else {
         // background filter change
         filter.classList.add(styles.transparent)
-        filter.classList.remove(styles.white)
         circle.classList.add(styles.visible)
 
         // add mix-blend-mode
@@ -226,7 +198,6 @@ function HomeSection3() {
         setIsTiltActivated(true)
 
         // 3d css
-        video.style.overflow = 'visible'
         videoFrame.style.boxShadow = ''
         videoLight.style.backgroundImage = `
         radial-gradient(
@@ -272,8 +243,9 @@ function HomeSection3() {
         <div className={styles.mainButton} ref={buttonRef}>
           <MagneticButton
             text="체험하기"
-            title="예시 3D 전시회 페이지로"
+            ariaLabel="예시 3D 전시회 페이지로"
             size="lg"
+            color="primary"
           />
         </div>
         <div
@@ -288,6 +260,7 @@ function HomeSection3() {
               <div className={styles.mainVideoFrameRight} />
               <div className={styles.mainVideoFrameTop} />
               <div className={styles.mainVideoFrameBottom} />
+              <div className={styles.mainVideoFrameBack} />
             </div>
             <video
               autoPlay

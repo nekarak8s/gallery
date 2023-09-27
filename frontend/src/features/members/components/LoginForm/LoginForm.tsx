@@ -1,5 +1,6 @@
 import React from 'react'
 import { useLogin } from '@/features/members/services'
+import WaveSvg from '@/assets/svgs/wave.svg'
 import KakaoLogo from '@/assets/svgs/kakaotalk.svg'
 import GalleryLogo from '@/assets/svgs/gallery-logo.svg'
 import GoogleLogo from '@/assets/svgs/google.svg'
@@ -13,7 +14,11 @@ function LoginForm() {
     <form className={styles.loginForm}>
       <h2 className={styles.loginFormLogo}>
         <GalleryLogo />
-        <p>Open your 3D Exhibition</p>
+        <div className={styles.loginFormWave}>
+          <WaveSvg />
+          <WaveSvg />
+        </div>
+        <p>Open Your 3D Exhibition</p>
       </h2>
       <ul className={styles.loginFormMenu}>
         <li className={styles.loginFormMenuItem} onClick={() => login()}>

@@ -16,7 +16,7 @@ function Navbar() {
   /**
    * handle login button click
    */
-  const [isLoginOpen, setIsLoginOpen] = useState(true)
+  const [isLoginOpen, setIsLoginOpen] = useState(false)
   const handleLoginClick = function () {
     setIsLoginOpen(true)
   }
@@ -67,13 +67,19 @@ function Navbar() {
           </NavLink>
           <ul className="navbar__menu" ref={navbarMenuRef}>
             <li>
-              <div onClick={handleLoginClick}>Login</div>
+              <div data-cursor-scale="3" onClick={handleLoginClick}>
+                Login
+              </div>
             </li>
             <li>
-              <NavLink to={routes['Guide'].path}>Guide</NavLink>
+              <NavLink data-cursor-scale="3" to={routes['Guide'].path}>
+                Guide
+              </NavLink>
             </li>
             <li>
-              <NavLink to={routes['MyPage'].path}>MyPage</NavLink>
+              <NavLink data-cursor-scale="3" to={routes['MyPage'].path}>
+                MyPage
+              </NavLink>
             </li>
           </ul>
           <button className="navbar__toggle" onClick={handleToggleClick}>

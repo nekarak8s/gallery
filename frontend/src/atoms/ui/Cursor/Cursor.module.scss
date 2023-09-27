@@ -1,0 +1,32 @@
+@use '@/styles/_z-index.scss' as *;
+
+body * {
+  cursor: none !important;
+}
+
+.cursor {
+  @include z-index(cursor);
+  position: fixed;
+  top: 0;
+  left: 0;
+  will-change: transform;
+  transform: translate3d(-100px, -100px, 0);
+  pointer-events: none;
+  mix-blend-mode: difference;
+  cursor: none;
+}
+
+.cursor > div {
+  position: relative;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  --cursor-scale: 1;
+  transform: scale3d(var(--cursor-scale), var(--cursor-scale), 1);
+  will-change: transform;
+  transition: transform 150ms ease-in-out;
+}

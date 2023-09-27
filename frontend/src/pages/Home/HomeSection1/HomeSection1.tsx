@@ -18,17 +18,24 @@ const LAYER_DEPTH = 50 // css 3d-preserve factor: layer -> tranlsateZ
 const SCROLL_OFFSET = 300
 
 function HomeSection1() {
-  const [imagesLoaded, setImagesLoaded] = useState(0)
+  // handle images loading
   const loadingRef = useRef<HTMLDivElement>(null)
+  const [imagesLoaded, setImagesLoaded] = useState(0)
 
   const handleImageLoad = () => {
     setImagesLoaded((num) => num + 1)
   }
 
   useEffect(() => {
+    const FADE_TIME = 500
+
     if (imagesLoaded === TOTAL_IMAGE) {
-      const loading = loadingRef.current as HTMLDivElement
+      const loading = loadingRef.current!
+      loading.style.setProperty('--fade-time', `${FADE_TIME}ms`)
       loading.style.opacity = '0'
+      setTimeout(() => {
+        loading.style.display = 'none'
+      }, FADE_TIME)
     }
   }, [imagesLoaded])
 
@@ -39,9 +46,9 @@ function HomeSection1() {
   // Add Scroll & Mouse Event listener
   useEffect(() => {
     // Get the elements
-    const background = backgroundRef.current as HTMLDivElement
-    const main = mainRef.current as HTMLDivElement
-    const gradientFade = gradientRef.current as HTMLDivElement
+    const background = backgroundRef.current!
+    const main = mainRef.current!
+    const gradientFade = gradientRef.current!
     const interactiveEles = Array.from(
       document.querySelector(`.${styles.mainInter}`)
         ?.children as HTMLCollectionOf<HTMLElement>
@@ -104,10 +111,12 @@ function HomeSection1() {
         // Move element
         el.style.transform = `
         rotateY(${rotateDeg * rotation}deg)
-        translate(
+        translate3d(
           calc(-50% + ${xValue * speedx}px),
-          calc(-50% + ${yValue * speedy}px))
-        translateZ(${zValue * speedz + layer}px)`
+          calc(-50% + ${yValue * speedy}px), 
+          ${zValue * speedz + layer}px
+          )
+        `
       })
     }
 
@@ -146,42 +155,39 @@ function HomeSection1() {
             src={skyImg}
             onLoad={handleImageLoad}
           />
-          <img
+          <div
             className={styles.mainInterCloud1}
             data-speedx="0.07"
             data-speedy="0.05"
             data-speedz="0"
             data-rotation="0.03"
             data-layer="1"
-            alt="cloud 1"
-            src={cloud1Img}
-            onLoad={handleImageLoad}
-          />
-          <img
+          >
+            <img alt="cloud 1" src={cloud1Img} onLoad={handleImageLoad} />
+          </div>
+          <div
             className={styles.mainInterCloud2}
             data-speedx="0.08"
             data-speedy="0.06"
             data-speedz="0"
             data-rotation="0.05"
             data-layer="1"
-            alt="cloud 2"
-            src={cloud2Img}
-            onLoad={handleImageLoad}
-          />
-          <img
+          >
+            <img alt="cloud 2" src={cloud2Img} onLoad={handleImageLoad} />
+          </div>
+          <div
             className={styles.mainInterCloud3}
             data-speedx="0.05"
             data-speedy="0.03"
             data-speedz="0"
             data-rotation="0.02"
             data-layer="1"
-            alt="cloud 3"
-            src={cloud3Img}
-            onLoad={handleImageLoad}
-          />
+          >
+            <img alt="cloud 3" src={cloud3Img} onLoad={handleImageLoad} />
+          </div>
           <img
             className={styles.mainInterIsland}
-            data-speedx="0.1"
+            data-speedx="0.07"
             data-speedy="0.08"
             data-speedz="0"
             data-rotation="0.08"
@@ -192,7 +198,7 @@ function HomeSection1() {
           />
           <div
             className={`${styles.mainInterOcean} scroll-down`}
-            data-speedx="0.1"
+            data-speedx="0.07"
             data-speedy="0.08"
             data-speedz="0"
             data-rotation="0.09"
@@ -206,8 +212,8 @@ function HomeSection1() {
           </div>
           <div
             className={`${styles.mainInterLogo} scroll-magnify-center`}
-            data-speedx="0.14"
-            data-speedy="0.1"
+            data-speedx="0.25"
+            data-speedy="0.05"
             data-speedz="0"
             data-rotation="0.1"
             data-layer="3"
@@ -227,6 +233,7 @@ function HomeSection1() {
             onLoad={handleImageLoad}
           />
         </div>
+
         <div className={styles.mainLoading} ref={loadingRef}>
           <Loading />
         </div>

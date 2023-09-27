@@ -175,23 +175,29 @@ $speed-normal: (
   }
 }
 
-@mixin animation-flowing($speed: 10s, $start: 0%, $end: 100%, $delay: 0s) {
+@mixin animation-flowing-horizon(
+  $keyframe,
+  $speed: 10s,
+  $start: 0%,
+  $end: 100%,
+  $delay: 0s
+) {
   @include animation(
     $delay,
     $speed,
-    animation-flowing,
+    animation-flowing-horizon-#{$keyframe},
     linear,
     normal,
     none,
     infinite
   );
 
-  @keyframes animation-flowing {
+  @keyframes animation-flowing-horizon-#{$keyframe} {
     0% {
-      transform: left($start);
+      transform: translateX($start);
     }
     100% {
-      transform: left(-$end);
+      transform: translateX($end);
     }
   }
 }

@@ -1,5 +1,10 @@
 @import '@/styles/_z-index.scss';
 
+.modal,
+.modal * {
+  cursor: default !important;
+}
+
 .modal {
   @include z-index(modal);
   border: none;
