@@ -1,8 +1,6 @@
 package com.nekarak8s.gallery.service.impl;
 
-import com.nekarak8s.gallery.data.dto.GalleryCreateRequestDTO;
-import com.nekarak8s.gallery.data.dto.GalleryInfoResponseDTO;
-import com.nekarak8s.gallery.data.dto.GalleryModifyRequestDTO;
+import com.nekarak8s.gallery.data.dto.*;
 import com.nekarak8s.gallery.data.entity.Gallery;
 import com.nekarak8s.gallery.data.entity.Place;
 import com.nekarak8s.gallery.data.repository.GalleryRepository;
@@ -12,12 +10,20 @@ import com.nekarak8s.gallery.service.GalleryService;
 import com.nekarak8s.gallery.util.PlaceUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.SetOperations;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -28,6 +34,9 @@ public class GalleryServiceImpl implements GalleryService {
     private final GalleryRepository galleryRepository;
     private final PlaceUtil placeUtil;
     private final PlaceRepository placeRepository;
+
+    @Autowired
+    private RedisTemplate<String, String> redisTemplate;
 
     @Transactional
     @Override
@@ -116,5 +125,47 @@ public class GalleryServiceImpl implements GalleryService {
                 .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "GG007", "해당 갤러리 정보가 없습니다"));
 
         galleryRepository.deleteById(galleryId);
+    }
+
+    // [Version 1] 검색 조건에 따른 갤러리 조회
+    @Override
+    public Page<GallerySearchDTO> searchGalleryByQueryV1(String type, String query, int page) throws CustomException {
+        PageRequest pagable = PageRequest.of(page, 10, Sort.by(Sort.Direction.DESC, "createdDate"));
+        Page<GallerySearchDTO> dtos = galleryRepository.findByQueryV1(pagable);
+        SetOperations<String, String> setOperations = redisTemplate.opsForSet(); // RedisTemplate를 사용한 Set 조회 도구
+
+        for (GallerySearchDTO dto : dtos.getContent()) {
+            String key = "nickname:memberId:" + dto.getMemberId(); // Redis에서 memberId에 맞는 member nickname 조회
+            if (Boolean.TRUE.equals(redisTemplate.hasKey(key))) {
+                String str = setOperations.members(key)+"";
+                String nickname = str.substring(1, str.length()-1);
+
+                dto.setNickname(nickname); // 찾은 닉네임을 dto에 추가
+            }
+        }
+
+        // type, query 필터링 실시
+        List<GallerySearchDTO> filteredContent = dtos.getContent().stream()
+                .filter(item -> {
+                    if ("title".equals(type)) { // 갤러리 이름
+                        return item.getTitle().contains(query);
+                    } else if ("author".equals(type)) { // 회원 닉네임
+                        return item.getNickname().contains(query);
+                    } else { // 갤러리 이름 + 회원 닉네임
+                        return (item.getTitle().contains(query) || item.getNickname().contains(query));
+                    }
+                })
+                .map(item -> new GallerySearchDTO(
+                        item.getGalleryId(),
+                        item.getTitle(),
+                        item.getContent(),
+                        null, // memberId를 null로 설정
+                        item.getNickname(),
+                        item.getCreatedDate()))
+                .collect(Collectors.toList());
+
+        Page<GallerySearchDTO> filteredPage = new PageImpl<>(filteredContent, dtos.getPageable(), dtos.getTotalElements()); // 필터링 결과
+
+        return filteredPage;
     }
 }

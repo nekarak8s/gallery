@@ -7,6 +7,7 @@ import com.nekarak8s.gallery.service.GalleryService;
 import com.nekarak8s.gallery.validation.NoWhitespace;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -144,6 +145,22 @@ public class GalleryController {
 
         ApiResponse apiResponse = ApiResponse.builder()
                 .message("갤러리가 삭제되었습니다")
+                .build();
+        return ResponseEntity.ok(apiResponse);
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<ApiResponse> searchGalleryByQuery(@RequestParam(value = "query") String query,
+                                                            @RequestParam(value = "type") String type,
+                                                            @RequestParam(value = "page", defaultValue = "0") int page) throws CustomException {
+        log.debug("갤러리 조건부 검색 요청옴");
+        log.debug("type: {}, query: {}, page: {}", type, query, page);
+
+        Page<GallerySearchDTO> result = galleryService.searchGalleryByQueryV1(type, query, page);
+
+        ApiResponse apiResponse = ApiResponse.builder()
+                .message("갤러리 검색을 성공했습니다")
+                .data(result)
                 .build();
         return ResponseEntity.ok(apiResponse);
     }
