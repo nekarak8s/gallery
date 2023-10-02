@@ -1,8 +1,9 @@
 import React, { useEffect, useRef } from 'react'
-import styles from './MagneticButton.module.scss'
-import { throttle } from 'lodash'
+import throttle from 'lodash/throttle'
 import gsap, { Elastic } from 'gsap'
 import { NavLink } from 'react-router-dom'
+
+import styles from './MagneticButton.module.scss'
 
 interface Props {
   text: string

@@ -1,5 +1,6 @@
 import React from 'react'
 import styles from './Button.module.scss'
+import { CURSOR_SCALE } from '@/constants'
 
 interface Props {
   text: string
@@ -8,6 +9,7 @@ interface Props {
   type?: 'button' | 'submit' | 'reset'
   size?: 'sm' | 'md' | 'lg'
   color?: 'primary' | 'black' | 'white'
+  onClick?: () => void
 }
 
 const Button: React.FC<Props> = ({
@@ -17,13 +19,15 @@ const Button: React.FC<Props> = ({
   type = 'button',
   size = 'md',
   color = 'black',
+  onClick = () => {},
 }) => {
   return (
     <button
-      data-cursor-scale="3"
+      data-cursor-scale={CURSOR_SCALE}
       type={type}
       aria-label={ariaLabel}
       className={`${styles.button} ${styles[direction]} ${styles[size]} ${styles[color]}`}
+      onClick={onClick}
     >
       {text}
     </button>

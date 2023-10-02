@@ -1,8 +1,80 @@
-@import '@/styles/_responsive.scss';
-@import '@/styles/_animations.scss';
+@use '@/styles/_responsive.scss' as *;
+@use '@/styles/_animations.scss' as a;
+@use '@/styles/_z-index.scss' as *;
 
 .background {
   height: 200vh;
+}
+
+.transition {
+  @include z-index(top);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transition:
+    opacity var(--fade-time) ease-out,
+    transform var(--fade-time) ease-out;
+  background-color: white;
+  mix-blend-mode: screen;
+}
+
+.transition.hidden {
+  animation: hide-transition 1s linear forwards;
+}
+
+@keyframes hide-transition {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  83% {
+    opacity: 1;
+    transform: scale(8);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(10);
+    display: none;
+  }
+}
+
+.transition__phrase {
+  @include a.animation-slide-in-up('transition', slow, 50px);
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0.3em;
+
+  p:nth-child(1) {
+    color: rgb(0, 0, 0);
+    font-weight: 800;
+    font-size: 10vw;
+  }
+
+  p:nth-child(2) {
+    color: rgb(0, 0, 0);
+    font-weight: 600;
+    font-size: 3vw;
+    line-height: 160%;
+  }
+}
+
+.transition__phrase.loaded {
+  display: flex;
+}
+
+.transition__loading.loaded {
+  svg {
+    display: none;
+  }
 }
 
 .main {
@@ -13,16 +85,6 @@
   height: 100vh;
   perspective: 2800px;
   transform-style: preserve-3d;
-}
-
-.main__loading {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: white;
-  transition: opacity var(--fade-time) ease-out;
 }
 
 .main__gradient-fade {
@@ -86,11 +148,11 @@
 .main__inter__cloud1 img {
   width: 100%;
   height: 100%;
-  @include animation-flowing-horizon(
+  @include a.animation-flowing-horizon(
     'cloud1',
-    $speed: 73s,
+    $speed: 113s,
     $start: 100%,
-    $end: -200%,
+    $end: -180%,
     $delay: -25s
   );
 }
@@ -110,9 +172,9 @@
 .main__inter__cloud2 img {
   width: 100%;
   height: 100%;
-  @include animation-flowing-horizon(
+  @include a.animation-flowing-horizon(
     'cloud2',
-    $speed: 56s,
+    $speed: 96s,
     $start: 200%,
     $end: -100%,
     $delay: -39s
@@ -134,11 +196,11 @@
 .main__inter__cloud3 img {
   width: 100%;
   height: 100%;
-  @include animation-flowing-horizon(
+  @include a.animation-flowing-horizon(
     'cloud3',
-    $speed: 89s,
+    $speed: 130s,
     $start: 150%,
-    $end: -200%,
+    $end: -230%,
     $delay: -46s
   );
 }
@@ -185,10 +247,15 @@
   font-size: 10vw;
   font-weight: 700;
   text-align: center;
+  opacity: 1;
+}
+
+.main__inter__logo.hidden {
+  opacity: 0;
 }
 
 .main__inter__logo__preposition {
-  font-size: 3.5vw;
+  font-size: 0.5em;
   text-align: left;
   align-self: flex-start;
 }
@@ -207,6 +274,16 @@
 
 // 1280px
 @include laptop {
+  .transition__phrase {
+    p:nth-child(1) {
+      font-size: 12vw;
+    }
+
+    p:nth-child(2) {
+      font-size: 3.5vw;
+    }
+  }
+
   .main__inter__sky {
     width: 1500px;
   }
@@ -260,10 +337,6 @@
     font-size: 7.5rem;
   }
 
-  .main__inter__logo__preposition {
-    font-size: 2.7rem;
-  }
-
   .main__inter__architect {
     width: 1500px;
     top: calc(50% + 300px);
@@ -276,6 +349,16 @@
 // 992px
 // stick to the edges & depend on vh unit
 @include tablet {
+  .transition__phrase {
+    p:nth-child(1) {
+      font-size: 120px;
+    }
+
+    p:nth-child(2) {
+      font-size: 50px;
+    }
+  }
+
   .main__inter__sky {
     height: 100%;
   }
@@ -328,10 +411,6 @@
     font-size: 6rem;
   }
 
-  .main__inter__logo__preposition {
-    font-size: 2.5rem;
-  }
-
   .main__inter__architect {
     width: 1100px;
     top: auto;
@@ -344,6 +423,17 @@
 // 640px
 // stick to the edges & depend on vh unit
 @include mobile {
+  .transition__phrase {
+    p:nth-child(1) {
+      font-size: 60px;
+    }
+
+    p:nth-child(2) {
+      font-size: 28px;
+      font-weight: 800;
+    }
+  }
+
   .main__inter__sky {
     height: 100%;
   }
@@ -394,10 +484,6 @@
     bottom: calc(-100px + 40vh);
     left: calc(50% - 40px);
     font-size: 4rem;
-  }
-
-  .main__inter__logo__preposition {
-    font-size: 2rem;
   }
 
   .main__inter__architect {

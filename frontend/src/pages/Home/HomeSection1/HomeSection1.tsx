@@ -1,5 +1,6 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState, useCallback } from 'react'
 import throttle from 'lodash/throttle'
+import bgm from '@/assets/audio/MapleStory-Lith-Harbor.mp3'
 import cloud1Img from '@/assets/images/home-section-1/cloud1.webp'
 import cloud2Img from '@/assets/images/home-section-1/cloud2.webp'
 import cloud3Img from '@/assets/images/home-section-1/cloud3.webp'
@@ -7,43 +8,79 @@ import architectureImg from '@/assets/images/home-section-1/concrete.webp'
 import islandImg from '@/assets/images/home-section-1/island.webp'
 import oceanImg from '@/assets/images/home-section-1/ocean.webp'
 import skyImg from '@/assets/images/home-section-1/sky.webp'
+import Loading from '@/atoms/ui/Loading'
 import ScrollDown from '@/atoms/ui/ScrollDown'
-
 import OceanFiltered from './OceanFiltered'
 import styles from './HomeSection1.module.scss'
-import Loading from '@/atoms/ui/Loading'
 
 const TOTAL_IMAGE = 7
 const LAYER_DEPTH = 50 // css 3d-preserve factor: layer -> tranlsateZ
 const SCROLL_OFFSET = 300
 
 function HomeSection1() {
-  // handle images loading
-  const loadingRef = useRef<HTMLDivElement>(null)
+  /**
+   * Hide the filter after the image loading
+   */
+  const transitionRef = useRef<HTMLDivElement>(null)
+  const logoRef = useRef<HTMLDivElement>(null)
   const [imagesLoaded, setImagesLoaded] = useState(0)
 
-  const handleImageLoad = () => {
+  const handleImageLoad = function countLoadedImages() {
     setImagesLoaded((num) => num + 1)
   }
 
-  useEffect(() => {
-    const FADE_TIME = 500
+  const handleScroll = useCallback(function disableScroll(e: Event) {
+    e.preventDefault()
+    window.scrollTo(0, 0)
+    console.log(1)
+  }, [])
 
+  // disable scroll
+  useEffect(() => {
+    addEventListener('scroll', handleScroll, { passive: false })
+    return () => {
+      removeEventListener('scroll', handleScroll)
+    }
+  }, [])
+
+  // Change the loading state
+  useEffect(() => {
+    const transition = transitionRef.current!
     if (imagesLoaded === TOTAL_IMAGE) {
-      const loading = loadingRef.current!
-      loading.style.setProperty('--fade-time', `${FADE_TIME}ms`)
-      loading.style.opacity = '0'
-      setTimeout(() => {
-        loading.style.display = 'none'
-      }, FADE_TIME)
+      const nodes = transition.childNodes as NodeListOf<HTMLElement>
+      nodes.forEach((node: HTMLElement) => {
+        node.classList.add(styles.loaded)
+      })
     }
   }, [imagesLoaded])
 
+  // Hide the transition layer
+  const handleClick = function playAudio() {
+    if (imagesLoaded != TOTAL_IMAGE) return
+    // play audio
+    const audio = document.querySelector('#audio') as HTMLAudioElement
+    console.log(audio)
+    audio.play()
+
+    // show logo
+    const logo = logoRef.current!
+    logo.classList.remove(styles.hidden)
+
+    // hide transition layer
+    const transition = transitionRef.current!
+    transition.classList.add(styles.hidden)
+
+    // activate scrolling
+    removeEventListener('scroll', handleScroll)
+  }
+
+  /**
+   * Scroll & Mousemouve event hadling
+   */
   const backgroundRef = useRef<HTMLDivElement>(null)
   const mainRef = useRef<HTMLDivElement>(null)
   const gradientRef = useRef<HTMLDivElement>(null)
 
-  // Add Scroll & Mouse Event listener
   useEffect(() => {
     // Get the elements
     const background = backgroundRef.current!
@@ -137,108 +174,121 @@ function HomeSection1() {
   }, [])
 
   return (
-    <div className={styles.background} ref={backgroundRef}>
-      <div className={styles.main} ref={mainRef}>
-        <div ref={gradientRef} className={styles.mainGradientFade}></div>
-        <div className={styles.mainScrollDown}>
-          <ScrollDown />
-        </div>
-        <div className={styles.mainInter}>
-          <img
-            className={styles.mainInterSky}
-            data-speedx="0"
-            data-speedy="0"
-            data-speedz="0"
-            data-rotation="0"
-            data-layer="0"
-            alt="sky"
-            src={skyImg}
-            onLoad={handleImageLoad}
-          />
-          <div
-            className={styles.mainInterCloud1}
-            data-speedx="0.07"
-            data-speedy="0.05"
-            data-speedz="0"
-            data-rotation="0.03"
-            data-layer="1"
-          >
-            <img alt="cloud 1" src={cloud1Img} onLoad={handleImageLoad} />
+    <>
+      <div className={styles.background} ref={backgroundRef}>
+        <div className={styles.main} ref={mainRef}>
+          <div ref={gradientRef} className={styles.mainGradientFade}></div>
+          <div className={styles.mainScrollDown}>
+            <ScrollDown />
           </div>
-          <div
-            className={styles.mainInterCloud2}
-            data-speedx="0.08"
-            data-speedy="0.06"
-            data-speedz="0"
-            data-rotation="0.05"
-            data-layer="1"
-          >
-            <img alt="cloud 2" src={cloud2Img} onLoad={handleImageLoad} />
-          </div>
-          <div
-            className={styles.mainInterCloud3}
-            data-speedx="0.05"
-            data-speedy="0.03"
-            data-speedz="0"
-            data-rotation="0.02"
-            data-layer="1"
-          >
-            <img alt="cloud 3" src={cloud3Img} onLoad={handleImageLoad} />
-          </div>
-          <img
-            className={styles.mainInterIsland}
-            data-speedx="0.07"
-            data-speedy="0.08"
-            data-speedz="0"
-            data-rotation="0.08"
-            data-layer="2"
-            alt="island"
-            src={islandImg}
-            onLoad={handleImageLoad}
-          />
-          <div
-            className={`${styles.mainInterOcean} scroll-down`}
-            data-speedx="0.07"
-            data-speedy="0.08"
-            data-speedz="0"
-            data-rotation="0.09"
-            data-layer="2"
-          >
-            <OceanFiltered
-              imgSrc={oceanImg}
-              alt="ocean"
+          <div className={styles.mainInter}>
+            <img
+              className={styles.mainInterSky}
+              data-speedx="0"
+              data-speedy="0"
+              data-speedz="0"
+              data-rotation="0"
+              data-layer="0"
+              alt="sky"
+              src={skyImg}
+              onLoad={handleImageLoad}
+            />
+            <div
+              className={styles.mainInterCloud1}
+              data-speedx="0.07"
+              data-speedy="0.05"
+              data-speedz="0"
+              data-rotation="0.03"
+              data-layer="1"
+            >
+              <img alt="cloud 1" src={cloud1Img} onLoad={handleImageLoad} />
+            </div>
+            <div
+              className={styles.mainInterCloud2}
+              data-speedx="0.08"
+              data-speedy="0.06"
+              data-speedz="0"
+              data-rotation="0.05"
+              data-layer="1"
+            >
+              <img alt="cloud 2" src={cloud2Img} onLoad={handleImageLoad} />
+            </div>
+            <div
+              className={styles.mainInterCloud3}
+              data-speedx="0.05"
+              data-speedy="0.03"
+              data-speedz="0"
+              data-rotation="0.02"
+              data-layer="1"
+            >
+              <img alt="cloud 3" src={cloud3Img} onLoad={handleImageLoad} />
+            </div>
+            <img
+              className={styles.mainInterIsland}
+              data-speedx="0.07"
+              data-speedy="0.08"
+              data-speedz="0"
+              data-rotation="0.08"
+              data-layer="2"
+              alt="island"
+              src={islandImg}
+              onLoad={handleImageLoad}
+            />
+            <div
+              className={`${styles.mainInterOcean} scroll-down`}
+              data-speedx="0.07"
+              data-speedy="0.08"
+              data-speedz="0"
+              data-rotation="0.09"
+              data-layer="2"
+            >
+              <OceanFiltered
+                imgSrc={oceanImg}
+                alt="ocean"
+                onLoad={handleImageLoad}
+              />
+            </div>
+            <div
+              ref={logoRef}
+              className={`${styles.mainInterLogo} ${styles.hidden} scroll-magnify-center`}
+              data-speedx="0.25"
+              data-speedy="0.05"
+              data-speedz="0"
+              data-rotation="0.1"
+              data-layer="3"
+            >
+              <p className={`${styles.mainInterLogoPreposition}`}>The</p>
+              <p>Gallery</p>
+            </div>
+            <img
+              className={`${styles.mainInterArchitect} scroll-down`}
+              data-speedx="0.16"
+              data-speedy="0.12"
+              data-speedz="0"
+              data-rotation="0"
+              data-layer="4"
+              alt="architecture"
+              src={architectureImg}
               onLoad={handleImageLoad}
             />
           </div>
-          <div
-            className={`${styles.mainInterLogo} scroll-magnify-center`}
-            data-speedx="0.25"
-            data-speedy="0.05"
-            data-speedz="0"
-            data-rotation="0.1"
-            data-layer="3"
-          >
-            <p className={`${styles.mainInterLogoPreposition}`}>The</p>
-            <p>Gallery</p>
-          </div>
-          <img
-            className={`${styles.mainInterArchitect} scroll-down`}
-            data-speedx="0.16"
-            data-speedy="0.12"
-            data-speedz="0"
-            data-rotation="0"
-            data-layer="4"
-            alt="architecture"
-            src={architectureImg}
-            onLoad={handleImageLoad}
-          />
-        </div>
-
-        <div className={styles.mainLoading} ref={loadingRef}>
-          <Loading />
         </div>
       </div>
-    </div>
+      {/* Transition Layer */}
+      <div
+        className={styles.transition}
+        ref={transitionRef}
+        onClick={handleClick}
+      >
+        <div className={styles.transitionLoading}>
+          <Loading />
+        </div>
+        <div className={styles.transitionPhrase}>
+          <p>환영합니다</p>
+          <p>화면을 클릭해주세요</p>
+        </div>
+      </div>
+    </>
   )
 }
 

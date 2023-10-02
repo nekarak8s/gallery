@@ -1,5 +1,5 @@
-@import '@/styles/_animations.scss';
-@import '@/styles/_responsive.scss';
+@use '@/styles/_animations.scss' as a;
+@use '@/styles/_responsive.scss' as *;
 
 .loading {
   position: absolute;
@@ -16,45 +16,9 @@
 }
 
 .loading svg {
-  @include animation-rotate-clockwise(2.5s, 2, ease-in-out);
+  @include a.animation-rotate-clockwise('loading', 2.5s, 2, ease-in-out);
   width: 4rem;
   height: 4rem;
-}
-
-.loading__phrase {
-  display: flex;
-  font-size: 1.3rem;
-  font-weight: 900;
-  justify-content: center;
-  align-items: center;
-  gap: 1px;
-}
-
-.loading__phrase > span {
-  display: inline-block;
-}
-
-@for $i from 1 through 7 {
-  .loading__phrase > span:nth-child(#{$i}) {
-    animation: loading-animtaion-scale
-      2.2s
-      ease-in-out
-      infinite
-      #{($i - 1) *
-      0.14}s;
-  }
-}
-
-@keyframes loading-animtaion-scale {
-  0% {
-    transform: translateY(0);
-  }
-  20% {
-    transform: translateY(-10%);
-  }
-  100% {
-    transform: translateY(0);
-  }
 }
 
 @include laptop {

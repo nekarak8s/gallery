@@ -11,6 +11,8 @@ function OAuth() {
   const [searchParams] = useSearchParams()
   const code = searchParams.get('code')
 
+  console.log('oauth', type, code)
+
   const { mutate: loginCallback } = useLoginCallback(
     type as string,
     code as string

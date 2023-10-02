@@ -6,30 +6,30 @@ const { persistAtom } = recoilPersist({
   storage: localStorage,
 })
 
-const expirationDateState = atom<string>({
+const expDateState = atom<string>({
   key: 'ExpirationDate',
   default: '',
   effects_UNSTABLE: [persistAtom],
 })
 
-const isValidExpirationDateState = selector({
-  key: 'IsExpirationDate',
+const isLoginState = selector({
+  key: 'IsLogin',
   get: ({ get }) => {
-    const expirationDateString = get(expirationDateState)
+    const expDateString = get(expDateState)
 
-    if (!expirationDateString) {
+    if (!expDateString) {
       return false
     }
 
-    const expirationDate = new Date(expirationDateString)
+    const expirationDate = new Date(expDateString)
     const currentDate = new Date()
 
     if (expirationDate < currentDate) {
-      return false
-    } else {
       return true
+    } else {
+      return false
     }
   },
 })
 
-export { expirationDateState, isValidExpirationDateState }
+export { expDateState, isLoginState }

@@ -1,3 +1,60 @@
+@use '@/styles/_animations.scss' as a;
+
 .my-page {
   font-size: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 50px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.my-page__profile {
+  @include a.animation-slide-in-up('profile', normal, 50px);
+  width: 100%;
+  height: 100vh;
+  margin: 0 0 0 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  transition:
+    width 500ms ease-in-out,
+    height 500ms ease-in-out,
+    margin 500ms ease-in-out;
+}
+
+.my-page__profile.loaded {
+  width: 100%;
+  height: clamp(300px, 50vh, 500px);
+  margin: 100px 0 0 0;
+}
+
+.my-page__profile__btn {
+  @include a.animation-slide-in-up('profile', slow, 50px);
+  display: none;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
+
+.my-page__gallery {
+  @include a.animation-slide-in-up('profile', slow, 50px);
+  display: none;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+.my-page__br {
+  opacity: 0;
+  width: 80vw;
+  height: 15px;
+  background-image: radial-gradient(
+    ellipse at 50% 0%,
+    rgba(0, 0, 0, 0.3) 0%,
+    rgba(0, 0, 0, 0) 70%
+  );
+  transition: opacity 1000ms linear;
 }
