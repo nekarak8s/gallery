@@ -1,19 +1,30 @@
-import React, { ChangeEvent } from 'react'
+import React, { ChangeEvent, useEffect, useState, useRef } from 'react'
+import './Input.scss'
 
 interface Props {
   label: string
-  value: string
-  onChange: (value: string) => void
+  initialValue: string
+  onChange?: (e: ChangeEvent<HTMLInputElement>) => void
 }
 
-const Input: React.FC<Props> = ({ label, value, onChange }) => {
+const Input: React.FC<Props> = ({ label, initialValue, onChange }) => {
+  const [value, setValue] = useState(initialValue)
+  const inputRef = useRef<HTMLInputElement>(null)
+
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    onChange(e.target.value)
+    onChange && onChange(e)
+    setValue(e.target.value.trim())
   }
+
+  useEffect(() => {
+    const input = inputRef.current!
+    input.classList.toggle('fill', value.length > 0)
+  }, [value])
+
   return (
-    <div>
+    <div className="input">
+      <input ref={inputRef} type="text" value={value} onChange={handleChange} />
       <label>{label}</label>
-      <input type="text" value={value} onChange={handleChange} />
     </div>
   )
 }

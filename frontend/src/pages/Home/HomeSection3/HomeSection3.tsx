@@ -1,12 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react'
 import throttle from 'lodash/throttle'
-import videoSrc3 from '@/assets/videos/video3.webm'
-import styles from './HomeSection3.module.scss'
 import CircleLogo from '@/assets/svgs/circle.svg'
+import videoSrc3 from '@/assets/videos/video3.webm'
 import MagneticButton from '@/atoms/ui/MagneticButton'
-import Button from '@/atoms/ui/Button'
 
-const BACKGROUND_HEIGHT = 230 // vh
+import styles from './HomeSection3.module.scss'
+
+const BACKGROUND_HEIGHT = 430 // vh
 const SCROLL_OFFSET = 0.3 // * 100vh
 
 function HomeSection3() {
@@ -135,7 +135,6 @@ function HomeSection3() {
     // Handle Scroll
     const handleScroll = function setElementsPosition() {
       const scrollTop = window.scrollY
-      console.log(scrollStart, scrollEnd, scrollDivision, window.scrollY)
 
       if (scrollTop < scrollStart || scrollTop > scrollEnd) return
 

@@ -33,4 +33,13 @@ button {
   padding: none;
   border: none;
   background-color: transparent;
+  font: inherit;
+  color: inherit;
+}
+input {
+  all: unset;
+}
+
+select {
+  all: unset;
 }

@@ -1,0 +1,26 @@
+.gallery-form {
+  font-size: 3rem;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 1em 2em;
+}
+
+.gallery-form svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  width: 200%;
+  aspect-ratio: 1/1;
+  transform: translateY(-50%);
+
+  path {
+    transform: translate(50%, 50%);
+  }
+}
+
+.gallery-form h2 {
+  color: white;
+}

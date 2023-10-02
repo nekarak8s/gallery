@@ -1,6 +1,6 @@
 import React from 'react'
 import { useLogin } from '@/features/members/services'
-import WaveSvg from '@/assets/svgs/wave.svg'
+import WaveSvg from '@/assets/svgs/sin.svg'
 import KakaoLogo from '@/assets/svgs/kakaotalk.svg'
 import GalleryLogo from '@/assets/svgs/gallery-logo.svg'
 import GoogleLogo from '@/assets/svgs/google.svg'

@@ -2,7 +2,7 @@
 $speed-normal: (
   slow: 1000ms,
   normal: 500ms,
-  fast: 200mz,
+  fast: 200ms,
 );
 
 @mixin animation(
@@ -24,13 +24,19 @@ $speed-normal: (
 }
 
 @mixin animation-slide-in-down(
-  $speed: map-get($speed-normal, normal),
+  $name,
+  $speed: normal,
   $distance: 100%,
-  $delay: 0
+  $delay: 0s
 ) {
-  @include animation($delay, $speed, animation-slide-in-down, ease-in-out);
+  @include animation(
+    $delay,
+    map-get($speed-normal, speed),
+    animation-slide-in-down-#{$name},
+    ease-in-out
+  );
 
-  @keyframes animation-slide-in-down {
+  @keyframes animation-slide-in-down-#{$name} {
     0% {
       opacity: 0;
       transform: translateY(-$distance);
@@ -43,13 +49,19 @@ $speed-normal: (
 }
 
 @mixin animation-slide-in-up(
-  $speed: map-get($speed-normal, normal),
+  $name,
+  $speed: normal,
   $distance: 100%,
-  $delay: 0
+  $delay: 0s
 ) {
-  @include animation($delay, $speed, animation-slide-in-up, ease-in-out);
+  @include animation(
+    $delay,
+    map-get($speed-normal, $speed),
+    animation-slide-in-up-#{$name},
+    ease-in-out
+  );
 
-  @keyframes animation-slide-in-up {
+  @keyframes animation-slide-in-up-#{$name} {
     0% {
       opacity: 0;
       transform: translateY($distance);
@@ -62,13 +74,19 @@ $speed-normal: (
 }
 
 @mixin animation-slide-in-left(
-  $speed: map-get($speed-normal, normal),
+  $name,
+  $speed: normal,
   $distance: 100%,
-  $delay: 0
+  $delay: 0s
 ) {
-  @include animation($delay, $speed, animation-slide-in-left, ease-in);
+  @include animation(
+    $delay,
+    map-get($speed-normal, $speed),
+    animation-slide-in-left-#{$name},
+    ease-in
+  );
 
-  @keyframes animation-slide-in-left {
+  @keyframes animation-slide-in-left-#{$name} {
     0% {
       opacity: 0;
       transform: translateX($distance);
@@ -81,13 +99,19 @@ $speed-normal: (
 }
 
 @mixin animation-slide-in-right(
-  $speed: map-get($speed-normal, normal),
+  $name,
+  $speed: normal,
   $distance: 100%,
-  $delay: 0
+  $delay: 0s
 ) {
-  @include animation($delay, $speed, animation-slide-in-right, ease-in);
+  @include animation(
+    $delay,
+    map-get($speed-normal, $speed),
+    animation-slide-in-right-#{$name},
+    ease-in
+  );
 
-  @keyframes animation-slide-in-right {
+  @keyframes animation-slide-in-right-#{$name} {
     0% {
       opacity: 0;
       transform: translateX(-$distance);
@@ -100,13 +124,19 @@ $speed-normal: (
 }
 
 @mixin animation-slide-out-down(
-  $speed: map-get($speed-normal, normal),
+  $name,
+  $speed: normal,
   $distance: 100%,
-  $delay: 0
+  $delay: 0s
 ) {
-  @include animation($delay, $speed, animation-slide-out-down, ease-out);
+  @include animation(
+    $delay,
+    map-get($speed-normal, $speed),
+    animation-slide-out-down-#{$name},
+    ease-out
+  );
 
-  @keyframes animation-slide-out-down {
+  @keyframes animation-slide-out-down-#{$name} {
     0% {
       opacity: 1;
       transform: translateY(0);
@@ -119,13 +149,19 @@ $speed-normal: (
 }
 
 @mixin animation-slide-out-up(
-  $speed: map-get($speed-normal, normal),
+  $name,
+  $speed: normal,
   $distance: 100%,
-  $delay: 0
+  $delay: 0s
 ) {
-  @include animation($delay, $speed, animation-slide-out-up, ease-out);
+  @include animation(
+    $delay,
+    map-get($speed-normal, $speed),
+    animation-slide-out-up-#{$name},
+    ease-out
+  );
 
-  @keyframes animation-slide-out-up {
+  @keyframes animation-slide-out-up-#{$name} {
     0% {
       opacity: 1;
       transform: translateY(0);
@@ -138,13 +174,19 @@ $speed-normal: (
 }
 
 @mixin animation-slide-out-left(
-  $speed: map-get($speed-normal, normal),
+  $name,
+  $speed: normal,
   $distance: 100%,
-  $delay: 0
+  $delay: 0s
 ) {
-  @include animation($delay, $speed, animation-slide-out-left, ease-out);
+  @include animation(
+    $delay,
+    map-get($speed-normal, $speed),
+    animation-slide-out-left-#{$name},
+    ease-out
+  );
 
-  @keyframes animation-slide-out-left {
+  @keyframes animation-slide-out-left-#{$name} {
     0% {
       opacity: 1;
       transform: translateX(0);
@@ -157,13 +199,19 @@ $speed-normal: (
 }
 
 @mixin animation-slide-out-right(
-  $speed: map-get($speed-normal, normal),
+  $name,
+  $speed: normal,
   $distance: 100%,
-  $delay: 0
+  $delay: 0s
 ) {
-  @include animation($delay, $speed, animation-slide-out-right, ease-out);
+  @include animation(
+    $delay,
+    map-get($speed-normal, $speed),
+    animation-slide-out-right-#{$name},
+    ease-out
+  );
 
-  @keyframes animation-slide-out-right {
+  @keyframes animation-slide-out-right-#{$name} {
     0% {
       opacity: 1;
       transform: translateX(0);
@@ -176,7 +224,7 @@ $speed-normal: (
 }
 
 @mixin animation-flowing-horizon(
-  $keyframe,
+  $name,
   $speed: 10s,
   $start: 0%,
   $end: 100%,
@@ -185,14 +233,14 @@ $speed-normal: (
   @include animation(
     $delay,
     $speed,
-    animation-flowing-horizon-#{$keyframe},
+    animation-flowing-horizon-#{$name},
     linear,
     normal,
     none,
     infinite
   );
 
-  @keyframes animation-flowing-horizon-#{$keyframe} {
+  @keyframes animation-flowing-horizon-#{$name} {
     0% {
       transform: translateX($start);
     }
@@ -202,10 +250,15 @@ $speed-normal: (
   }
 }
 
-@mixin animation-clear($speed: map-get($speed-normal, normal), $delay: 0) {
-  @include animation($delay, $speed, animation-clear, ease-out);
+@mixin animation-clear($name, $speed: normal, $delay: 0) {
+  @include animation(
+    $delay,
+    map-get($speed-normal, $speed),
+    animation-clear-#{$name},
+    ease-out
+  );
 
-  @keyframes animation-clear {
+  @keyframes animation-clear-#{$name} {
     0% {
       opacity: 0;
     }
@@ -215,11 +268,11 @@ $speed-normal: (
   }
 }
 
-@mixin animation-floating($speed: 2s, $distance: 100%, $delay: 0s) {
+@mixin animation-floating($name, $speed: 2s, $distance: 100%, $delay: 0s) {
   @include animation(
     $delay,
     $speed,
-    animation-floating,
+    animation-floating-#{$name},
     ease-in-out,
     alternate,
     none,
@@ -228,7 +281,7 @@ $speed-normal: (
 
   @content;
 
-  @keyframes animation-floating {
+  @keyframes animation-floating-#{$name} {
     0% {
       transform: translateY(-$distance);
     }
@@ -239,6 +292,7 @@ $speed-normal: (
 }
 
 @mixin animation-rotate-clockwise(
+  $name,
   $speed: 10s,
   $times: 1,
   $time-function: linear
@@ -246,14 +300,14 @@ $speed-normal: (
   @include animation(
     0s,
     $speed,
-    animation-rotate-clockwise,
+    animation-rotate-clockwise-#{$name},
     $time-function,
     normal,
     none,
     infinite
   );
 
-  @keyframes animation-rotate-clockwise {
+  @keyframes animation-rotate-clockwise-#{$name} {
     0% {
       transform: rotate(0);
     }

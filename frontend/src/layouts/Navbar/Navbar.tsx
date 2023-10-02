@@ -1,17 +1,31 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react'
-import { NavLink, Outlet } from 'react-router-dom'
-import LogoIcon from '@/assets/svgs/gallery-logo.svg'
-import { routes } from '@/App'
-import './Navbar.scss'
+import { NavLink, Outlet, useLocation } from 'react-router-dom'
 import throttle from 'lodash/throttle'
+import { routes } from '@/App'
 import BurgerLogo from '@/assets/svgs/burger.svg'
-
 import Modal from '@/atoms/ui/Modal'
 import LoginForm from '@/features/members/components/LoginForm'
+
+import './Navbar.scss'
+import { CURSOR_SCALE } from '@/constants'
+import { useRecoilValue } from 'recoil'
+import { expDateState, isLoginState } from '@/stores/auth.store'
+
+const BLACK_PATHNAME = ['/guide', '/mypage']
 
 function Navbar() {
   const navbarRef = useRef<HTMLDivElement>(null)
   const navbarMenuRef = useRef<HTMLUListElement>(null)
+
+  const location = useLocation()
+
+  /**
+   *
+   */
+
+  const isLogin = useRecoilValue(isLoginState)
+  const exp = useRecoilValue(expDateState)
+  console.log('login', exp, isLogin)
 
   /**
    * handle login button click
@@ -52,37 +66,70 @@ function Navbar() {
       window.removeEventListener('scroll', throttledHandleScroll)
     }
   }, [])
+
   return (
     <>
       <div className="navbar--layout">
-        <nav className="navbar" ref={navbarRef}>
+        <nav
+          className={`navbar ${
+            BLACK_PATHNAME.includes(location.pathname) ? 'dark' : ''
+          }`}
+          ref={navbarRef}
+        >
           <NavLink to={routes['Home'].path}>
-            <div className="navbar__logo">
-              <LogoIcon />
-              <p className="navbar__logo__title">
-                <span>The</span>
-                Gallery
-              </p>
+            <div className="navbar__title" data-cursor-scale={CURSOR_SCALE}>
+              The Gallery
             </div>
           </NavLink>
           <ul className="navbar__menu" ref={navbarMenuRef}>
             <li>
-              <div data-cursor-scale="3" onClick={handleLoginClick}>
-                Login
-              </div>
-            </li>
-            <li>
-              <NavLink data-cursor-scale="3" to={routes['Guide'].path}>
+              <NavLink
+                data-cursor-scale={CURSOR_SCALE}
+                to={routes['Guide'].path}
+              >
                 Guide
               </NavLink>
             </li>
             <li>
-              <NavLink data-cursor-scale="3" to={routes['MyPage'].path}>
-                MyPage
-              </NavLink>
+              {!isLogin ? (
+                <NavLink
+                  data-cursor-scale={CURSOR_SCALE}
+                  to={routes['MyPage'].path}
+                >
+                  MyPage
+                </NavLink>
+              ) : (
+                <button
+                  data-cursor-scale={CURSOR_SCALE}
+                  onClick={handleLoginClick}
+                >
+                  Login
+                </button>
+              )}
+            </li>
+            <li>
+              {isLogin ? (
+                <NavLink
+                  data-cursor-scale={CURSOR_SCALE}
+                  to={routes['MyPage'].path}
+                >
+                  MyPage
+                </NavLink>
+              ) : (
+                <button
+                  data-cursor-scale={CURSOR_SCALE}
+                  onClick={handleLoginClick}
+                >
+                  Login
+                </button>
+              )}
             </li>
           </ul>
-          <button className="navbar__toggle" onClick={handleToggleClick}>
+          <button
+            className="navbar__toggle"
+            onClick={handleToggleClick}
+            data-cursor-scale="3"
+          >
             <BurgerLogo />
           </button>
         </nav>

@@ -20,7 +20,7 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.(jpg|png|gif|webp|webm)$/,
+        test: /\.(jpg|png|gif|webp|webm|mp3)$/,
         type: 'asset', // https://webpack.js.org/guides/asset-modules/
         parser: {
           dataUrlCondition: {

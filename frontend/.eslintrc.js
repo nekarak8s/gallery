@@ -16,6 +16,7 @@ module.exports = {
     'plugin:import/typescript',
     'plugin:css-import-order/recommended',
     'prettier',
+    'plugin:storybook/recommended',
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {

@@ -1,5 +1,6 @@
 import { routes } from '@/App'
 import { axiosInstance } from '@/hooks/useAxiosInterceptor'
+import { expDateState } from '@/stores/auth.store'
 import {
   useQuery,
   useMutation,
@@ -11,7 +12,7 @@ import { useSetRecoilState } from 'recoil'
 
 // 로그인
 export function useLogin(type: string) {
-  return useMutation<LoginResponse>(
+  return useMutation<MessageResponse<LoginData>, ErrorResponse>(
     () => axiosInstance.post(`/member/login?type=${type}`),
     {
       onSuccess: (res) => {
@@ -28,12 +29,16 @@ export function useLogin(type: string) {
 export function useLoginCallback(type: string, code: string) {
   const queryClient = useQueryClient()
   const navigate = useNavigate()
-  return useMutation<LoginResponse>(
+  const setExpDateState = useSetRecoilState(expDateState)
+  return useMutation<MessageResponse<LoginCallbackData>, ErrorResponse>(
     () => axiosInstance.post(`/member/callback?type=${type}&code=${code}`),
     {
-      onSuccess: () => {
+      onSuccess: (res) => {
         queryClient.invalidateQueries(['user'])
-        navigate(routes['Home'].path)
+        setExpDateState(res.data.expirationDate)
+
+        console.log(1, res)
+        navigate(routes['MyPage'].path)
       },
       onError: () => {
         //   toast.addMessage('error', err.data.message)
@@ -43,12 +48,34 @@ export function useLoginCallback(type: string, code: string) {
 }
 
 export function useUserQuery() {
-  return useQuery<LoginResponse>(['user'], () => axiosInstance.get(`/member`), {
-    onSuccess: () => {},
-    onError: () => {
-      //   toast.addMessage('error', err.data.message)
-    },
-    select: (res) => res.data,
-    staleTime: Infinity,
-  })
+  return useQuery<MessageResponse<UserData>, ErrorResponse, UserData>(
+    ['user'],
+    () => axiosInstance.get(`/member`),
+    {
+      onSuccess: () => {},
+      onError: () => {
+        //   toast.addMessage('error', err.data.message)
+      },
+      select: (res) => res.data,
+      staleTime: Infinity,
+    }
+  )
 }
+
+// export function useUpdateProfile(form: ProfileFormData) {
+//   const [result, message] = validateProfile(form)
+//   if (!result) return
+
+//   return useMutation<MessageResponse<UserData>, ErrorResponse, UserData>(
+//     ['user'],
+//     () => axiosInstance.get(`/member`),
+//     {
+//       onSuccess: () => {},
+//       onError: () => {
+//         //   toast.addMessage('error', err.data.message)
+//       },
+//       select: (res) => res.data,
+//       staleTime: Infinity,
+//     }
+//   )
+// }

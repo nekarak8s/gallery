@@ -1,0 +1,17 @@
+@use '@/styles/_colors.scss' as c;
+
+.profile {
+  color: transparent;
+  font-weight: 600;
+  background: linear-gradient(
+    to right top,
+    c.$primary-color,
+    c.$secondary-color
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+  line-height: 120%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}

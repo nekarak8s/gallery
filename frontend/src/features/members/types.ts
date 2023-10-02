@@ -1,14 +1,15 @@
-interface LoginResponse {
-  data: any
+type LoginData = string
+
+type LoginCallbackData = {
+  expirationDate: string
 }
 
-// interface LoginCallbackResponse {
-//   message: string
-//   data: {
-//     expirationDate: '2023-03-07 12:23:12'
-//   }
-// }
+type UserData = {
+  nickname: string
+  role: string
+  createdDate: string
+}
 
-// interface LoginCallbackResponse {
-//   data: string
-// }
+type ProfileFormData = {
+  nickname: string
+}
