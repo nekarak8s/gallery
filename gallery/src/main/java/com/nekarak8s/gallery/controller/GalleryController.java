@@ -29,7 +29,7 @@ public class GalleryController {
     @GetMapping("/health")
     public String health() {
         log.info("헬스 체크 !!");
-        return "ok";
+        return "갤러리서버 ok";
     }
 
     // 공간 목록 조회
@@ -156,7 +156,7 @@ public class GalleryController {
         log.debug("갤러리 조건부 검색 요청옴");
         log.debug("type: {}, query: {}, page: {}", type, query, page);
 
-        Page<GallerySearchDTO> result = galleryService.searchGalleryByQueryV1(type, query, page);
+        Page<GallerySearchDTO> result = galleryService.searchGalleryByQueryV2(type, query, page);
 
         ApiResponse apiResponse = ApiResponse.builder()
                 .message("갤러리 검색을 성공했습니다")

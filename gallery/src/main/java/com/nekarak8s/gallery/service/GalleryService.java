@@ -36,4 +36,5 @@ public interface GalleryService {
     void deleteGallery(long memberId, long galleryId) throws CustomException;
 
     Page<GallerySearchDTO> searchGalleryByQueryV1(String type, String query, int page) throws CustomException;
+    Page<GallerySearchDTO> searchGalleryByQueryV2(String type, String query, int page) throws CustomException;
 }

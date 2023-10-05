@@ -1,6 +1,9 @@
 package com.nekarak8s.gallery.service.impl;
 
-import com.nekarak8s.gallery.data.dto.*;
+import com.nekarak8s.gallery.data.dto.GalleryCreateRequestDTO;
+import com.nekarak8s.gallery.data.dto.GalleryInfoResponseDTO;
+import com.nekarak8s.gallery.data.dto.GalleryModifyRequestDTO;
+import com.nekarak8s.gallery.data.dto.GallerySearchDTO;
 import com.nekarak8s.gallery.data.entity.Gallery;
 import com.nekarak8s.gallery.data.entity.Place;
 import com.nekarak8s.gallery.data.repository.GalleryRepository;
@@ -8,6 +11,7 @@ import com.nekarak8s.gallery.data.repository.PlaceRepository;
 import com.nekarak8s.gallery.exception.CustomException;
 import com.nekarak8s.gallery.service.GalleryService;
 import com.nekarak8s.gallery.util.PlaceUtil;
+import com.nekarak8s.gallery.util.RegexUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +38,9 @@ public class GalleryServiceImpl implements GalleryService {
     private final GalleryRepository galleryRepository;
     private final PlaceUtil placeUtil;
     private final PlaceRepository placeRepository;
+
+    // Util
+    private final RegexUtil regexUtil;
 
     @Autowired
     private RedisTemplate<String, String> redisTemplate;
@@ -134,15 +141,7 @@ public class GalleryServiceImpl implements GalleryService {
         Page<GallerySearchDTO> dtos = galleryRepository.findByQueryV1(pagable);
         SetOperations<String, String> setOperations = redisTemplate.opsForSet(); // RedisTemplate를 사용한 Set 조회 도구
 
-        for (GallerySearchDTO dto : dtos.getContent()) {
-            String key = "nickname:memberId:" + dto.getMemberId(); // Redis에서 memberId에 맞는 member nickname 조회
-            if (Boolean.TRUE.equals(redisTemplate.hasKey(key))) {
-                String str = setOperations.members(key)+"";
-                String nickname = str.substring(1, str.length()-1);
-
-                dto.setNickname(nickname); // 찾은 닉네임을 dto에 추가
-            }
-        }
+        fillNickname(setOperations, dtos);
 
         // type, query 필터링 실시
         List<GallerySearchDTO> filteredContent = dtos.getContent().stream()
@@ -167,5 +166,49 @@ public class GalleryServiceImpl implements GalleryService {
         Page<GallerySearchDTO> filteredPage = new PageImpl<>(filteredContent, dtos.getPageable(), dtos.getTotalElements()); // 필터링 결과
 
         return filteredPage;
+    }
+
+    @Override
+    public Page<GallerySearchDTO> searchGalleryByQueryV2(String type, String query, int page) throws CustomException {
+        PageRequest pagable = PageRequest.of(page, 10, Sort.by(Sort.Direction.DESC, "createdDate"));
+        SetOperations<String, String> setOperations = redisTemplate.opsForSet(); // RedisTemplate를 사용한 Set 조회 도구
+
+        Page<GallerySearchDTO> filteredPage = null;
+
+        if ("author".equals(type)) { // 회원 닉네임으로 검색
+            String key = "nickname:" + query + ":idx"; // Redis Key
+            long memberId = regexUtil.extractMemberId(setOperations.members(key)+"");
+
+            Page<GallerySearchDTO> dtos = galleryRepository.findByQueryByMemberIdV2(pagable, memberId);
+            for (GallerySearchDTO dto : dtos.getContent()) {
+                dto.setNickname(query);
+            }
+            filteredPage = dtos;
+        } else if ("title".equals(type)) {
+            Page<GallerySearchDTO> dtos = galleryRepository.findByQueryByNameV2(pagable, query);
+            fillNickname(setOperations, dtos);
+            filteredPage = dtos;
+        } else if ("all".equals(type)) {
+            String key = "nickname:" + query + ":idx";
+            long memberId = regexUtil.extractMemberId(setOperations.members(key)+"");
+
+            Page<GallerySearchDTO> dtos = galleryRepository.findByQueryByAllV2(pagable, query, memberId);
+            fillNickname(setOperations, dtos);
+            filteredPage = dtos;
+        }
+        return filteredPage;
+    }
+
+    // Redis에서 Nickname 찾아서 응답에 채워넣는 함수
+    private void fillNickname(SetOperations<String, String> setOperations, Page<GallerySearchDTO> dtos) {
+        for (GallerySearchDTO dto : dtos.getContent()) {
+            // 닉네임 찾기
+            String key = "nickname:memberId:" + dto.getMemberId(); // Redis에서 memberId에 맞는 member nickname 조회
+            if (Boolean.TRUE.equals(redisTemplate.hasKey(key))) {
+                String str = setOperations.members(key)+"";
+                String nickname = str.substring(1, str.length()-1);
+                dto.setNickname(nickname); // 찾은 닉네임을 dto에 추가
+            }
+        }
     }
 }
