@@ -182,6 +182,7 @@ public class GalleryServiceImpl implements GalleryService {
             Page<GallerySearchDTO> dtos = galleryRepository.findByQueryByMemberIdV2(pagable, memberId);
             for (GallerySearchDTO dto : dtos.getContent()) {
                 dto.setNickname(query);
+                dto.setMemberId(null);
             }
             filteredPage = dtos;
         } else if ("title".equals(type)) {
@@ -209,6 +210,7 @@ public class GalleryServiceImpl implements GalleryService {
                 String nickname = str.substring(1, str.length()-1);
                 dto.setNickname(nickname); // 찾은 닉네임을 dto에 추가
             }
+            dto.setMemberId(null);
         }
     }
 }
