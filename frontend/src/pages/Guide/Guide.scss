@@ -1,3 +1,10 @@
 .guide {
-  font-size: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.guide__image {
+  width: 80vw;
+  aspect-ratio: 4/3;
 }

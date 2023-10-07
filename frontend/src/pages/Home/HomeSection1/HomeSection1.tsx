@@ -1,17 +1,20 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react'
 import throttle from 'lodash/throttle'
 import bgm from '@/assets/audio/MapleStory-Lith-Harbor.mp3'
-import cloud1Img from '@/assets/images/home-section-1/cloud1.webp'
-import cloud2Img from '@/assets/images/home-section-1/cloud2.webp'
-import cloud3Img from '@/assets/images/home-section-1/cloud3.webp'
-import architectureImg from '@/assets/images/home-section-1/concrete.webp'
-import islandImg from '@/assets/images/home-section-1/island.webp'
-import oceanImg from '@/assets/images/home-section-1/ocean.webp'
-import skyImg from '@/assets/images/home-section-1/sky.webp'
+import cloud1Img from '@/assets/images/home-section-1/cloud1.webp?format=webp'
+import cloud2Img from '@/assets/images/home-section-1/cloud2.webp?format=webp'
+import cloud3Img from '@/assets/images/home-section-1/cloud3.webp?format=webp'
+import architectureImg from '@/assets/images/home-section-1/concrete.webp?format=webp'
+import islandImg from '@/assets/images/home-section-1/island.webp?format=webp'
+import oceanImg from '@/assets/images/home-section-1/ocean.webp?format=webp'
+import skyImg from '@/assets/images/home-section-1/sky.webp?format=webp'
 import Loading from '@/atoms/ui/Loading'
 import ScrollDown from '@/atoms/ui/ScrollDown'
 import OceanFiltered from './OceanFiltered'
 import styles from './HomeSection1.module.scss'
+import StaticImage from '@/atoms/ui/StaticImage'
+
+import OceanTurbulenceFilter from '@/assets/svgs/ocean-turbulence-filter.svg'
 
 const TOTAL_IMAGE = 7
 const LAYER_DEPTH = 50 // css 3d-preserve factor: layer -> tranlsateZ
@@ -32,7 +35,6 @@ function HomeSection1() {
   const handleScroll = useCallback(function disableScroll(e: Event) {
     e.preventDefault()
     window.scrollTo(0, 0)
-    console.log(1)
   }, [])
 
   // disable scroll
@@ -59,7 +61,6 @@ function HomeSection1() {
     if (imagesLoaded != TOTAL_IMAGE) return
     // play audio
     const audio = document.querySelector('#audio') as HTMLAudioElement
-    console.log(audio)
     audio.play()
 
     // show logo
@@ -182,17 +183,21 @@ function HomeSection1() {
             <ScrollDown />
           </div>
           <div className={styles.mainInter}>
-            <img
+            <div
               className={styles.mainInterSky}
               data-speedx="0"
               data-speedy="0"
               data-speedz="0"
               data-rotation="0"
               data-layer="0"
-              alt="sky"
-              src={skyImg}
-              onLoad={handleImageLoad}
-            />
+            >
+              <StaticImage
+                imgSrc={skyImg}
+                webpSrc={skyImg}
+                alt="푸른 하늘"
+                onLoad={handleImageLoad}
+              />
+            </div>
             <div
               className={styles.mainInterCloud1}
               data-speedx="0.07"
@@ -201,7 +206,12 @@ function HomeSection1() {
               data-rotation="0.03"
               data-layer="1"
             >
-              <img alt="cloud 1" src={cloud1Img} onLoad={handleImageLoad} />
+              <StaticImage
+                imgSrc={cloud1Img}
+                webpSrc={cloud1Img}
+                alt="높고 가까운 구름"
+                onLoad={handleImageLoad}
+              />
             </div>
             <div
               className={styles.mainInterCloud2}
@@ -211,7 +221,12 @@ function HomeSection1() {
               data-rotation="0.05"
               data-layer="1"
             >
-              <img alt="cloud 2" src={cloud2Img} onLoad={handleImageLoad} />
+              <StaticImage
+                imgSrc={cloud2Img}
+                webpSrc={cloud2Img}
+                alt="중간 높이의 가까운 구름"
+                onLoad={handleImageLoad}
+              />
             </div>
             <div
               className={styles.mainInterCloud3}
@@ -221,19 +236,28 @@ function HomeSection1() {
               data-rotation="0.02"
               data-layer="1"
             >
-              <img alt="cloud 3" src={cloud3Img} onLoad={handleImageLoad} />
+              <StaticImage
+                imgSrc={cloud3Img}
+                webpSrc={cloud3Img}
+                alt="낮고 먼 구름"
+                onLoad={handleImageLoad}
+              />
             </div>
-            <img
+            <div
               className={styles.mainInterIsland}
               data-speedx="0.07"
               data-speedy="0.08"
               data-speedz="0"
               data-rotation="0.08"
               data-layer="2"
-              alt="island"
-              src={islandImg}
-              onLoad={handleImageLoad}
-            />
+            >
+              <StaticImage
+                imgSrc={islandImg}
+                webpSrc={islandImg}
+                alt="멀리 있는 섬"
+                onLoad={handleImageLoad}
+              />
+            </div>
             <div
               className={`${styles.mainInterOcean} scroll-down`}
               data-speedx="0.07"
@@ -242,11 +266,15 @@ function HomeSection1() {
               data-rotation="0.09"
               data-layer="2"
             >
-              <OceanFiltered
-                imgSrc={oceanImg}
-                alt="ocean"
-                onLoad={handleImageLoad}
-              />
+              <div className={styles.oceanFilter}>
+                <StaticImage
+                  imgSrc={oceanImg}
+                  webpSrc={oceanImg}
+                  alt="일렁이는 수평선의 푸른 바다"
+                  onLoad={handleImageLoad}
+                />
+                <OceanFiltered />
+              </div>
             </div>
             <div
               ref={logoRef}
@@ -260,17 +288,21 @@ function HomeSection1() {
               <p className={`${styles.mainInterLogoPreposition}`}>The</p>
               <p>Gallery</p>
             </div>
-            <img
+            <div
               className={`${styles.mainInterArchitect} scroll-down`}
               data-speedx="0.16"
               data-speedy="0.12"
               data-speedz="0"
               data-rotation="0"
               data-layer="4"
-              alt="architecture"
-              src={architectureImg}
-              onLoad={handleImageLoad}
-            />
+            >
+              <StaticImage
+                imgSrc={architectureImg}
+                webpSrc={architectureImg}
+                alt="바로 앞에 보이는 갤러리 테라스 바닥 일부"
+                onLoad={handleImageLoad}
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -284,8 +316,8 @@ function HomeSection1() {
           <Loading />
         </div>
         <div className={styles.transitionPhrase}>
-          <p>환영합니다</p>
-          <p>화면을 클릭해주세요</p>
+          <p>클릭하세요</p>
+          <p>배경 음악이 재생됩니다</p>
         </div>
       </div>
     </>

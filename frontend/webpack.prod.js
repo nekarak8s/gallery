@@ -70,28 +70,29 @@ module.exports = merge(common, {
           },
         ],
       },
+      {
+        test: /\.(png|jpe?g|webp)$/,
+        use: [
+          {
+            loader: 'responsive-loader',
+            options: {
+              name: '[name]-[hash]-[width].[ext]',
+              sizes: [320, 640, 960, 1200],
+              placeholder: true,
+              placeholderSize: 20,
+              esModule: true,
+              quality: 100,
+              outputPath: './responsive-images',
+            },
+          },
+        ],
+        type: 'javascript/auto',
+      },
     ],
   },
   optimization: {
     minimize: true,
-    minimizer: [
-      new TerserPlugin(),
-      new CssMinimizerPlugin(),
-      new ImageMinimizerPlugin({
-        minimizer: {
-          implementation: ImageMinimizerPlugin.imageminMinify,
-          options: {
-            // Lossless optimization with custom option
-            // Feel free to experiment with options for better result for you
-            plugins: [
-              ['gifsicle', { interlaced: true }],
-              ['jpegtran', { progressive: true }],
-              ['optipng', { optimizationLevel: 5 }],
-            ],
-          },
-        },
-      }),
-    ],
+    minimizer: [new TerserPlugin(), new CssMinimizerPlugin()],
   },
   plugins: [
     new Dotenv({

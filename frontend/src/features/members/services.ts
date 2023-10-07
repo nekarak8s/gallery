@@ -12,11 +12,11 @@ import { useSetRecoilState } from 'recoil'
 
 // 로그인
 export function useLogin(type: string) {
-  return useMutation<MessageResponse<LoginData>, ErrorResponse>(
+  return useMutation<string, ErrorResponse>(
     () => axiosInstance.post(`/member/login?type=${type}`),
     {
-      onSuccess: (res) => {
-        const redirectURL = res.data
+      onSuccess: (data) => {
+        const redirectURL = data
         window.location.href = redirectURL
       },
       onError: () => {
@@ -33,11 +33,11 @@ export function useLoginCallback(type: string, code: string) {
   return useMutation<MessageResponse<LoginCallbackData>, ErrorResponse>(
     () => axiosInstance.post(`/member/callback?type=${type}&code=${code}`),
     {
-      onSuccess: (res) => {
+      onSuccess: (data) => {
         queryClient.invalidateQueries(['user'])
-        setExpDateState(res.data.expirationDate)
+        setExpDateState(data.data.expirationDate)
 
-        console.log(1, res)
+        console.log(1, data)
         navigate(routes['MyPage'].path)
       },
       onError: () => {
@@ -56,26 +56,25 @@ export function useUserQuery() {
       onError: () => {
         //   toast.addMessage('error', err.data.message)
       },
-      select: (res) => res.data,
+      select: (res) => {
+        return res.data
+      },
       staleTime: Infinity,
     }
   )
 }
 
-// export function useUpdateProfile(form: ProfileFormData) {
-//   const [result, message] = validateProfile(form)
-//   if (!result) return
-
-//   return useMutation<MessageResponse<UserData>, ErrorResponse, UserData>(
-//     ['user'],
-//     () => axiosInstance.get(`/member`),
-//     {
-//       onSuccess: () => {},
-//       onError: () => {
-//         //   toast.addMessage('error', err.data.message)
-//       },
-//       select: (res) => res.data,
-//       staleTime: Infinity,
-//     }
-//   )
-// }
+export function useUpdateProfile() {
+  const queryClient = useQueryClient()
+  return useMutation<MessageResponse, ErrorResponse, ProfileFormData>(
+    (data) => axiosInstance.patch(`/member`, data),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(['user'])
+      },
+      onError: () => {
+        //   toast.addMessage('error', err.data.message)
+      },
+    }
+  )
+}
