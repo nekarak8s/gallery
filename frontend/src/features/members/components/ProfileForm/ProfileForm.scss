@@ -22,8 +22,8 @@
   font-weight: 800;
   background: linear-gradient(
     to right top,
-    c.$primary-color,
-    c.$secondary-color
+    var(--color-primary, c.$primary),
+    var(--color-secondary, c.$secondary)
   );
   background-clip: text;
   -webkit-background-clip: text;

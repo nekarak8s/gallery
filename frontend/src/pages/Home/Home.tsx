@@ -34,6 +34,7 @@ function Home() {
       <HomeSection3 />
       <div className="home__music">
         <Music
+          id="home-audio"
           src={bgm}
           title="MapleStory - Lith Harbor (ver.Piano)"
           color="white"

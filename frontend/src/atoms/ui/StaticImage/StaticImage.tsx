@@ -5,6 +5,8 @@ interface Props {
   webpSrc: ResponsiveImageOutput
   imgSrc: ResponsiveImageOutput
   alt: string
+  width?: string
+  height?: string
   sizes?: string
   onLoad?: () => void
 }
@@ -16,6 +18,8 @@ const StaticImage: React.FC<Props> = ({
   webpSrc,
   imgSrc,
   alt,
+  width = '100%',
+  height = '100%',
   sizes = '(max-width: 1200px) 100vw, 1201px',
   onLoad,
 }) => {
@@ -46,6 +50,7 @@ const StaticImage: React.FC<Props> = ({
         sizes={sizes}
         loading="lazy"
         onLoad={handleImageLoad}
+        style={{ width, height }}
       />
     </picture>
   )

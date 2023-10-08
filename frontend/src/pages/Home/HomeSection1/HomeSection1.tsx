@@ -1,304 +1,302 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react'
 import throttle from 'lodash/throttle'
 import bgm from '@/assets/audio/MapleStory-Lith-Harbor.mp3'
-import cloud1Img from '@/assets/images/home-section-1/cloud1.webp?format=webp'
-import cloud2Img from '@/assets/images/home-section-1/cloud2.webp?format=webp'
-import cloud3Img from '@/assets/images/home-section-1/cloud3.webp?format=webp'
-import architectureImg from '@/assets/images/home-section-1/concrete.webp?format=webp'
-import islandImg from '@/assets/images/home-section-1/island.webp?format=webp'
-import oceanImg from '@/assets/images/home-section-1/ocean.webp?format=webp'
-import skyImg from '@/assets/images/home-section-1/sky.webp?format=webp'
+import cloud1Img from '@/assets/images/home-section-1/cloud-1.png?format=png'
+import cloud1Webp from '@/assets/images/home-section-1/cloud-1.png?format=webp'
+import cloud2Img from '@/assets/images/home-section-1/cloud-2.png?format=png'
+import cloud2Webp from '@/assets/images/home-section-1/cloud-2.png?format=webp'
+import cloud3Img from '@/assets/images/home-section-1/cloud-3.png?format=png'
+import cloud3Webp from '@/assets/images/home-section-1/cloud-3.png?format=webp'
+import galleryImg from '@/assets/images/home-section-1/gallery.png?format=png'
+import galleryWebp from '@/assets/images/home-section-1/gallery.png?format=webp'
+import islandImg from '@/assets/images/home-section-1/island.png?format=png'
+import islandWebp from '@/assets/images/home-section-1/island.png?format=webp'
+import oceanImg from '@/assets/images/home-section-1/ocean.png?format=png'
+import oceanWebp from '@/assets/images/home-section-1/ocean.png?format=webp'
+import skyImg from '@/assets/images/home-section-1/sky.png?format=webp'
+import skyWebp from '@/assets/images/home-section-1/sky.png?format=webp'
 import Loading from '@/atoms/ui/Loading'
 import ScrollDown from '@/atoms/ui/ScrollDown'
-import OceanFiltered from './OceanFiltered'
-import styles from './HomeSection1.module.scss'
+import OceanFilter from './OceanFilter'
+import './HomeSection1.scss'
 import StaticImage from '@/atoms/ui/StaticImage'
 
 import OceanTurbulenceFilter from '@/assets/svgs/ocean-turbulence-filter.svg'
 
 const TOTAL_IMAGE = 7
-const LAYER_DEPTH = 50 // css 3d-preserve factor: layer -> tranlsateZ
-const SCROLL_OFFSET = 300
+const BACK_HEIGHT = 200 // vh. background height
+const SCROLL_OFFSET = 300 // px. fade start offset on scroll
+const ROTATION_DEGREE = 20 // deg. max rotation degree on mousemove
 
 function HomeSection1() {
   /**
-   * Hide the filter after the image loading
+   * Set the background height
    */
-  const transitionRef = useRef<HTMLDivElement>(null)
-  const logoRef = useRef<HTMLDivElement>(null)
+  const backRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const back = backRef.current!
+
+    back.style.setProperty('--back-height', `${BACK_HEIGHT}vh`)
+  }, [])
+
+  /**
+   * Disable scroll on mount
+   */
+  const disableScroll = useCallback((e: Event) => {
+    e.preventDefault()
+    window.scrollTo(0, 0)
+  }, [])
+
+  useEffect(() => {
+    addEventListener('scroll', disableScroll, { passive: false }) // actively disable scroll
+    return () => {
+      removeEventListener('scroll', disableScroll)
+    }
+  }, [])
+
+  /**
+   * Handle image loading
+   */
   const [imagesLoaded, setImagesLoaded] = useState(0)
 
   const handleImageLoad = function countLoadedImages() {
     setImagesLoaded((num) => num + 1)
   }
 
-  const handleScroll = useCallback(function disableScroll(e: Event) {
-    e.preventDefault()
-    window.scrollTo(0, 0)
-  }, [])
+  /**
+   * Handle transition
+   * 1. play audio
+   * 2. Show interactive logo
+   * 3. Hide cover layer
+   * 4. Enable scrolling
+   */
+  const coverRef = useRef<HTMLDivElement>(null)
+  const logoRef = useRef<HTMLDivElement>(null)
 
-  // disable scroll
-  useEffect(() => {
-    addEventListener('scroll', handleScroll, { passive: false })
-    return () => {
-      removeEventListener('scroll', handleScroll)
-    }
-  }, [])
-
-  // Change the loading state
-  useEffect(() => {
-    const transition = transitionRef.current!
-    if (imagesLoaded === TOTAL_IMAGE) {
-      const nodes = transition.childNodes as NodeListOf<HTMLElement>
-      nodes.forEach((node: HTMLElement) => {
-        node.classList.add(styles.loaded)
-      })
-    }
-  }, [imagesLoaded])
-
-  // Hide the transition layer
   const handleClick = function playAudio() {
     if (imagesLoaded != TOTAL_IMAGE) return
+
     // play audio
-    const audio = document.querySelector('#audio') as HTMLAudioElement
+    const audio = document.querySelector('#home-audio') as HTMLAudioElement
     audio.play()
 
-    // show logo
+    // show interactive logo
     const logo = logoRef.current!
-    logo.classList.remove(styles.hidden)
+    logo.classList.add('opaque')
 
-    // hide transition layer
-    const transition = transitionRef.current!
-    transition.classList.add(styles.hidden)
+    // hide cover layer
+    const cover = coverRef.current!
+    cover.classList.add('hide')
 
-    // activate scrolling
-    removeEventListener('scroll', handleScroll)
+    // enable scrolling
+    removeEventListener('scroll', disableScroll)
   }
 
   /**
-   * Scroll & Mousemouve event hadling
+   * Mousemove Event Handling
    */
-  const backgroundRef = useRef<HTMLDivElement>(null)
-  const mainRef = useRef<HTMLDivElement>(null)
-  const gradientRef = useRef<HTMLDivElement>(null)
+  const interactRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     // Get the elements
-    const background = backgroundRef.current!
-    const main = mainRef.current!
-    const gradientFade = gradientRef.current!
-    const interactiveEles = Array.from(
-      document.querySelector(`.${styles.mainInter}`)
-        ?.children as HTMLCollectionOf<HTMLElement>
+    const interact = interactRef.current!
+    const interactEles = Array.from(
+      interact.children as HTMLCollectionOf<HTMLDivElement>
     )
 
-    // Initiate scroll data
-    let scrollStart = 0
-    let scrollEnd = 0
-    const init = function setInitialPositionData1() {
-      const backgroundTop =
-        window.pageYOffset + background.getBoundingClientRect().top
-      scrollStart = backgroundTop
-      scrollEnd = backgroundTop + background.offsetHeight - main.offsetHeight
-    }
+    // Handle mouse event
+    const handleMouseMove = function moveImagesInteractively(e: MouseEvent) {
+      // Set distance values from the mouse position
+      const xValue = e.clientX - window.innerWidth / 2
+      const yValue = e.clientY - window.innerHeight / 2
+      const rValue = (xValue / (window.innerWidth / 2)) * ROTATION_DEGREE
 
-    // Scroll Event: fade in the gradient filter
-    const handleScroll = function setElementsPosition1() {
-      const scrollTop = window.scrollY
-
-      if (scrollTop > scrollEnd + main.offsetHeight) return
-
-      if (scrollTop > scrollStart + SCROLL_OFFSET) {
-        gradientFade.style.opacity = `${
-          (scrollTop - scrollStart - SCROLL_OFFSET) /
-          (scrollEnd - scrollStart - SCROLL_OFFSET)
-        }`
-      } else {
-        gradientFade.style.opacity = `0`
-      }
-    }
-
-    // Mouse Event: move elements according to the mouse position
-    const handleMouseMove = function moveImagesInteractively(
-      e: MouseEvent | TouchEvent
-    ) {
-      // Transfrom touch event
-      const event = e instanceof TouchEvent ? e.touches[0] : e
-
-      // Set the factor based on mouse position
-      const xValue = event.clientX - window.innerWidth / 2
-      const yValue = event.clientY - window.innerHeight / 2
-      const rotateDeg = (xValue / (window.innerWidth / 2)) * 20
-
-      // Move elements
-      interactiveEles.forEach((el) => {
-        // Get each element factor
+      // Move interactive elements
+      interactEles.forEach((el) => {
+        // Get factors from the element
         const speedx = Number(el.dataset.speedx)
         const speedy = Number(el.dataset.speedy)
-        const speedz = Number(el.dataset.speedz)
-        const rotation = Number(el.dataset.rotation)
-        const layer = Number(el.dataset.layer) * LAYER_DEPTH
+        const speedr = Number(el.dataset.speedr)
 
-        // Determine zValue based on whether the element is in the left side
-        const leftX = parseFloat(
-          getComputedStyle(el).left + getComputedStyle(el).right
-        )
-        const isInLeft = leftX < window.innerWidth ? 1 : -1
-        const zValue = event.clientX - leftX * isInLeft * 0.1
-
-        // Move element
+        // Move the element
         el.style.transform = `
-        rotateY(${rotateDeg * rotation}deg)
-        translate3d(
+        rotateY(${rValue * speedr}deg)
+        translate(
           calc(-50% + ${xValue * speedx}px),
-          calc(-50% + ${yValue * speedy}px), 
-          ${zValue * speedz + layer}px
+          calc(-50% + ${yValue * speedy}px)
           )
         `
       })
     }
 
-    init()
-
-    // throttle the functions
     const throttledHandleMouseMove = throttle(handleMouseMove, 10)
+
+    window.addEventListener('mousemove', throttledHandleMouseMove)
+    return () => {
+      window.removeEventListener('mousemove', throttledHandleMouseMove)
+    }
+  }, [])
+
+  /**
+   * Scroll Event Hadling
+   */
+  const mainRef = useRef<HTMLDivElement>(null)
+  const fadeRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    // Get the elements
+    const back = backRef.current!
+    const main = mainRef.current!
+    const fade = fadeRef.current!
+
+    // Initiate scroll data
+    let scrollStart = 0
+    let scrollEnd = 0
+    const init = function setInitialPositionData1() {
+      scrollStart = window.pageYOffset + back.getBoundingClientRect().top
+      scrollEnd = scrollStart + back.offsetHeight - main.offsetHeight
+    }
+
+    // Handle scroll event
+    const handleScroll = function setElementsPosition1() {
+      const scrollTop = window.scrollY
+
+      // optimization
+      if (scrollTop < scrollStart || scrollTop > scrollEnd + main.offsetHeight)
+        return
+
+      // handle fade gradient layer opacity
+      if (scrollTop < scrollStart + SCROLL_OFFSET) {
+        fade.style.opacity = `0`
+      } else {
+        fade.style.opacity = `${
+          (scrollTop - scrollStart - SCROLL_OFFSET) /
+          (scrollEnd - scrollStart - SCROLL_OFFSET)
+        }`
+      }
+    }
+
+    init()
     const throttledHandleScroll = throttle(handleScroll, 10)
 
     window.addEventListener('resize', init)
     window.addEventListener('scroll', throttledHandleScroll, { passive: true })
-    window.addEventListener('mousemove', throttledHandleMouseMove)
     return () => {
       window.removeEventListener('resize', init)
       window.removeEventListener('scroll', throttledHandleScroll)
-      window.removeEventListener('mousemove', throttledHandleMouseMove)
     }
   }, [])
 
   return (
     <>
-      <div className={styles.background} ref={backgroundRef}>
-        <div className={styles.main} ref={mainRef}>
-          <div ref={gradientRef} className={styles.mainGradientFade}></div>
-          <div className={styles.mainScrollDown}>
+      <div className="hs1-back" ref={backRef}>
+        <div className="hs1-main" ref={mainRef}>
+          <div className="hs1-fade" ref={fadeRef}></div>
+          <div className="hs1-scroll">
             <ScrollDown />
           </div>
-          <div className={styles.mainInter}>
+          <div className="hs1-interact" ref={interactRef}>
             <div
-              className={styles.mainInterSky}
+              className="hs1-interact__sky"
               data-speedx="0"
               data-speedy="0"
-              data-speedz="0"
-              data-rotation="0"
-              data-layer="0"
+              data-speedr="0"
             >
               <StaticImage
                 imgSrc={skyImg}
-                webpSrc={skyImg}
+                webpSrc={skyWebp}
                 alt="푸른 하늘"
                 onLoad={handleImageLoad}
               />
             </div>
             <div
-              className={styles.mainInterCloud1}
+              className="hs1-interact__cloud-1"
               data-speedx="0.07"
               data-speedy="0.05"
-              data-speedz="0"
-              data-rotation="0.03"
-              data-layer="1"
+              data-speedr="0.03"
             >
               <StaticImage
                 imgSrc={cloud1Img}
-                webpSrc={cloud1Img}
+                webpSrc={cloud1Webp}
                 alt="높고 가까운 구름"
                 onLoad={handleImageLoad}
               />
             </div>
             <div
-              className={styles.mainInterCloud2}
+              className="hs1-interact__cloud-2"
               data-speedx="0.08"
               data-speedy="0.06"
-              data-speedz="0"
-              data-rotation="0.05"
-              data-layer="1"
+              data-speedr="0.05"
             >
               <StaticImage
                 imgSrc={cloud2Img}
-                webpSrc={cloud2Img}
+                webpSrc={cloud2Webp}
                 alt="중간 높이의 가까운 구름"
                 onLoad={handleImageLoad}
               />
             </div>
             <div
-              className={styles.mainInterCloud3}
+              className="hs1-interact__cloud-3"
               data-speedx="0.05"
               data-speedy="0.03"
-              data-speedz="0"
-              data-rotation="0.02"
-              data-layer="1"
+              data-speedr="0.02"
             >
               <StaticImage
                 imgSrc={cloud3Img}
-                webpSrc={cloud3Img}
+                webpSrc={cloud3Webp}
                 alt="낮고 먼 구름"
                 onLoad={handleImageLoad}
               />
             </div>
             <div
-              className={styles.mainInterIsland}
+              className="hs1-interact__island"
               data-speedx="0.07"
               data-speedy="0.08"
-              data-speedz="0"
-              data-rotation="0.08"
-              data-layer="2"
+              data-speedr="0.08"
             >
               <StaticImage
                 imgSrc={islandImg}
-                webpSrc={islandImg}
+                webpSrc={islandWebp}
                 alt="멀리 있는 섬"
                 onLoad={handleImageLoad}
               />
             </div>
             <div
-              className={`${styles.mainInterOcean} scroll-down`}
+              className="hs1-interact__ocean"
               data-speedx="0.07"
               data-speedy="0.08"
-              data-speedz="0"
-              data-rotation="0.09"
-              data-layer="2"
+              data-speedr="0.09"
             >
-              <div className={styles.oceanFilter}>
+              <div className="hs1-interact__ocean-filter">
                 <StaticImage
                   imgSrc={oceanImg}
-                  webpSrc={oceanImg}
+                  webpSrc={oceanWebp}
                   alt="일렁이는 수평선의 푸른 바다"
                   onLoad={handleImageLoad}
                 />
-                <OceanFiltered />
+                <OceanFilter />
               </div>
             </div>
             <div
               ref={logoRef}
-              className={`${styles.mainInterLogo} ${styles.hidden} scroll-magnify-center`}
+              className="hs1-interact__logo"
               data-speedx="0.25"
               data-speedy="0.05"
-              data-speedz="0"
-              data-rotation="0.1"
-              data-layer="3"
+              data-speedr="0.1"
             >
-              <p className={`${styles.mainInterLogoPreposition}`}>The</p>
-              <p>Gallery</p>
+              <span>The</span>
+              <span>Gallery</span>
             </div>
             <div
-              className={`${styles.mainInterArchitect} scroll-down`}
+              className="hs1-interact__gallery"
               data-speedx="0.16"
               data-speedy="0.12"
-              data-speedz="0"
-              data-rotation="0"
-              data-layer="4"
+              data-speedr="0"
             >
               <StaticImage
-                imgSrc={architectureImg}
-                webpSrc={architectureImg}
+                imgSrc={galleryImg}
+                webpSrc={galleryWebp}
                 alt="바로 앞에 보이는 갤러리 테라스 바닥 일부"
                 onLoad={handleImageLoad}
               />
@@ -307,18 +305,19 @@ function HomeSection1() {
         </div>
       </div>
       {/* Transition Layer */}
-      <div
-        className={styles.transition}
-        ref={transitionRef}
-        onClick={handleClick}
-      >
-        <div className={styles.transitionLoading}>
-          <Loading />
-        </div>
-        <div className={styles.transitionPhrase}>
-          <p>클릭하세요</p>
-          <p>배경 음악이 재생됩니다</p>
-        </div>
+      <div className="hs1-cover" ref={coverRef} onClick={handleClick}>
+        {imagesLoaded === TOTAL_IMAGE ? (
+          <div className="hs1-cover__phrase">
+            <h1 tabIndex={0} onKeyDown={handleClick}>
+              클릭하세요
+            </h1>
+            <h2>배경 음악이 재생됩니다</h2>
+          </div>
+        ) : (
+          <div className="hs1-cover__loading">
+            <Loading />
+          </div>
+        )}
       </div>
     </>
   )

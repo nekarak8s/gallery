@@ -1,0 +1,605 @@
+@use '@/styles/_responsive.scss' as *;
+@use '@/styles/_animations.scss' as a;
+@use '@/styles/_colors.scss' as c;
+@use '@/styles/_z-index.scss' as *;
+
+.hs1-back {
+  height: var(--back-height, 200vh);
+  min-height: 1200px;
+}
+
+.hs1-main {
+  position: sticky;
+  top: 0;
+  overflow: hidden;
+  width: 100vw;
+  height: 100vh;
+  min-height: 600px;
+  perspective: 2800px;
+  transform-style: preserve-3d;
+}
+
+.hs1-fade {
+  @include z-index(top);
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(2, 0, 36, 0) 40%,
+    var(--background-color, rgb(122, 200, 219)) 90%,
+    var(--background-color, rgb(122, 200, 219)) 100%
+  );
+  opacity: 0;
+}
+
+.hs1-scroll {
+  @include z-index(top);
+  position: absolute;
+  left: 50%;
+  bottom: 15px;
+  transform: translateX(-50%);
+}
+
+.hs1-interact {
+  position: relative;
+  width: 100%;
+  height: 100%;
+
+  & > * {
+    transition: transform 0.45s cubic-bezier(0.2, 0.49, 0.32, 0.99);
+  }
+
+  &__sky {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  &__cloud-1 {
+    position: absolute;
+    width: 65%;
+    top: calc(50% - 40%);
+    left: calc(90%);
+    transform: translate(-50%, -50%);
+
+    img {
+      @include a.animation-flowing-horizon(
+        'hs1-cloud-1',
+        $speed: 113s,
+        $start: 100%,
+        $end: -180%,
+        $delay: -25s
+      );
+    }
+  }
+
+  &__cloud-2 {
+    position: absolute;
+    width: 65%;
+    top: calc(50% - 27%);
+    left: calc(20%);
+    transform: translate(-50%, -50%);
+
+    img {
+      @include a.animation-flowing-horizon(
+        'hs1-cloud-2',
+        $speed: 120s,
+        $start: 190%,
+        $end: -90%,
+        $delay: -73s
+      );
+    }
+  }
+
+  &__cloud-3 {
+    position: absolute;
+    width: 35%;
+    top: calc(50% - 5%);
+    left: calc(70%);
+    transform: translate(-50%, -50%);
+
+    img {
+      @include a.animation-flowing-horizon(
+        'hs1-cloud-3',
+        $speed: 130s,
+        $start: 150%,
+        $end: -250%,
+        $delay: -46s
+      );
+    }
+  }
+
+  &__island {
+    position: absolute;
+    width: 30%;
+    top: calc(50% + 3%);
+    left: calc(50% + 40%);
+    transform: translate(-50%, -50%);
+  }
+
+  &__ocean {
+    position: absolute;
+    width: 120%;
+    top: calc(50% + 23%);
+    left: calc(50%);
+    transform: translate(-50%, -50%);
+    overflow: hidden;
+  }
+
+  &__ocean-filter {
+    position: relative;
+
+    img {
+      position: absolute;
+      top: -10px;
+      left: 0;
+      filter: url('#ocean-filter');
+    }
+  }
+
+  &__ocean-filter::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      rgba(10, 18, 90, 0.114),
+      rgba(9, 9, 69, 0.064) 5%,
+      rgba(255, 255, 255, 0) 9%
+    );
+  }
+
+  &__logo {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    position: absolute;
+    top: calc(50%);
+    left: calc(50% - 15%);
+    transform: translate(-50%, -50%);
+    color: c.$ft-white;
+    font-size: 10vw;
+    font-weight: 700;
+    opacity: 0;
+
+    span:nth-child(1) {
+      font-size: 0.7em;
+    }
+  }
+
+  &__gallery {
+    position: absolute;
+    width: 120%;
+    top: calc(50% + 43%);
+    left: calc(50%);
+    transform: translate(-50%, -50%);
+  }
+}
+
+.hs1-cover {
+  @include z-index(top);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transition:
+    opacity var(--fade-time) ease-out,
+    transform var(--fade-time) ease-out;
+  background-color: white;
+  mix-blend-mode: screen;
+
+  &__phrase {
+    @include a.animation-slide-in-up('transition', slow, 50px);
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    font-size: 10vw;
+
+    h1 {
+      color: rgb(0, 0, 0);
+      font-size: 1em;
+      font-weight: 800;
+      margin-top: 0.4em;
+      margin-bottom: 0.4em;
+    }
+
+    h2 {
+      color: rgb(0, 0, 0);
+      font-size: 0.3em;
+      font-weight: 600;
+    }
+  }
+}
+
+.hs1-cover.hide {
+  animation: hide-hs1-cover 1s ease-in forwards;
+}
+
+@keyframes hide-hs1-cover {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  83% {
+    opacity: 1;
+    transform: scale(10);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(12);
+    display: none;
+  }
+}
+
+@media all and (max-aspect-ratio: 4/3) {
+  .hs1-interact {
+    &__cloud-1 {
+      width: 70%;
+      top: calc(50% - 30%);
+      left: calc(90%);
+    }
+
+    &__cloud-2 {
+      width: 70%;
+      top: calc(50% - 20%);
+      left: calc(20%);
+    }
+
+    &__cloud-3 {
+      width: 40%;
+      top: calc(50% - 0%);
+      left: calc(70%);
+    }
+
+    &__island {
+      width: 40%;
+      top: calc(50% + 13%);
+      left: calc(50% + 40%);
+    }
+
+    &__ocean {
+      top: calc(50% + 33%);
+      left: calc(50%);
+    }
+
+    &__logo {
+      top: calc(50% + 5%);
+      left: calc(50% - 15%);
+      font-size: 12vw;
+    }
+
+    &__gallery {
+      width: 140%;
+      height: auto;
+      top: calc(50% + 43%);
+      left: calc(50%);
+    }
+  }
+}
+
+@media all and (max-aspect-ratio: 3/4) {
+  .hs1-interact {
+    &__cloud-1 {
+      width: 75%;
+      top: calc(50% - 30%);
+      left: calc(90%);
+    }
+
+    &__cloud-2 {
+      width: 75%;
+      top: calc(50% - 20%);
+      left: calc(20%);
+    }
+
+    &__cloud-3 {
+      width: 50%;
+      top: calc(50% - 0%);
+      left: calc(70%);
+    }
+
+    &__island {
+      width: 45%;
+      top: calc(50% + 15%);
+      left: calc(50% + 40%);
+    }
+
+    &__ocean {
+      top: calc(50% + 35%);
+      left: calc(50%);
+    }
+
+    &__logo {
+      top: calc(50% + 5%);
+      left: calc(50% - 15%);
+      font-size: 15vw;
+    }
+
+    &__gallery {
+      width: 160%;
+      top: calc(50% + 45%);
+      left: calc(50%);
+    }
+  }
+}
+
+@media all and (max-aspect-ratio: 9/16) {
+  .hs1-interact {
+    &__cloud-1 {
+      width: 80%;
+      top: calc(50% - 30%);
+      left: calc(90%);
+    }
+
+    &__cloud-2 {
+      width: 80%;
+      top: calc(50% - 15%);
+      left: calc(20%);
+    }
+
+    &__cloud-3 {
+      width: 60%;
+      top: calc(50% + 10%);
+      left: calc(70%);
+    }
+
+    &__island {
+      width: 55%;
+      top: calc(50% + 18%);
+      left: calc(50% + 40%);
+    }
+
+    &__ocean {
+      top: calc(50% + 38%);
+      left: calc(50%);
+    }
+
+    &__logo {
+      top: calc(50% + 12%);
+      left: calc(50% - 15%);
+      font-size: 18vw;
+    }
+
+    &__gallery {
+      width: 200%;
+      top: calc(50% + 48%);
+      left: calc(50%);
+    }
+  }
+}
+
+// 1280px
+@include laptop {
+  .transition__phrase {
+    p:nth-child(1) {
+      font-size: 12vw;
+    }
+
+    p:nth-child(2) {
+      font-size: 3.5vw;
+    }
+  }
+
+  .main__inter__sky {
+    width: 1500px;
+  }
+
+  .main__inter__cloud1 {
+    width: 920px;
+    top: calc(50% - 300px);
+    right: auto;
+    bottom: auto;
+    left: calc(50% + 500px);
+  }
+
+  .main__inter__cloud2 {
+    width: 920px;
+    top: calc(50% - 300px);
+    right: auto;
+    bottom: auto;
+    left: calc(50% - 400px);
+  }
+
+  .main__inter__cloud3 {
+    width: 500px;
+    top: calc(50% - 100px);
+    right: auto;
+    bottom: auto;
+    left: calc(50% + 220px);
+  }
+
+  .main__inter__island {
+    width: 360px;
+    top: calc(50% + 60px);
+    right: auto;
+    bottom: auto;
+    left: calc(50% + 480px);
+  }
+
+  .main__inter__ocean {
+    width: 1500px;
+    top: calc(50% + 310px);
+    right: auto;
+    bottom: auto;
+    left: calc(50%);
+  }
+
+  .main__inter__logo {
+    top: calc(50% + 40px);
+    right: auto;
+    bottom: auto;
+    left: calc(50% - 100px);
+    color: white;
+    font-size: 7.5rem;
+  }
+
+  .main__inter__architect {
+    width: 1500px;
+    top: calc(50% + 300px);
+    right: auto;
+    bottom: auto;
+    left: calc(50%);
+  }
+}
+
+// 992px
+// stick to the edges & depend on vh unit
+@include tablet {
+  .transition__phrase {
+    p:nth-child(1) {
+      font-size: 120px;
+    }
+
+    p:nth-child(2) {
+      font-size: 50px;
+    }
+  }
+
+  .main__inter__sky {
+    height: 100%;
+  }
+
+  .main__inter__cloud1 {
+    width: 700px;
+    top: calc(60px + 9vh);
+    right: calc(-600px);
+    bottom: auto;
+    left: auto;
+  }
+
+  .main__inter__cloud2 {
+    width: 700px;
+    top: calc(-180px + 50vh);
+    right: auto;
+    bottom: auto;
+    left: calc(80px);
+  }
+
+  .main__inter__cloud3 {
+    width: 400px;
+    top: calc(-200px + 76vh);
+    right: calc(-200px);
+    bottom: auto;
+    left: auto;
+  }
+
+  .main__inter__island {
+    width: 400px;
+    top: auto;
+    right: auto;
+    bottom: calc(130px + 10vh);
+    left: calc(50% + 270px);
+  }
+
+  .main__inter__ocean {
+    width: 1100px;
+    top: auto;
+    right: auto;
+    bottom: calc(200px - 80vh);
+    left: calc(50%);
+  }
+
+  .main__inter__logo {
+    top: auto;
+    right: auto;
+    bottom: calc(-120px + 40vh);
+    left: calc(50% - 100px);
+    font-size: 6rem;
+  }
+
+  .main__inter__architect {
+    width: 1100px;
+    top: auto;
+    right: auto;
+    bottom: calc(-100px - 9vh);
+    left: calc(50%);
+  }
+}
+
+// 640px
+// stick to the edges & depend on vh unit
+@include mobile {
+  .transition__phrase {
+    p:nth-child(1) {
+      font-size: 60px;
+    }
+
+    p:nth-child(2) {
+      font-size: 28px;
+      font-weight: 800;
+    }
+  }
+
+  .main__inter__sky {
+    height: 100%;
+  }
+
+  .main__inter__cloud1 {
+    width: 400px;
+    top: calc(60px + 9vh);
+    right: calc(-240px);
+    bottom: auto;
+    left: auto;
+  }
+
+  .main__inter__cloud2 {
+    width: 400px;
+    top: calc(-150px + 55vh);
+    right: auto;
+    bottom: auto;
+    left: calc(80px);
+  }
+
+  .main__inter__cloud3 {
+    width: 300px;
+    top: calc(-200px + 80vh);
+    right: calc(-220px);
+    bottom: auto;
+    left: auto;
+  }
+
+  .main__inter__island {
+    width: 280px;
+    top: auto;
+    right: auto;
+    bottom: calc(30px + 20vh);
+    left: calc(50% + 200px);
+  }
+
+  .main__inter__ocean {
+    width: 800px;
+    top: auto;
+    right: auto;
+    bottom: calc(80px - 70vh);
+    left: calc(50%);
+  }
+
+  .main__inter__logo {
+    top: auto;
+    right: auto;
+    bottom: calc(-100px + 40vh);
+    left: calc(50% - 40px);
+    font-size: 4rem;
+  }
+
+  .main__inter__architect {
+    width: 800px;
+    top: auto;
+    right: auto;
+    bottom: calc(-60px - 10vh);
+    left: calc(50%);
+  }
+}

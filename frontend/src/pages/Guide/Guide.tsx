@@ -1,8 +1,8 @@
 import React from 'react'
 
 import './Guide.scss'
-import responsiveImage from '@/assets/images/gallery/sky.png?format=png'
-import responsiveImageWebp from '@/assets/images/gallery/sky.png?format=webp'
+import responsiveImage from '@/assets/images/gallery/3d.png?format=png'
+import responsiveImageWebp from '@/assets/images/gallery/3d.png?format=webp'
 import StaticImage from '@/atoms/ui/StaticImage'
 
 function Guide() {

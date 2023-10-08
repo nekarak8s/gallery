@@ -1,5 +1,5 @@
-@import '@/styles/_colors.scss';
-@import '@/styles/_responsive.scss';
+@use '@/styles/_colors.scss' as c;
+@use '@/styles/_responsive.scss' as *;
 
 $BACKGROUND_CHANGE_TIME: 0.8s;
 $FRAME_COLOR: rgb(44, 5, 5);
@@ -45,7 +45,7 @@ $FRAME_COLOR: rgb(44, 5, 5);
   z-index: 3;
   mix-blend-mode: multiply;
   circle {
-    fill: $primary-color;
+    fill: var(--color-primary, c.$primary);
   }
 }
 

@@ -77,11 +77,11 @@ module.exports = merge(common, {
             loader: 'responsive-loader',
             options: {
               name: '[name]-[hash]-[width].[ext]',
-              sizes: [320, 640, 960, 1200],
+              sizes: [320, 640, 960, 1200, 1900, 2400, 3500],
               placeholder: true,
               placeholderSize: 20,
               esModule: true,
-              quality: 100,
+              quality: 90,
               outputPath: './responsive-images',
             },
           },
