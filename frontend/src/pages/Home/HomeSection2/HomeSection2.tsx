@@ -64,8 +64,8 @@ function HomeSection2() {
   useEffect(() => {
     const back = backRef.current!
 
-    back.style.setProperty('--back-height', `${BACK_HEIGHT * 100}vh`)
-    back.style.setProperty('--back-min-height', `${BACK_HEIGHT * 600}px`)
+    back.style.setProperty('--height-back', `${BACK_HEIGHT * 100}vh`)
+    back.style.setProperty('--min-height-back', `${BACK_HEIGHT * 600}px`)
   }, [])
 
   /**

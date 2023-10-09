@@ -7,8 +7,8 @@
   color: var(--color, rgb(255, 93, 52));
   background-color: var(--background-color, rgb(122, 200, 219));
   transition:
-    color var(--transition-time) ease-in-out,
-    background-color var(--transition-time) ease-in-out;
+    color var(--transition-time-homee) ease-in-out,
+    background-color var(--transition-time-homee) ease-in-out;
 }
 
 .media-card__label {

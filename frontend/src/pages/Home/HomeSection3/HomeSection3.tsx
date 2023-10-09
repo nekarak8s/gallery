@@ -1,214 +1,135 @@
 import React, { useEffect, useRef, useState } from 'react'
 import throttle from 'lodash/throttle'
-import CircleLogo from '@/assets/svgs/circle.svg'
-import videoSrc3 from '@/assets/videos/home-video-4.webm'
+import CircleIcon from '@/assets/svgs/circle.svg'
+import webmSrc from '@/assets/videos/home-video-4.webm'
+import vidSrc from '@/assets/videos/home-video-4.mp4'
 import MagneticButton from '@/atoms/ui/MagneticButton'
 
-import styles from './HomeSection3.module.scss'
+import './HomeSection3.scss'
+import StaticVideo from '@/atoms/ui/StaticVideo'
+import Button3D from '@/atoms/ui/Button3D'
+import { CURSOR_SCALE } from '@/constants'
 
-const BACKGROUND_HEIGHT = 430 // vh
-const SCROLL_OFFSET = 0.3 // * 100vh
+const BACK_HEIGHT = 3 // * 100vh
+const SCROLL_OFFSET = 200 // px.
 
 function HomeSection3() {
-  // element refs
-  const backgroundRef = useRef<HTMLDivElement>(null)
+  /**
+   * Set the background height
+   */
+  const backRef = useRef<HTMLDivElement>(null)
 
+  useEffect(() => {
+    const back = backRef.current!
+
+    back.style.setProperty(
+      '--height-back',
+      `calc(${BACK_HEIGHT * 100}vh + ${SCROLL_OFFSET}px)`
+    )
+    back.style.setProperty(
+      '--min-height-back',
+      `calc(${BACK_HEIGHT * 600}px + ${SCROLL_OFFSET}px)`
+    )
+  }, [])
+
+  /**
+   * Scroll Event Hadling
+   * 1. Move art work (transform)
+   * 2. Toggle video (play / pause)
+   * 3. Toggle fade (opacity)
+   * 4. Toggle circle (transform)
+   * 5. Toggle phrase (transform)
+   * 6. Toggle button (visibility)
+   * 7. Toggle videoFrame (transform)
+   * 8. Toggle label (opacity)
+   * 9. Toggle tilting availability (useState)
+   */
   const mainRef = useRef<HTMLDivElement>(null)
-  const filterRef = useRef<HTMLDivElement>(null)
+  const fadeRef = useRef<HTMLDivElement>(null)
   const circleRef = useRef<HTMLDivElement>(null)
-
   const phraseRef = useRef<HTMLDivElement>(null)
   const buttonRef = useRef<HTMLDivElement>(null)
-
-  const videoContainerRef = useRef<HTMLDivElement>(null)
-  const videoRef = useRef<HTMLDivElement>(null)
-  const videoLightRef = useRef<HTMLDivElement>(null)
+  const workRef = useRef<HTMLDivElement>(null)
   const videoFrameRef = useRef<HTMLDivElement>(null)
-  const videoLabelRef = useRef<HTMLDivElement>(null)
-
-  /**
-   * Handle MouuseMove Event
-   */
-  const [isTiltActivated, setIsTiltActivated] = useState(false)
+  const labelRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    const videoContainer = videoContainerRef.current as HTMLDivElement
-    const video = videoRef.current as HTMLDivElement
-    const videoLight = videoLightRef.current as HTMLDivElement
+    // Get the elements
+    const back = backRef.current!
+    const main = mainRef.current!
+    const filter = fadeRef.current!
+    const circle = circleRef.current!
+    const phrase = phraseRef.current!
+    const button = buttonRef.current!
+    const work = workRef.current!
+    const videoFrame = videoFrameRef.current!
+    const label = labelRef.current!
 
-    const handleMosueMove = function tiltTheCard(e: MouseEvent) {
-      if (!isTiltActivated) return
-      const { x, y, width, height } = videoContainer.getBoundingClientRect()
-      const left = e.clientX - x
-      const top = e.clientY - y
-      const centerX = left - width / 2
-      const centerY = top - height / 2
-      const d = Math.sqrt(centerX ** 2 + centerY ** 2)
+    const video = work.getElementsByTagName('video')[0]
 
-      video.style.overflow = 'visible'
-
-      video.style.boxShadow = `
-        ${-centerX / 10}px  ${-centerY / 10}px 20px rgba(0, 0, 0, 0.3)
-      `
-      video.style.transform = `
-        rotate3d(
-          ${-centerY / 80},  ${centerX / 80}, 0, ${d / 8}deg
-        )
-        scale3d(1.05, 1.05, 1.05)
-      `
-      videoLight.style.backgroundImage = `
-        radial-gradient(
-          circle at ${left}px ${top}px, #00000010, #ffffff00, #ffffff70
-        )
-      `
-    }
-
-    const throttledHandleMouseMove = throttle(handleMosueMove, 10)
-
-    const handleMouseEnter = function addMouseMoveListener() {
-      if (isTiltActivated) {
-        videoContainer.addEventListener('mousemove', throttledHandleMouseMove)
-      }
-    }
-    const handleMouseLeave = function removeMouseMouveListener() {
-      videoContainer.removeEventListener('mousemove', throttledHandleMouseMove)
-      video.style.boxShadow = videoContainer.style.boxShadow = ''
-      video.style.transform = ''
-      videoLight.style.backgroundImage = `
-        radial-gradient(
-          circle at 0px 0px, #00000010, #ffffff00, #ffffff70
-        )
-      `
-    }
-
-    video.addEventListener('mouseenter', handleMouseEnter)
-    video.addEventListener('mouseleave', handleMouseLeave)
-
-    return () => {
-      video.removeEventListener('mouseenter', handleMouseEnter)
-      video.removeEventListener('mouseleave', handleMouseLeave)
-    }
-  }, [isTiltActivated])
-
-  /**
-   * Handle Scroll Event
-   */
-  useEffect(() => {
-    // get the elements
-    const background = backgroundRef.current as HTMLDivElement
-    const main = mainRef.current as HTMLDivElement
-    const filter = filterRef.current as HTMLDivElement
-    const circle = circleRef.current as HTMLDivElement
-    const phrase = phraseRef.current as HTMLDivElement
-    const button = buttonRef.current as HTMLDivElement
-    const videoContainer = videoContainerRef.current as HTMLDivElement
-    const video = videoRef.current as HTMLDivElement
-    const videoFrame = videoFrameRef.current as HTMLDivElement
-    const videoLight = videoLightRef.current as HTMLDivElement
-    const videoLabel = videoLabelRef.current as HTMLDivElement
-
-    // Set the background height
-    background.style.setProperty(
-      '--background-height',
-      `${BACKGROUND_HEIGHT}vh`
-    )
-
-    // Initiate the data
+    // Initiate scroll data & art work position
     let scrollStart = 0
     let scrollEnd = 0
-    let scrollDivision = 0
     const init = function setInitialPositionData2() {
       // Initiate scroll data
-      const backgroundTop =
-        window.pageYOffset + background.getBoundingClientRect().top
-      scrollStart = backgroundTop
-      scrollEnd = backgroundTop + background.offsetHeight - main.offsetHeight
-      scrollDivision = scrollEnd - SCROLL_OFFSET * main.offsetHeight
+      scrollStart = window.pageYOffset + back.getBoundingClientRect().top
+      scrollEnd = scrollStart + back.offsetHeight - main.offsetHeight
 
-      // Initiate video position
-      const posx = Number(videoContainer.dataset.posx)
-      const posy = Number(videoContainer.dataset.posy)
-      videoContainer.style.right = `${-100 * posx}vw`
-      videoContainer.style.top = `${100 * posy}vh`
+      // Initiate art work position
+      const posx = Number(work.dataset.posx)
+      const posy = Number(work.dataset.posy)
+      work.style.right = `${-100 * posx}vw`
+      work.style.top = `${100 * posy}vh`
     }
 
     // Handle Scroll
     const handleScroll = function setElementsPosition() {
       const scrollTop = window.scrollY
 
-      if (scrollTop < scrollStart || scrollTop > scrollEnd) return
+      // Scroll optimization
+      if (scrollTop < scrollStart || scrollTop > scrollEnd + main.offsetHeight)
+        return
 
-      // move video
-      let moveFactor =
-        (scrollTop - scrollStart) / (scrollDivision - scrollStart)
-      moveFactor = moveFactor > 1 ? 1 : moveFactor
-
-      videoContainer.style.transform = `
-        translateY(calc(-50% - ${moveFactor * 100}vh))
+      // Move art work
+      let factor =
+        (scrollTop - scrollStart) / (scrollEnd - SCROLL_OFFSET - scrollStart)
+      work.style.transform = `
+        translateY(calc(-50% - ${(factor > 1 ? 1 : factor) * 100}vh))
       `
 
-      const videoSrc = video.querySelector('video') as HTMLVideoElement
-      if (scrollTop < scrollDivision) {
-        // change background color
-        filter.classList.remove(styles.transparent)
-        circle.classList.remove(styles.visible)
+      if (scrollTop < scrollEnd - SCROLL_OFFSET) {
+        // Play video
+        video.play()
 
-        // remove mix-blend-mode
-        phrase.classList.remove(styles.blend)
-        phrase.classList.remove(styles.next)
+        // Toggle classes
+        filter.classList.remove('transparent')
+        circle.classList.remove('show')
+        phrase.classList.remove('next')
+        button.classList.remove('visible')
+        videoFrame.classList.remove('show')
+        label.classList.remove('opaque')
 
-        // hide button
-        button.classList.remove(styles.visible)
-
-        // play video
-        videoSrc.play()
-
-        // unframe the video & hide label
-        videoFrame.classList.remove(styles.visible)
-        videoLabel.classList.remove(styles.visible)
-
-        // disable tilt
+        // Disable tilt
         setIsTiltActivated(false)
-
-        // 2D css
-        video.style.overflow = 'hidden'
-        video.style.boxShadow = ''
-        videoLight.style.backgroundImage = ''
       } else {
-        // background filter change
-        filter.classList.add(styles.transparent)
-        circle.classList.add(styles.visible)
+        // Play video
+        video.pause()
 
-        // add mix-blend-mode
-        phrase.classList.add(styles.blend)
-        phrase.classList.add(styles.next)
+        // Toggle classes
+        filter.classList.add('transparent')
+        circle.classList.add('show')
+        phrase.classList.add('next')
+        button.classList.add('visible')
+        videoFrame.classList.add('show')
+        label.classList.add('opaque')
 
-        // show button
-        button.classList.add(styles.visible)
-
-        // stop video
-        videoSrc.pause()
-
-        // frame the video & show label
-        videoFrame.classList.add(styles.visible)
-        videoLabel.classList.add(styles.visible)
-
-        // enable tilt
+        // Activateb tilt
         setIsTiltActivated(true)
-
-        // 3d css
-        videoFrame.style.boxShadow = ''
-        videoLight.style.backgroundImage = `
-        radial-gradient(
-          circle at 0px 0px, #00000010, #ffffff00, #ffffff70
-        )
-      `
       }
     }
 
     init()
 
-    // throttle the functions
     const throttledHandleScroll = throttle(handleScroll, 10)
 
     window.addEventListener('resize', init)
@@ -219,15 +140,83 @@ function HomeSection3() {
     }
   }, [])
 
+  /**
+   * Handle Mousemove Event
+   * 1. Tilt video
+   * 2. Move video shadow
+   * 3. Move video light
+   */
+
+  const videoRef = useRef<HTMLDivElement>(null)
+  const videoLightRef = useRef<HTMLDivElement>(null)
+
+  const [isTiltActivated, setIsTiltActivated] = useState(false)
+
+  useEffect(() => {
+    const work = workRef.current!
+    const video = videoRef.current!
+    const videoLight = videoLightRef.current!
+
+    const handleMosueMove = function tiltTheCard(e: MouseEvent) {
+      if (!isTiltActivated) return
+
+      const { x, y, width, height } = work.getBoundingClientRect()
+      const left = e.clientX - x
+      const top = e.clientY - y
+      const centerX = left - width / 2
+      const centerY = top - height / 2
+      const d = Math.sqrt(centerX ** 2 + centerY ** 2)
+
+      // Tilt video
+      video.style.transform = `
+        rotate3d(
+          ${-centerY / 80},  ${centerX / 80}, 0, ${d / 8}deg
+        )
+        scale3d(1.05, 1.05, 1.05)
+      `
+      // Move video shadow
+      video.style.boxShadow = `
+        ${-centerX / 10}px  ${-centerY / 10}px 20px rgba(0, 0, 0, 0.3)
+      `
+      // Move video light
+      videoLight.style.backgroundImage = `
+        radial-gradient(
+          circle at ${left}px ${top}px, #00000010, #ffffff00, #ffffff70
+        )
+      `
+    }
+
+    const throttledHandleMouseMove = throttle(handleMosueMove, 10)
+
+    const handleMouseEnter = function addMouseMoveListener() {
+      work.style.overflow = 'visible'
+    }
+    const handleMouseLeave = function removeMouseMouveListener() {
+      work.style.overflow = 'hidden'
+      video.style.transform = ''
+      video.style.boxShadow = ''
+      videoLight.style.backgroundImage = ''
+    }
+
+    work.addEventListener('mouseenter', handleMouseEnter)
+    work.addEventListener('mouseleave', handleMouseLeave)
+    work.addEventListener('mousemove', throttledHandleMouseMove)
+    return () => {
+      work.removeEventListener('mouseenter', handleMouseEnter)
+      work.removeEventListener('mouseleave', handleMouseLeave)
+      work.removeEventListener('mousemove', throttledHandleMouseMove)
+    }
+  }, [isTiltActivated])
+
   return (
-    <div className={styles.background} ref={backgroundRef}>
-      <div className={styles.main} ref={mainRef}>
-        <div className={styles.mainFilter} ref={filterRef} />
-        <div className={styles.mainCircle} ref={circleRef}>
-          <CircleLogo />
-          <CircleLogo />
+    <div className="hs3-back" ref={backRef}>
+      <div className="hs3-main" ref={mainRef}>
+        <div className="hs3-fade" ref={fadeRef} />
+        <div className="hs3-circle" ref={circleRef}>
+          <CircleIcon />
+          <CircleIcon />
         </div>
-        <div className={styles.mainPhrase} ref={phraseRef}>
+        <div className="hs3-phrase" ref={phraseRef}>
           <div>
             <p>스쳐버린 순간 사이에서</p>
             <p>찰나를 붙잡아 이름짓고</p>
@@ -239,38 +228,35 @@ function HomeSection3() {
             <p>3D 전시회를 준비했습니다</p>
           </div>
         </div>
-        <div className={styles.mainButton} ref={buttonRef}>
-          <MagneticButton
-            text="체험하기"
-            ariaLabel="예시 3D 전시회 페이지로"
-            size="lg"
-            color="primary"
-          />
+        <div className="hs3-button" ref={buttonRef}>
+          <Button3D ariaLabel="예시 3D 전시회" color="primary" size="lg">
+            <p data-cursor-scale={CURSOR_SCALE}>체험하기</p>
+          </Button3D>
         </div>
         <div
           data-posx="-0.1"
           data-posy="1.55"
-          ref={videoContainerRef}
-          className={styles.mainVideoContainer}
+          ref={workRef}
+          className="hs3-work"
         >
-          <div className={styles.mainVideo} ref={videoRef}>
-            <div className={styles.mainVideoFrame} ref={videoFrameRef}>
-              <div className={styles.mainVideoFrameLeft} />
-              <div className={styles.mainVideoFrameRight} />
-              <div className={styles.mainVideoFrameTop} />
-              <div className={styles.mainVideoFrameBottom} />
-              <div className={styles.mainVideoFrameBack} />
+          <div className="hs3-video" ref={videoRef}>
+            <div className="hs3-video__frame" ref={videoFrameRef}>
+              <div className="hs3-video__frame--left" />
+              <div className="hs3-video__frame--right" />
+              <div className="hs3-video__frame--top" />
+              <div className="hs3-video__frame--bottom" />
+              <div className="hs3-video__frame--back" />
             </div>
-            <video
-              autoPlay
-              muted
-              loop
-              src={videoSrc3}
-              className={styles.mainVideoSrc}
-            />
-            <div className={styles.mainVideoLight} ref={videoLightRef} />
+            <div className="hs3-video__src">
+              <StaticVideo
+                vidSrc={vidSrc}
+                webmSrc={webmSrc}
+                ariaLabel="랜덤 이미지"
+              />
+            </div>
+            <div className="hs3-video__light" ref={videoLightRef} />
           </div>
-          <div className={styles.mainVideoLabel} ref={videoLabelRef}>
+          <div className="hs3-work__label" ref={labelRef}>
             <p>작품명</p>
             <p>마우스를 올려보세요</p>
           </div>

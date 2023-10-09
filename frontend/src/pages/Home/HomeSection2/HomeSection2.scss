@@ -3,14 +3,11 @@
 
 .hs2-back {
   height: var(--background-height, 800vh);
-  min-height: var(--background-min-height, 4800px);
+  min-height: var(--min-height-back, 4800px);
   position: relative;
 }
 
 .hs2-main {
-  // transform-style: preserve-3d;
-  // perspective: 500px;
-
   overflow: hidden;
   position: sticky;
   left: 0;
@@ -20,10 +17,9 @@
   min-height: 600px;
   color: var(--color, rgb(255, 93, 52));
   background-color: var(--background-color, rgb(122, 200, 219));
-  perspective: 100px;
   transition:
-    color var(--transition-time) ease-in-out,
-    background-color var(--transition-time) ease-in-out;
+    color var(--transition-time-homee) ease-in-out,
+    background-color var(--transition-time-homee) ease-in-out;
 }
 
 .hs2-phrase {
@@ -72,8 +68,8 @@
     padding: 0 1rem;
     background-color: var(--background-color, rgb(122, 200, 219));
     transition:
-      color var(--transition-time) ease-in-out,
-      background-color var(--transition-time) ease-in-out;
+      color var(--transition-time-homee) ease-in-out,
+      background-color var(--transition-time-homee) ease-in-out;
   }
 
   &__blank {
