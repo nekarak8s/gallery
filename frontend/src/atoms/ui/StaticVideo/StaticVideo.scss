@@ -1,0 +1,46 @@
+.static-video {
+  display: block;
+  position: relative;
+
+  > video {
+    opacity: 0;
+    object-fit: cover;
+    transition: opacity 250ms ease-in-out;
+  }
+
+  > div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(129, 129, 129, 0.333);
+    animation: static-video-pulse 1500ms infinite;
+  }
+}
+
+.static-video.loaded {
+  > video {
+    opacity: 1;
+  }
+
+  > div {
+    display: none;
+  }
+}
+
+@keyframes static-video-pulse {
+  0% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.5;
+  }
+}

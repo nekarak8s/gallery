@@ -8,6 +8,7 @@ interface Props {
   width?: string
   height?: string
   sizes?: string
+  loading?: 'eager' | 'lazy'
   onLoad?: () => void
 }
 
@@ -21,25 +22,28 @@ const StaticImage: React.FC<Props> = ({
   width = '100%',
   height = '100%',
   sizes = '(max-width: 1200px) 100vw, 1201px',
+  loading = 'eager',
   onLoad,
 }) => {
   const picRef = useRef<HTMLPictureElement>(null)
 
-  const handleImageLoad = function addLoadedClass() {
+  const handleLoad = function staticImageLoaded() {
     const picture = picRef.current!
     picture.classList.add('loaded')
     onLoad && onLoad()
   }
-
+  console.log(
+    'url("' + (imgSrc.placeholder ? imgSrc.placeholder : DEV_BLUR_DATA) + '")'
+  )
   return (
     <picture
       ref={picRef}
       className="static-image"
       style={{
         backgroundImage:
-          'url("' + imgSrc.placeholder
-            ? imgSrc.placeholder
-            : DEV_BLUR_DATA + '")',
+          'url("' +
+          (imgSrc.placeholder ? imgSrc.placeholder : DEV_BLUR_DATA) +
+          '")',
       }}
     >
       <source srcSet={webpSrc.srcSet} type="image/webp" sizes={sizes} />
@@ -48,8 +52,8 @@ const StaticImage: React.FC<Props> = ({
         src={imgSrc.src}
         srcSet={imgSrc.srcSet}
         sizes={sizes}
-        loading="lazy"
-        onLoad={handleImageLoad}
+        loading={loading}
+        onLoad={handleLoad}
         style={{ width, height }}
       />
     </picture>

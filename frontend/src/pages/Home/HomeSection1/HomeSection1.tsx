@@ -24,7 +24,7 @@ import StaticImage from '@/atoms/ui/StaticImage'
 import OceanTurbulenceFilter from '@/assets/svgs/ocean-turbulence-filter.svg'
 
 const TOTAL_IMAGE = 7
-const BACK_HEIGHT = 200 // vh. background height
+const BACK_HEIGHT = 2 // * 100vh. background height
 const SCROLL_OFFSET = 300 // px. fade start offset on scroll
 const ROTATION_DEGREE = 20 // deg. max rotation degree on mousemove
 
@@ -37,7 +37,8 @@ function HomeSection1() {
   useEffect(() => {
     const back = backRef.current!
 
-    back.style.setProperty('--back-height', `${BACK_HEIGHT}vh`)
+    back.style.setProperty('--back-height', `${BACK_HEIGHT * 100}vh`)
+    back.style.setProperty('--back-min-height', `${BACK_HEIGHT * 600}px`)
   }, [])
 
   /**
@@ -66,7 +67,7 @@ function HomeSection1() {
 
   /**
    * Handle transition
-   * 1. play audio
+   * 1. Play audio
    * 2. Show interactive logo
    * 3. Hide cover layer
    * 4. Enable scrolling
@@ -162,7 +163,7 @@ function HomeSection1() {
     const handleScroll = function setElementsPosition1() {
       const scrollTop = window.scrollY
 
-      // optimization
+      // Scroll optimization
       if (scrollTop < scrollStart || scrollTop > scrollEnd + main.offsetHeight)
         return
 

@@ -67,3 +67,8 @@ declare module '*format=png' {
   const src: ResponsiveImageOutput
   export default src
 }
+
+declare module '*format=jpg' {
+  const src: ResponsiveImageOutput
+  export default src
+}

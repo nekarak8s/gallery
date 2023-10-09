@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import throttle from 'lodash/throttle'
 import CircleLogo from '@/assets/svgs/circle.svg'
-import videoSrc3 from '@/assets/videos/video3.webm'
+import videoSrc3 from '@/assets/videos/home-video-4.webm'
 import MagneticButton from '@/atoms/ui/MagneticButton'
 
 import styles from './HomeSection3.module.scss'

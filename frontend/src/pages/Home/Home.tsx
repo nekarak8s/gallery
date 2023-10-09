@@ -20,7 +20,7 @@ function Home() {
     const index = getRandom(0, BACKGROUND_COLORS.length - 1)
 
     page.style.setProperty('--background-color', BACKGROUND_COLORS[index])
-    page.style.setProperty('--font-color', FONT_COLORS[index])
+    page.style.setProperty('--color', FONT_COLORS[index])
   }
 
   useEffect(() => {

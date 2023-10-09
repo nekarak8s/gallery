@@ -93,7 +93,7 @@ $FRAME_COLOR: rgb(44, 5, 5);
   transform: translateY(-50%);
   width: 12em;
   height: 3.5em;
-  color: var(--font-color, rgb(255, 93, 52));
+  color: var(--color, rgb(255, 93, 52));
   font-size: 4rem;
   font-weight: 800;
   transition: mix-blend-mode $BACKGROUND_CHANGE_TIME ease-in;

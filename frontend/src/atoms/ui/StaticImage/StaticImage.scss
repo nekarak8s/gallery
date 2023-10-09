@@ -1,7 +1,4 @@
 .static-image {
-  display: block;
-  width: 100%;
-  height: 100%;
   background-repeat: no-repeat;
   background-size: cover;
 }
@@ -12,8 +9,8 @@
   width: 100%;
   height: 100%;
   opacity: 0;
-  animation: static-image-pulse 2s infinite;
   background-color: white;
+  animation: static-image-pulse 1500ms infinite;
 }
 
 @keyframes static-image-pulse {
@@ -21,7 +18,7 @@
     opacity: 0;
   }
   50% {
-    opacity: 0.1;
+    opacity: 0.5;
   }
   100% {
     opacity: 0;
@@ -34,6 +31,7 @@
 }
 
 .static-image img {
+  display: block;
   object-fit: cover;
   opacity: 0;
   transition: opacity 250ms ease-in-out;

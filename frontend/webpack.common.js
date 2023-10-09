@@ -25,7 +25,7 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.(webm|mp3)$/,
+        test: /\.(webm|mp4|mp3)$/,
         type: 'asset', // https://webpack.js.org/guides/asset-modules/
         parser: {
           dataUrlCondition: {
