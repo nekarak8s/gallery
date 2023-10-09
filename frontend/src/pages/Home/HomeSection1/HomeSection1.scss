@@ -36,7 +36,7 @@
   opacity: 0;
   transition:
     opacity 300ms cubic-bezier(0.2, 0.49, 0.32, 0.99),
-    background-color var(--transition-time-homee) ease-in-out;
+    background-color var(--transition-time-home) ease-in-out;
 }
 
 .hs1-scroll {
@@ -68,7 +68,7 @@
   &__cloud-1 {
     position: absolute;
     width: 65%;
-    top: calc(50% - 40%);
+    top: calc(50% - 44%);
     left: calc(90%);
     transform: translate(-50%, -50%);
 
@@ -86,7 +86,7 @@
   &__cloud-2 {
     position: absolute;
     width: 65%;
-    top: calc(50% - 27%);
+    top: calc(50% - 31%);
     left: calc(20%);
     transform: translate(-50%, -50%);
 
@@ -104,7 +104,7 @@
   &__cloud-3 {
     position: absolute;
     width: 35%;
-    top: calc(50% - 5%);
+    top: calc(50% - 10%);
     left: calc(70%);
     transform: translate(-50%, -50%);
 
@@ -121,7 +121,7 @@
 
   &__island {
     position: absolute;
-    width: 30%;
+    width: 40%;
     top: calc(50% + 3%);
     left: calc(50% + 40%);
     transform: translate(-50%, -50%);
@@ -130,7 +130,7 @@
   &__ocean {
     position: absolute;
     width: 120%;
-    top: calc(50% + 23%);
+    top: calc(50% + 30%);
     left: calc(50%);
     transform: translate(-50%, -50%);
     overflow: hidden;
@@ -138,12 +138,16 @@
 
   &__ocean-filter {
     position: relative;
+    transform: translateY(-10px);
 
     img {
-      position: absolute;
-      top: -10px;
-      left: 0;
       filter: url('#ocean-filter');
+    }
+
+    svg {
+      position: absolute;
+      width: 0;
+      left: 0;
     }
   }
 
@@ -271,11 +275,12 @@
 
     &__island {
       width: 40%;
-      top: calc(50% + 14%);
+      top: calc(50% + 12%);
       left: calc(50% + 40%);
     }
 
     &__ocean {
+      width: 140%;
       top: calc(50% + 33%);
       left: calc(50%);
     }
@@ -291,6 +296,16 @@
       height: auto;
       top: calc(50% + 43%);
       left: calc(50%);
+    }
+  }
+
+  .hs1-cover {
+    &__phrase {
+      font-size: 11vw;
+
+      h2 {
+        font-size: 0.4em;
+      }
     }
   }
 }
@@ -316,26 +331,42 @@
     }
 
     &__island {
-      width: 45%;
+      width: 80%;
       top: calc(50% + 16%);
       left: calc(50% + 40%);
     }
 
     &__ocean {
-      top: calc(50% + 35%);
+      width: 150%;
+      top: calc(50% + 33%);
       left: calc(50%);
     }
 
     &__logo {
-      top: calc(50% + 5%);
+      top: calc(50% + 12%);
       left: calc(50% - 15%);
       font-size: 15vw;
     }
 
     &__gallery {
-      width: 160%;
+      width: 200%;
       top: calc(50% + 45%);
       left: calc(50%);
+    }
+  }
+
+  .hs1-cover {
+    &__phrase {
+      font-size: 12vw;
+
+      h1 {
+        margin-top: 0.6em;
+        margin-bottom: 0.5em;
+      }
+
+      h2 {
+        font-size: 0.5em;
+      }
     }
   }
 }
@@ -343,267 +374,60 @@
 @media all and (max-aspect-ratio: 9/16) {
   .hs1-interact {
     &__cloud-1 {
-      width: 80%;
-      top: calc(50% - 30%);
+      width: 110%;
+      top: calc(50% - 35%);
       left: calc(90%);
     }
 
     &__cloud-2 {
-      width: 80%;
-      top: calc(50% - 15%);
+      width: 110%;
+      top: calc(50% - 10%);
       left: calc(20%);
     }
 
     &__cloud-3 {
-      width: 60%;
+      width: 70%;
       top: calc(50% + 10%);
       left: calc(70%);
     }
 
     &__island {
-      width: 55%;
-      top: calc(50% + 19%);
+      width: 110%;
+      top: calc(50% + 15%);
       left: calc(50% + 40%);
     }
 
     &__ocean {
-      top: calc(50% + 38%);
+      width: 200%;
+      top: calc(50% + 30%);
       left: calc(50%);
     }
 
     &__logo {
-      top: calc(50% + 12%);
+      top: calc(50% + 13%);
       left: calc(50% - 15%);
       font-size: 18vw;
     }
 
     &__gallery {
-      width: 200%;
-      top: calc(50% + 48%);
+      width: 300%;
+      top: calc(50% + 45%);
       left: calc(50%);
     }
   }
-}
 
-// 1280px
-@include laptop {
-  .transition__phrase {
-    p:nth-child(1) {
-      font-size: 12vw;
+  .hs1-cover {
+    &__phrase {
+      font-size: 14vw;
+
+      h1 {
+        margin-top: 0.9em;
+        margin-bottom: 0.7em;
+      }
+
+      h2 {
+        font-size: 0.5em;
+      }
     }
-
-    p:nth-child(2) {
-      font-size: 3.5vw;
-    }
-  }
-
-  .main__inter__sky {
-    width: 1500px;
-  }
-
-  .main__inter__cloud1 {
-    width: 920px;
-    top: calc(50% - 300px);
-    right: auto;
-    bottom: auto;
-    left: calc(50% + 500px);
-  }
-
-  .main__inter__cloud2 {
-    width: 920px;
-    top: calc(50% - 300px);
-    right: auto;
-    bottom: auto;
-    left: calc(50% - 400px);
-  }
-
-  .main__inter__cloud3 {
-    width: 500px;
-    top: calc(50% - 100px);
-    right: auto;
-    bottom: auto;
-    left: calc(50% + 220px);
-  }
-
-  .main__inter__island {
-    width: 360px;
-    top: calc(50% + 60px);
-    right: auto;
-    bottom: auto;
-    left: calc(50% + 480px);
-  }
-
-  .main__inter__ocean {
-    width: 1500px;
-    top: calc(50% + 310px);
-    right: auto;
-    bottom: auto;
-    left: calc(50%);
-  }
-
-  .main__inter__logo {
-    top: calc(50% + 40px);
-    right: auto;
-    bottom: auto;
-    left: calc(50% - 100px);
-    color: white;
-    font-size: 7.5rem;
-  }
-
-  .main__inter__architect {
-    width: 1500px;
-    top: calc(50% + 300px);
-    right: auto;
-    bottom: auto;
-    left: calc(50%);
-  }
-}
-
-// 992px
-// stick to the edges & depend on vh unit
-@include tablet {
-  .transition__phrase {
-    p:nth-child(1) {
-      font-size: 120px;
-    }
-
-    p:nth-child(2) {
-      font-size: 50px;
-    }
-  }
-
-  .main__inter__sky {
-    height: 100%;
-  }
-
-  .main__inter__cloud1 {
-    width: 700px;
-    top: calc(60px + 9vh);
-    right: calc(-600px);
-    bottom: auto;
-    left: auto;
-  }
-
-  .main__inter__cloud2 {
-    width: 700px;
-    top: calc(-180px + 50vh);
-    right: auto;
-    bottom: auto;
-    left: calc(80px);
-  }
-
-  .main__inter__cloud3 {
-    width: 400px;
-    top: calc(-200px + 76vh);
-    right: calc(-200px);
-    bottom: auto;
-    left: auto;
-  }
-
-  .main__inter__island {
-    width: 400px;
-    top: auto;
-    right: auto;
-    bottom: calc(130px + 10vh);
-    left: calc(50% + 270px);
-  }
-
-  .main__inter__ocean {
-    width: 1100px;
-    top: auto;
-    right: auto;
-    bottom: calc(200px - 80vh);
-    left: calc(50%);
-  }
-
-  .main__inter__logo {
-    top: auto;
-    right: auto;
-    bottom: calc(-120px + 40vh);
-    left: calc(50% - 100px);
-    font-size: 6rem;
-  }
-
-  .main__inter__architect {
-    width: 1100px;
-    top: auto;
-    right: auto;
-    bottom: calc(-100px - 9vh);
-    left: calc(50%);
-  }
-}
-
-// 640px
-// stick to the edges & depend on vh unit
-@include mobile {
-  .transition__phrase {
-    p:nth-child(1) {
-      font-size: 60px;
-    }
-
-    p:nth-child(2) {
-      font-size: 28px;
-      font-weight: 800;
-    }
-  }
-
-  .main__inter__sky {
-    height: 100%;
-  }
-
-  .main__inter__cloud1 {
-    width: 400px;
-    top: calc(60px + 9vh);
-    right: calc(-240px);
-    bottom: auto;
-    left: auto;
-  }
-
-  .main__inter__cloud2 {
-    width: 400px;
-    top: calc(-150px + 55vh);
-    right: auto;
-    bottom: auto;
-    left: calc(80px);
-  }
-
-  .main__inter__cloud3 {
-    width: 300px;
-    top: calc(-200px + 80vh);
-    right: calc(-220px);
-    bottom: auto;
-    left: auto;
-  }
-
-  .main__inter__island {
-    width: 280px;
-    top: auto;
-    right: auto;
-    bottom: calc(30px + 20vh);
-    left: calc(50% + 200px);
-  }
-
-  .main__inter__ocean {
-    width: 800px;
-    top: auto;
-    right: auto;
-    bottom: calc(80px - 70vh);
-    left: calc(50%);
-  }
-
-  .main__inter__logo {
-    top: auto;
-    right: auto;
-    bottom: calc(-100px + 40vh);
-    left: calc(50% - 40px);
-    font-size: 4rem;
-  }
-
-  .main__inter__architect {
-    width: 800px;
-    top: auto;
-    right: auto;
-    bottom: calc(-60px - 10vh);
-    left: calc(50%);
   }
 }

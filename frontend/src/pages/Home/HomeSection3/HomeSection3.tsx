@@ -189,6 +189,7 @@ function HomeSection3() {
     const throttledHandleMouseMove = throttle(handleMosueMove, 10)
 
     const handleMouseEnter = function addMouseMoveListener() {
+      if (!isTiltActivated) return
       work.style.overflow = 'visible'
     }
     const handleMouseLeave = function removeMouseMouveListener() {
@@ -235,7 +236,7 @@ function HomeSection3() {
         </div>
         <div
           data-posx="-0.1"
-          data-posy="1.55"
+          data-posy="1.65"
           ref={workRef}
           className="hs3-work"
         >

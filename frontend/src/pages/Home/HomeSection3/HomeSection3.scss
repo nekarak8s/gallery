@@ -120,7 +120,7 @@
 .hs3-button {
   @include a.animation-clear('hs3-button', $speed: normal, $delay: 0s);
   position: absolute;
-  top: calc(50%);
+  top: 48%;
   left: 25%;
   z-index: 3;
   font-weight: 600;
@@ -271,66 +271,62 @@ $FRAME_COLOR: rgb(44, 5, 5);
 }
 
 @include laptop {
-  .main__phrase {
+  .hs3-phrase {
     font-size: 3.5rem;
   }
 }
 
 @include tablet {
-  .main__phrase {
-    font-size: 2.5rem;
+  .hs3-circle.show {
+    svg:first-child {
+      width: 1000px;
+      height: 1000px;
+    }
+
+    svg:nth-child(2) {
+      width: 800px;
+      height: 800px;
+    }
+  }
+
+  .hs3-phrase {
+    font-size: 2.8rem;
     top: 30%;
   }
 
-  .main__button {
-    top: 42%;
+  .hs3-button {
+    top: 38%;
   }
 
-  .main__circle.visible svg:first-child {
-    width: 1000px;
-    height: 1000px;
-  }
-
-  .main__circle.visible svg:nth-child(2) {
-    width: 800px;
-    height: 800px;
-  }
-
-  .main__video__label {
+  .hs3-work__label {
     font-size: 15px;
-  }
-
-  .main__video__label > p:first-child {
-    font-size: 17px;
   }
 }
 
 @include mobile {
-  .main__phrase {
-    font-size: 1.5rem;
-    top: 25%;
+  .hs3-circle.show {
+    svg:first-child {
+      width: 600px;
+      height: 600px;
+    }
+
+    svg:nth-child(2) {
+      width: 400px;
+      height: 400px;
+    }
   }
 
-  .main__button {
-    top: 33%;
+  .hs3-phrase {
+    font-size: 7vw;
+    top: 22%;
+  }
+
+  .hs3-button {
+    top: 25%;
     left: 10%;
   }
 
-  .main__circle.visible svg:first-child {
-    width: 600px;
-    height: 600px;
-  }
-
-  .main__circle.visible svg:nth-child(2) {
-    width: 400px;
-    height: 400px;
-  }
-
-  .main__video__label {
+  .hs3-work__label {
     font-size: 11px;
-  }
-
-  .main__video__label > p:first-child {
-    font-size: 13px;
   }
 }

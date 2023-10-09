@@ -30,8 +30,6 @@ function Home() {
   return (
     <div className="home" ref={pageRef} onClick={handleClick}>
       <HomeSection1 />
-      <HomeSection2 />
-      <HomeSection3 />
       <div className="home__music">
         <Music
           id="home-audio"
@@ -40,6 +38,8 @@ function Home() {
           color="white"
         />
       </div>
+      <HomeSection2 />
+      <HomeSection3 />
     </div>
   )
 }

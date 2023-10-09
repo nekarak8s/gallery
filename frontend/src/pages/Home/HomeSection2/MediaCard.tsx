@@ -14,6 +14,7 @@ interface Props {
   height: string
   description: string
   date: string
+  depth: number
   sizes?: string
 }
 
@@ -28,6 +29,7 @@ const MediaCard: React.FC<Props> = ({
   height,
   description,
   date,
+  depth,
   sizes,
 }) => {
   return (
@@ -51,7 +53,10 @@ const MediaCard: React.FC<Props> = ({
         />
       )}
 
-      <div className="media-card__label">
+      <div
+        className="media-card__label"
+        style={{ fontSize: `${0.05 * depth + 0.45}em` }}
+      >
         <p>{description}</p>
         <p>{date}</p>
       </div>

@@ -18,8 +18,8 @@
   color: var(--color, rgb(255, 93, 52));
   background-color: var(--background-color, rgb(122, 200, 219));
   transition:
-    color var(--transition-time-homee) ease-in-out,
-    background-color var(--transition-time-homee) ease-in-out;
+    color var(--transition-time-home) ease-in-out,
+    background-color var(--transition-time-home) ease-in-out;
 }
 
 .hs2-phrase {
@@ -44,6 +44,7 @@
 .hs2-card {
   // https://coder-coder.com/z-index-isnt-working/
   position: absolute;
+  font-size: 2rem;
   transform-style: preserve-3d;
   perspective: 1000px;
   perspective-origin: top;
@@ -51,7 +52,7 @@
 
   &__item {
     display: flex;
-    border-bottom: 2px solid var(--color, rgb(255, 93, 52));
+    border-bottom: 3px solid var(--color, rgb(255, 93, 52));
     transform: rotateX(-90deg);
     transform-origin: top;
     transform-style: preserve-3d;
@@ -64,12 +65,11 @@
     justify-content: center;
     width: 30vw;
     min-width: 100px;
-    font-size: 1.5rem;
-    padding: 0 1rem;
+    padding: 0 1em;
     background-color: var(--background-color, rgb(122, 200, 219));
     transition:
-      color var(--transition-time-homee) ease-in-out,
-      background-color var(--transition-time-homee) ease-in-out;
+      color var(--transition-time-home) ease-in-out,
+      background-color var(--transition-time-home) ease-in-out;
   }
 
   &__blank {
@@ -85,7 +85,7 @@
 
 .hs2-card--last {
   .hs2-card__item {
-    border-top: 2px solid var(--color, rgb(255, 93, 52));
+    border-top: 3px solid var(--color, rgb(255, 93, 52));
     transform: rotateX(0deg);
   }
 }
@@ -100,44 +100,41 @@
 }
 
 @include laptop {
-  .main__phrase {
+  .hs2-phrase {
     font-size: 3.5rem;
   }
 
-  .media__item__card__blank {
-    font-size: 1.7rem;
-  }
-
-  .media__item__card__blank span {
-    font-size: 3.4rem;
+  .hs2-card {
+    font-size: 1.6rem;
   }
 }
 
 @include tablet {
-  .main__phrase {
-    font-size: 2.5rem;
-  }
-
-  .media__item__card__blank {
-    font-size: 1.5rem;
-  }
-
-  .media__item__card__blank span {
+  .hs2-phrase {
     font-size: 3rem;
+  }
+
+  .hs2-card {
+    font-size: 1.4rem;
   }
 }
 
 @include mobile {
-  .main__phrase {
-    font-size: 1.5rem;
+  .hs2-phrase {
+    font-size: 7vw;
   }
 
-  .media__item__card__blank {
-    padding: 0.5rem 0.5rem;
-    font-size: 0.7rem;
+  .hs2-card {
+    font-size: 2vw;
+
+    &__item {
+      border-bottom: 2px solid var(--color, rgb(255, 93, 52));
+    }
   }
 
-  .media__item__card__blank span {
-    font-size: 1.5rem;
+  .hs2-card--last {
+    .hs2-card__item {
+      border-top: 2px solid var(--color, rgb(255, 93, 52));
+    }
   }
 }

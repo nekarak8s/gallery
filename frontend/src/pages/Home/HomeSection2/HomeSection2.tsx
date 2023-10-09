@@ -40,21 +40,6 @@ import './HomeSection2.scss'
 
 const BACK_HEIGHT = 6 // * 100vh. background height
 
-const ASPECT_RATIO = {
-  wide: {
-    width: 'clamp(230px, 40vw, 500px)',
-    height: 'clamp(172px, 30vw, 375px)',
-  },
-  square: {
-    width: 'clamp(250px, 30vw, 600px)',
-    height: 'clamp(250px, 30vw, 600px)',
-  },
-  narrow: {
-    width: 'clamp(300px, 30vw, 600px)',
-    height: 'clamp(400px, 40vw, 800px)',
-  },
-}
-
 function HomeSection2() {
   /**
    * Set the background height
@@ -182,6 +167,7 @@ function HomeSection2() {
                 height="clamp(173px, 30vw, 375px)"
                 sizes="(max-width: 650px) 230px, (max-width: 1250px) 40vw, 500px"
                 description="Trip to the ocean"
+                depth={5}
                 date="2012.10.09"
               />
             </div>
@@ -203,6 +189,7 @@ function HomeSection2() {
                 height="clamp(173px, 30vw, 375px)"
                 sizes="(max-width: 650px) 230px, (max-width: 1250px) 40vw, 500px"
                 description="Rainy day travel"
+                depth={5}
                 date="2021.05.21"
               />
             </div>
@@ -210,7 +197,7 @@ function HomeSection2() {
           <div
             className="hs2-card"
             data-posx="-0.2"
-            data-posy="4.6"
+            data-posy="4.4"
             data-speedy="1.07"
             style={{ zIndex: 4 }}
           >
@@ -224,6 +211,7 @@ function HomeSection2() {
                 height="clamp(250px, 33.3vw, 500px)"
                 sizes="(max-width: 750px) 188px, (max-width: 1500px) 15vw, 375px"
                 description="Just clips"
+                depth={4}
                 date="2017.03.28"
               />
             </div>
@@ -243,7 +231,8 @@ function HomeSection2() {
                 width="clamp(150px, 20vw, 300px)"
                 height="clamp(200px, 26.7vw, 400px)"
                 sizes="(max-width: 750px) 150px, (max-width: 1500px) 20vw, 300px"
-                description="Peaceful Cafeteria"
+                description="Cafeteria"
+                depth={2}
                 date="2022.03.07"
               />
             </div>
@@ -264,6 +253,7 @@ function HomeSection2() {
                 height="clamp(151px, 20vw, 300px)"
                 sizes="(max-width: 750px) 113px, (max-width: 1500px) 15vw, 225px"
                 description="Pink Sky"
+                depth={1}
                 date="2019.10.21"
               />
             </div>
@@ -284,6 +274,7 @@ function HomeSection2() {
                 height="clamp(250px, 33.3vw, 500px)"
                 sizes="(max-width: 750px) 188px, (max-width: 1500px) 15vw, 375px"
                 description="Mom & Daughter"
+                depth={4}
                 date="2023.08.05"
               />
             </div>
@@ -304,6 +295,7 @@ function HomeSection2() {
                 height="clamp(201px, 26.7vw, 400px)"
                 sizes="(max-width: 750px) 151px, (max-width: 1500px) 20vw, 300px"
                 description="snow doesn't melt"
+                depth={2}
                 date="2021.09.12"
               />
             </div>
@@ -324,6 +316,7 @@ function HomeSection2() {
                 height="clamp(215px, 29.3vw, 440px)"
                 sizes="(max-width: 750px) 166px, (max-width: 1500px) 22vw, 330px"
                 description="Coffee in Japan"
+                depth={3}
                 date="2023.04.22"
               />
             </div>
@@ -344,6 +337,7 @@ function HomeSection2() {
                 height="clamp(301px, 40vw, 600px)"
                 sizes="(max-width: 750px) 226px, (max-width: 1500px) 30vw, 450px"
                 description="The Dog Poster"
+                depth={5}
                 date="2019.10.21"
               />
             </div>
@@ -363,7 +357,8 @@ function HomeSection2() {
                 width="clamp(113px, 15vw, 225px)"
                 height="clamp(151px, 20vw, 300px)"
                 sizes="(max-width: 750px) 113px, (max-width: 1500px) 15vw, 225px"
-                description="New color pencils"
+                description="Colors"
+                depth={1}
                 date="2023.05.08"
               />
             </div>
@@ -383,7 +378,8 @@ function HomeSection2() {
                 width="clamp(103px, 18vw, 225px)"
                 height="clamp(77px, 11vw, 113px)"
                 sizes="(max-width: 650px) 103px, (max-width: 1250px) 18vw, 225px"
-                description="Suset over the sea"
+                description="Suset & Sea"
+                depth={1}
                 date="2020.09.01"
               />
             </div>
@@ -404,6 +400,7 @@ function HomeSection2() {
                 height="clamp(215px, 37.5vw, 375px)"
                 sizes="(max-width: 650px) 287px, (max-width: 1250px) 50vw, 500px"
                 description="My loving family"
+                depth={7}
                 date="2020.07.27"
               />
             </div>
@@ -424,6 +421,7 @@ function HomeSection2() {
                 height="clamp(86px, 15vw, 188px)"
                 sizes="(max-width: 650px) 114px, (max-width: 1250px) 20vw, 250px"
                 description="Sleeping cat"
+                depth={2}
                 date="2019.10.21"
               />
             </div>
@@ -444,6 +442,7 @@ function HomeSection2() {
                 height="clamp(77px, 11vw, 113px)"
                 sizes="(max-width: 650px) 103px, (max-width: 1250px) 18vw, 225px"
                 description="Cloud Ocean"
+                depth={1}
                 date="2021.01.03"
               />
             </div>
@@ -464,6 +463,7 @@ function HomeSection2() {
                 height="clamp(77px, 11vw, 113px)"
                 sizes="(max-width: 650px) 103px, (max-width: 1250px) 18vw, 225px"
                 description="Yummy Pizza"
+                depth={1}
                 date="2019.10.21"
               />
             </div>
@@ -484,6 +484,7 @@ function HomeSection2() {
                 height="clamp(130px, 22.5vw, 281px)"
                 sizes="(max-width: 650px) 173px, (max-width: 1250px) 30vw, 375px"
                 description="Busan Ocean"
+                depth={3}
                 date="2017.11.09"
               />
             </div>
@@ -501,17 +502,20 @@ function HomeSection2() {
                 alt="The cloud poster"
                 imgSrc={posterImg}
                 webpSrc={posterWebp}
-                width="clamp(190px, 50vw, 350px)"
-                height="clamp(304px, 70vw, 490px)"
+                width="clamp(226px, 40vw, 500px)"
+                height="clamp(301px, 5.3.vw, 667px)"
+                sizes="(max-width: 452px) 226px, (max-width: 1250px) 40vw, 500px"
                 description="The cloud poster"
+                depth={10}
                 date="2019.10.21"
               />
               <div className="hs2-card__phrase">
-                모바일 기기의 발전은 사진 촬영을 용이하게 만들었지만, 어떤
-                쟁점을 불러오기도 했다. 오늘날 개별 사진들은 저마다 고유한
-                의미를 잃은 것처럼 보인다. 이제 우리는 사진을 순간의 기록이
-                아니라 소셜 미디어에 공유하기 위한 자료 또는 단순한 기억의
-                파편으로 바라본다.
+                The development of mobile devices has made photography easier,
+                but some It also brought up issues. Today, individual photos are
+                unique to each other Looks like it's lost its meaning. Now,
+                we're going to take a picture of the moment It's not just about
+                sharing data on social media or simple memories Look at it in
+                fragments.
               </div>
             </div>
           </div>

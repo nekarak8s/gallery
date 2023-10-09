@@ -23,7 +23,7 @@ import StaticImage from '@/atoms/ui/StaticImage'
 
 import OceanTurbulenceFilter from '@/assets/svgs/ocean-turbulence-filter.svg'
 
-const TOTAL_IMAGE = 7
+const TOTAL_IMAGE = 6
 const BACK_HEIGHT = 2 // * 100vh. background height
 const SCROLL_OFFSET = 300 // px. fade start offset on scroll
 const ROTATION_DEGREE = 20 // deg. max rotation degree on mousemove
@@ -220,6 +220,7 @@ function HomeSection1() {
               <StaticImage
                 imgSrc={cloud1Img}
                 webpSrc={cloud1Webp}
+                sizes="(max-width: 720px) 110vw, (max-width: 1080px) 75vw, 65vw"
                 alt="높고 가까운 구름"
                 onLoad={handleImageLoad}
               />
@@ -233,6 +234,7 @@ function HomeSection1() {
               <StaticImage
                 imgSrc={cloud2Img}
                 webpSrc={cloud2Webp}
+                sizes="(max-width: 720px) 110vw, (max-width: 1080px) 75vw, 65vw"
                 alt="중간 높이의 가까운 구름"
                 onLoad={handleImageLoad}
               />
@@ -246,11 +248,12 @@ function HomeSection1() {
               <StaticImage
                 imgSrc={cloud3Img}
                 webpSrc={cloud3Webp}
+                sizes="(max-width: 720px) 70vw, (max-width: 1080px) 50vw, 40vw"
                 alt="낮고 먼 구름"
                 onLoad={handleImageLoad}
               />
             </div>
-            <div
+            {/* <div
               className="hs1-interact__island"
               data-speedx="0.07"
               data-speedy="0.08"
@@ -260,9 +263,10 @@ function HomeSection1() {
                 imgSrc={islandImg}
                 webpSrc={islandWebp}
                 alt="멀리 있는 섬"
+                sizes="(max-width: 720px) 110vw, (max-width: 1080px) 80vw, 30vw"
                 onLoad={handleImageLoad}
               />
-            </div>
+            </div> */}
             <div
               className="hs1-interact__ocean"
               data-speedx="0.07"
@@ -273,6 +277,7 @@ function HomeSection1() {
                 <StaticImage
                   imgSrc={oceanImg}
                   webpSrc={oceanWebp}
+                  sizes="(max-width: 720px) 200vw, (max-width: 1080px) 150vw, 120vw"
                   alt="일렁이는 수평선의 푸른 바다"
                   onLoad={handleImageLoad}
                 />
@@ -299,6 +304,7 @@ function HomeSection1() {
                 imgSrc={galleryImg}
                 webpSrc={galleryWebp}
                 alt="바로 앞에 보이는 갤러리 테라스 바닥 일부"
+                sizes="(max-width: 720px) 300vw, (max-width: 1080px) 200vw, 100vw"
                 onLoad={handleImageLoad}
               />
             </div>
