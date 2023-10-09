@@ -2,8 +2,8 @@
 @use '@/styles/_z-index.scss' as *;
 
 .hs2-back {
-  height: var(--background-height, 800vh);
-  min-height: var(--min-height-back, 4800px);
+  height: var(--background-height, 600vh);
+  min-height: var(--min-height-back, 3600px);
   position: relative;
 }
 
