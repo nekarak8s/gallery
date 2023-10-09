@@ -13,19 +13,20 @@ export const axiosInstance = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
+  withCredentials: true,
 })
 
 // axiosInterceptor
 function useAxiosInterceptor() {
   const navigate = useNavigate()
-
+  console.log(process.env.REACT_APP_API_BASE_URL)
   useEffect(() => {
-    const responseInterceptor = (response: AxiosResponse<MessageResponse>) => {
+    const responseInterceptor = (response: AxiosResponse) => {
       console.log('res', response)
-
-      return response
+      console.log('response-data', response.data)
+      return response.data
     }
-    const responseErrorInterceptor = (error: AxiosError<ErrorResponse>) => {
+    const responseErrorInterceptor = (error: AxiosError) => {
       console.log('err', error)
 
       // logout
@@ -35,8 +36,9 @@ function useAxiosInterceptor() {
       return Promise.reject(error.response)
     }
 
+    // eslint-disable-next-line
     const myResponseInterceptor = axiosInstance.interceptors.response.use(
-      responseInterceptor,
+      responseInterceptor, // eslint-disable-line
       responseErrorInterceptor
     )
 

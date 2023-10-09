@@ -1,0 +1,33 @@
+@import '@/styles/_responsive.scss';
+
+.media-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: var(--color, rgb(255, 93, 52));
+  background-color: var(--background-color, rgb(122, 200, 219));
+  transition:
+    color var(--transition-time-home) ease-in-out,
+    background-color var(--transition-time-home) ease-in-out;
+}
+
+.media-card__label {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.8em 0.7em;
+  width: 100%;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+@include tablet {
+  .media-card__label {
+    padding: 0.8em 0.5em;
+  }
+}
+
+@include mobile {
+  .media-card__label {
+    padding: 0.8em 0.3em;
+  }
+}

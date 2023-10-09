@@ -7,9 +7,9 @@ import Home from './pages/Home'
 import MyPage from './pages/MyPage'
 import OAuth from './pages/OAuth'
 
-import './App.scss'
 import '@/styles/_reset.scss'
 import '@/styles/_global.scss'
+import './App.scss'
 import Cursor from './atoms/ui/Cursor'
 
 export const routes: Record<string, RouteElement> = {

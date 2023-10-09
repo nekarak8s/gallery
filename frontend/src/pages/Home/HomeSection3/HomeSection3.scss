@@ -1,0 +1,332 @@
+@use '@/styles/_colors.scss' as c;
+@use '@/styles/_responsive.scss' as *;
+@use '@/styles/_animations.scss' as a;
+
+.hs3-back {
+  height: var(--height-back, calc(400vh + 200px));
+  min-height: var(--min-height-back, calc(1800px + 200px));
+  position: relative;
+}
+
+.hs3-main {
+  overflow: hidden;
+  position: sticky;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  min-height: 600px;
+  color: var(--color, rgb(255, 93, 52));
+  background-size: cover;
+  background-position: center;
+  background-image: url('../../../assets/images/home-section-3/white-wall.webp');
+  transition: color var(--transition-time-home) ease-in-out;
+}
+
+.hs3-fade {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2;
+  background-color: var(--background-color);
+  width: 100%;
+  height: 100%;
+  opacity: 1;
+  transition:
+    opacity var(--transition-time-home) ease-in-out,
+    background-color var(--transition-time-home) ease-in-out;
+}
+
+.hs3-circle {
+  position: relative;
+  z-index: 3;
+  width: 100%;
+  height: 100%;
+  mix-blend-mode: multiply;
+
+  circle {
+    fill: var(--color-primary, c.$primary);
+  }
+
+  svg:first-child {
+    position: absolute;
+    top: -100px;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 0;
+    height: 0;
+    transition: all 1s ease-in-out;
+  }
+
+  svg:nth-child(2) {
+    position: absolute;
+    top: 200%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 0;
+    height: 0;
+    transition: all 1s ease-in-out;
+  }
+}
+
+.hs3-circle.show {
+  svg:first-child {
+    top: -100px;
+    left: 100%;
+    width: 1200px;
+    height: 1200px;
+  }
+
+  svg:nth-child(2) {
+    top: 100%;
+    left: 0;
+    width: 800px;
+    height: 800px;
+  }
+}
+
+.hs3-phrase {
+  overflow: hidden;
+  position: absolute;
+  top: 30%;
+  left: 10%;
+  z-index: 3;
+  transform: translateY(-50%);
+  width: 12em;
+  height: 3.5em;
+  font-size: 4rem;
+  font-weight: 800;
+  line-height: 120%;
+  transition: mix-blend-mode var(--transition-time-home) ease-in;
+
+  > div {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100%;
+    height: 100%;
+    transition: transform var(--transition-time-home) ease-in-out;
+  }
+}
+
+.hs3-phrase.next {
+  mix-blend-mode: difference;
+
+  > div {
+    transform: translateY(-100%);
+  }
+}
+
+.hs3-button {
+  @include a.animation-clear('hs3-button', $speed: normal, $delay: 0s);
+  position: absolute;
+  top: 48%;
+  left: 25%;
+  z-index: 3;
+  font-weight: 600;
+  visibility: hidden;
+}
+
+.hs3-work {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+  overflow: hidden;
+  position: absolute;
+  z-index: 3;
+  top: 150vh;
+  right: 20vw;
+  transform: translateY(-50%);
+  transform-style: preserve-3d;
+  perspective: 2000px;
+  transition: transform 2000ms cubic-bezier(0.16, 1, 0.3, 1);
+
+  &__label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.7em;
+    width: 10em;
+    height: 5em;
+    border-radius: 2px;
+    background-size: cover;
+    background-position: center;
+    background-image: url('../../../assets/images/home-section-3/white-label.webp');
+    box-shadow:
+      0.1em 0.1em 0.4em rgba(0, 0, 0, 0.2),
+      inset 0.14em 0.14em 0.14em rgb(255, 255, 255),
+      inset -0.14em -0.14em 0.14em rgba(0, 0, 0, 0.167);
+    color: #222222;
+    font-size: 18px;
+    font-weight: 600;
+    opacity: 0;
+    transition: opacity var(--transition-time-home) ease-in-out;
+
+    > p:first-child {
+      font-size: 1.2em;
+    }
+  }
+}
+
+$FRAME_COLOR: rgb(44, 5, 5);
+
+.hs3-video {
+  position: relative;
+  width: clamp(190px, 30vw, 310px);
+  height: clamp(253px, 40vw, 413px);
+  transform-style: preserve-3d;
+  perspective: 20000px;
+  overflow: visible;
+
+  &__frame {
+    overflow: visible;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transform: translateY(-105%);
+    transform-style: preserve-3d;
+    background-color: $FRAME_COLOR;
+    perspective: 20000px;
+    transition: transform 0.4s ease-in-out;
+
+    &--top {
+      position: absolute;
+      bottom: -50px;
+      left: 0;
+      width: 100%;
+      height: 50px;
+      background-color: $FRAME_COLOR;
+      transform-origin: top;
+      transform: rotateX(-90deg);
+    }
+
+    &--right {
+      position: absolute;
+      top: 0;
+      right: -50px;
+      width: 50px;
+      height: 100%;
+      background-color: $FRAME_COLOR;
+      transform-origin: left;
+      transform: rotateY(90deg);
+    }
+
+    &--bottom {
+      position: absolute;
+      top: -50px;
+      left: 0;
+      width: 100%;
+      height: 50px;
+      background-color: $FRAME_COLOR;
+      transform-origin: bottom;
+      transform: rotateX(90deg);
+    }
+
+    &--left {
+      position: absolute;
+      top: 0;
+      left: -50px;
+      width: 50px;
+      height: 100%;
+      background-color: $FRAME_COLOR;
+      transform-origin: right;
+      transform: rotateY(-90deg);
+    }
+
+    &--back {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: $FRAME_COLOR;
+      transform: translateZ(-50px);
+    }
+  }
+
+  &__src {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 90%;
+    height: 90%;
+    object-fit: cover;
+    object-position: 50% 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  &__light {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.hs3-video__frame.show {
+  transform: translateY(0%);
+}
+
+@include laptop {
+  .hs3-phrase {
+    font-size: 3.5rem;
+  }
+}
+
+@include tablet {
+  .hs3-circle.show {
+    svg:first-child {
+      width: 1000px;
+      height: 1000px;
+    }
+
+    svg:nth-child(2) {
+      width: 800px;
+      height: 800px;
+    }
+  }
+
+  .hs3-phrase {
+    font-size: 2.8rem;
+    top: 30%;
+  }
+
+  .hs3-button {
+    top: 38%;
+  }
+
+  .hs3-work__label {
+    font-size: 15px;
+  }
+}
+
+@include mobile {
+  .hs3-circle.show {
+    svg:first-child {
+      width: 600px;
+      height: 600px;
+    }
+
+    svg:nth-child(2) {
+      width: 400px;
+      height: 400px;
+    }
+  }
+
+  .hs3-phrase {
+    font-size: 7vw;
+    top: 22%;
+  }
+
+  .hs3-button {
+    top: 25%;
+    left: 10%;
+  }
+
+  .hs3-work__label {
+    font-size: 11px;
+  }
+}

@@ -64,9 +64,13 @@
 }
 
 .primary {
-  color: c.$primary-color;
-  border: 2px solid c.$primary-color;
-  background-image: linear-gradient(0deg, c.$primary-color, c.$primary-color);
+  color: var(--color-primary, c.$primary);
+  border: 2px solid var(--color-primary, c.$primary);
+  background-image: linear-gradient(
+    0deg,
+    var(--color-primary, c.$primary),
+    var(--color-primary, c.$primary)
+  );
 }
 
 .primary:hover {

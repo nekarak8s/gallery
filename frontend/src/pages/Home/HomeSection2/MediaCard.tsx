@@ -1,55 +1,64 @@
 import React from 'react'
-import styles from './MediaCard.module.scss'
+import './MediaCard.scss'
+import StaticImage from '@/atoms/ui/StaticImage'
+import StaticVideo from '@/atoms/ui/StaticVideo'
 
 interface Props {
   type?: 'image' | 'video'
-  src: string
+  imgSrc?: ResponsiveImageOutput
+  webpSrc?: ResponsiveImageOutput
+  vidSrc?: string
+  webmSrc?: string
   alt: string
   width: string
   height: string
   description: string
-  year: string
-  month: string
   date: string
+  depth: number
+  sizes?: string
 }
 
 const MediaCard: React.FC<Props> = ({
   type = 'image',
-  src,
+  imgSrc,
+  webpSrc,
+  vidSrc,
+  webmSrc,
   alt,
   width,
   height,
   description,
-  year,
-  month,
   date,
+  depth,
+  sizes,
 }) => {
   return (
-    <div className={styles.mediaCard}>
+    <div className="media-card">
       {type == 'image' ? (
-        <img
-          className={styles.mediaCardSrc}
-          src={src}
+        <StaticImage
+          webpSrc={webpSrc!}
+          imgSrc={imgSrc!}
           alt={alt}
-          style={{ width, height }}
-          loading="lazy"
+          width={width}
+          height={height}
+          sizes={sizes}
         />
       ) : (
-        <video
-          className={styles.mediaCardSrc}
-          muted
-          autoPlay
-          loop
-          src={src}
-          style={{ width, height }}
+        <StaticVideo
+          webmSrc={webmSrc!}
+          vidSrc={vidSrc!}
+          ariaLabel={alt}
+          width={width}
+          height={height}
         />
       )}
 
-      <div className={styles.mediaCardLabel}>
+      <div
+        className="media-card__label"
+        style={{ fontSize: `${0.05 * depth + 0.45}em` }}
+      >
         <p>{description}</p>
-        <p>
-          {year}.{month}.{date}
-        </p>
+        <p>{date}</p>
       </div>
     </div>
   )

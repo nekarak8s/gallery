@@ -68,6 +68,20 @@ module.exports = merge(common, {
           },
         ],
       },
+      {
+        test: /\.(png|jpe?g|webp)$/,
+        use: [
+          {
+            loader: 'responsive-loader',
+            options: {
+              disable: true,
+              placeholder: true,
+              placeholderSize: 20,
+            },
+          },
+        ],
+        type: 'javascript/auto',
+      },
     ],
   },
   plugins: [
@@ -80,6 +94,6 @@ module.exports = merge(common, {
     host: '0.0.0.0',
     port: 3001,
     hot: true,
-    open: true,
+    open: false,
   },
 })

@@ -1,5 +1,5 @@
 @use '@/styles/_animations.scss' as a;
-@import '@/styles/_colors.scss';
+@use '@/styles/_colors.scss' as c;
 
 .login-form {
   display: flex;
@@ -17,7 +17,7 @@
   position: relative;
   font-size: 1.5em;
   gap: 0.5em;
-  color: $primary-color;
+  color: var(--color-primary, c.$primary);
   font-weight: 800;
 }
 

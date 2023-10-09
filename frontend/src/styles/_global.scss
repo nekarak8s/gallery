@@ -1,19 +1,18 @@
-@import './fonts';
+@use './fonts' as *;
+@use './colors' as c;
 
-* {
-  box-sizing: border-box;
-}
-
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-::-webkit-scrollbar {
-  display: none;
+:root {
+  --color-primary: #{c.$primary};
+  --color-secondary: #{c.$secondary};
+  --color-bg: #{c.$bg-white};
+  --color-ft: #{c.$ft-black};
+  --color-ft-subtle: #{c.$ft-gray};
 }
 
 body {
+  background-color: var(--color-bg);
+  color: var(--color-ft);
+
   font-family:
     'SCoreDream',
     -apple-system,
@@ -28,18 +27,29 @@ body {
     sans-serif;
 }
 
+* {
+  box-sizing: border-box;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
 button {
   margin: none;
   padding: none;
   border: none;
   background-color: transparent;
-  font: inherit;
   color: inherit;
-}
-input {
-  all: unset;
+  font: inherit;
 }
 
+input,
 select {
   all: unset;
 }

@@ -20,7 +20,7 @@ function Home() {
     const index = getRandom(0, BACKGROUND_COLORS.length - 1)
 
     page.style.setProperty('--background-color', BACKGROUND_COLORS[index])
-    page.style.setProperty('--font-color', FONT_COLORS[index])
+    page.style.setProperty('--color', FONT_COLORS[index])
   }
 
   useEffect(() => {
@@ -30,15 +30,16 @@ function Home() {
   return (
     <div className="home" ref={pageRef} onClick={handleClick}>
       <HomeSection1 />
-      <HomeSection2 />
-      <HomeSection3 />
       <div className="home__music">
         <Music
+          id="home-audio"
           src={bgm}
           title="MapleStory - Lith Harbor (ver.Piano)"
           color="white"
         />
       </div>
+      <HomeSection2 />
+      <HomeSection3 />
     </div>
   )
 }

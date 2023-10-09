@@ -17,23 +17,26 @@ module.exports = {
       '@': path.resolve(__dirname, 'src'),
     },
   },
+  resolveLoader: {
+    alias: {
+      rl: 'responsive-loader',
+    },
+  },
   module: {
     rules: [
       {
-        test: /\.(jpg|png|gif|webp|webm|mp3)$/,
+        test: /\.(webm|mp4|mp3)$/,
         type: 'asset', // https://webpack.js.org/guides/asset-modules/
         parser: {
           dataUrlCondition: {
-            maxSize: 4 * 1024, // 4kb
+            maxSize: 1 * 1024, // 1kb
           },
         },
       },
       {
         test: /\.svg$/,
         use: [
-          {
-            loader: 'babel-loader',
-          },
+          'babel-loader',
           {
             loader: 'react-svg-loader',
             options: {

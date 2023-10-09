@@ -94,7 +94,7 @@
   transform: scale(0);
   transition: transform 200ms ease-in;
   // path {
-  //   fill: c.$primary-color;
+  //   fill: var(--color-primary, c.$primary);
   // }
 }
 
