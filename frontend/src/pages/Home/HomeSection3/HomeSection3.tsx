@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from 'react'
-import throttle from 'lodash/throttle'
 import CircleIcon from '@/assets/svgs/circle.svg'
 import webmSrc from '@/assets/videos/home-video-4.webm'
 import vidSrc from '@/assets/videos/home-video-4.mp4'

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react'
-import throttle from 'lodash/throttle'
+import throttle from '@/utils/throttle'
 import gsap, { Elastic } from 'gsap'
 import { NavLink } from 'react-router-dom'
 
@@ -56,7 +56,7 @@ const MagneticButton: React.FC<Props> = ({
       buttonText.style.transform = ''
     }
 
-    const throttledHandleMouseMove = throttle(handleMouseMove)
+    const throttledHandleMouseMove = throttle(handleMouseMove, 10)
 
     button.addEventListener('mousemove', throttledHandleMouseMove)
     button.addEventListener('mouseleave', handleMouseLeave)

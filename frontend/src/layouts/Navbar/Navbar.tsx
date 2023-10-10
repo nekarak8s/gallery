@@ -9,7 +9,7 @@ import './Navbar.scss'
 import { CURSOR_SCALE } from '@/constants'
 import { useRecoilValue } from 'recoil'
 import { expDateState, isLoginState } from '@/stores/auth.store'
-import { throttle } from 'lodash'
+import throttle from '@/utils/throttle'
 
 const WHITE_PATHNAME = ['/']
 
@@ -88,11 +88,13 @@ function Navbar() {
           }`}
           ref={navbarRef}
         >
-          <div data-cursor-scale={CURSOR_SCALE}>
-            <NavLink to={routes['Home'].path} onFocus={showNavbar}>
-              The Gallery
-            </NavLink>
-          </div>
+          <NavLink
+            to={routes['Home'].path}
+            onFocus={showNavbar}
+            data-cursor-scale={CURSOR_SCALE}
+          >
+            The Gallery
+          </NavLink>
           <button
             className="navbar__toggle"
             ref={toggleRef}
@@ -115,7 +117,7 @@ function Navbar() {
               </NavLink>
             </li>
             <li>
-              {!isLogin ? (
+              {isLogin ? (
                 <NavLink
                   to={routes['MyPage'].path}
                   onFocus={showNavbar}
