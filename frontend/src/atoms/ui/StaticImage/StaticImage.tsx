@@ -32,9 +32,6 @@ const StaticImage: React.FC<Props> = ({
     picture.classList.add('loaded')
     onLoad && onLoad()
   }
-  console.log(
-    'url("' + (imgSrc.placeholder ? imgSrc.placeholder : DEV_BLUR_DATA) + '")'
-  )
   return (
     <picture
       ref={picRef}

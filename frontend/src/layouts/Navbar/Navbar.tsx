@@ -17,16 +17,6 @@ function Navbar() {
   const navbarRef = useRef<HTMLDivElement>(null)
   const navbarMenuRef = useRef<HTMLUListElement>(null)
 
-  const location = useLocation()
-
-  /**
-   *
-   */
-
-  const isLogin = useRecoilValue(isLoginState)
-  const exp = useRecoilValue(expDateState)
-  console.log('login', exp, isLogin)
-
   /**
    * handle login button click
    */
@@ -67,20 +57,20 @@ function Navbar() {
     }
   }, [])
 
+  const location = useLocation()
+  const isLogin = useRecoilValue(isLoginState)
   return (
     <>
-      <div className="navbar--layout">
+      <div className="navbar-layout">
         <nav
           className={`navbar ${
             BLACK_PATHNAME.includes(location.pathname) ? 'dark' : ''
           }`}
           ref={navbarRef}
         >
-          <NavLink to={routes['Home'].path}>
-            <div className="navbar__title" data-cursor-scale={CURSOR_SCALE}>
-              The Gallery
-            </div>
-          </NavLink>
+          <div className="navbar__logo" data-cursor-scale={CURSOR_SCALE}>
+            <NavLink to={routes['Home'].path}>The Gallery</NavLink>
+          </div>
           <ul className="navbar__menu" ref={navbarMenuRef}>
             <li>
               <NavLink
@@ -107,23 +97,6 @@ function Navbar() {
                 </button>
               )}
             </li>
-            <li>
-              {isLogin ? (
-                <NavLink
-                  data-cursor-scale={CURSOR_SCALE}
-                  to={routes['MyPage'].path}
-                >
-                  MyPage
-                </NavLink>
-              ) : (
-                <button
-                  data-cursor-scale={CURSOR_SCALE}
-                  onClick={handleLoginClick}
-                >
-                  Login
-                </button>
-              )}
-            </li>
           </ul>
           <button
             className="navbar__toggle"
@@ -135,6 +108,7 @@ function Navbar() {
         </nav>
         <Outlet />
       </div>
+      {/* Login Modal */}
       <Modal isOpen={isLoginOpen} onClose={() => setIsLoginOpen(false)}>
         <LoginForm />
       </Modal>

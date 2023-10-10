@@ -1,7 +1,7 @@
 @import '@/styles/_z-index.scss';
 @import '@/styles/_responsive.scss';
 
-.navbar--layout {
+.navbar-layout {
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: auto 1fr;
@@ -21,7 +21,8 @@
   backdrop-filter: blur(20px);
   color: white;
   text-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
-  transition: transform 0.2s ease-in-out;
+  transition: transform 700ms ease;
+
   path {
     stroke: white;
   }
@@ -36,7 +37,7 @@
   }
 }
 
-.navbar__title {
+.navbar__logo {
   display: flex;
   flex-direction: column;
   font-size: 1.7rem;

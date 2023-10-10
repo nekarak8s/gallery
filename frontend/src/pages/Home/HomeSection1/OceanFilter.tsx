@@ -13,7 +13,7 @@ const OceanFiltered: React.FC = () => {
       <filter id="ocean-filter" x="0" y="0" width="100%" height="100%">
         <feTurbulence
           id="turbulence"
-          baseFrequency="0.01 0.1"
+          baseFrequency="0.02 0.2"
           numOctaves="4"
           seed="2"
           result="turbulence"
@@ -21,8 +21,8 @@ const OceanFiltered: React.FC = () => {
           <animate
             attributeName="baseFrequency"
             dur="180s"
-            keyTimes="0;0.5;1"
-            values="0.012 0.15; 0.014 0.2; 0.012 0.15"
+            keyTimes="0; 0.5; 1"
+            values="0.02 0.2; 0.03 0.3; 0.02 0.2"
             repeatCount="indefinite"
           />
         </feTurbulence>

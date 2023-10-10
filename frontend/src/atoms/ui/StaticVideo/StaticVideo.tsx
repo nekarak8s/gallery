@@ -28,11 +28,9 @@ const StaticVideo: React.FC<Props> = ({
   const containerRef = useRef<HTMLDivElement>(null)
 
   const handleLoad = function staticVideoLoaded() {
-    console.log(1)
     const container = containerRef.current!
     container.classList.add('loaded')
     onLoad && onLoad()
-    console.log(webmSrc, vidSrc)
   }
 
   return (

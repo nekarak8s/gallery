@@ -9,6 +9,7 @@ import './HomeSection3.scss'
 import StaticVideo from '@/atoms/ui/StaticVideo'
 import Button3D from '@/atoms/ui/Button3D'
 import { CURSOR_SCALE } from '@/constants'
+import toFrame from '@/utils/toFrame'
 
 const BACK_HEIGHT = 3 // * 100vh
 const SCROLL_OFFSET = 200 // px.
@@ -83,7 +84,7 @@ function HomeSection3() {
     }
 
     // Handle Scroll
-    const handleScroll = function setElementsPosition() {
+    const handleScroll = function handleHS3Scroll() {
       const scrollTop = window.scrollY
 
       // Scroll optimization
@@ -110,7 +111,7 @@ function HomeSection3() {
         label.classList.remove('opaque')
 
         // Disable tilt
-        setIsTiltActivated(false)
+        isMousemove.current = false
       } else {
         // Play video
         video.pause()
@@ -124,19 +125,19 @@ function HomeSection3() {
         label.classList.add('opaque')
 
         // Activateb tilt
-        setIsTiltActivated(true)
+        isMousemove.current = true
       }
     }
 
     init()
 
-    const throttledHandleScroll = throttle(handleScroll, 10)
+    const optimizedHandleScroll = toFrame(handleScroll)
 
     window.addEventListener('resize', init)
-    window.addEventListener('scroll', throttledHandleScroll, { passive: true })
+    window.addEventListener('scroll', optimizedHandleScroll, { passive: true })
     return () => {
       window.removeEventListener('resize', init)
-      window.removeEventListener('scroll', throttledHandleScroll)
+      window.removeEventListener('scroll', optimizedHandleScroll)
     }
   }, [])
 
@@ -149,16 +150,15 @@ function HomeSection3() {
 
   const videoRef = useRef<HTMLDivElement>(null)
   const videoLightRef = useRef<HTMLDivElement>(null)
-
-  const [isTiltActivated, setIsTiltActivated] = useState(false)
+  const isMousemove = useRef<boolean>(false)
 
   useEffect(() => {
     const work = workRef.current!
     const video = videoRef.current!
     const videoLight = videoLightRef.current!
 
-    const handleMosueMove = function tiltTheCard(e: MouseEvent) {
-      if (!isTiltActivated) return
+    const handleMousemove = function tiltArtWork(e: MouseEvent) {
+      if (!isMousemove.current) return
 
       const { x, y, width, height } = work.getBoundingClientRect()
       const left = e.clientX - x
@@ -186,13 +186,13 @@ function HomeSection3() {
       `
     }
 
-    const throttledHandleMouseMove = throttle(handleMosueMove, 10)
+    const optimizedHandleMousemove = toFrame(handleMousemove)
 
-    const handleMouseEnter = function addMouseMoveListener() {
-      if (!isTiltActivated) return
+    const handleMouseEnter = function startArtWorkTilt() {
+      if (!isMousemove.current) return
       work.style.overflow = 'visible'
     }
-    const handleMouseLeave = function removeMouseMouveListener() {
+    const handleMouseLeave = function endArtWorkTilt() {
       work.style.overflow = 'hidden'
       video.style.transform = ''
       video.style.boxShadow = ''
@@ -201,13 +201,13 @@ function HomeSection3() {
 
     work.addEventListener('mouseenter', handleMouseEnter)
     work.addEventListener('mouseleave', handleMouseLeave)
-    work.addEventListener('mousemove', throttledHandleMouseMove)
+    work.addEventListener('mousemove', optimizedHandleMousemove)
     return () => {
       work.removeEventListener('mouseenter', handleMouseEnter)
       work.removeEventListener('mouseleave', handleMouseLeave)
-      work.removeEventListener('mousemove', throttledHandleMouseMove)
+      work.removeEventListener('mousemove', optimizedHandleMousemove)
     }
-  }, [isTiltActivated])
+  }, [])
 
   return (
     <div className="hs3-back" ref={backRef}>
