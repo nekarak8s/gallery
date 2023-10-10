@@ -1,6 +1,6 @@
 @use '@/styles/_responsive.scss' as *;
 
-.container {
+.music {
   display: flex;
   align-items: center;
   gap: 10px;
@@ -12,14 +12,14 @@
   }
 }
 
-.black {
+.music.black {
   color: black;
   path {
     stroke: black;
   }
 }
 
-.white {
+.music.white {
   color: white;
   path {
     stroke: white;
@@ -27,7 +27,7 @@
 }
 
 @include mobile {
-  .container {
+  .music {
     font-size: 0.8rem;
 
     svg {

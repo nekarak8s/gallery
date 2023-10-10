@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react'
 import { NavLink, Outlet, useLocation } from 'react-router-dom'
-import throttle from 'lodash/throttle'
 import { routes } from '@/App'
 import BurgerLogo from '@/assets/svgs/burger.svg'
 import Modal from '@/atoms/ui/Modal'
@@ -10,72 +9,107 @@ import './Navbar.scss'
 import { CURSOR_SCALE } from '@/constants'
 import { useRecoilValue } from 'recoil'
 import { expDateState, isLoginState } from '@/stores/auth.store'
+import { throttle } from 'lodash'
 
-const BLACK_PATHNAME = ['/guide', '/mypage']
+const WHITE_PATHNAME = ['/']
 
 function Navbar() {
+  /**
+   * Scroll responsive navbar
+   */
   const navbarRef = useRef<HTMLDivElement>(null)
-  const navbarMenuRef = useRef<HTMLUListElement>(null)
 
-  /**
-   * handle login button click
-   */
-  const [isLoginOpen, setIsLoginOpen] = useState(false)
-  const handleLoginClick = function () {
-    setIsLoginOpen(true)
-  }
-
-  /**
-   * handle toggle button click in mobile device size
-   */
-  const handleToggleClick = useCallback(() => {
-    navbarMenuRef.current?.classList.toggle('open')
-  }, [])
-
-  /**
-   * Show navbar when scrolled down
-   */
   useEffect(() => {
-    const navbarEle = navbarRef.current as HTMLElement
+    const navbar = navbarRef.current as HTMLElement
 
     // Watch scroll position
     let prevScrollY = window.scrollY
     const handleScroll = () => {
       const curScrollY = window.scrollY
-      if (prevScrollY > window.scrollY) {
-        navbarEle.style.transform = `translate(0, 0)`
+      if (prevScrollY > curScrollY) {
+        navbar.classList.remove('hide')
       } else {
-        navbarEle.style.transform = `translate(0, -120%)`
+        navbar.classList.add('hide')
       }
       prevScrollY = curScrollY
     }
 
-    const throttledHandleScroll = throttle(handleScroll, 100)
+    const throttledHandleScroll = throttle(handleScroll, 16)
+
     window.addEventListener('scroll', throttledHandleScroll, { passive: true })
     return () => {
       window.removeEventListener('scroll', throttledHandleScroll)
     }
   }, [])
 
-  const location = useLocation()
-  const isLogin = useRecoilValue(isLoginState)
+  /**
+   * Toggle Mmenu open modal
+   */
+  const menuRef = useRef<HTMLUListElement>(null)
+  const toggleRef = useRef<HTMLButtonElement>(null)
+
+  const handleToggleClick = useCallback(() => {
+    const menu = menuRef.current!
+    const toggle = toggleRef.current!
+
+    menu.classList.toggle('open')
+    toggle.classList.toggle('open')
+  }, [])
+
+  /**
+   * Toggle login modal
+   */
+  const [isLoginOpen, setIsLoginOpen] = useState(false)
+
+  const handleLoginClick = useCallback(() => {
+    setIsLoginOpen(true)
+  }, [])
+
+  /**
+   * Show navbar for web accessibility
+   */
+  const showNavbar = useCallback(() => {
+    const navbar = navbarRef.current!
+
+    navbar.classList.remove('hide')
+  }, [])
+
+  /**
+   * Read hooks
+   */
+  const location = useLocation() // navbar color
+  const isLogin = useRecoilValue(isLoginState) // mypage & login
   return (
     <>
       <div className="navbar-layout">
         <nav
           className={`navbar ${
-            BLACK_PATHNAME.includes(location.pathname) ? 'dark' : ''
+            WHITE_PATHNAME.includes(location.pathname) ? 'white' : ''
           }`}
           ref={navbarRef}
         >
-          <div className="navbar__logo" data-cursor-scale={CURSOR_SCALE}>
-            <NavLink to={routes['Home'].path}>The Gallery</NavLink>
+          <div data-cursor-scale={CURSOR_SCALE}>
+            <NavLink to={routes['Home'].path} onFocus={showNavbar}>
+              The Gallery
+            </NavLink>
           </div>
-          <ul className="navbar__menu" ref={navbarMenuRef}>
+          <button
+            className="navbar__toggle"
+            ref={toggleRef}
+            onClick={handleToggleClick}
+            onFocus={showNavbar}
+            data-cursor-scale={CURSOR_SCALE}
+          >
+            <span data-cursor-scale={CURSOR_SCALE} />
+            <span data-cursor-scale={CURSOR_SCALE} />
+            <span data-cursor-scale={CURSOR_SCALE} />
+          </button>
+          <ul className="navbar__menu" ref={menuRef}>
             <li>
               <NavLink
-                data-cursor-scale={CURSOR_SCALE}
                 to={routes['Guide'].path}
+                onFocus={showNavbar}
+                data-cursor-scale={CURSOR_SCALE}
               >
                 Guide
               </NavLink>
@@ -83,28 +117,23 @@ function Navbar() {
             <li>
               {!isLogin ? (
                 <NavLink
-                  data-cursor-scale={CURSOR_SCALE}
                   to={routes['MyPage'].path}
+                  onFocus={showNavbar}
+                  data-cursor-scale={CURSOR_SCALE}
                 >
                   MyPage
                 </NavLink>
               ) : (
                 <button
-                  data-cursor-scale={CURSOR_SCALE}
                   onClick={handleLoginClick}
+                  onFocus={showNavbar}
+                  data-cursor-scale={CURSOR_SCALE}
                 >
                   Login
                 </button>
               )}
             </li>
           </ul>
-          <button
-            className="navbar__toggle"
-            onClick={handleToggleClick}
-            data-cursor-scale="3"
-          >
-            <BurgerLogo />
-          </button>
         </nav>
         <Outlet />
       </div>
