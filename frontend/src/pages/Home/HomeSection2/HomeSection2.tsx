@@ -1,5 +1,4 @@
 import React, { useEffect, useRef } from 'react'
-import throttle from 'lodash/throttle'
 import narrowImg1 from '@/assets/images/home-section-2/narrow-1.jpg?format=jpg'
 import narrowWebp1 from '@/assets/images/home-section-2/narrow-1.jpg?format=webp'
 import narrowImg2 from '@/assets/images/home-section-2/narrow-2.jpg?format=jpg'
@@ -37,6 +36,7 @@ import posterWebp from '@/assets/images/home-section-2/cloud-poster.jpg?format=w
 
 import MediaCard from './MediaCard'
 import './HomeSection2.scss'
+import toFrame from '@/utils/toFrame'
 
 const BACK_HEIGHT = 6 // * 100vh. background height
 
@@ -75,7 +75,7 @@ function HomeSection2() {
     // Initiate scroll data & card position
     let scrollStart = 0
     let scrollEnd = 0
-    const init = function setInitialPositionData2() {
+    const init = function initiateHS2ScrollData() {
       // Initiate scroll data
       scrollStart = window.pageYOffset + back.getBoundingClientRect().top
       scrollEnd = scrollStart + back.offsetHeight - main.offsetHeight
@@ -93,8 +93,8 @@ function HomeSection2() {
       })
     }
 
-    // Move media elements according to scrool
-    const handleScroll = function setElementsPosition2() {
+    // Move card elements according to scroll
+    const handleScroll = function moveHS2Cards() {
       const scrollTop = window.scrollY
 
       // Scroll optimization
@@ -125,13 +125,13 @@ function HomeSection2() {
     }
 
     init()
-    const throttledHandleScroll = throttle(handleScroll, 10)
+    const optimizedHandleScroll = toFrame(handleScroll)
 
     window.addEventListener('resize', init)
-    window.addEventListener('scroll', throttledHandleScroll, { passive: true })
+    window.addEventListener('scroll', optimizedHandleScroll, { passive: true })
     return () => {
       window.removeEventListener('resize', init)
-      window.removeEventListener('scroll', throttledHandleScroll)
+      window.removeEventListener('scroll', optimizedHandleScroll)
     }
   }, [])
 

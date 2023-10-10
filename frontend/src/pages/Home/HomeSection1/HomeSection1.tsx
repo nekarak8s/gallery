@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react'
-import throttle from 'lodash/throttle'
 import bgm from '@/assets/audio/MapleStory-Lith-Harbor.mp3'
 import cloud1Img from '@/assets/images/home-section-1/cloud-1.png?format=png'
 import cloud1Webp from '@/assets/images/home-section-1/cloud-1.png?format=webp'
@@ -22,6 +21,7 @@ import './HomeSection1.scss'
 import StaticImage from '@/atoms/ui/StaticImage'
 
 import OceanTurbulenceFilter from '@/assets/svgs/ocean-turbulence-filter.svg'
+import toFrame from '@/utils/toFrame'
 
 const TOTAL_IMAGE = 6
 const BACK_HEIGHT = 2 // * 100vh. background height
@@ -44,8 +44,7 @@ function HomeSection1() {
   /**
    * Disable scroll on mount
    */
-  const disableScroll = useCallback((e: Event) => {
-    e.preventDefault()
+  const disableScroll = useCallback(() => {
     window.scrollTo(0, 0)
   }, [])
 
@@ -98,6 +97,7 @@ function HomeSection1() {
    * Mousemove Event Handling
    */
   const interactRef = useRef<HTMLDivElement>(null)
+  const isMousemove = useRef(true)
 
   useEffect(() => {
     // Get the elements
@@ -107,7 +107,10 @@ function HomeSection1() {
     )
 
     // Handle mouse event
-    const handleMouseMove = function moveImagesInteractively(e: MouseEvent) {
+    const handleMousemove = function moveHS1Elements(e: MouseEvent) {
+      // mousemove optimization
+      if (!isMousemove.current) return
+
       // Set distance values from the mouse position
       const xValue = e.clientX - window.innerWidth / 2
       const yValue = e.clientY - window.innerHeight / 2
@@ -131,11 +134,11 @@ function HomeSection1() {
       })
     }
 
-    const throttledHandleMouseMove = throttle(handleMouseMove, 10)
+    const optimizedHandleMouseMove = toFrame(handleMousemove)
 
-    window.addEventListener('mousemove', throttledHandleMouseMove)
+    window.addEventListener('mousemove', optimizedHandleMouseMove)
     return () => {
-      window.removeEventListener('mousemove', throttledHandleMouseMove)
+      window.removeEventListener('mousemove', optimizedHandleMouseMove)
     }
   }, [])
 
@@ -154,18 +157,26 @@ function HomeSection1() {
     // Initiate scroll data
     let scrollStart = 0
     let scrollEnd = 0
-    const init = function setInitialPositionData1() {
+    const init = function initiateHS1ScrollData() {
       scrollStart = window.pageYOffset + back.getBoundingClientRect().top
       scrollEnd = scrollStart + back.offsetHeight - main.offsetHeight
     }
 
     // Handle scroll event
-    const handleScroll = function setElementsPosition1() {
+    const handleScroll = function fadeHS1() {
       const scrollTop = window.scrollY
 
-      // Scroll optimization
-      if (scrollTop < scrollStart || scrollTop > scrollEnd + main.offsetHeight)
+      // Scroll & Mouse optimization
+      if (
+        scrollTop < scrollStart ||
+        scrollTop > scrollEnd + main.offsetHeight
+      ) {
+        isMousemove.current = false
         return
+      }
+
+      // Scroll & Mouse optimization
+      isMousemove.current = true
 
       // handle fade gradient layer opacity
       if (scrollTop < scrollStart + SCROLL_OFFSET) {
@@ -179,13 +190,13 @@ function HomeSection1() {
     }
 
     init()
-    const throttledHandleScroll = throttle(handleScroll, 10)
+    const optimizedHandleScroll = toFrame(handleScroll)
 
     window.addEventListener('resize', init)
-    window.addEventListener('scroll', throttledHandleScroll, { passive: true })
+    window.addEventListener('scroll', optimizedHandleScroll, { passive: true })
     return () => {
       window.removeEventListener('resize', init)
-      window.removeEventListener('scroll', throttledHandleScroll)
+      window.removeEventListener('scroll', optimizedHandleScroll)
     }
   }, [])
 
