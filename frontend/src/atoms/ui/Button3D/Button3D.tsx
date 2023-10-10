@@ -5,8 +5,8 @@ import { CURSOR_SCALE } from '@/constants'
 interface Props {
   ariaLabel: string
   type?: 'button' | 'submit' | 'reset'
-  size?: 'sm' | 'md' | 'lg'
   color?: 'primary' | 'black' | 'white'
+  disabled?: boolean
   onClick?: () => void
 }
 
@@ -14,16 +14,17 @@ const Button3D: React.FC<PropsWithChildren<Props>> = ({
   children,
   ariaLabel,
   type = 'button',
-  size = 'md',
   color = 'white',
+  disabled = false,
   onClick,
 }) => {
   return (
     <button
-      className={`button-3d ${size} ${color}`}
+      className={`button-3d ${color}`}
       type={type}
       onClick={onClick}
       aria-label={ariaLabel}
+      disabled={disabled}
       data-cursor-scale={CURSOR_SCALE}
     >
       {children}

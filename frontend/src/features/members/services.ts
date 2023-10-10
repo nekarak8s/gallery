@@ -11,9 +11,9 @@ import { useNavigate } from 'react-router-dom'
 import { useSetRecoilState } from 'recoil'
 
 // 로그인
-export function useLogin(type: string) {
-  return useMutation<string, ErrorResponse>(
-    () => axiosInstance.post(`/member/login?type=${type}`),
+export function useLogin() {
+  return useMutation<string, ErrorResponse, string>(
+    (type) => axiosInstance.post(`/member/login?type=${type}`),
     {
       onSuccess: (data) => {
         const redirectURL = data

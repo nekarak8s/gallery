@@ -11,6 +11,7 @@ import '@/styles/_reset.scss'
 import '@/styles/_global.scss'
 import './App.scss'
 import Cursor from './atoms/ui/Cursor'
+import useMobile from './hooks/useMobile'
 
 export const routes: Record<string, RouteElement> = {
   Home: { path: '/', element: <Home /> },
@@ -21,6 +22,7 @@ export const routes: Record<string, RouteElement> = {
 
 function App() {
   useAxiosInterceptor()
+  const isMobile = useMobile()
 
   return (
     <>
@@ -31,7 +33,7 @@ function App() {
           ))}
         </Route>
       </Routes>
-      <Cursor />
+      {!isMobile && <Cursor />}
     </>
   )
 }

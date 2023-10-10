@@ -2,6 +2,8 @@ import React, { useEffect, useRef, useState } from 'react'
 import CircleIcon from '@/assets/svgs/circle.svg'
 import webmSrc from '@/assets/videos/home-video-4.webm'
 import vidSrc from '@/assets/videos/home-video-4.mp4'
+import imgSrc from '@/assets/images/home-section-3/white-wall.jpg?format=jpg'
+import webpSrc from '@/assets/images/home-section-3/white-wall.jpg?format=webp'
 import MagneticButton from '@/atoms/ui/MagneticButton'
 
 import './HomeSection3.scss'
@@ -9,6 +11,7 @@ import StaticVideo from '@/atoms/ui/StaticVideo'
 import Button3D from '@/atoms/ui/Button3D'
 import { CURSOR_SCALE } from '@/constants'
 import toFrame from '@/utils/toFrame'
+import StaticImage from '@/atoms/ui/StaticImage'
 
 const BACK_HEIGHT = 3 // * 100vh
 const SCROLL_OFFSET = 200 // px.
@@ -211,6 +214,14 @@ function HomeSection3() {
   return (
     <div className="hs3-back" ref={backRef}>
       <div className="hs3-main" ref={mainRef}>
+        <div className="hs3-main__back">
+          <StaticImage
+            imgSrc={imgSrc}
+            webpSrc={webpSrc}
+            alt="하얀 벽 배경"
+            loading="lazy"
+          />
+        </div>
         <div className="hs3-fade" ref={fadeRef} />
         <div className="hs3-circle" ref={circleRef}>
           <CircleIcon />
@@ -218,9 +229,9 @@ function HomeSection3() {
         </div>
         <div className="hs3-phrase" ref={phraseRef}>
           <div>
-            <p>스쳐버린 순간 사이에서</p>
-            <p>찰나를 붙잡아 이름짓고</p>
-            <p>하나의 작품을 만들세요</p>
+            <p>스쳐가는 사진들 속에서</p>
+            <p>추억할 순간을 붙잡아 이름짓고</p>
+            <p>당신의 작품을 만들어 주세요</p>
           </div>
           <div>
             <p>더 갤러리가</p>
@@ -229,7 +240,7 @@ function HomeSection3() {
           </div>
         </div>
         <div className="hs3-button" ref={buttonRef}>
-          <Button3D ariaLabel="예시 3D 전시회" color="primary" size="lg">
+          <Button3D ariaLabel="3D 전시회 체험하기" color="primary">
             <p data-cursor-scale={CURSOR_SCALE}>체험하기</p>
           </Button3D>
         </div>

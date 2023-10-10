@@ -17,10 +17,15 @@
   height: 100vh;
   min-height: 600px;
   color: var(--color, rgb(255, 93, 52));
-  background-size: cover;
-  background-position: center;
-  background-image: url('../../../assets/images/home-section-3/white-wall.jpg?format=jpg');
   transition: color var(--transition-time-home) ease-in-out;
+
+  &__back {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
 }
 
 .hs3-fade {
@@ -88,12 +93,12 @@
 .hs3-phrase {
   overflow: hidden;
   position: absolute;
-  top: 30%;
+  top: 29%;
   left: 10%;
   z-index: 3;
   transform: translateY(-50%);
   width: 12em;
-  height: 3.5em;
+  height: 3.8em;
   font-size: 4rem;
   font-weight: 800;
   line-height: 120%;
@@ -120,11 +125,16 @@
 .hs3-button {
   @include a.animation-clear('hs3-button', $speed: normal, $delay: 0s);
   position: absolute;
-  top: 48%;
-  left: 25%;
+  top: 50%;
+  left: 24%;
   z-index: 3;
+  font-size: 2.5rem;
   font-weight: 600;
   visibility: hidden;
+
+  * > p {
+    padding: 0.6em 0.7em;
+  }
 }
 
 .hs3-work {
@@ -274,6 +284,10 @@ $FRAME_COLOR: rgb(44, 5, 5);
   .hs3-phrase {
     font-size: 3.5rem;
   }
+
+  .hs3-button {
+    font-size: 2.3rem;
+  }
 }
 
 @include tablet {
@@ -295,7 +309,8 @@ $FRAME_COLOR: rgb(44, 5, 5);
   }
 
   .hs3-button {
-    top: 38%;
+    top: 45%;
+    font-size: 2rem;
   }
 
   .hs3-work__label {
@@ -318,12 +333,13 @@ $FRAME_COLOR: rgb(44, 5, 5);
 
   .hs3-phrase {
     font-size: 7vw;
-    top: 22%;
+    top: 20%;
   }
 
   .hs3-button {
-    top: 25%;
+    top: 32%;
     left: 10%;
+    font-size: 5vw;
   }
 
   .hs3-work__label {
