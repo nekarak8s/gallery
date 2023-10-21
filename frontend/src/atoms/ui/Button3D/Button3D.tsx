@@ -1,8 +1,9 @@
-import React from 'react'
-import './Button3D.scss'
+import { PropsWithChildren } from 'react'
 import { CURSOR_SCALE } from '@/constants'
 
-interface Props {
+import './Button3D.scss'
+
+interface Button3DProps {
   ariaLabel: string
   type?: 'button' | 'submit' | 'reset'
   color?: 'primary' | 'black' | 'white'
@@ -10,14 +11,14 @@ interface Props {
   onClick?: () => void
 }
 
-const Button3D: React.FC<PropsWithChildren<Props>> = ({
+const Button3D = ({
   children,
   ariaLabel,
   type = 'button',
   color = 'white',
   disabled = false,
   onClick,
-}) => {
+}: PropsWithChildren<Button3DProps>) => {
   return (
     <button
       className={`button-3d ${color}`}

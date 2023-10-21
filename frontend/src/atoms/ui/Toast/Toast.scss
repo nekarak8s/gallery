@@ -1,0 +1,79 @@
+@use '@/styles/_z-index.scss' as *;
+@use '@/styles/_colors.scss' as c;
+
+.toast {
+  position: relative;
+  overflow: hidden;
+  padding: 1em;
+  font-size: 1rem;
+  border-radius: 5px;
+  background-color: var(--color-bg, c.$bg-white);
+  min-width: 15em;
+  box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  animation: toast-slide-in 300ms ease-in-out;
+}
+
+@keyframes toast-slide-in {
+  0% {
+    transform: translateX(100%);
+  }
+
+  80% {
+    transform: translateX(-10%);
+  }
+
+  100% {
+    transform: translateX(0%);
+  }
+}
+
+.toast.success {
+  path {
+    fill: c.$primary;
+  }
+
+  .toast__progress {
+    background-color: c.$primary;
+  }
+}
+
+.toast.error {
+  path {
+    fill: c.$bg-red;
+  }
+
+  .toast__progress {
+    background-color: c.$bg-red;
+  }
+}
+
+.toast.info {
+  path {
+    fill: c.$bg-orange;
+  }
+
+  .toast__progress {
+    background-color: c.$bg-orange;
+  }
+}
+
+.toast__message {
+  display: flex;
+  align-items: center;
+  gap: 1em;
+}
+
+.toast__progress {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 5px;
+  transform: translateX(0);
+  // transition: transform 3000ms linear;
+}
+
+.toast__progress.loaded {
+  transform: translateX(-50%);
+}

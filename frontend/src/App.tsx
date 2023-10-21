@@ -1,10 +1,12 @@
-import React from 'react'
+import { Suspense, lazy } from 'react'
 import { Routes, Route } from 'react-router-dom'
 import useAxiosInterceptor from './hooks/useAxiosInterceptor'
 import Navbar from './layouts/Navbar/Navbar'
-import Guide from './pages/Guide'
-import Home from './pages/Home'
-import MyPage from './pages/MyPage'
+
+const Home = lazy(() => import('./pages/Home'))
+const Guide = lazy(() => import('./pages/Guide'))
+const MyPage = lazy(() => import('./pages/MyPage'))
+
 import OAuth from './pages/OAuth'
 
 import '@/styles/_reset.scss'
@@ -12,6 +14,7 @@ import '@/styles/_global.scss'
 import './App.scss'
 import Cursor from './atoms/ui/Cursor'
 import useMobile from './hooks/useMobile'
+import Loading from './atoms/ui/Loading'
 
 export const routes: Record<string, RouteElement> = {
   Home: { path: '/', element: <Home /> },
@@ -21,11 +24,10 @@ export const routes: Record<string, RouteElement> = {
 }
 
 function App() {
-  useAxiosInterceptor()
   const isMobile = useMobile()
 
   return (
-    <>
+    <Suspense fallback={<Loading />}>
       <Routes>
         <Route path="/" element={<Navbar />}>
           {Object.values(routes).map((route) => (
@@ -34,7 +36,7 @@ function App() {
         </Route>
       </Routes>
       {!isMobile && <Cursor />}
-    </>
+    </Suspense>
   )
 }
 export default App

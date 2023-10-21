@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 /**
  * Check whether the code is running on the mobile device on 'resize'event

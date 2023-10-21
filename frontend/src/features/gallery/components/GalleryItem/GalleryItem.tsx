@@ -6,7 +6,7 @@ import ShareIcon from '@/assets/svgs/share.svg'
 import EditIcon from '@/assets/svgs/edit.svg'
 
 interface props {
-  gallery: GalleryItemData
+  gallery: Gallery
 }
 
 const GalleryItem: React.FC<props> = ({ gallery }) => {

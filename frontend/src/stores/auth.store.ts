@@ -17,18 +17,11 @@ const isLoginState = selector({
   get: ({ get }) => {
     const expDateString = get(expDateState)
 
-    if (!expDateString) {
-      return false
-    }
+    if (!expDateString) return false
 
-    const expirationDate = new Date(expDateString)
-    const currentDate = new Date()
+    if (new Date(expDateString) > new Date()) return true
 
-    if (expirationDate < currentDate) {
-      return true
-    } else {
-      return false
-    }
+    return false
   },
 })
 

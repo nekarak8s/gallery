@@ -1,19 +1,36 @@
-import React, { ChangeEvent } from 'react'
+import { useRef, useState, useEffect, ChangeEvent } from 'react'
+import './Textarea.scss'
 
-interface Props {
+interface TextareaProps {
   label: string
-  value: string
-  onChange: (value: string) => void
+  name: string
+  initialValue: string
+  onChange?: (e: ChangeEvent<HTMLTextAreaElement>) => void
 }
 
-const Textarea: React.FC<Props> = ({ label, value, onChange }) => {
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    onChange(e.target.value)
+const Textarea = ({ label, name, initialValue, onChange }: TextareaProps) => {
+  const [value, setValue] = useState(initialValue)
+  const textareaRef = useRef<HTMLTextAreaElement>(null)
+
+  const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    onChange && onChange(e)
+    setValue(e.target.value.trim())
   }
+
+  useEffect(() => {
+    const textarea = textareaRef.current!
+    textarea.classList.toggle('fill', value.length > 0)
+  }, [value])
+
   return (
-    <div>
+    <div className="textarea">
+      <textarea
+        ref={textareaRef}
+        name={name}
+        value={value}
+        onChange={handleChange}
+      ></textarea>
       <label>{label}</label>
-      <input type="text" value={value} onChange={handleChange} />
     </div>
   )
 }

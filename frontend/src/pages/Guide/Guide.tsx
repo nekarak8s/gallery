@@ -8,9 +8,14 @@ import webmSrc from '@/assets/videos/home-video-1.webm'
 import StaticImage from '@/atoms/ui/StaticImage'
 import StaticVideo from '@/atoms/ui/StaticVideo'
 
+import toastManager from '@/utils/toastManager/toastManager'
+
 function Guide() {
   return (
     <div className="guide">
+      {/* <button onClick={() => toastManager.addToast('success', '빵', 3000)}>
+        토스트
+      </button> */}
       <p>정적 이미지 / 비디오 로딩 테스트</p>
       <div className="guide__media">
         <StaticImage
@@ -27,7 +32,6 @@ function Guide() {
           height={'30vw'}
         />
       </div>
-      <p>개발 중</p>
     </div>
   )
 }

@@ -1,17 +1,21 @@
-interface RouteElement {
+type RouteElement = {
   path: string
   element: React.ReactNode
 }
 
-type PropsWithChildren<P = unknown> = P & { children: React.ReactNode }
-
-interface Regex {
+type RegexCondition = {
   reg: RegExp
   con: string
 }
 
-interface ValidateOutput {
-  result: boolean
-  reason?: string
-  data?: object
+type RegexPass<T = any> = {
+  result: true
+  data: T
 }
+
+type RegexFail = {
+  result: false
+  reason: string
+}
+
+type RegexResult<T = any> = RegexPass<T> | RegexFail

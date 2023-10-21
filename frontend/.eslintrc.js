@@ -54,6 +54,7 @@ module.exports = {
     },
   },
   rules: {
+    'react/react-in-jsx-scope': 0,
     '@typescript-eslint/no-var-requires': 0, // allow commonJS
     '@typescript-eslint/no-explicit-any': 0,
     '@typescript-eslint/no-unnecessary-type-assertion': 0,

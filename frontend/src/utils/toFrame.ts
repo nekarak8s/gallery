@@ -1,14 +1,14 @@
 /**
  * Optimize the callback function to the browser animation frame
- * @param {(any[]) => void} cb callback function to run
- * @param {(any[]) => boolean} dismissCondition condition function to stop the callback
- * @param {(any[]) => boolean} triggerCondition condition function to run the callback
+ * @param cb callback function to run
+ * @param dismissCondition condition function to stop the callback
+ * @param triggerCondition condition function to run the callback
  * @returns  optimized function
  */
 export default function toFrame(
-  cb,
-  dismissCondition = () => false,
-  triggerCondition = () => true
+  cb: (...args: any[]) => void,
+  dismissCondition: (...args: any[]) => boolean = () => false,
+  triggerCondition: (...args: any[]) => boolean = () => true
 ) {
   if (!cb) {
     throw Error('Invalid required arguments')
@@ -16,7 +16,7 @@ export default function toFrame(
 
   let isQueue = false
 
-  return function (...args) {
+  return function (...args: any[]) {
     if (isQueue) return
 
     isQueue = true

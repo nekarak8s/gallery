@@ -1,0 +1,12 @@
+@use '@/styles/_z-index.scss' as *;
+
+#toast {
+  @include z-index(toast);
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 10px;
+  position: fixed;
+  top: 0;
+  right: 0;
+  font-size: 1rem;
+}

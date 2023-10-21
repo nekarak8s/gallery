@@ -1,8 +1,8 @@
 @use '@/styles/_z-index.scss' as *;
 
-body * {
-  cursor: none !important;
-}
+// body * {
+//   cursor: none !important;
+// }
 
 .cursor {
   @include z-index(cursor);

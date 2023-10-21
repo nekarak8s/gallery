@@ -1,24 +1,25 @@
-import React, { useEffect, useRef } from 'react'
+import { useEffect, useRef, PropsWithChildren } from 'react'
 import ReactDOM from 'react-dom'
 
-import styles from './Modal.module.scss'
+import './Modal.scss'
 
-interface Props {
+interface ModalProps {
   isOpen: boolean
   onClose: () => void
 }
 
-const Modal: React.FC<PropsWithChildren<Props>> = ({
+const Modal = ({
   children,
   isOpen,
   onClose,
-}) => {
+}: PropsWithChildren<ModalProps>) => {
   const modalRef = useRef<HTMLDialogElement>(null)
 
   useEffect(() => {
     const modal = modalRef.current
     if (!modal) return
 
+    // open / close modal
     if (isOpen) {
       modal.showModal()
     } else {
@@ -45,8 +46,9 @@ const Modal: React.FC<PropsWithChildren<Props>> = ({
   }, [isOpen])
 
   if (!isOpen) return null
+
   return ReactDOM.createPortal(
-    <dialog ref={modalRef} className={styles.modal}>
+    <dialog ref={modalRef} className="modal">
       {children}
     </dialog>,
     document.getElementById('portal')!

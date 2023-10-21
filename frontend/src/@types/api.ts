@@ -1,9 +1,9 @@
-interface MessageResponse<T = any> {
+type MessageResponse<T = unknown> = {
   message: string
   data: T
 }
 
-interface ErrorResponse {
+type ErrorResponse = {
   message: string
   errorCode: string
 }
