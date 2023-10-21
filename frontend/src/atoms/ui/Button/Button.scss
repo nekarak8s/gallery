@@ -1,0 +1,135 @@
+@use '@/styles/_responsive.scss' as *;
+@use '@/styles/_colors.scss' as c;
+
+.button {
+  position: relative;
+  padding: 0.6em 1.3em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid black;
+  border-radius: 0.1em;
+  font-weight: 600;
+  white-space: nowrap;
+  transform-style: preserve-3d;
+  perspective: 1000px;
+  background-image: linear-gradient(0deg, rgb(0, 0, 0), rgb(0, 0, 0));
+  background-repeat: no-repeat;
+  background-position: 0% 0%;
+  background-size: 0% 0%;
+  cursor: pointer;
+  transition:
+    background-size 0.15s linear 0.1s,
+    color 0.15s linear 0.1s;
+
+  &.left {
+    background-position: 0% 0%;
+    background-size: 0% 100%;
+  }
+
+  &.right {
+    background-position: 100% 0%;
+    background-size: 0% 100%;
+  }
+
+  &.top {
+    background-position: 0% 0%;
+    background-size: 100% 0%;
+  }
+
+  &.bottom {
+    background-position: 0% 100%;
+    background-size: 100% 0%;
+  }
+
+  &.center {
+    background-position: 50% 50%;
+    background-size: 0% 0%;
+  }
+}
+
+.button:hover {
+  background-size: 100% 100%;
+}
+
+.button {
+  &.lg {
+    font-size: 1.8rem;
+  }
+
+  &.md {
+    font-size: 1.2rem;
+  }
+
+  &.sm {
+    font-size: 1rem;
+  }
+}
+
+.button {
+  &.primary {
+    color: var(--color-primary, c.$primary);
+    border: 2px solid var(--color-primary, c.$primary);
+    background-image: linear-gradient(
+      0deg,
+      var(--color-primary, c.$primary),
+      var(--color-primary, c.$primary)
+    );
+
+    &:hover {
+      color: white;
+    }
+  }
+
+  &.black {
+    color: black;
+    border: 2px solid black;
+    background-image: linear-gradient(0deg, black, black);
+
+    &:hover {
+      color: white;
+    }
+  }
+
+  &.white {
+    color: white;
+    border: 2px solid white;
+    background-image: linear-gradient(0deg, white, white);
+
+    &:hover {
+      color: black;
+    }
+  }
+}
+
+@include tablet {
+  .lg {
+    font-size: 1.6rem;
+  }
+
+  .md {
+    font-size: 1rem;
+  }
+
+  .sm {
+    font-size: 0.8rem;
+  }
+}
+
+@include mobile {
+  .button {
+    padding: 0.4em 1.2em;
+  }
+
+  .lg {
+    font-size: 1rem;
+  }
+
+  .md {
+    font-size: 0.8rem;
+  }
+
+  .sm {
+    font-size: 0.6rem;
+  }
+}

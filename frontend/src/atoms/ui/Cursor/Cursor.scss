@@ -1,8 +1,8 @@
 @use '@/styles/_z-index.scss' as *;
 
-body * {
-  cursor: none !important;
-}
+// body * {
+//   cursor: none !important;
+// }
 
 .cursor {
   @include z-index(cursor);
@@ -18,15 +18,11 @@ body * {
 
 .cursor > div {
   position: relative;
-  width: 12px;
-  height: 12px;
+  width: 0.8rem;
+  height: 0.8rem;
   border-radius: 50%;
   background-color: #ffffff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   --cursor-scale: 1;
-  transform: scale3d(var(--cursor-scale), var(--cursor-scale), 1);
-  will-change: transform;
+  transform: scale(var(--cursor-scale));
   transition: transform 150ms ease-in-out;
 }

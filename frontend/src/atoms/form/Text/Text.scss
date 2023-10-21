@@ -1,6 +1,6 @@
 @use '@/styles/_colors.scss' as c;
 
-.input {
+.text {
   font-size: 1rem;
   min-width: 15em;
   position: relative;
@@ -8,7 +8,7 @@
   transition: background-color 0.1s ease-in;
 }
 
-.input input {
+.text input {
   font-size: 1em;
   max-width: 100%;
   padding: 0.8em;
@@ -19,17 +19,17 @@
   transition: background-color 0.2s ease-in;
 }
 
-.input:hover {
+.text:hover {
   background-color: rgba(228, 228, 228, 0.316);
 }
 
-.input input:focus,
-.input input.fill {
+.text input:focus,
+.text input.fill {
   outline: 2px solid black;
   background-color: white;
 }
 
-.input label {
+.text label {
   position: absolute;
   top: 0;
   left: 0;
@@ -41,8 +41,8 @@
   transition: 0.2s;
 }
 
-.input input:focus ~ label,
-.input input.fill ~ label {
+.text input:focus ~ label,
+.text input.fill ~ label {
   color: black;
   transform: translate(0.7em, -1.4em);
   padding: 0em 0.4em;

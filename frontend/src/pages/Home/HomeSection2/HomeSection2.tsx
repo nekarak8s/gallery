@@ -140,13 +140,13 @@ function HomeSection2() {
       <div className="hs2-main" ref={mainRef}>
         <div className="hs2-phrase" ref={phraseRef}>
           <p data-speedy="0" style={{ zIndex: 8 }}>
-            하루에 몇 장의 사진을 찍고
+            하루 수백 장의 사진을 찍고
           </p>
           <p data-speedy="0" style={{ zIndex: 2 }}>
-            하루에 몇 장을 기억에 담고
+            하루 수백 장의 사진이 쌓여갑니다
           </p>
           <p data-speedy="0" style={{ zIndex: 5 }}>
-            하루에 몇 번을 공유 하나요
+            그렇게 우리를 스쳐 지나갑니다
           </p>
         </div>
         <div ref={cardsRef}>
@@ -510,12 +510,12 @@ function HomeSection2() {
                 date="2019.10.21"
               />
               <div className="hs2-card__phrase">
-                The development of mobile devices has made photography easier,
-                but some It also brought up issues. Today, individual photos are
-                unique to each other Looks like it's lost its meaning. Now,
-                we're going to take a picture of the moment It's not just about
-                sharing data on social media or simple memories Look at it in
-                fragments.
+                With the development of mobile devices, it is easy to take
+                pictures, but the value of a picture is decreasing. There are
+                hundreds of pictures on the album, but most of them are pictures
+                that you don't even know when they were taken. When was the last
+                time you remembered with your friends while looking at the
+                picture?
               </div>
             </div>
           </div>

@@ -1,4 +1,4 @@
-type GalleryItemData = {
+type Gallery = {
   galleryId: number
   name: string
   content: string
@@ -11,4 +11,18 @@ type GalleryItemData = {
     threeDimensionImageUrl: string
     twoDimensionImageUrl: string
   }
+}
+
+type GalleryForm = {
+  placeId: number
+  name: string
+  content: string
+}
+
+type Place = {
+  placeId: number
+  name: string
+  maximumFrameNumber: number
+  twoDimensionImageUrl: string
+  threeDimensionImageUrl: string
 }

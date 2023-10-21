@@ -1,31 +1,33 @@
 import Button from '@/atoms/ui/Button'
 import React, { useState } from 'react'
 import './ProfileForm.scss'
-import Input from '@/atoms/form/Input'
+import Input from '@/atoms/form/Text'
 import WaveIcon from '@/assets/svgs/wave.svg'
 import { validateProfileForm } from '../../validators'
 import { useUpdateProfile } from '../../services'
+import toastManager from '@/utils/toastManager'
 
 const ProfileForm: React.FC = () => {
   const { mutate: update } = useUpdateProfile()
 
   const handleSubmit = function (e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
-    const formData = new FormData(e.currentTarget)
 
-    const { result, data } = validateProfileForm(formData)
-    console.log(result, data)
-    if (!result) {
-      console.log('통관ㄴ')
+    // validate data
+    const formData = new FormData(e.currentTarget)
+    const result = validateProfileForm(formData)
+
+    if (!result.result) {
+      toastManager.addToast('error', '닉네임을 제대로 입력하쇼', 2000)
     } else {
-      update({ nickname: '리병호바보' })
+      update(result.data)
     }
   }
   return (
     <form className="profile-form" onSubmit={handleSubmit}>
       {/* <h2>프로필 수정</h2> */}
       {/* <WaveIcon /> */}
-      <Input label="닉네임" initialValue="" />
+      <Input label="닉네임" name="nickname" initialValue="" />
       <Button
         type="submit"
         direction="left"

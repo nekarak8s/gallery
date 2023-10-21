@@ -8,6 +8,7 @@ import { useUserQuery } from '@/features/members/services'
 import Loading from '@/atoms/ui/Loading'
 import Modal from '@/atoms/ui/Modal'
 import ProfileForm from '@/features/members/components/ProfileForm'
+import ProfileEdit from '@/features/members/components/ProfileEdit'
 
 function MyPage() {
   const [isUpdateOpen, setIsUpdateOpen] = useState(false)
@@ -18,11 +19,7 @@ function MyPage() {
         <section className="my-page__profile">
           <Profile />
           <div className="my-page__profile__btn">
-            <Button
-              ariaLabel="닉네임 수정"
-              text="닉네임 수정"
-              onClick={() => setIsUpdateOpen(true)}
-            />
+            <ProfileEdit />
           </div>
         </section>
         <div className="my-page__br" />

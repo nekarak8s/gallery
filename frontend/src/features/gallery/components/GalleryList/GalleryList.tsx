@@ -3,13 +3,18 @@ import GalleryCreate from '../GalleryCreate'
 import { galleryListData } from '../../data'
 import GalleryItem from '../GalleryItem'
 import './GalleryList.scss'
+import { useGalleryListQuery } from '../../services'
+import Loading from '@/atoms/ui/Loading'
 
 const GalleryList = () => {
   const containerRef = useRef<HTMLDivElement>(null)
 
-  const galleryList = galleryListData
+  // const galleryList = galleryListData
 
+  const { data: galleryList, isLoading, isError } = useGalleryListQuery()
   useEffect(() => {
+    if (!galleryList) return
+
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(
         (entry) => {
@@ -28,13 +33,17 @@ const GalleryList = () => {
     cards.forEach((card) => {
       observer.observe(card)
     })
-  }, [])
+  }, [galleryList])
+
+  if (isLoading) return <Loading />
+
+  if (isError) return
 
   return (
     <div className="gallery-list" ref={containerRef}>
       <GalleryCreate />
       {galleryList.map((gallery) => (
-        <div className="gallery-list__item">
+        <div className="gallery-list__item" key={gallery.galleryId}>
           <GalleryItem gallery={gallery} />
         </div>
       ))}

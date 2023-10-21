@@ -9,13 +9,11 @@ const COUNT_TIME = 3000 // ms
 
 const Profile = () => {
   const durationRef = useRef<HTMLElement>(null)
-  const { data: user, isLoading, isError } = useUserQuery()
-  // const user = userData
+  // const { data: user, isLoading, isError } = useUserQuery()
+  const user = userData
 
   useEffect(() => {
     if (!user) return
-
-    console.log(user)
 
     const duration = durationRef.current!
 
@@ -46,13 +44,13 @@ const Profile = () => {
     }
   }, [user])
 
-  if (isLoading) {
-    return <Loading />
-  }
+  // if (isLoading) {
+  //   return <Loading />
+  // }
 
-  if (isError) {
-    return <div />
-  }
+  // if (isError) {
+  //   return <div />
+  // }
 
   return (
     <div className={styles.profile}>

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, useCallback } from 'react'
+import { useEffect, useRef, useState, useCallback } from 'react'
 import bgm from '@/assets/audio/MapleStory-Lith-Harbor.mp3'
 import cloud1Img from '@/assets/images/home-section-1/cloud-1.png?format=png'
 import cloud1Webp from '@/assets/images/home-section-1/cloud-1.png?format=webp'

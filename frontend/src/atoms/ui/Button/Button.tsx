@@ -1,10 +1,10 @@
-import React from 'react'
-import styles from './Button.module.scss'
 import { CURSOR_SCALE } from '@/constants'
+
+import './Button.scss'
 
 interface Props {
   text: string
-  ariaLabel: string
+  ariaLabel?: string
   direction?: 'left' | 'right' | 'top' | 'bottom' | 'center'
   type?: 'button' | 'submit' | 'reset'
   size?: 'sm' | 'md' | 'lg'
@@ -12,21 +12,21 @@ interface Props {
   onClick?: () => void
 }
 
-const Button: React.FC<Props> = ({
+const Button = ({
   text,
-  ariaLabel,
+  ariaLabel = text,
   direction = 'left',
   type = 'button',
   size = 'md',
   color = 'black',
   onClick = () => {},
-}) => {
+}: Props) => {
   return (
     <button
       data-cursor-scale={CURSOR_SCALE}
       type={type}
       aria-label={ariaLabel}
-      className={`${styles.button} ${styles[direction]} ${styles[size]} ${styles[color]}`}
+      className={`button ${direction} ${size} ${color}`}
       onClick={onClick}
     >
       {text}

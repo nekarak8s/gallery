@@ -1,13 +1,14 @@
 import React, { ChangeEvent, useEffect, useState, useRef } from 'react'
-import './Input.scss'
+import './Text.scss'
 
-interface Props {
+interface InputProps {
   label: string
+  name: string
   initialValue: string
   onChange?: (e: ChangeEvent<HTMLInputElement>) => void
 }
 
-const Input: React.FC<Props> = ({ label, initialValue, onChange }) => {
+const Text = ({ label, name, initialValue, onChange }: InputProps) => {
   const [value, setValue] = useState(initialValue)
   const inputRef = useRef<HTMLInputElement>(null)
 
@@ -22,11 +23,17 @@ const Input: React.FC<Props> = ({ label, initialValue, onChange }) => {
   }, [value])
 
   return (
-    <div className="input">
-      <input ref={inputRef} type="text" value={value} onChange={handleChange} />
+    <div className="text">
+      <input
+        ref={inputRef}
+        name={name}
+        type="text"
+        value={value}
+        onChange={handleChange}
+      />
       <label>{label}</label>
     </div>
   )
 }
 
-export default Input
+export default Text

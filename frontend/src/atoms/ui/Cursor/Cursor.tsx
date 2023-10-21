@@ -1,8 +1,13 @@
 import React, { useEffect, useRef } from 'react'
-import styles from './Cursor.module.scss'
-import throttle from 'lodash/throttle'
+import './Cursor.scss'
+import throttle from '@/utils/throttle'
 
 function Cursor() {
+  /**
+   * Mousemove handleing
+   * 1. move custom cursor
+   * 2. scale custom cursor
+   */
   const cursorRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -12,20 +17,17 @@ function Cursor() {
     let cursorX = 0
     let cursorY = 0
     const mousemove = function moveCustomCursor(e: MouseEvent) {
+      // Move custom cursor
       cursorX = e.clientX - cursor.offsetWidth / 2
       cursorY = e.clientY - cursor.offsetHeight / 2
       cursor.style.transform = `translate3d(${cursorX}px, ${cursorY}px, 0)`
-      const target = e.target
-      if (!(target instanceof HTMLElement)) {
-        return
-      }
 
-      const scale = target.getAttribute('data-cursor-scale') // "5" or "" or null
-      if (!scale) {
-        cursorChild.style.setProperty('--cursor-scale', '1')
-      } else {
-        cursorChild.style.setProperty('--cursor-scale', scale)
-      }
+      // Scale custom cursor
+      const target = e.target
+      if (!(target instanceof HTMLElement)) return
+
+      const scale = target.getAttribute('data-cursor-scale') // "3" | "" | null
+      cursorChild.style.setProperty('--cursor-scale', scale ? scale : '1')
     }
 
     const mouseout = function hideCustomCursor() {
@@ -43,7 +45,7 @@ function Cursor() {
   }, [])
 
   return (
-    <div className={styles.cursor} ref={cursorRef}>
+    <div className="cursor" ref={cursorRef}>
       <div></div>
     </div>
   )
