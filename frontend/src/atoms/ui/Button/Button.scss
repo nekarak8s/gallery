@@ -48,7 +48,8 @@
   }
 }
 
-.button:hover {
+.button:hover,
+.button:focus {
   background-size: 100% 100%;
 }
 

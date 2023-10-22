@@ -2,6 +2,7 @@ import { useEffect, useRef, PropsWithChildren } from 'react'
 import ReactDOM from 'react-dom'
 
 import './Modal.scss'
+import useFocusTrap from '@/hooks/useFocusTrap'
 
 interface ModalProps {
   isOpen: boolean
@@ -13,44 +14,33 @@ const Modal = ({
   isOpen,
   onClose,
 }: PropsWithChildren<ModalProps>) => {
-  const modalRef = useRef<HTMLDialogElement>(null)
+  const backRef = useRef<HTMLDivElement>(null)
+  const contentRef = useFocusTrap(isOpen)
 
   useEffect(() => {
-    const modal = modalRef.current
-    if (!modal) return
-
-    // open / close modal
-    if (isOpen) {
-      modal.showModal()
-    } else {
-      modal.close()
-    }
+    const back = backRef.current
+    if (!back) return
 
     const handleClick = function closeModal(e: MouseEvent) {
-      const modalRect = modal.getBoundingClientRect()
-      if (
-        e.clientX < modalRect.left ||
-        e.clientX > modalRect.right ||
-        e.clientY < modalRect.top ||
-        e.clientY > modalRect.bottom
-      ) {
-        onClose()
-        modal.close()
-      }
+      e.stopPropagation()
+      onClose()
     }
 
-    modal.addEventListener('click', handleClick)
+    back.addEventListener('click', handleClick)
     return () => {
-      modal.removeEventListener('click', handleClick)
+      back.removeEventListener('click', handleClick)
     }
   }, [isOpen])
 
   if (!isOpen) return null
 
   return ReactDOM.createPortal(
-    <dialog ref={modalRef} className="modal">
-      {children}
-    </dialog>,
+    <div className="modal">
+      <div ref={backRef} className="modal__back"></div>
+      <div ref={contentRef} className="modal__content">
+        {children}
+      </div>
+    </div>,
     document.getElementById('portal')!
   )
 }

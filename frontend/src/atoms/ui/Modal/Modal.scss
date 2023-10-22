@@ -1,16 +1,31 @@
-@import '@/styles/_z-index.scss';
+@use '@/styles/_colors.scss' as c;
+@use '@/styles/_z-index.scss' as *;
 
-.modal,
-.modal * {
-  cursor: default !important;
-}
+// .modal,
+// .modal * {
+//   cursor: default !important;
+// }
 
 .modal {
   @include z-index(modal);
-  border: none;
-  border-radius: 10px;
-}
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
 
-.modal::backdrop {
-  background-color: rgba(0, 0, 0, 0.3);
+  &__back {
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.3);
+  }
+
+  &__content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    border-radius: 10px;
+    background-color: var(--color-bg, c.$bg-white);
+    transform: translate(-50%, -50%);
+  }
 }

@@ -1,4 +1,4 @@
-import { PropsWithChildren } from 'react'
+import { PropsWithChildren, useRef, useEffect } from 'react'
 import { CURSOR_SCALE } from '@/constants'
 
 import './Button3D.scss'
@@ -19,8 +19,26 @@ const Button3D = ({
   disabled = false,
   onClick,
 }: PropsWithChildren<Button3DProps>) => {
+  const buttonRef = useRef<HTMLButtonElement>(null)
+
+  useEffect(() => {
+    const button = buttonRef.current!
+
+    const handleKeyup = function clickButton(e: KeyboardEvent) {
+      if (e.key === 'Enter') {
+        !disabled && button.click()
+      }
+    }
+
+    button.addEventListener('keyup', handleKeyup)
+    return () => {
+      button.removeEventListener('keyup', handleKeyup)
+    }
+  }, [])
+
   return (
     <button
+      ref={buttonRef}
       className={`button-3d ${color}`}
       type={type}
       onClick={onClick}

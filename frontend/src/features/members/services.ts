@@ -1,5 +1,5 @@
 import { routes } from '@/App'
-import axiosInstance from '@/hooks/useAxiosInterceptor'
+import axiosInstance from '@/utils/axiosInstance'
 import { expDateState } from '@/stores/auth.store'
 import toastManager from '@/utils/toastManager'
 import {
