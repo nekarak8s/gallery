@@ -6,6 +6,7 @@ import Navbar from './layouts/Navbar/Navbar'
 const Home = lazy(() => import('./pages/Home'))
 const Guide = lazy(() => import('./pages/Guide'))
 const MyPage = lazy(() => import('./pages/MyPage'))
+const Aquarium = lazy(() => import('./pages/Aquarium'))
 
 import OAuth from './pages/OAuth'
 
@@ -21,6 +22,7 @@ export const routes: Record<string, RouteElement> = {
   Guide: { path: '/guide', element: <Guide /> },
   MyPage: { path: '/mypage', element: <MyPage /> },
   OAuth: { path: '/oauth/:type', element: <OAuth /> },
+  Aquarium: { path: '/aquarium', element: <Aquarium /> },
 }
 
 function App() {
