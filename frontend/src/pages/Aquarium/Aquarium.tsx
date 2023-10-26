@@ -2,14 +2,15 @@ import React, { useRef, useEffect } from 'react'
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import dat from 'dat.gui'
-
 import { WallMesh } from './wallMesh'
-import texture from '@/assets/images/home-section-1/ocean.png'
 
-const FLOOR_X = 30,
-  FLOOR_Y = 20,
-  FLOOR_HEIGHT = 5,
-  SURFACE = 2.5
+import floorTexture from '@/assets/images/home-section-3/white-wall.jpg'
+import AquaTexture from '@/assets/images/home-section-1/ocean.png'
+
+const FLOOR_X = 40,
+  FLOOR_Y = 30,
+  FLOOR_HEIGHT = 10,
+  SURFACE = 5
 
 export default function Aquarium() {
   useEffect(() => {
@@ -19,7 +20,7 @@ export default function Aquarium() {
     const renderer = new THREE.WebGLRenderer({
       canvas,
       antialias: true,
-      alpha: true,
+      // alpha: true,
     })
     renderer.setSize(window.innerWidth, window.innerHeight)
     renderer.setPixelRatio(window.devicePixelRatio > 1 ? 2 : 1)
@@ -34,9 +35,7 @@ export default function Aquarium() {
       0.1, // near
       1000 // far
     )
-    camera.position.x = 1
-    camera.position.y = 5
-    camera.position.z = 15
+    camera.position.set(3, 45, 30)
     scene.add(camera)
 
     // Light
@@ -51,38 +50,82 @@ export default function Aquarium() {
     const controls = new OrbitControls(camera, renderer.domElement)
 
     // Floor
-    const textureLoader = new THREE.TextureLoader()
-    // 로드 완료, 로드 중, 로드 에러 콜백함수 넣을 수 있음 (참고)
-    const floorTexture = textureLoader.load(texture)
+    const textureLoader = new THREE.TextureLoader() // Texture loader
+    const floorTex = textureLoader.load(floorTexture)
     const floorMesh = new THREE.Mesh(
       new THREE.PlaneGeometry(FLOOR_X, FLOOR_Y),
       new THREE.MeshStandardMaterial({
-        color: 'lightgray',
         side: THREE.DoubleSide,
-        map: floorTexture,
+        map: floorTex,
       })
     )
     floorMesh.rotation.x = -THREE.MathUtils.degToRad(90)
     scene.add(floorMesh)
 
-    // Wall Meshes
+    // Walls
     const backWall = new WallMesh(FLOOR_X, FLOOR_HEIGHT, 0.2).getMesh()
     backWall.position.set(0, SURFACE, -FLOOR_Y / 2)
+
+    const frontWall = new WallMesh(13, FLOOR_HEIGHT, 0.2).getMesh()
+    frontWall.position.set(13.6, SURFACE, FLOOR_Y / 2)
 
     const leftWall = new WallMesh(FLOOR_Y, FLOOR_HEIGHT, 0.2).getMesh()
     leftWall.rotation.y = -THREE.MathUtils.degToRad(90)
     leftWall.position.set(-FLOOR_X / 2, SURFACE, 0)
+
     const rightWall = leftWall.clone()
     leftWall.position.x = FLOOR_X / 2
-    scene.add(backWall, leftWall, rightWall)
+
+    scene.add(frontWall, backWall, leftWall, rightWall)
+
+    // Partitons
+    const partition1 = new WallMesh(6, FLOOR_HEIGHT, 0.2).getMesh()
+    partition1.position.set(17, SURFACE, 8)
+
+    const partition2 = new WallMesh(15, FLOOR_HEIGHT, 0.2).getMesh()
+    partition2.rotation.y = -THREE.MathUtils.degToRad(90)
+    partition2.position.set(7.2, SURFACE, 7.5)
+
+    const partition3 = partition1.clone()
+    partition3.position.set(10.2, SURFACE, 0.1)
+
+    const partition4 = partition1.clone()
+    partition4.rotation.y = -THREE.MathUtils.degToRad(90)
+    partition4.position.set(13.1, SURFACE, -2.9)
+
+    const partition5 = new WallMesh(10, FLOOR_HEIGHT, 0.2).getMesh()
+    partition5.rotation.y = -THREE.MathUtils.degToRad(90)
+    partition5.position.set(-6, SURFACE, -10)
+
+    scene.add(partition1, partition2, partition3, partition4, partition5)
+
+    // Aquarium
+    const AquaTex = textureLoader.load(AquaTexture)
+
+    const AquaMesh = new THREE.Mesh(
+      new THREE.BoxGeometry(FLOOR_X - 13 + 0.3, FLOOR_HEIGHT, FLOOR_Y / 3),
+      new THREE.MeshStandardMaterial({
+        map: AquaTex,
+      })
+    )
+    AquaMesh.position.set(-6.49, FLOOR_HEIGHT / 2, 19.95)
+
+    // Cylindrical Aquarium
+    // const cylinAquarium = new THREE.Mesh(
+    //   new THREE.CylinderGeometry(3, 3, 20, 32),
+    //   new THREE.MeshStandardMaterial({
+    //     map: AquaTex,
+    //   })
+    // )
+
+    scene.add(AquaMesh)
 
     renderer.render(scene, camera)
 
     // Dat
-    // const gui = new dat.GUI()
-    // gui.add(wallMesh.position, 'y', -5, 5, 0.1)
-    // gui.add(wallMesh.position, 'x', -5, 5, 0.1)
-    // gui.add(wallMesh.position, 'z', -5, 5, 0.1)
+    const gui = new dat.GUI()
+    gui.add(AquaMesh.position, 'x', -30, 30, 0.01).name('x')
+    gui.add(AquaMesh.position, 'z', -30, 30, 0.01).name('z')
 
     // Draw
     // const clock = new THREE.Clock()
