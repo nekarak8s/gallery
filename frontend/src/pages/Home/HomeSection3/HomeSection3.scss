@@ -153,17 +153,14 @@
   transition: transform 2000ms cubic-bezier(0.16, 1, 0.3, 1);
 
   &__label {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 0.7em;
+    overflow: hidden;
+    position: relative;
     width: 10em;
     height: 5em;
     border-radius: 2px;
-    background-size: cover;
-    background-position: center;
-    background-image: url('../../../assets/images/home-section-3/white-label.jpg?format=jpg');
+    // background-size: cover;
+    // background-position: center;
+    // background-image: url('../../../assets/images/home-section-3/white-label.jpg?format=jpg');
     box-shadow:
       0.1em 0.1em 0.4em rgba(0, 0, 0, 0.2),
       inset 0.14em 0.14em 0.14em rgb(255, 255, 255),
@@ -174,8 +171,21 @@
     opacity: 0;
     transition: opacity var(--transition-time-home) ease-in-out;
 
-    > p:first-child {
-      font-size: 1.2em;
+    &--phrase {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.7em;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      white-space: nowrap;
+
+      > p:first-child {
+        font-size: 1.1em;
+      }
     }
   }
 }

@@ -4,12 +4,20 @@ import WaveSvg from '@/assets/svgs/sin.svg'
 import KakaoLogo from '@/assets/svgs/kakaotalk.svg'
 import GalleryLogo from '@/assets/svgs/gallery-logo.svg'
 import GoogleLogo from '@/assets/svgs/google.svg'
+import { CURSOR_SCALE } from '@/constants'
 
 import './LoginForm.scss'
 import Button3D from '@/atoms/ui/Button3D'
+import { useLocation } from 'react-router-dom'
 
 function LoginForm() {
+  const location = useLocation()
   const { mutate: login } = useLogin()
+
+  const handleClick = function saveUrlLogin(type: string) {
+    window.sessionStorage.setItem('login-pathname', location.pathname)
+    login(type)
+  }
 
   return (
     <form className="login-form">
@@ -24,18 +32,21 @@ function LoginForm() {
       <ul className="login-form__menu">
         <li>
           <Button3D
-            onClick={() => login('kakao')}
+            onClick={() => handleClick('kakao')}
             ariaLabel="카카오 아이디로 로그인하기"
           >
-            <div className="login-form__menu-item">
+            <div
+              data-cursor-scale={CURSOR_SCALE}
+              className="login-form__menu-item"
+            >
               <KakaoLogo />
-              <p>카카오 아이디로 탑승</p>
+              <p data-cursor-scale={CURSOR_SCALE}>카카오 아이디로 탑승</p>
             </div>
           </Button3D>
         </li>
         <li>
           <Button3D
-            onClick={() => login('google')}
+            onClick={() => handleClick('google')}
             ariaLabel="구글 이메일로 로그인하기"
             disabled={true}
           >

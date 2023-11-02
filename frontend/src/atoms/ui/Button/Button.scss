@@ -48,7 +48,8 @@
   }
 }
 
-.button:hover {
+.button:hover,
+.button:focus {
   background-size: 100% 100%;
 }
 
@@ -76,7 +77,8 @@
       var(--color-primary, c.$primary)
     );
 
-    &:hover {
+    &:hover,
+    &:focus {
       color: white;
     }
   }
@@ -86,7 +88,8 @@
     border: 2px solid black;
     background-image: linear-gradient(0deg, black, black);
 
-    &:hover {
+    &:hover,
+    &:focus {
       color: white;
     }
   }
@@ -96,7 +99,8 @@
     border: 2px solid white;
     background-image: linear-gradient(0deg, white, white);
 
-    &:hover {
+    &:hover,
+    &:focus {
       color: black;
     }
   }

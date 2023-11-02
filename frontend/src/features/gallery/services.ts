@@ -1,6 +1,5 @@
 import { routes } from '@/App'
-import axiosInstance from '@/hooks/useAxiosInterceptor'
-import { expDateState } from '@/stores/auth.store'
+import axiosInstance from '@/utils/axiosInstance'
 import {
   useQuery,
   useMutation,
@@ -8,7 +7,6 @@ import {
   useInfiniteQuery,
 } from '@tanstack/react-query'
 import { useNavigate } from 'react-router-dom'
-import { useSetRecoilState } from 'recoil'
 import toastManager from '@/utils/toastManager/toastManager'
 
 // 공간 목록 조회

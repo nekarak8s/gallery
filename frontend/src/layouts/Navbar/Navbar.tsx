@@ -7,11 +7,10 @@ import LoginForm from '@/features/members/components/LoginForm'
 
 import './Navbar.scss'
 import { CURSOR_SCALE } from '@/constants'
-import { useRecoilValue } from 'recoil'
-import { expDateState, isLoginState } from '@/stores/auth.store'
+import { useLoginStore } from '@/stores/auth.store'
 import throttle from '@/utils/throttle'
 
-const WHITE_PATHNAME = ['/']
+const WHITE_PATHNAME = ['/', '/login']
 
 function Navbar() {
   /**
@@ -43,7 +42,7 @@ function Navbar() {
   }, [])
 
   /**
-   * Toggle Mmenu open modal
+   * Toggle Menu open modal (mobile)
    */
   const menuRef = useRef<HTMLUListElement>(null)
   const toggleRef = useRef<HTMLButtonElement>(null)
@@ -78,7 +77,7 @@ function Navbar() {
    * Read hooks
    */
   const location = useLocation() // navbar color
-  const isLogin = useRecoilValue(isLoginState) // mypage & login
+  const isLogin = useLoginStore((state) => state.isLogin())
   return (
     <>
       <div className="navbar-layout">

@@ -2,8 +2,10 @@ import React, { useEffect, useRef, useState } from 'react'
 import CircleIcon from '@/assets/svgs/circle.svg'
 import webmSrc from '@/assets/videos/home-video-4.webm'
 import vidSrc from '@/assets/videos/home-video-4.mp4'
-import imgSrc from '@/assets/images/home-section-3/white-wall.jpg?format=jpg'
-import webpSrc from '@/assets/images/home-section-3/white-wall.jpg?format=webp'
+import wallImg from '@/assets/images/home-section-3/white-wall.jpg?format=jpg'
+import wallWebp from '@/assets/images/home-section-3/white-wall.jpg?format=webp'
+import labelImg from '@/assets/images/home-section-3/white-label.jpg?format=jpg'
+import labelWebp from '@/assets/images/home-section-3/white-label.jpg?format=webp'
 import MagneticButton from '@/atoms/ui/MagneticButton'
 
 import './HomeSection3.scss'
@@ -97,7 +99,7 @@ function HomeSection3() {
       let factor =
         (scrollTop - scrollStart) / (scrollEnd - SCROLL_OFFSET - scrollStart)
       work.style.transform = `
-        translateY(calc(-50% - ${(factor > 1 ? 1 : factor) * 100}vh))
+        translateY(calc(-50% - ${(factor > 1 ? 1 : factor) * 85}vh))
       `
 
       if (scrollTop < scrollEnd - SCROLL_OFFSET) {
@@ -216,8 +218,8 @@ function HomeSection3() {
       <div className="hs3-main" ref={mainRef}>
         <div className="hs3-main__back">
           <StaticImage
-            imgSrc={imgSrc}
-            webpSrc={webpSrc}
+            imgSrc={wallImg}
+            webpSrc={wallWebp}
             alt="하얀 벽 배경"
             loading="lazy"
           />
@@ -246,7 +248,7 @@ function HomeSection3() {
         </div>
         <div
           data-posx="-0.1"
-          data-posy="1.65"
+          data-posy="1.5"
           ref={workRef}
           className="hs3-work"
         >
@@ -268,8 +270,16 @@ function HomeSection3() {
             <div className="hs3-video__light" ref={videoLightRef} />
           </div>
           <div className="hs3-work__label" ref={labelRef}>
-            <p>작품명</p>
-            <p>마우스를 올려보세요</p>
+            <StaticImage
+              imgSrc={labelImg}
+              webpSrc={labelWebp}
+              sizes="200px"
+              alt="작품 라벨"
+            />
+            <div className="hs3-work__label--phrase">
+              <p>작품명</p>
+              <p>마우스를 올려보세요</p>
+            </div>
           </div>
         </div>
       </div>
