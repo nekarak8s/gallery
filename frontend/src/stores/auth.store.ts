@@ -1,28 +1,32 @@
-import { atom, selector } from 'recoil'
-import { recoilPersist } from 'recoil-persist'
+import { create } from 'zustand'
+import { persist, createJSONStorage } from 'zustand/middleware'
 
-const { persistAtom } = recoilPersist({
-  key: 'gallery-expiration-date', // key for stoarge
-  storage: localStorage,
-})
+type LoginState = {
+  expDate: string
+  isLogin: () => boolean
+  setExpDate: (expDate: string) => void
+  resetExpDate: () => void
+}
 
-const expDateState = atom<string>({
-  key: 'ExpirationDate',
-  default: '',
-  effects_UNSTABLE: [persistAtom],
-})
+const useLoginStore = create<LoginState>()(
+  persist(
+    (set, get) => ({
+      expDate: '',
+      isLogin: () => {
+        const expDate = get().expDate
+        if (!expDate) return false
+        if (new Date(expDate) < new Date()) return false
+        return true
+      },
+      setExpDate: (expDate) => set({ expDate }),
+      resetExpDate: () => set({ expDate: '' }),
+    }),
+    {
+      name: 'expiration-date', // name of the item in the storage (must be unique)
+      storage: createJSONStorage(() => localStorage), // (optional) by default, 'localStorage' is used
+      partialize: (state) => ({ expDate: state.expDate }),
+    }
+  )
+)
 
-const isLoginState = selector({
-  key: 'IsLogin',
-  get: ({ get }) => {
-    const expDateString = get(expDateState)
-
-    if (!expDateString) return false
-
-    if (new Date(expDateString) > new Date()) return true
-
-    return false
-  },
-})
-
-export { expDateState, isLoginState }
+export { useLoginStore }

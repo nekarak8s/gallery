@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 
-function useFocusTrap(enabled: boolean = true) {
+function useFocusTrap(enabled: boolean = true, escape: () => void) {
   const containerRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -20,8 +20,16 @@ function useFocusTrap(enabled: boolean = true) {
 
     // focus trap
     const handleKeyDown = (e: KeyboardEvent) => {
+      // escape
+      if (e.key === 'Escape') {
+        escape()
+        return
+      }
+
+      // hanlde except tab
       if (e.key !== 'Tab' && N === 0) return
 
+      // handle tab
       if (e.shiftKey && document.activeElement === firstEle) {
         lastEle.focus()
         e.preventDefault()

@@ -15,7 +15,7 @@ const Modal = ({
   onClose,
 }: PropsWithChildren<ModalProps>) => {
   const backRef = useRef<HTMLDivElement>(null)
-  const contentRef = useFocusTrap(isOpen)
+  const contentRef = useFocusTrap(isOpen, onClose)
 
   useEffect(() => {
     const back = backRef.current

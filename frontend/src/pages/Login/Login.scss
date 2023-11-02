@@ -1,33 +1,60 @@
 @use '@/styles/_colors.scss' as c;
 @use '@/styles/_responsive.scss' as *;
+@use '@/styles/_z-index.scss' as *;
 
 .login {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   position: relative;
   height: 100vh;
   width: 100vw;
+  overflow: hidden;
 
   &__background {
-    filter: blur(5px);
+    // filter: blur(5px);
+    @include z-index(base);
+    position: absolute;
+    top: 0;
+    left: 0;
     transform: translate(-5%, -5%);
+    height: 110%;
+    width: 110%;
   }
 
   &__form {
     display: grid;
     grid-template-columns: 1fr 1fr;
+    justify-items: center;
     overflow: hidden;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    max-width: 90vw;
+    z-index: 1;
+    width: 47rem;
     border-radius: 10px;
     background-color: var(--color-bg, c.$bg-white);
+  }
+}
+
+@include laptop {
+  .login {
+    &__form {
+      width: 43rem;
+    }
+  }
+}
+
+@include tablet {
+  .login {
+    &__form {
+      width: 38rem;
+    }
   }
 }
 
 @include mobile {
   .login {
     &__form {
+      width: auto;
       grid-template-columns: 0 1fr;
     }
   }

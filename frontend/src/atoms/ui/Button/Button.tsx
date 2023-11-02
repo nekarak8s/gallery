@@ -1,8 +1,9 @@
+import { useRef, useEffect } from 'react'
 import { CURSOR_SCALE } from '@/constants'
 
 import './Button.scss'
 
-interface Props {
+interface ButtonProps {
   text: string
   ariaLabel?: string
   direction?: 'left' | 'right' | 'top' | 'bottom' | 'center'
@@ -20,14 +21,32 @@ const Button = ({
   size = 'md',
   color = 'black',
   onClick = () => {},
-}: Props) => {
+}: ButtonProps) => {
+  const buttonRef = useRef<HTMLButtonElement>(null)
+
+  useEffect(() => {
+    const button = buttonRef.current!
+
+    const handleKeyup = function clickButton(e: KeyboardEvent) {
+      if (e.key === 'Enter') {
+        button.click()
+      }
+    }
+
+    button.addEventListener('keyup', handleKeyup)
+    return () => {
+      button.removeEventListener('keyup', handleKeyup)
+    }
+  }, [])
+
   return (
     <button
+      ref={buttonRef}
       data-cursor-scale={CURSOR_SCALE}
       type={type}
+      onClick={onClick}
       aria-label={ariaLabel}
       className={`button ${direction} ${size} ${color}`}
-      onClick={onClick}
     >
       {text}
     </button>
