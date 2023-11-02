@@ -1,13 +1,13 @@
 package com.nekarak8s.gallery.service.impl;
 
-import com.nekarak8s.gallery.data.dto.GalleryCreateRequestDTO;
-import com.nekarak8s.gallery.data.dto.GalleryInfoResponseDTO;
-import com.nekarak8s.gallery.data.dto.GalleryModifyRequestDTO;
-import com.nekarak8s.gallery.data.dto.GallerySearchDTO;
-import com.nekarak8s.gallery.data.entity.Gallery;
-import com.nekarak8s.gallery.data.entity.Place;
-import com.nekarak8s.gallery.data.repository.GalleryRepository;
-import com.nekarak8s.gallery.data.repository.PlaceRepository;
+import com.nekarak8s.gallery.data.dto.gallery.GalleryCreateRequestDTO;
+import com.nekarak8s.gallery.data.dto.gallery.GalleryInfoResponseDTO;
+import com.nekarak8s.gallery.data.dto.gallery.GalleryModifyRequestDTO;
+import com.nekarak8s.gallery.data.dto.gallery.GallerySearchDTO;
+import com.nekarak8s.gallery.data.entity.gallery.Gallery;
+import com.nekarak8s.gallery.data.entity.place.Place;
+import com.nekarak8s.gallery.data.repository.gallery.GalleryRepository;
+import com.nekarak8s.gallery.data.repository.place.PlaceRepository;
 import com.nekarak8s.gallery.exception.CustomException;
 import com.nekarak8s.gallery.service.GalleryService;
 import com.nekarak8s.gallery.util.PlaceUtil;

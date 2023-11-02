@@ -1,7 +1,8 @@
 package com.nekarak8s.gallery.controller;
 
 import com.nekarak8s.gallery.data.dto.*;
-import com.nekarak8s.gallery.data.entity.Place;
+import com.nekarak8s.gallery.data.dto.gallery.*;
+import com.nekarak8s.gallery.data.entity.place.Place;
 import com.nekarak8s.gallery.exception.CustomException;
 import com.nekarak8s.gallery.service.GalleryService;
 import com.nekarak8s.gallery.validation.NoWhitespace;

@@ -1,10 +1,10 @@
 package com.nekarak8s.gallery.service;
 
-import com.nekarak8s.gallery.data.dto.GalleryCreateRequestDTO;
-import com.nekarak8s.gallery.data.dto.GalleryInfoResponseDTO;
-import com.nekarak8s.gallery.data.dto.GalleryModifyRequestDTO;
-import com.nekarak8s.gallery.data.dto.GallerySearchDTO;
-import com.nekarak8s.gallery.data.entity.Place;
+import com.nekarak8s.gallery.data.dto.gallery.GalleryCreateRequestDTO;
+import com.nekarak8s.gallery.data.dto.gallery.GalleryInfoResponseDTO;
+import com.nekarak8s.gallery.data.dto.gallery.GalleryModifyRequestDTO;
+import com.nekarak8s.gallery.data.dto.gallery.GallerySearchDTO;
+import com.nekarak8s.gallery.data.entity.place.Place;
 import com.nekarak8s.gallery.exception.CustomException;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
