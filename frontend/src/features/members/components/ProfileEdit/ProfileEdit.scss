@@ -24,10 +24,24 @@
   }
 }
 
-.profile-edit.open {
-  .profile-edit__menu {
-    display: flex;
-    flex-direction: column-reverse;
+.profile-edit__menu {
+  display: flex;
+  flex-direction: column-reverse;
+  justify-content: flex-end;
+  gap: 0px;
+  opacity: 0;
+  transform: scale(0);
+  transform-origin: bottom right;
+
+  &--enter {
     gap: 10px;
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  &--leave {
+    gap: 0px;
+    opacity: 0;
+    transform: scale(0);
   }
 }

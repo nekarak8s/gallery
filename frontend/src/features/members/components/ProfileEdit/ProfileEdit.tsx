@@ -7,19 +7,22 @@ import { useLogout } from '../../services'
 
 import './ProfileEdit.scss'
 import WithdrawlForm from '../WithdrawlForm'
+import CSSTransition from '@/atoms/ui/CSSTransition'
 
 const ProfileEdit = () => {
   const containerRef = useRef<HTMLDivElement>(null)
+
+  const [isShow, setIsShow] = useState<boolean>(false)
 
   useEffect(() => {
     const container = containerRef.current!
 
     const handleMouseEnter = function addOpenClass() {
-      container.classList.add('open')
+      setIsShow(true)
     }
 
     const handleMouseLeave = function addOpenClass() {
-      container.classList.remove('open')
+      setIsShow(false)
     }
 
     container.addEventListener('mouseenter', handleMouseEnter)
@@ -38,7 +41,11 @@ const ProfileEdit = () => {
 
   return (
     <div className="profile-edit" ref={containerRef}>
-      <div className="profile-edit__menu">
+      <CSSTransition
+        className="profile-edit__menu"
+        isShow={isShow}
+        duration={200}
+      >
         <Button
           ariaLabel="정보수정"
           text="닉네임 수정"
@@ -50,7 +57,7 @@ const ProfileEdit = () => {
           text="회원탈퇴"
           onClick={() => setIsWithdrawlOpen(true)}
         />
-      </div>
+      </CSSTransition>
       <Button3D ariaLabel="더보기">
         <div className="profile-edit__toggle">
           <span />
@@ -58,6 +65,7 @@ const ProfileEdit = () => {
           <span />
         </div>
       </Button3D>
+
       <Modal isOpen={isUpdateOpen} onClose={() => setIsUpdateOpen(false)}>
         <ProfileForm />
       </Modal>
