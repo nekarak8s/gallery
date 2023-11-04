@@ -11,26 +11,29 @@ import ProfileForm from '@/features/members/components/ProfileForm'
 import ProfileEdit from '@/features/members/components/ProfileEdit'
 
 function MyPage() {
-  const [isUpdateOpen, setIsUpdateOpen] = useState(false)
+  const onProfileLoaded = function () {
+    document.querySelector('.my-page__profile')?.classList.add('loaded')
+  }
+
+  const handleAnimationEnd = function startSecondAnimation() {
+    document.querySelector('.my-page__profile-edit')?.classList.add('block')
+    document.querySelector('.my-page__line')?.classList.add('block')
+    document.querySelector('.my-page__gallery')?.classList.add('block')
+  }
 
   return (
-    <>
-      <div className="my-page">
-        <section className="my-page__profile">
-          <Profile />
-          <div className="my-page__profile__btn">
-            <ProfileEdit />
-          </div>
-        </section>
-        <div className="my-page__br" />
-        <section className="my-page__gallery">
-          <GalleryList />
-        </section>
-      </div>
-      <Modal isOpen={isUpdateOpen} onClose={() => setIsUpdateOpen(false)}>
-        <ProfileForm />
-      </Modal>
-    </>
+    <div className="my-page">
+      <section className="my-page__profile" onAnimationEnd={handleAnimationEnd}>
+        <Profile onLoaded={onProfileLoaded} />
+        <div className="my-page__profile-edit">
+          <ProfileEdit />
+        </div>
+      </section>
+      <div className="my-page__line" />
+      <section className="my-page__gallery">
+        <GalleryList />
+      </section>
+    </div>
   )
 }
 

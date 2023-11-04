@@ -5,15 +5,17 @@
   align-items: center;
   gap: 20px;
   padding: 1em 2em;
+  max-width: 30rem;
   font-size: 3rem;
 
   &__place {
     display: flex;
     gap: 10px;
     overflow: scroll;
+    width: 100%;
 
     img {
-      width: auto;
+      width: 100px;
       height: 100px;
     }
   }

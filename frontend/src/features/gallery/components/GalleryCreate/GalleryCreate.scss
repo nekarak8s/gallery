@@ -1,8 +1,29 @@
+@use '@/styles/_colors.scss' as c;
+@use '@/styles/_responsive.scss' as *;
+
 .gallery-create {
-  font-size: 3rem;
-  background-color: rgba(130, 130, 130, 0.188);
   width: clamp(100px, 100%, 800px);
-  padding: 1em;
-  border-radius: 1em;
-  height: 200px;
+  height: 14em;
+  padding: 3em;
+  border-radius: 2.5em;
+  background-color: var(--color-bg-subtle, c.$bg-gray);
+  font-size: 1rem;
+
+  svg {
+    width: 3em;
+    height: 3em;
+    color: var(--color-ft, c.$ft-black);
+  }
+}
+
+@include tablet {
+  .gallery-create {
+    font-size: 0.9rem;
+  }
+}
+
+@include mobile {
+  .gallery-create {
+    font-size: 0.8rem;
+  }
 }

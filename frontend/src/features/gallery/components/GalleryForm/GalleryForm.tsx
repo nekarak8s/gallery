@@ -39,8 +39,8 @@ const GalleryForm = () => {
   return (
     <form className="gallery-form" onSubmit={handleSubmit}>
       {/* <BlobIcon /> */}
-      <h2>전시회 정보</h2>
-      <Text label="이름" name="name" initialValue="" />
+
+      <Text label="전시회 이름" name="name" initialValue="" />
       <Textarea label="소개글" name="description" initialValue="" />
       <div className="gallery-form__place">
         {places.map((place) => (

@@ -11,6 +11,8 @@ interface ButtonProps {
   size?: 'sm' | 'md' | 'lg'
   color?: 'primary' | 'black' | 'white'
   onClick?: () => void
+  onFocus?: () => void
+  onBlur?: () => void
 }
 
 const Button = ({
@@ -20,7 +22,9 @@ const Button = ({
   type = 'button',
   size = 'md',
   color = 'black',
-  onClick = () => {},
+  onClick,
+  onFocus,
+  onBlur,
 }: ButtonProps) => {
   const buttonRef = useRef<HTMLButtonElement>(null)
 
@@ -42,11 +46,13 @@ const Button = ({
   return (
     <button
       ref={buttonRef}
-      data-cursor-scale={CURSOR_SCALE}
+      className={`button ${direction} ${size} ${color}`}
       type={type}
       onClick={onClick}
+      onFocus={onFocus}
+      onBlur={onBlur}
       aria-label={ariaLabel}
-      className={`button ${direction} ${size} ${color}`}
+      data-cursor-scale={CURSOR_SCALE}
     >
       {text}
     </button>

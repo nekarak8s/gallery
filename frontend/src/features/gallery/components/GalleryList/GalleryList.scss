@@ -8,15 +8,14 @@
 }
 
 .gallery-list__item {
+  display: flex;
+  justify-content: center;
+  width: 100%;
   opacity: 0;
-  transform: translate(100px, 20px);
+  transform: translate(0, 20px);
   transition:
     transform 300ms,
     opacity 300ms;
-
-  width: 100%;
-  display: flex;
-  justify-content: center;
 }
 
 .gallery-list__item.show {

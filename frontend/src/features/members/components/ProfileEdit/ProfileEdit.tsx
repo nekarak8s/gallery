@@ -8,10 +8,14 @@ import { useLogout } from '../../services'
 import './ProfileEdit.scss'
 import WithdrawlForm from '../WithdrawlForm'
 import CSSTransition from '@/atoms/ui/CSSTransition'
+import useFocusTrap from '@/hooks/useFocusTrap'
+import KebabIcon from '@/assets/svgs/kebab.svg'
 
 const ProfileEdit = () => {
+  /**
+   * Show Menu buttons when container is hovered
+   */
   const containerRef = useRef<HTMLDivElement>(null)
-
   const [isShow, setIsShow] = useState<boolean>(false)
 
   useEffect(() => {
@@ -34,17 +38,25 @@ const ProfileEdit = () => {
     }
   }, [])
 
+  // Modal state
   const [isUpdateOpen, setIsUpdateOpen] = useState(false)
   const [isWithdrawlOpen, setIsWithdrawlOpen] = useState(false)
 
+  // Logout
   const { mutate: logout } = useLogout()
 
   return (
     <div className="profile-edit" ref={containerRef}>
+      <Button3D ariaLabel="더보기" onFocus={() => setIsShow(true)}>
+        <div className="profile-edit__toggle">
+          <KebabIcon />
+        </div>
+      </Button3D>
       <CSSTransition
         className="profile-edit__menu"
         isShow={isShow}
         duration={200}
+        timingFunction="ease-in-out"
       >
         <Button
           ariaLabel="정보수정"
@@ -56,16 +68,10 @@ const ProfileEdit = () => {
           ariaLabel="회원탈퇴"
           text="회원탈퇴"
           onClick={() => setIsWithdrawlOpen(true)}
+          onBlur={() => setIsShow(false)}
         />
       </CSSTransition>
-      <Button3D ariaLabel="더보기">
-        <div className="profile-edit__toggle">
-          <span />
-          <span />
-          <span />
-        </div>
-      </Button3D>
-
+      {/* Modal */}
       <Modal isOpen={isUpdateOpen} onClose={() => setIsUpdateOpen(false)}>
         <ProfileForm />
       </Modal>

@@ -3,25 +3,37 @@
 
 .button {
   position: relative;
-  padding: 0.6em 1.3em;
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 0.6em 1.3em;
   border: 2px solid black;
   border-radius: 0.1em;
-  font-weight: 600;
-  white-space: nowrap;
-  transform-style: preserve-3d;
-  perspective: 1000px;
   background-image: linear-gradient(0deg, rgb(0, 0, 0), rgb(0, 0, 0));
   background-repeat: no-repeat;
   background-position: 0% 0%;
   background-size: 0% 0%;
+  font-weight: 600;
+  white-space: nowrap;
   cursor: pointer;
   transition:
     background-size 0.15s linear 0.1s,
     color 0.15s linear 0.1s;
+}
 
+.button::after {
+  z-index: -1;
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--color-bg, c.$bg-white);
+}
+
+// direction
+.button {
   &.left {
     background-position: 0% 0%;
     background-size: 0% 100%;
@@ -53,6 +65,7 @@
   background-size: 100% 100%;
 }
 
+// size
 .button {
   &.lg {
     font-size: 1.8rem;
@@ -67,6 +80,7 @@
   }
 }
 
+// color
 .button {
   &.primary {
     color: var(--color-primary, c.$primary);
@@ -84,24 +98,32 @@
   }
 
   &.black {
-    color: black;
-    border: 2px solid black;
-    background-image: linear-gradient(0deg, black, black);
+    color: var(--color-ft, c.$ft-black);
+    border: 2px solid var(--color-ft, c.$ft-black);
+    background-image: linear-gradient(
+      0deg,
+      var(--color-ft, c.$ft-black),
+      var(--color-ft, c.$ft-black)
+    );
 
     &:hover,
     &:focus {
-      color: white;
+      color: var(--color-ft-reverse, c.$ft-white);
     }
   }
 
   &.white {
-    color: white;
-    border: 2px solid white;
-    background-image: linear-gradient(0deg, white, white);
+    color: var(--color-ft-reverse, c.$ft-white);
+    border: 2px solid var(--color-ft-reverse, c.$ft-white);
+    background-image: linear-gradient(
+      0deg,
+      var(--color-ft-reverse, c.$ft-white),
+      var(--color-ft-reverse, c.$ft-white)
+    );
 
     &:hover,
     &:focus {
-      color: black;
+      color: var(--color-ft, c.$ft-black);
     }
   }
 }

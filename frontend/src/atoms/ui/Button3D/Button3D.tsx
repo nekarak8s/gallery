@@ -9,6 +9,8 @@ interface Button3DProps {
   color?: 'primary' | 'black' | 'white'
   disabled?: boolean
   onClick?: () => void
+  onFocus?: () => void
+  onBlur?: () => void
 }
 
 const Button3D = ({
@@ -18,6 +20,8 @@ const Button3D = ({
   color = 'white',
   disabled = false,
   onClick,
+  onFocus,
+  onBlur,
 }: PropsWithChildren<Button3DProps>) => {
   const buttonRef = useRef<HTMLButtonElement>(null)
 
@@ -42,6 +46,8 @@ const Button3D = ({
       className={`button-3d ${color}`}
       type={type}
       onClick={onClick}
+      onFocus={onFocus}
+      onBlur={onBlur}
       aria-label={ariaLabel}
       disabled={disabled}
       data-cursor-scale={CURSOR_SCALE}

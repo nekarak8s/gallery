@@ -1,0 +1,14 @@
+.withdrawl-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5em;
+  margin: 2em;
+  font-size: 1rem;
+
+  > p {
+    text-align: center;
+    line-height: 150%;
+    white-space: nowrap;
+  }
+}

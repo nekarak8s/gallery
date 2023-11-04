@@ -1,36 +1,45 @@
 import { useRef, useState, useEffect, ChangeEvent } from 'react'
 import './Textarea.scss'
+import { debounce } from 'lodash'
 
 interface TextareaProps {
   label: string
   name: string
   initialValue: string
+  defaultHeight?: number
+  maxHeight?: number
   onChange?: (e: ChangeEvent<HTMLTextAreaElement>) => void
 }
 
-const Textarea = ({ label, name, initialValue, onChange }: TextareaProps) => {
-  const [value, setValue] = useState(initialValue)
-  const textareaRef = useRef<HTMLTextAreaElement>(null)
+const Textarea = ({
+  label,
+  name,
+  initialValue,
+  defaultHeight = 50,
+  maxHeight = 70,
+  onChange,
+}: TextareaProps) => {
+  const containerRef = useRef<HTMLDivElement>(null)
 
   const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    e.target.classList.toggle('fill', e.target.value.length > 0)
+    e.target.style.height =
+      e.target.scrollHeight > defaultHeight
+        ? e.target.scrollHeight + 'px'
+        : defaultHeight + 'px'
     onChange && onChange(e)
-    setValue(e.target.value.trim())
   }
 
-  useEffect(() => {
-    const textarea = textareaRef.current!
-    textarea.classList.toggle('fill', value.length > 0)
-  }, [value])
-
   return (
-    <div className="textarea">
+    <div className="textarea" ref={containerRef}>
       <textarea
-        ref={textareaRef}
         name={name}
-        value={value}
+        defaultValue={initialValue}
         onChange={handleChange}
+        style={{ maxHeight }}
       ></textarea>
       <label>{label}</label>
+      <div />
     </div>
   )
 }
