@@ -1,11 +1,10 @@
 import React, { useEffect } from 'react'
-
-import { routes } from '@/App'
-import './OAuth.scss'
-import { useLoginCallback } from '@/features/members/services'
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom'
+import { routes } from '@/App'
 import Loading from '@/atoms/ui/Loading'
-import path from 'path'
+import { useLoginCallback } from '@/features/members/services'
+
+import './OAuth.scss'
 
 function OAuth() {
   // get type ('kakao' | 'google')

@@ -1,15 +1,13 @@
-import React from 'react'
-import BlobIcon from '@/assets/svgs/blob.svg'
-import './GalleryForm.scss'
+import { placeListData } from '../../data'
+import { useCreateGallery } from '../../services'
+import { validateGalleryForm } from '../../validators'
+import Radio from '@/atoms/form/Radio'
 import Text from '@/atoms/form/Text'
 import Textarea from '@/atoms/form/Textarea'
-import Radio from '@/atoms/form/Radio'
-import { useCreateGallery, usePlaceListQuery } from '../../services'
-import Loading from '@/atoms/ui/Loading'
-import { placeListData } from '../../data'
 import Button from '@/atoms/ui/Button'
-import { validateGalleryForm } from '../../validators'
 import toastManager from '@/utils/toastManager'
+
+import './GalleryForm.scss'
 
 const GalleryForm = () => {
   const places = placeListData
@@ -45,6 +43,7 @@ const GalleryForm = () => {
       <div className="gallery-form__place">
         {places.map((place) => (
           <Radio
+            key={place.placeId}
             id={`place-${place.placeId}`}
             name="placeId"
             label={place.name}

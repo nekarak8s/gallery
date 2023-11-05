@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react'
-import './Cursor.scss'
 import throttle from '@/utils/throttle'
+
+import './Cursor.scss'
 
 function Cursor() {
   /**

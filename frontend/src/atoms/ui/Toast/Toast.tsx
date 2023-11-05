@@ -1,8 +1,9 @@
-import React, { useRef, useEffect, useMemo, useState } from 'react'
-import './Toast.scss'
+import { useRef, useEffect, useMemo } from 'react'
+import InfoIcon from '@/assets/svgs/lighthouse.svg'
 import SuccessIcon from '@/assets/svgs/sail.svg'
 import ErrorIcon from '@/assets/svgs/wreck.svg'
-import InfoIcon from '@/assets/svgs/lighthouse.svg'
+
+import './Toast.scss'
 
 export interface ToastProps {
   type: 'success' | 'error' | 'info'
@@ -11,12 +12,7 @@ export interface ToastProps {
   duration?: number
 }
 
-const Toast: React.FC<ToastProps> = ({
-  type,
-  message,
-  destroy,
-  duration = 3000,
-}) => {
+const Toast = ({ type, message, destroy, duration = 3000 }: ToastProps) => {
   /**
    * Select icon according to type
    */

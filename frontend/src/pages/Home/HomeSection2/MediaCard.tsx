@@ -1,9 +1,8 @@
-import React from 'react'
-import './MediaCard.scss'
 import StaticImage from '@/atoms/ui/StaticImage'
 import StaticVideo from '@/atoms/ui/StaticVideo'
+import './MediaCard.scss'
 
-interface Props {
+interface MediaCardProps {
   type?: 'image' | 'video'
   imgSrc?: ResponsiveImageOutput
   webpSrc?: ResponsiveImageOutput
@@ -18,7 +17,7 @@ interface Props {
   sizes?: string
 }
 
-const MediaCard: React.FC<Props> = ({
+const MediaCard = ({
   type = 'image',
   imgSrc,
   webpSrc,
@@ -31,7 +30,7 @@ const MediaCard: React.FC<Props> = ({
   date,
   depth,
   sizes,
-}) => {
+}: MediaCardProps) => {
   return (
     <div className="media-card">
       {type == 'image' ? (

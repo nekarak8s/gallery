@@ -1,12 +1,7 @@
-import React, {
-  ChangeEvent,
-  useEffect,
-  useState,
-  useRef,
-  useCallback,
-} from 'react'
+import React, { ChangeEvent } from 'react'
+import debounce from '@/utils/debounce'
+
 import './Text.scss'
-import { debounce } from 'lodash'
 
 interface InputProps {
   label: string

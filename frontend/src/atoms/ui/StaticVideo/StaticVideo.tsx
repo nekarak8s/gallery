@@ -1,8 +1,8 @@
-import React, { useRef } from 'react'
-import './StaticVideo.scss'
-import Loading from '../Loading'
+import { useRef } from 'react'
 
-interface Props {
+import './StaticVideo.scss'
+
+interface StaticVideoProps {
   webmSrc: string
   vidSrc: string
   muted?: boolean
@@ -14,7 +14,7 @@ interface Props {
   onLoad?: () => void
 }
 
-const StaticVideo: React.FC<Props> = ({
+const StaticVideo = ({
   webmSrc,
   vidSrc,
   muted = true,
@@ -24,7 +24,7 @@ const StaticVideo: React.FC<Props> = ({
   height = '100%',
   ariaLabel = '',
   onLoad,
-}) => {
+}: StaticVideoProps) => {
   const containerRef = useRef<HTMLDivElement>(null)
 
   const handleLoad = function staticVideoLoaded() {

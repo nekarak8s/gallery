@@ -1,9 +1,8 @@
 import React, { useEffect, useRef } from 'react'
-import throttle from '@/utils/throttle'
-import gsap, { Elastic } from 'gsap'
 import { NavLink } from 'react-router-dom'
-
-import styles from './MagneticButton.module.scss'
+import gsap, { Elastic } from 'gsap'
+import throttle from '@/utils/throttle'
+import './MagneticButton.scss'
 
 interface Props {
   text: string
@@ -67,12 +66,12 @@ const MagneticButton: React.FC<Props> = ({
   }, [])
   return (
     <NavLink
-      className={`${styles.button} ${styles[size]} ${styles[color]}`}
+      className={`magnetic-button ${size} ${color}`}
       to={to}
       aria-label={ariaLabel}
       ref={buttonRef}
     >
-      <span className={styles.buttonText} ref={buttonTextRef}>
+      <span className="magnetic-button__text" ref={buttonTextRef}>
         {text}
       </span>
     </NavLink>

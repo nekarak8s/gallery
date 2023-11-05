@@ -1,12 +1,5 @@
-import { routes } from '@/App'
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import axiosInstance from '@/utils/axiosInstance'
-import {
-  useQuery,
-  useMutation,
-  useQueryClient,
-  useInfiniteQuery,
-} from '@tanstack/react-query'
-import { useNavigate } from 'react-router-dom'
 import toastManager from '@/utils/toastManager/toastManager'
 
 // 공간 목록 조회
@@ -49,8 +42,7 @@ export function useCreateGallery() {
   return useMutation<MessageResponse, ErrorResponse, GalleryForm>(
     (data) => axiosInstance.patch(`/member`, data),
     {
-      onSuccess: (res) => {
-        console.log(1, res)
+      onSuccess: () => {
         queryClient.invalidateQueries(['gallery-list'])
       },
       onError: (err) => {

@@ -1,14 +1,9 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React from 'react'
+import GalleryList from '@/features/gallery/components/GalleryList/GalleryList'
+import Profile from '@/features/members/components/Profile'
+import ProfileEdit from '@/features/members/components/ProfileEdit'
 
 import './MyPage.scss'
-import Profile from '@/features/members/components/Profile'
-import Button from '@/atoms/ui/Button'
-import GalleryList from '@/features/gallery/components/GalleryList/GalleryList'
-import { useUserQuery } from '@/features/members/services'
-import Loading from '@/atoms/ui/Loading'
-import Modal from '@/atoms/ui/Modal'
-import ProfileForm from '@/features/members/components/ProfileForm'
-import ProfileEdit from '@/features/members/components/ProfileEdit'
 
 function MyPage() {
   const onProfileLoaded = function () {

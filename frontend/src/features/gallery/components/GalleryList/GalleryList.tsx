@@ -1,10 +1,9 @@
 import React, { useRef, useEffect } from 'react'
-import GalleryCreate from '../GalleryCreate'
 import { galleryListData } from '../../data'
+import GalleryCreate from '../GalleryCreate'
 import GalleryItem from '../GalleryItem'
+
 import './GalleryList.scss'
-import { useGalleryListQuery } from '../../services'
-import Loading from '@/atoms/ui/Loading'
 
 const GalleryList = () => {
   const containerRef = useRef<HTMLDivElement>(null)

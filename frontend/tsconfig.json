@@ -20,9 +20,9 @@
       "./src/**/@types",
       "./src/**/types.*"
     ],
-    "baseUrl": "src/",
+    "baseUrl": ".",
     "paths": {
-      "@/*": ["./*"]
+      "@/*": ["src/*"]
     },
     "lib": ["dom", "esnext"],
     "isolatedModules": true,

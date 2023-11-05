@@ -1,9 +1,7 @@
-import React, { useEffect, useRef, useState } from 'react'
-import { useUserQuery } from '../../services'
-import Loading from '@/atoms/ui/Loading'
+import { useEffect, useState } from 'react'
 import { userData } from '../../data'
+
 import './Profile.scss'
-import image from '@/assets/images/ocean.png'
 
 interface ProfileProps {
   onLoaded?: () => void

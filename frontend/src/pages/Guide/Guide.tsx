@@ -1,6 +1,4 @@
 import React from 'react'
-
-import './Guide.scss'
 import responsiveImage from '@/assets/images/home-section-2/narrow-1.jpg?format=jpg'
 import responsiveImageWebp from '@/assets/images/home-section-2/narrow-1.jpg?format=webp'
 import vidSrc from '@/assets/videos/home-video-1.mp4'
@@ -8,7 +6,7 @@ import webmSrc from '@/assets/videos/home-video-1.webm'
 import StaticImage from '@/atoms/ui/StaticImage'
 import StaticVideo from '@/atoms/ui/StaticVideo'
 
-import toastManager from '@/utils/toastManager/toastManager'
+import './Guide.scss'
 
 function Guide() {
   return (

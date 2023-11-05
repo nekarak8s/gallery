@@ -1,4 +1,5 @@
 import { useEffect, useRef, PropsWithChildren, useState } from 'react'
+
 import './CSSTransition.scss'
 
 interface CSSTransitionProps {

@@ -1,15 +1,14 @@
-import Button from '@/atoms/ui/Button'
-import Button3D from '@/atoms/ui/Button3D'
-import Modal from '@/atoms/ui/Modal'
-import ProfileForm from '@/features/members/components/ProfileForm'
 import { useState, useRef, useEffect } from 'react'
 import { useLogout } from '../../services'
+import WithdrawlForm from '../WithdrawlForm'
+import KebabIcon from '@/assets/svgs/kebab.svg'
+import Button from '@/atoms/ui/Button'
+import Button3D from '@/atoms/ui/Button3D'
+import CSSTransition from '@/atoms/ui/CSSTransition'
+import Modal from '@/atoms/ui/Modal'
+import ProfileForm from '@/features/members/components/ProfileForm'
 
 import './ProfileEdit.scss'
-import WithdrawlForm from '../WithdrawlForm'
-import CSSTransition from '@/atoms/ui/CSSTransition'
-import useFocusTrap from '@/hooks/useFocusTrap'
-import KebabIcon from '@/assets/svgs/kebab.svg'
 
 const ProfileEdit = () => {
   /**

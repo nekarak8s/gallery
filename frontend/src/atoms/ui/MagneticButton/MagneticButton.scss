@@ -1,6 +1,6 @@
 @import '@/styles/_responsive.scss';
 
-.button {
+.magnetic-button {
   position: relative;
   padding: 1.1em 1.3em;
   display: flex;
@@ -16,23 +16,27 @@
   cursor: pointer;
 }
 
-.button.lg {
-  font-size: 1.8rem;
+.magnetic-button {
+  .lg {
+    font-size: 1.8rem;
+  }
+
+  .md {
+    font-size: 1.3rem;
+  }
+
+  .sm {
+    font-size: 1rem;
+  }
 }
 
-.button.md {
-  font-size: 1.3rem;
+.magnetic-button {
+  .primary {
+    background-color: #176beb;
+  }
 }
 
-.button.sm {
-  font-size: 1rem;
-}
-
-.primary {
-  background-color: #176beb;
-}
-
-.button__text {
+.magnetic-button__text {
   color: white;
 }
 

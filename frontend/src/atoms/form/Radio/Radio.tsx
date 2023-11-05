@@ -1,5 +1,6 @@
 import { PropsWithChildren } from 'react'
 import { CURSOR_SCALE } from '@/constants'
+
 import './Radio.scss'
 
 type RadioProps = {

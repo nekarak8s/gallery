@@ -1,9 +1,9 @@
-import React from 'react'
 import { useUserQuery, useWithdrawl } from '../../services'
 import Text from '@/atoms/form/Text'
 import Button from '@/atoms/ui/Button'
-import './WithdrawlForm.scss'
 import toastManager from '@/utils/toastManager'
+
+import './WithdrawlForm.scss'
 
 const WithdrawlForm = () => {
   const { data: user, isLoading, isError } = useUserQuery()

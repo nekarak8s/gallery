@@ -1,6 +1,6 @@
-import { useRef, useState, useEffect, ChangeEvent } from 'react'
+import { useRef, ChangeEvent } from 'react'
+
 import './Textarea.scss'
-import { debounce } from 'lodash'
 
 interface TextareaProps {
   label: string

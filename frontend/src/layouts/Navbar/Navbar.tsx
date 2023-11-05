@@ -1,14 +1,13 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react'
 import { NavLink, Outlet, useLocation } from 'react-router-dom'
 import { routes } from '@/App'
-import BurgerLogo from '@/assets/svgs/burger.svg'
 import Modal from '@/atoms/ui/Modal'
-import LoginForm from '@/features/members/components/LoginForm'
-
-import './Navbar.scss'
 import { CURSOR_SCALE } from '@/constants'
+import LoginForm from '@/features/members/components/LoginForm'
 import { useLoginStore } from '@/stores/auth.store'
 import throttle from '@/utils/throttle'
+
+import './Navbar.scss'
 
 const WHITE_PATHNAME = ['/', '/login']
 

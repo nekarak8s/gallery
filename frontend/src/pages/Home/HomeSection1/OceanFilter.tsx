@@ -1,8 +1,4 @@
-import React from 'react'
-
-import styles from './OceanFiltered.module.scss'
-
-const OceanFiltered: React.FC = () => {
+const OceanFilter = () => {
   return (
     <svg
       width="200"
@@ -32,4 +28,4 @@ const OceanFiltered: React.FC = () => {
   )
 }
 
-export default OceanFiltered
+export default OceanFilter

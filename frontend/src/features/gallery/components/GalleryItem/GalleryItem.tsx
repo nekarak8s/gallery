@@ -1,16 +1,16 @@
-import React, { useEffect, useMemo, useRef } from 'react'
-import './GalleryItem.scss'
-import { CURSOR_SCALE } from '@/constants'
+import { useEffect, useMemo, useRef } from 'react'
+import EditIcon from '@/assets/svgs/edit.svg'
 import PlayIcon from '@/assets/svgs/play.svg'
 import ShareIcon from '@/assets/svgs/share.svg'
-import EditIcon from '@/assets/svgs/edit.svg'
-import { first } from 'lodash'
+import { CURSOR_SCALE } from '@/constants'
 
-interface props {
+import './GalleryItem.scss'
+
+interface GalleryItemProps {
   gallery: Gallery
 }
 
-const GalleryItem: React.FC<props> = ({ gallery }) => {
+const GalleryItem = ({ gallery }: GalleryItemProps) => {
   const itemRef = useRef<HTMLDivElement>(null)
   const buttonsRef = useRef<HTMLUListElement>(null)
   const contentRef = useRef<HTMLDivElement>(null)

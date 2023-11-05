@@ -1,11 +1,12 @@
-import React, { useState } from 'react'
-import './GalleryCreate.scss'
-import { CURSOR_SCALE } from '@/constants'
-import Modal from '@/atoms/ui/Modal'
+import { useState } from 'react'
 import GalleryForm from '../GalleryForm'
 import PlusIcon from '@/assets/svgs/plus.svg'
+import Modal from '@/atoms/ui/Modal'
+import { CURSOR_SCALE } from '@/constants'
 
-const GalleryCreate: React.FC = () => {
+import './GalleryCreate.scss'
+
+const GalleryCreate = () => {
   const [isOpen, setIsOpen] = useState(false)
 
   return (
