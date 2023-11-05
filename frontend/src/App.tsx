@@ -13,6 +13,7 @@ import './App.scss'
 const Home = lazy(() => import('@/pages/Home'))
 const Guide = lazy(() => import('@/pages/Guide'))
 const MyPage = lazy(() => import('@/pages/MyPage'))
+ const Aquarium = lazy(() => import('./pages/Aquarium'))
 
 export const routes: Record<string, RouteElement> = {
   Home: { path: '/', element: <Home /> },
@@ -20,6 +21,7 @@ export const routes: Record<string, RouteElement> = {
   MyPage: { path: '/mypage', element: <MyPage /> },
   Login: { path: '/login', element: <Login /> },
   OAuth: { path: '/oauth/:type', element: <OAuth /> },
+  Aquarium: { path: '/aquarium', element: <Aquarium /> },
 }
 
 function App() {

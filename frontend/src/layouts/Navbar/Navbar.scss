@@ -11,7 +11,7 @@
 }
 
 .navbar {
-  @include z-index(modal);
+  // @include z-index(modal);
   display: flex;
   justify-content: space-between;
   align-items: center;
