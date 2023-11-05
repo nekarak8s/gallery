@@ -1,4 +1,6 @@
-import React, { ChangeEvent, useEffect, useState, useRef } from 'react'
+import React, { ChangeEvent } from 'react'
+import debounce from '@/utils/debounce'
+
 import './Text.scss'
 
 interface InputProps {
@@ -9,26 +11,17 @@ interface InputProps {
 }
 
 const Text = ({ label, name, initialValue, onChange }: InputProps) => {
-  const [value, setValue] = useState(initialValue)
-  const inputRef = useRef<HTMLInputElement>(null)
-
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleChange = debounce((e: ChangeEvent<HTMLInputElement>) => {
+    e.target.classList.toggle('fill', e.target.value.length > 0)
     onChange && onChange(e)
-    setValue(e.target.value.trim())
-  }
-
-  useEffect(() => {
-    const input = inputRef.current!
-    input.classList.toggle('fill', value.length > 0)
-  }, [value])
+  }, 100)
 
   return (
     <div className="text">
       <input
-        ref={inputRef}
         name={name}
         type="text"
-        value={value}
+        defaultValue={initialValue}
         onChange={handleChange}
       />
       <label>{label}</label>

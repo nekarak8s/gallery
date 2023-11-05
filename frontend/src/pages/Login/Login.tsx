@@ -3,11 +3,11 @@ import imgSrc from '@/assets/images/beach.jpg?format=jpg'
 import webpSrc from '@/assets/images/beach.jpg?format=webp'
 import vidSrc from '@/assets/videos/ocean.mp4'
 import webmSrc from '@/assets/videos/ocean.webm'
+import StaticImage from '@/atoms/ui/StaticImage'
 import StaticVideo from '@/atoms/ui/StaticVideo'
 import LoginForm from '@/features/members/components/LoginForm'
 
 import './Login.scss'
-import StaticImage from '@/atoms/ui/StaticImage'
 
 const Login = () => {
   return (

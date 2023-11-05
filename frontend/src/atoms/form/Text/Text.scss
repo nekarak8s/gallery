@@ -4,17 +4,18 @@
   font-size: 1rem;
   min-width: 15em;
   position: relative;
-  background-color: rgb(255, 255, 255);
+  background-color: var(--color-bg, c.$bg-white);
   transition: background-color 0.1s ease-in;
 }
 
 .text input {
-  font-size: 1em;
-  max-width: 100%;
-  padding: 0.8em;
-  border-bottom: 2px solid rgba(100, 100, 100, 0.3);
+  width: 100%;
+  padding: 1.7em 0.4em 0.5em;
   outline: none;
+  border: none;
+  border-bottom: 2px solid rgba(100, 100, 100, 0.3);
   background-color: transparent;
+  font-size: 1em;
   font-weight: 600;
   transition: background-color 0.2s ease-in;
 }
@@ -25,17 +26,15 @@
 
 .text input:focus,
 .text input.fill {
-  border-bottom: 2px solid rgba(100, 100, 100, 0.3);
-  background-color: white;
+  border-bottom: 2px solid var(--color-ft, c.$ft-black);
 }
 
 .text label {
   position: absolute;
   top: 0;
   left: 0;
-  margin: 0.9em 0em;
-  padding: 0em 1em;
-  color: rgba(100, 100, 100, 0.3);
+  margin: 1.2em 0.4em 0.8em;
+  color: var(--color-ft-subtle, c.$ft-gray);
   font-size: 1em;
   font-weight: 600;
   transition: 0.2s;
@@ -43,10 +42,8 @@
 
 .text input:focus ~ label,
 .text input.fill ~ label {
-  color: black;
-  transform: translate(0.7em, -1.4em);
-  padding: 0em 0.4em;
+  color: var(--color-ft, c.$ft-black);
   font-size: 0.7em;
   font-weight: 600;
-  background-color: rgb(255, 255, 255);
+  transform: translate(0.1em, -0.7em);
 }

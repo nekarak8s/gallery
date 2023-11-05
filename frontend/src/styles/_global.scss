@@ -5,7 +5,10 @@
   --color-primary: #{c.$primary};
   --color-secondary: #{c.$secondary};
   --color-bg: #{c.$bg-white};
+  --color-bg-reverse: #{c.$bg-black};
+  --color-bg-subtle: #{c.$bg-gray};
   --color-ft: #{c.$ft-black};
+  --color-ft-reverse: #{c.$ft-white};
   --color-ft-subtle: #{c.$ft-gray};
 }
 
@@ -47,4 +50,9 @@ button {
   background-color: transparent;
   color: inherit;
   font: inherit;
+}
+
+b,
+strong {
+  font-weight: bold;
 }

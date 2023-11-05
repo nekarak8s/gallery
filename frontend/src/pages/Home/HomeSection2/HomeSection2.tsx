@@ -1,4 +1,7 @@
 import React, { useEffect, useRef } from 'react'
+import MediaCard from './MediaCard'
+import posterImg from '@/assets/images/home-section-2/cloud-poster.jpg?format=jpg'
+import posterWebp from '@/assets/images/home-section-2/cloud-poster.jpg?format=webp'
 import narrowImg1 from '@/assets/images/home-section-2/narrow-1.jpg?format=jpg'
 import narrowWebp1 from '@/assets/images/home-section-2/narrow-1.jpg?format=webp'
 import narrowImg2 from '@/assets/images/home-section-2/narrow-2.jpg?format=jpg'
@@ -31,12 +34,9 @@ import wideVid2 from '@/assets/videos/home-video-2.mp4'
 import wideWebm2 from '@/assets/videos/home-video-2.webm'
 import narrowVid1 from '@/assets/videos/home-video-3.mp4'
 import narrowWebm1 from '@/assets/videos/home-video-3.webm'
-import posterImg from '@/assets/images/home-section-2/cloud-poster.jpg?format=jpg'
-import posterWebp from '@/assets/images/home-section-2/cloud-poster.jpg?format=webp'
-
-import MediaCard from './MediaCard'
-import './HomeSection2.scss'
 import toFrame from '@/utils/toFrame'
+
+import './HomeSection2.scss'
 
 const BACK_HEIGHT = 6 // * 100vh. background height
 
@@ -513,8 +513,8 @@ function HomeSection2() {
                 With the development of mobile devices, it is easy to take
                 pictures, but the value of a picture is decreasing. There are
                 hundreds of pictures on the album, but most of them are pictures
-                that you don't even know when they were taken. When was the last
-                time you remembered with your friends while looking at the
+                that you don&apos;t even know when they were taken. When was the
+                last time you remembered with your friends while looking at the
                 picture?
               </div>
             </div>

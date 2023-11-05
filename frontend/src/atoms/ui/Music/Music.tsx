@@ -1,8 +1,8 @@
-import React, { useRef, useState, useEffect } from 'react'
+import React, { useRef, useEffect } from 'react'
 import MusicIcon from '@/assets/svgs/music.svg'
+import { CURSOR_SCALE } from '@/constants'
 
 import './Music.scss'
-import { CURSOR_SCALE } from '@/constants'
 
 interface Props {
   src: string

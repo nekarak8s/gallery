@@ -1,9 +1,13 @@
 /**
  * Throttle the function
  * @param cb function to be throttled
+ * @param delay time for throttle
  * @returns  optimized function
  */
-export default function throttle(cb: (...args: any[]) => void, delay: number) {
+export default function throttle(
+  cb: (...args: any[]) => void,
+  delay: number = 300
+) {
   if (!cb) {
     throw Error('Invalid required arguments')
   }

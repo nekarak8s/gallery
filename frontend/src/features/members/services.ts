@@ -1,14 +1,7 @@
-import { routes } from '@/App'
-import axiosInstance from '@/utils/axiosInstance'
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { useLoginStore } from '@/stores/auth.store'
+import axiosInstance from '@/utils/axiosInstance'
 import toastManager from '@/utils/toastManager'
-import {
-  useQuery,
-  useMutation,
-  useQueryClient,
-  useInfiniteQuery,
-} from '@tanstack/react-query'
-import { useNavigate } from 'react-router-dom'
 
 export function useLogin() {
   return useMutation<string, ErrorResponse, string>(

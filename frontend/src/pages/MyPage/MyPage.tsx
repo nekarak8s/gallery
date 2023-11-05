@@ -1,36 +1,34 @@
-import React, { useEffect, useRef, useState } from 'react'
-
-import './MyPage.scss'
-import Profile from '@/features/members/components/Profile'
-import Button from '@/atoms/ui/Button'
+import React from 'react'
 import GalleryList from '@/features/gallery/components/GalleryList/GalleryList'
-import { useUserQuery } from '@/features/members/services'
-import Loading from '@/atoms/ui/Loading'
-import Modal from '@/atoms/ui/Modal'
-import ProfileForm from '@/features/members/components/ProfileForm'
+import Profile from '@/features/members/components/Profile'
 import ProfileEdit from '@/features/members/components/ProfileEdit'
 
+import './MyPage.scss'
+
 function MyPage() {
-  const [isUpdateOpen, setIsUpdateOpen] = useState(false)
+  const onProfileLoaded = function () {
+    document.querySelector('.my-page__profile')?.classList.add('loaded')
+  }
+
+  const handleAnimationEnd = function startSecondAnimation() {
+    document.querySelector('.my-page__profile-edit')?.classList.add('block')
+    document.querySelector('.my-page__line')?.classList.add('block')
+    document.querySelector('.my-page__gallery')?.classList.add('block')
+  }
 
   return (
-    <>
-      <div className="my-page">
-        <section className="my-page__profile">
-          <Profile />
-          <div className="my-page__profile__btn">
-            <ProfileEdit />
-          </div>
-        </section>
-        <div className="my-page__br" />
-        <section className="my-page__gallery">
-          <GalleryList />
-        </section>
-      </div>
-      <Modal isOpen={isUpdateOpen} onClose={() => setIsUpdateOpen(false)}>
-        <ProfileForm />
-      </Modal>
-    </>
+    <div className="my-page">
+      <section className="my-page__profile" onAnimationEnd={handleAnimationEnd}>
+        <Profile onLoaded={onProfileLoaded} />
+        <div className="my-page__profile-edit">
+          <ProfileEdit />
+        </div>
+      </section>
+      <div className="my-page__line" />
+      <section className="my-page__gallery">
+        <GalleryList />
+      </section>
+    </div>
   )
 }
 

@@ -1,19 +1,18 @@
-import React, { useEffect, useRef, useState } from 'react'
-import CircleIcon from '@/assets/svgs/circle.svg'
-import webmSrc from '@/assets/videos/home-video-4.webm'
-import vidSrc from '@/assets/videos/home-video-4.mp4'
-import wallImg from '@/assets/images/home-section-3/white-wall.jpg?format=jpg'
-import wallWebp from '@/assets/images/home-section-3/white-wall.jpg?format=webp'
+import { useEffect, useRef } from 'react'
 import labelImg from '@/assets/images/home-section-3/white-label.jpg?format=jpg'
 import labelWebp from '@/assets/images/home-section-3/white-label.jpg?format=webp'
-import MagneticButton from '@/atoms/ui/MagneticButton'
-
-import './HomeSection3.scss'
-import StaticVideo from '@/atoms/ui/StaticVideo'
+import wallImg from '@/assets/images/home-section-3/white-wall.jpg?format=jpg'
+import wallWebp from '@/assets/images/home-section-3/white-wall.jpg?format=webp'
+import CircleIcon from '@/assets/svgs/circle.svg'
+import vidSrc from '@/assets/videos/home-video-4.mp4'
+import webmSrc from '@/assets/videos/home-video-4.webm'
 import Button3D from '@/atoms/ui/Button3D'
+import StaticImage from '@/atoms/ui/StaticImage'
+import StaticVideo from '@/atoms/ui/StaticVideo'
 import { CURSOR_SCALE } from '@/constants'
 import toFrame from '@/utils/toFrame'
-import StaticImage from '@/atoms/ui/StaticImage'
+
+import './HomeSection3.scss'
 
 const BACK_HEIGHT = 3 // * 100vh
 const SCROLL_OFFSET = 200 // px.
@@ -96,7 +95,7 @@ function HomeSection3() {
         return
 
       // Move art work
-      let factor =
+      const factor =
         (scrollTop - scrollStart) / (scrollEnd - SCROLL_OFFSET - scrollStart)
       work.style.transform = `
         translateY(calc(-50% - ${(factor > 1 ? 1 : factor) * 85}vh))

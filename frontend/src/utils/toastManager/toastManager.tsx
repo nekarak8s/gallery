@@ -2,6 +2,7 @@ import React from 'react'
 import { Root, createRoot } from 'react-dom/client'
 import Toast from '@/atoms/ui/Toast'
 import { ToastProps } from '@/atoms/ui/Toast/Toast'
+
 import './toastManager.scss'
 
 interface ToastOption extends ToastProps {

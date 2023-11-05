@@ -1,54 +1,73 @@
 @use '@/styles/_animations.scss' as a;
+@use '@/styles/_responsive.scss' as *;
 
 .my-page {
-  font-size: 100px;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 50px;
   width: 100%;
   margin: 0 auto;
+  font-size: 1rem;
 }
 
 .my-page__profile {
-  @include a.animation-slide-in-up('profile', normal, 50px);
-  width: 100%;
-  height: 100vh;
-  margin: 0 0 0 0;
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
-  transition:
-    width 500ms ease-in-out,
-    height 500ms ease-in-out,
-    margin 500ms ease-in-out;
+  width: 100%;
+  margin: 0 0 0 0;
+  transform: scale(1.2);
 }
 
 .my-page__profile.loaded {
-  width: 100%;
-  height: clamp(300px, 50vh, 500px);
-  margin: 100px 0 0 0;
+  animation: profile-loaded 1400ms ease-in-out 0ms forwards;
 }
 
-.my-page__profile__btn {
-  @include a.animation-slide-in-up('profile', slow, 50px);
+@keyframes profile-loaded {
+  0% {
+    opacity: 0;
+    width: 100%;
+    height: 88vh;
+    margin: 0 0 0 0;
+    transform: scale(1.2) translateY(3rem);
+  }
+  40% {
+    opacity: 1;
+    width: 100%;
+    height: 88vh;
+    margin: 0 0 0 0;
+    transform: scale(1.2) translateY(0);
+  }
+  60% {
+    opacity: 1;
+    width: 100%;
+    height: 88vh;
+    margin: 0 0 0 0;
+    transform: scale(1.2) translateY(0);
+  }
+  100% {
+    opacity: 1;
+    width: clamp(400px, 90%, 1200px);
+    height: clamp(300px, 50vh, 500px);
+    margin: 7em 0 0 0;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.my-page__profile-edit {
+  @include a.animation-clear('profile-edit', slow);
   display: none;
   position: absolute;
   bottom: 0;
   right: 0;
-}
-
-.my-page__gallery {
-  @include a.animation-slide-in-up('profile', slow, 50px);
-  display: none;
-  width: 100%;
-  align-items: center;
-  justify-content: center;
-}
-
-.my-page__br {
   opacity: 0;
+}
+
+.my-page__line {
+  @include a.animation-clear('profile-line', slow);
+  display: none;
   width: 80vw;
   height: 15px;
   background-image: radial-gradient(
@@ -56,5 +75,34 @@
     rgba(0, 0, 0, 0.3) 0%,
     rgba(0, 0, 0, 0) 70%
   );
-  transition: opacity 1000ms linear;
+  opacity: 0;
+}
+
+.my-page__gallery {
+  @include a.animation-slide-in-up('profile-gallery', slow, $distance: 50px);
+  display: none;
+  width: clamp(400px, 90%, 1200px);
+  opacity: 0;
+}
+
+@include laptop {
+  .my-page {
+    font-size: 0.8rem;
+  }
+}
+
+@include tablet {
+  .my-page {
+    font-size: 0.7rem;
+  }
+}
+
+@include mobile {
+  .my-page {
+    font-size: 0.5rem;
+  }
+
+  .my-page__gallery {
+    width: 90%;
+  }
 }

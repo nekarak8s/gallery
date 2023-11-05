@@ -1,12 +1,12 @@
 import React, { useEffect, useRef } from 'react'
-import { getRandom } from '@/libs/math'
 import HomeSection1 from './HomeSection1'
 import HomeSection2 from './HomeSection2'
 import HomeSection3 from './HomeSection3'
 import bgm from '@/assets/audio/MapleStory-Lith-Harbor.mp3'
+import Music from '@/atoms/ui/Music'
+import { getRandom } from '@/libs/math'
 
 import './Home.scss'
-import Music from '@/atoms/ui/Music'
 
 const BACKGROUND_COLORS = ['#CDF4F5', '#1B9CC6', '#016699'] // '#87D7D0'
 const FONT_COLORS = ['#F74F48', '#F7A754', '#F7B5B7'] // '#FA937A'

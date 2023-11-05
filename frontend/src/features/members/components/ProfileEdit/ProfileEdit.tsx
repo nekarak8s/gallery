@@ -1,17 +1,20 @@
-import Button from '@/atoms/ui/Button'
-import Button3D from '@/atoms/ui/Button3D'
-import Modal from '@/atoms/ui/Modal'
-import ProfileForm from '@/features/members/components/ProfileForm'
 import { useState, useRef, useEffect } from 'react'
 import { useLogout } from '../../services'
+import WithdrawlForm from '../WithdrawlForm'
+import KebabIcon from '@/assets/svgs/kebab.svg'
+import Button from '@/atoms/ui/Button'
+import Button3D from '@/atoms/ui/Button3D'
+import CSSTransition from '@/atoms/ui/CSSTransition'
+import Modal from '@/atoms/ui/Modal'
+import ProfileForm from '@/features/members/components/ProfileForm'
 
 import './ProfileEdit.scss'
-import WithdrawlForm from '../WithdrawlForm'
-import CSSTransition from '@/atoms/ui/CSSTransition'
 
 const ProfileEdit = () => {
+  /**
+   * Show Menu buttons when container is hovered
+   */
   const containerRef = useRef<HTMLDivElement>(null)
-
   const [isShow, setIsShow] = useState<boolean>(false)
 
   useEffect(() => {
@@ -34,17 +37,25 @@ const ProfileEdit = () => {
     }
   }, [])
 
+  // Modal state
   const [isUpdateOpen, setIsUpdateOpen] = useState(false)
   const [isWithdrawlOpen, setIsWithdrawlOpen] = useState(false)
 
+  // Logout
   const { mutate: logout } = useLogout()
 
   return (
     <div className="profile-edit" ref={containerRef}>
+      <Button3D ariaLabel="더보기" onFocus={() => setIsShow(true)}>
+        <div className="profile-edit__toggle">
+          <KebabIcon />
+        </div>
+      </Button3D>
       <CSSTransition
         className="profile-edit__menu"
         isShow={isShow}
         duration={200}
+        timingFunction="ease-in-out"
       >
         <Button
           ariaLabel="정보수정"
@@ -56,16 +67,10 @@ const ProfileEdit = () => {
           ariaLabel="회원탈퇴"
           text="회원탈퇴"
           onClick={() => setIsWithdrawlOpen(true)}
+          onBlur={() => setIsShow(false)}
         />
       </CSSTransition>
-      <Button3D ariaLabel="더보기">
-        <div className="profile-edit__toggle">
-          <span />
-          <span />
-          <span />
-        </div>
-      </Button3D>
-
+      {/* Modal */}
       <Modal isOpen={isUpdateOpen} onClose={() => setIsUpdateOpen(false)}>
         <ProfileForm />
       </Modal>

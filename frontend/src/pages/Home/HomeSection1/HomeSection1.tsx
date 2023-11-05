@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, useCallback } from 'react'
-import bgm from '@/assets/audio/MapleStory-Lith-Harbor.mp3'
+import OceanFilter from './OceanFilter'
 import cloud1Img from '@/assets/images/home-section-1/cloud-1.png?format=png'
 import cloud1Webp from '@/assets/images/home-section-1/cloud-1.png?format=webp'
 import cloud2Img from '@/assets/images/home-section-1/cloud-2.png?format=png'
@@ -8,20 +8,16 @@ import cloud3Img from '@/assets/images/home-section-1/cloud-3.png?format=png'
 import cloud3Webp from '@/assets/images/home-section-1/cloud-3.png?format=webp'
 import galleryImg from '@/assets/images/home-section-1/gallery.png?format=png'
 import galleryWebp from '@/assets/images/home-section-1/gallery.png?format=webp'
-import islandImg from '@/assets/images/home-section-1/island.png?format=png'
-import islandWebp from '@/assets/images/home-section-1/island.png?format=webp'
 import oceanImg from '@/assets/images/home-section-1/ocean.png?format=png'
 import oceanWebp from '@/assets/images/home-section-1/ocean.png?format=webp'
 import skyImg from '@/assets/images/home-section-1/sky.png?format=webp'
 import skyWebp from '@/assets/images/home-section-1/sky.png?format=webp'
 import Loading from '@/atoms/ui/Loading'
 import ScrollDown from '@/atoms/ui/ScrollDown'
-import OceanFilter from './OceanFilter'
-import './HomeSection1.scss'
 import StaticImage from '@/atoms/ui/StaticImage'
-
-import OceanTurbulenceFilter from '@/assets/svgs/ocean-turbulence-filter.svg'
 import toFrame from '@/utils/toFrame'
+
+import './HomeSection1.scss'
 
 const TOTAL_IMAGE = 6
 const BACK_HEIGHT = 2 // * 100vh. background height
@@ -324,7 +320,7 @@ function HomeSection1() {
       </div>
       {/* Transition Layer */}
       <div className="hs1-cover" ref={coverRef} onClick={handleClick}>
-        {imagesLoaded === TOTAL_IMAGE ? (
+        {imagesLoaded >= TOTAL_IMAGE ? (
           <div className="hs1-cover__phrase">
             <h1 tabIndex={0} onKeyDown={handleClick}>
               클릭하세요

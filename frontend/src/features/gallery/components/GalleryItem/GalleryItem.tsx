@@ -1,16 +1,18 @@
-import React, { useEffect, useMemo, useRef } from 'react'
-import './GalleryItem.scss'
-import { CURSOR_SCALE } from '@/constants'
+import { useEffect, useMemo, useRef } from 'react'
+import EditIcon from '@/assets/svgs/edit.svg'
 import PlayIcon from '@/assets/svgs/play.svg'
 import ShareIcon from '@/assets/svgs/share.svg'
-import EditIcon from '@/assets/svgs/edit.svg'
+import { CURSOR_SCALE } from '@/constants'
 
-interface props {
+import './GalleryItem.scss'
+
+interface GalleryItemProps {
   gallery: Gallery
 }
 
-const GalleryItem: React.FC<props> = ({ gallery }) => {
+const GalleryItem = ({ gallery }: GalleryItemProps) => {
   const itemRef = useRef<HTMLDivElement>(null)
+  const buttonsRef = useRef<HTMLUListElement>(null)
   const contentRef = useRef<HTMLDivElement>(null)
 
   const date = useMemo(() => {
@@ -19,53 +21,80 @@ const GalleryItem: React.FC<props> = ({ gallery }) => {
 
   useEffect(() => {
     const item = itemRef.current!
+    const buttons = buttonsRef.current!.querySelectorAll('button')
     const content = contentRef.current!
-    const total = gallery.content.length
 
+    const total = gallery.content.length
     let index = 0
     let typingInterval: NodeJS.Timeout | null = null
 
     const handleMouseEnter = function typeGalleryContent() {
+      item.classList.add('selected')
+
+      if (typingInterval) return
       typingInterval = setInterval(() => {
         content.textContent += gallery.content.charAt(index)
         index += 1
       }, 20)
     }
     const handleMouseLeave = function eraseGalleryContent() {
+      item.classList.remove('selected')
+
       typingInterval && clearInterval(typingInterval)
+      typingInterval = null
       content.textContent = ''
       index = 0
     }
 
     item.addEventListener('mouseenter', handleMouseEnter)
     item.addEventListener('mouseleave', handleMouseLeave)
+    buttons.forEach((button) => {
+      button.addEventListener('focus', handleMouseEnter)
+      button.addEventListener('blur', handleMouseLeave)
+    })
 
     return () => {
       item.removeEventListener('mouseenter', handleMouseEnter)
       item.removeEventListener('mouseleave', handleMouseLeave)
+      buttons.forEach((button) => {
+        button.removeEventListener('focus', handleMouseEnter)
+        button.removeEventListener('blur', handleMouseLeave)
+      })
       typingInterval && clearInterval(typingInterval)
     }
   }, [])
 
   return (
-    <div ref={itemRef} className="gallery-item">
-      <svg>
-        <rect></rect>
-      </svg>
-      <span>{gallery.name}</span>
-      <div className="gallery-item__icons">
-        <button data-cursor-scale={CURSOR_SCALE}>
-          <PlayIcon />
-        </button>
-        <button data-cursor-scale={CURSOR_SCALE}>
-          <EditIcon />
-        </button>
-        <button data-cursor-scale={CURSOR_SCALE}>
-          <ShareIcon />
-        </button>
+    <div className="gallery-item" ref={itemRef}>
+      <h2 className="gallery-item__title">{gallery.name}</h2>
+      <ul className="gallery-item__icons" ref={buttonsRef}>
+        <li>
+          <button data-cursor-scale={CURSOR_SCALE}>
+            <PlayIcon />
+          </button>
+        </li>
+        <li>
+          <button data-cursor-scale={CURSOR_SCALE}>
+            <EditIcon />
+          </button>
+        </li>
+        <li>
+          <button data-cursor-scale={CURSOR_SCALE}>
+            <ShareIcon />
+          </button>
+        </li>
+      </ul>
+      <div className="gallery-item__content">
+        <div ref={contentRef}></div>
+        <p>{gallery.content}</p>
       </div>
-      <span ref={contentRef}></span>
-      <span>{date}</span>
+      <time className="gallery-item__date">{date}</time>
+      <div className="gallery-item__borders">
+        <div />
+        <div />
+        <div />
+        <div />
+      </div>
     </div>
   )
 }

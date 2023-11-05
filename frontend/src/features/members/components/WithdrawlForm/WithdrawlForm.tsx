@@ -1,7 +1,9 @@
-import React from 'react'
 import { useUserQuery, useWithdrawl } from '../../services'
 import Text from '@/atoms/form/Text'
 import Button from '@/atoms/ui/Button'
+import toastManager from '@/utils/toastManager'
+
+import './WithdrawlForm.scss'
 
 const WithdrawlForm = () => {
   const { data: user, isLoading, isError } = useUserQuery()
@@ -14,14 +16,18 @@ const WithdrawlForm = () => {
     const formData = new FormData(e.currentTarget)
     const nickname = formData.get('nickname') as string
 
-    if (nickname == user?.nickname) {
+    if (nickname !== user?.nickname) {
+      toastManager.addToast('error', '닉네임이 올바르지 않습니다')
+    } else {
       withdraw()
     }
   }
 
   return (
-    <form onSubmit={handleSubmit}>
-      <p>본인의 닉네임 {user?.nickname}을 따라 입력해주세요</p>
+    <form className="withdrawl-form" onSubmit={handleSubmit}>
+      <p>
+        본인의 닉네임 <b>{user?.nickname}</b>을 정확하게 입력해주세요
+      </p>
       <Text label="닉네임" name="nickname" initialValue="" />
       <Button text="회원 탈퇴" type="submit" />
     </form>

@@ -1,4 +1,6 @@
 import { PropsWithChildren } from 'react'
+import { CURSOR_SCALE } from '@/constants'
+
 import './Radio.scss'
 
 type RadioProps = {
@@ -16,9 +18,16 @@ const Radio = ({
   children,
 }: PropsWithChildren<RadioProps>) => {
   return (
-    <label htmlFor={id} className="radio">
-      <div className="radio__label">
-        <input type="radio" id={id} name={name} value={value} /> {label}
+    <label htmlFor={id} className="radio" data-cursor-scale={CURSOR_SCALE}>
+      <div className="radio__label" data-cursor-scale={CURSOR_SCALE}>
+        <input
+          type="radio"
+          id={id}
+          name={name}
+          value={value}
+          data-cursor-scale={CURSOR_SCALE}
+        />{' '}
+        {label}
       </div>
       {children}
     </label>

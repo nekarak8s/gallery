@@ -1,13 +1,12 @@
-import Button from '@/atoms/ui/Button'
-import React, { useState } from 'react'
-import './ProfileForm.scss'
-import Input from '@/atoms/form/Text'
-import WaveIcon from '@/assets/svgs/wave.svg'
-import { validateProfileForm } from '../../validators'
 import { useUpdateProfile } from '../../services'
+import { validateProfileForm } from '../../validators'
+import Input from '@/atoms/form/Text'
+import Button from '@/atoms/ui/Button'
 import toastManager from '@/utils/toastManager'
 
-const ProfileForm: React.FC = () => {
+import './ProfileForm.scss'
+
+const ProfileForm = () => {
   const { mutate: update } = useUpdateProfile()
 
   const handleSubmit = function (e: React.FormEvent<HTMLFormElement>) {

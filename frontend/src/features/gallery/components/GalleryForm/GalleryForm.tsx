@@ -1,15 +1,13 @@
-import React from 'react'
-import BlobIcon from '@/assets/svgs/blob.svg'
-import './GalleryForm.scss'
+import { placeListData } from '../../data'
+import { useCreateGallery } from '../../services'
+import { validateGalleryForm } from '../../validators'
+import Radio from '@/atoms/form/Radio'
 import Text from '@/atoms/form/Text'
 import Textarea from '@/atoms/form/Textarea'
-import Radio from '@/atoms/form/Radio'
-import { useCreateGallery, usePlaceListQuery } from '../../services'
-import Loading from '@/atoms/ui/Loading'
-import { placeListData } from '../../data'
 import Button from '@/atoms/ui/Button'
-import { validateGalleryForm } from '../../validators'
 import toastManager from '@/utils/toastManager'
+
+import './GalleryForm.scss'
 
 const GalleryForm = () => {
   const places = placeListData
@@ -39,12 +37,13 @@ const GalleryForm = () => {
   return (
     <form className="gallery-form" onSubmit={handleSubmit}>
       {/* <BlobIcon /> */}
-      <h2>전시회 정보</h2>
-      <Text label="이름" name="name" initialValue="" />
+
+      <Text label="전시회 이름" name="name" initialValue="" />
       <Textarea label="소개글" name="description" initialValue="" />
       <div className="gallery-form__place">
         {places.map((place) => (
           <Radio
+            key={place.placeId}
             id={`place-${place.placeId}`}
             name="placeId"
             label={place.name}

@@ -10,3 +10,21 @@
   right: 0;
   font-size: 1rem;
 }
+
+#toast > * {
+  animation: toast-slide-in 300ms ease-in-out;
+}
+
+@keyframes toast-slide-in {
+  0% {
+    transform: translateX(100%);
+  }
+
+  80% {
+    transform: translateX(-10%);
+  }
+
+  100% {
+    transform: translateX(0%);
+  }
+}

@@ -14,15 +14,15 @@ module.exports = {
     'plugin:@typescript-eslint/recommended-type-checked',
     'plugin:import/recommended',
     'plugin:import/typescript',
-    'plugin:css-import-order/recommended',
+    // 'plugin:css-import-order/recommended',
     'prettier',
     'plugin:storybook/recommended',
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
     // typesciript settings
-    project: true,
-    tsconfigRootDir: './tsconfig.json',
+    project: 'tsconfig.json',
+    tsconfigRootDir: __dirname,
     ecmaVersion: 6,
     // other settings
     sourceType: 'module',
@@ -35,7 +35,7 @@ module.exports = {
     'react',
     'import',
     'unused-imports',
-    'css-import-order',
+    // 'css-import-order',
   ],
   settings: {
     react: {
@@ -48,18 +48,22 @@ module.exports = {
     // typescript import resolver(eslint-import-resolver-typescript)
     'import/resolver': {
       typescript: {
-        project: './tsconfig.json',
+        project: 'tsconfig.json',
       },
-      node: true,
+      node: {
+        extensions: ['.ts', '.tsx'],
+      },
     },
   },
   rules: {
     'react/react-in-jsx-scope': 0,
     '@typescript-eslint/no-var-requires': 0, // allow commonJS
     '@typescript-eslint/no-explicit-any': 0,
+    '@typescript-eslint/no-unsafe-return': 0,
+    '@typescript-eslint/no-floating-promises': 1,
     '@typescript-eslint/no-unnecessary-type-assertion': 0,
     'import/no-unresolved': [
-      2,
+      0,
       {
         commonjs: true,
         amd: true,

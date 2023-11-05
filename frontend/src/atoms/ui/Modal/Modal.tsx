@@ -1,8 +1,8 @@
 import { useEffect, useRef, PropsWithChildren } from 'react'
 import ReactDOM from 'react-dom'
+import useFocusTrap from '@/hooks/useFocusTrap'
 
 import './Modal.scss'
-import useFocusTrap from '@/hooks/useFocusTrap'
 
 interface ModalProps {
   isOpen: boolean
