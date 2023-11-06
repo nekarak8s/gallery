@@ -6,6 +6,7 @@ application.yml
 application.properties
 resources/*.yml
 application-dev.yml
+application-prod.yml
 
 ### Eclipse ###
 .metadata

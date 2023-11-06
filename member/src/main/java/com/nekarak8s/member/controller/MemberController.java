@@ -22,6 +22,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -38,7 +40,7 @@ public class MemberController {
     @GetMapping("/health")
     public String health(){
         log.info("헬스 체크 !!!");
-        return "ok";
+        return "Member서버 ok";
     }
 
 
@@ -53,11 +55,19 @@ public class MemberController {
         log.debug("로그인 요청옴");
 
         String authorizationUrl = authService.getAuthorizationUrl();
-        return ResponseEntity.ok(authorizationUrl);
+
+        ApiResponse apiResponse = ApiResponse.builder()
+                .message("리다이렉트 URL 발급 성공")
+                .data(authorizationUrl)
+                .build();
+
+        return ResponseEntity.ok(apiResponse);
     }
 
     @PostMapping("/callback")
-    public ResponseEntity<?> getToken(HttpServletResponse response, @RequestParam(value = "type", required = false) String type, @RequestParam(value = "code") String code) throws CustomException{
+    public ResponseEntity<?> getToken(HttpServletResponse response,
+                                      @RequestParam(value = "type", required = false) String type,
+                                      @RequestParam(value = "code") String code) throws CustomException{
         paramUtils.checkParam(type);
         paramUtils.checkParam(code);
 
@@ -92,7 +102,7 @@ public class MemberController {
 
     @GetMapping("/check/nickname")
     public ResponseEntity<?> checkNickname(@RequestParam(value = "nickname", required = false) String nickname) throws CustomException {
-        log.debug("닉네임 중복 검사 요청옴");
+        log.debug("닉네임 중복 검사 요청옴, {}", nickname);
 
         // 공백, null 검사
         paramUtils.checkParam(nickname);
@@ -115,7 +125,8 @@ public class MemberController {
     }
 
     @PatchMapping()
-    public ResponseEntity<?> modifyMemberInfo(@RequestHeader(value = "X-Member-ID", required = false) long memberId, @RequestBody @Valid final MemberModifyDTO request) throws CustomException{
+    public ResponseEntity<?> modifyMemberInfo(@RequestHeader(value = "X-Member-ID", required = false) long memberId,
+                                              @RequestBody @Valid final MemberModifyDTO request) throws CustomException{
         log.debug("회원 정보 수정 요청옴");
         log.debug("게이트웨이에서 넘어온 member ID : {}", memberId);
 
@@ -173,4 +184,57 @@ public class MemberController {
                 .build();
         return ResponseEntity.ok(apiResponse);
     }
+
+    /**
+     * 닉네임 조회
+     */
+    @GetMapping("/nickname")
+    public ResponseEntity<?> getNickname(@RequestParam(value = "memberId", required = false) long memberId) throws CustomException {
+        log.debug("닉네임 조회 요청옴");
+        paramUtils.checkParam(String.valueOf(memberId));
+
+        String nickname = memberService.getMemberNickname(memberId);
+
+        ApiResponse apiResponse = ApiResponse.builder()
+                .message("닉네임 조회 성공")
+                .data(nickname)
+                .build();
+
+        return ResponseEntity.ok(apiResponse);
+    }
+
+    /**
+     * 회원 아이디 조회
+     */
+    @GetMapping("/memberId")
+    public ResponseEntity<?> getMemberId(@RequestParam(value = "nickname") String nickname) throws CustomException {
+
+        long memberId = memberService.getMemberId(nickname);
+
+        ApiResponse apiResponse = ApiResponse.builder()
+                .message("닉네임 조회 성공")
+                .data(memberId)
+                .build();
+
+        return ResponseEntity.ok(apiResponse);
+    }
+
+
+    /**
+     * Map<아이디, 닉네임> 반환
+     */
+    @PostMapping("/nickname/list")
+    public ResponseEntity<?> getNicknameMap(@RequestBody List<Long> memberIdList) throws CustomException {
+        log.debug("닉네임 리스트 조회 요청옴");
+
+        Map<Long, String> map = memberService.getMemberMap(memberIdList);
+
+        ApiResponse apiResponse = ApiResponse.builder()
+                .message("닉네임 조회 성공")
+                .data(map)
+                .build();
+
+        return ResponseEntity.ok(apiResponse);
+    }
+
 }

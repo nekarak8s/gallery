@@ -18,7 +18,8 @@ public class CookieUtils {
         cookie.setSecure(false); // https 사용시 true로 변경
         cookie.setMaxAge(600 * 4); // 40분 = 2400초  (초 단위)
         cookie.setPath("/");
-
+        cookie.setHttpOnly(false); // dev
+        //cookie.setHttpOnly(true); // prod
         response.addCookie(cookie);
     }
 }
