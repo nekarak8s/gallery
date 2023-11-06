@@ -1,12 +1,11 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react'
 import { NavLink, Outlet, useLocation } from 'react-router-dom'
-import { routes } from '@/App'
+import { navbarRoutes } from '@/App'
 import Modal from '@/atoms/ui/Modal'
 import { CURSOR_SCALE } from '@/constants'
 import LoginForm from '@/features/members/components/LoginForm'
 import { useLoginStore } from '@/stores/auth.store'
 import throttle from '@/utils/throttle'
-
 import './Navbar.scss'
 
 const WHITE_PATHNAME = ['/', '/login']
@@ -87,7 +86,7 @@ function Navbar() {
           ref={navbarRef}
         >
           <NavLink
-            to={routes['Home'].path}
+            to={navbarRoutes['Home'].path}
             onFocus={showNavbar}
             data-cursor-scale={CURSOR_SCALE}
           >
@@ -107,7 +106,7 @@ function Navbar() {
           <ul className="navbar__menu" ref={menuRef}>
             <li>
               <NavLink
-                to={routes['Guide'].path}
+                to={navbarRoutes['Guide'].path}
                 onFocus={showNavbar}
                 data-cursor-scale={CURSOR_SCALE}
               >
@@ -117,7 +116,7 @@ function Navbar() {
             <li>
               {isLogin ? (
                 <NavLink
-                  to={routes['MyPage'].path}
+                  to={navbarRoutes['MyPage'].path}
                   onFocus={showNavbar}
                   data-cursor-scale={CURSOR_SCALE}
                 >

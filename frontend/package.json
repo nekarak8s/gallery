@@ -7,7 +7,7 @@
     "prepare": "cd .. && husky install frontend/.husky",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "webpack-dev-server --config webpack.dev.js",
-    "build": "webpack --config webpack.prod.js",
+    "build": "webpack --config webpack.prod.js && cp dist/index.html dist/404.html",
     "deploy": "gh-pages -d dist",
     "profile": "npm run build -- --stats && npx webpack-bundle-analyzer ./dist/bundle-stats.json",
     "storybook": "storybook dev -p 6006",
@@ -27,6 +27,7 @@
     "react-dom": "^18.2.0",
     "react-query": "^3.39.3",
     "react-router-dom": "^6.15.0",
+    "three": "^0.157.0",
     "zustand": "^4.4.4"
   },
   "devDependencies": {
@@ -93,7 +94,6 @@
     "storybook-addon-react-router-v6": "^2.0.7",
     "style-loader": "^3.3.3",
     "terser-webpack-plugin": "^5.3.9",
-    "three": "^0.157.0",
     "ts-loader": "^9.4.4",
     "typescript": "^5.1.6",
     "url-loader": "^4.1.1",

@@ -13,15 +13,20 @@ import './App.scss'
 const Home = lazy(() => import('@/pages/Home'))
 const Guide = lazy(() => import('@/pages/Guide'))
 const MyPage = lazy(() => import('@/pages/MyPage'))
- const Aquarium = lazy(() => import('./pages/Aquarium'))
+const Gallery = lazy(() => import('@/pages/Gallery'))
+const Aquarium = lazy(() => import('./pages/Aquarium'))
 
-export const routes: Record<string, RouteElement> = {
+export const navbarRoutes: Record<string, RouteElement> = {
   Home: { path: '/', element: <Home /> },
   Guide: { path: '/guide', element: <Guide /> },
   MyPage: { path: '/mypage', element: <MyPage /> },
   Login: { path: '/login', element: <Login /> },
+}
+
+export const routes: Record<string, RouteElement> = {
   OAuth: { path: '/oauth/:type', element: <OAuth /> },
   Aquarium: { path: '/aquarium', element: <Aquarium /> },
+  Gallery: { path: '/gallery', element: <Gallery /> },
 }
 
 function App() {
@@ -31,10 +36,13 @@ function App() {
     <Suspense fallback={<Loading />}>
       <Routes>
         <Route path="/" element={<Navbar />}>
-          {Object.values(routes).map((route) => (
+          {Object.values(navbarRoutes).map((route) => (
             <Route key={route.path} path={route.path} element={route.element} />
           ))}
         </Route>
+        {Object.values(routes).map((route) => (
+          <Route key={route.path} path={route.path} element={route.element} />
+        ))}
       </Routes>
       {!isMobile && <Cursor />}
     </Suspense>

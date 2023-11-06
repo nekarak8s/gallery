@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react'
+import { routes } from '@/App'
 import labelImg from '@/assets/images/home-section-3/white-label.jpg?format=jpg'
 import labelWebp from '@/assets/images/home-section-3/white-label.jpg?format=webp'
 import wallImg from '@/assets/images/home-section-3/white-wall.jpg?format=jpg'
@@ -11,7 +12,6 @@ import StaticImage from '@/atoms/ui/StaticImage'
 import StaticVideo from '@/atoms/ui/StaticVideo'
 import { CURSOR_SCALE } from '@/constants'
 import toFrame from '@/utils/toFrame'
-
 import './HomeSection3.scss'
 
 const BACK_HEIGHT = 3 // * 100vh
@@ -240,8 +240,13 @@ function HomeSection3() {
             <p>3D 전시회를 준비했습니다</p>
           </div>
         </div>
+
         <div className="hs3-button" ref={buttonRef}>
-          <Button3D ariaLabel="3D 전시회 체험하기" color="primary">
+          <Button3D
+            ariaLabel="3D 전시회 체험하기"
+            to={routes['Gallery'].path}
+            color="primary"
+          >
             <p data-cursor-scale={CURSOR_SCALE}>체험하기</p>
           </Button3D>
         </div>

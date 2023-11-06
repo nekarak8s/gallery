@@ -26,3 +26,21 @@ type Place = {
   twoDimensionImageUrl: string
   threeDimensionImageUrl: string
 }
+
+type Frame = {
+  frameId: number
+  order: number
+  title: string
+  content: string
+  framePictureUrl: string
+  createdDate: string
+  modifiedDate: string
+  music: {
+    musicId: number
+    title: string
+    singer: string
+    releasedDate: string
+    videoUrl: string
+    thumbnailUrl: string
+  }
+}
