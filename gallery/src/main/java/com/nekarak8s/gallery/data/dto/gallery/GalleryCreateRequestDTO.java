@@ -1,4 +1,4 @@
-package com.nekarak8s.gallery.data.dto;
+package com.nekarak8s.gallery.data.dto.gallery;
 
 import com.nekarak8s.gallery.validation.NoWhitespace;
 import lombok.AllArgsConstructor;
@@ -11,7 +11,7 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 @Builder
 @Getter
-public class GalleryModifyRequestDTO {
+public class GalleryCreateRequestDTO {
 
     @NotNull(message = "공간을 선택해주세요")
     private Long placeId;

@@ -1,4 +1,4 @@
-package com.nekarak8s.gallery.data.dto;
+package com.nekarak8s.gallery.data.dto.gallery;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
