@@ -33,7 +33,7 @@ public class Gallery {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "content")
+    @Column(name = "content", length = 150)
     private String content;
 
     @CreatedDate

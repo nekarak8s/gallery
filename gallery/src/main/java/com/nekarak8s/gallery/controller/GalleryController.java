@@ -6,6 +6,7 @@ import com.nekarak8s.gallery.data.entity.place.Place;
 import com.nekarak8s.gallery.exception.CustomException;
 import com.nekarak8s.gallery.service.GalleryService;
 import com.nekarak8s.gallery.validation.NoWhitespace;
+import com.nekarak8s.gallery.validation.NumberOfCharacters;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -88,9 +89,10 @@ public class GalleryController {
     @GetMapping("check/name")
     public ResponseEntity<ApiResponse> checkNameUnique(@RequestHeader(value = "X-Member-ID", required = false) long memberId,
                                                        @RequestParam(value = "name")
-                                                           @NotBlank(message = "갤러리 이름은 최소 1자 이상 작성해주세요")
-                                                           @NoWhitespace(message = "갤러리 이름은 좌우 공백 없이 입력해주세요")
-                                                           @Valid String name) throws CustomException{
+                                                       @NotBlank(message = "갤러리 이름은 최소 1자, 최대 15자 이내로 작성해주세요")
+                                                       @NoWhitespace(message = "갤러리 이름은 좌우 공백 없이 입력해주세요")
+                                                       @NumberOfCharacters
+                                                       @Valid String name) throws CustomException{
         boolean isUnique = galleryService.isGalleryNameUnique(name, memberId);
 
         if (isUnique) {
