@@ -24,6 +24,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Slf4j
@@ -185,9 +187,41 @@ public class MemberServiceImpl implements MemberService{
     }
 
     /**
+     * 회원 아이디 조회 (by nickname)
+     */
+    @Override
+    public long getMemberId(String nickname) throws CustomException {
+        Member member = memberRepository.findMemberIdByNickname(nickname).orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "GA007", "사용자 정보가 없습니다"));
+
+        return member.getMemberId();
+    }
+
+    /**
+     * 닉네임 조회
+     */
+    @Override
+    public String getMemberNickname(long memberId) throws CustomException {
+        Member member = memberRepository.findById(memberId).orElseThrow(() ->
+            new CustomException(HttpStatus.NOT_FOUND, "GA007", "사용자 정보가 없습니다")
+        );
+
+        return member.getNickname();
+    }
+
+    /**
+     * Map<아이디, 닉네임> 반환
+     */
+    @Override
+    public Map<Long, String> getMemberMap(List<Long> memberIdList) throws CustomException {
+        Map<Long, String> map = memberRepository.findNicknamesMapByMemberIds(memberIdList);
+        return map;
+    }
+
+
+    /**
      * 유니크 닉네임 생성
      */
-    public String retryGenerateNickname(String kakaoNickname) throws CustomException {
+    private String retryGenerateNickname(String kakaoNickname) throws CustomException {
         String nickname = "";
 
         for (int digit=4; digit<=7; digit++) {
@@ -197,13 +231,13 @@ public class MemberServiceImpl implements MemberService{
                 return nickname;
             }
         }
-        throw new CustomException(HttpStatus.CONFLICT, "GA006","닉네임 생성 도중 서버 에러 발생");
+        throw new CustomException(HttpStatus.CONFLICT, "GA006", "닉네임 생성 도중 서버 에러 발생");
     }
 
     /**
      * 회원 삭제 상태 체크
      */
-    public void checkDeletedMember(Member member) throws CustomException {
+    private void checkDeletedMember(Member member) throws CustomException {
         boolean isDeleted = member.getIsDeleted();
 
         if (isDeleted) {

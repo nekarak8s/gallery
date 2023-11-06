@@ -8,6 +8,9 @@ import com.nekarak8s.member.data.dto.response.MemberDTO;
 import com.nekarak8s.member.util.pair.Pair;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Map;
+
 @Service
 public interface MemberService {
 
@@ -23,4 +26,14 @@ public interface MemberService {
     void modifyMemberInfo(long memberId, MemberModifyDTO request) throws CustomException;
 
     void deleteMember(long memberId) throws CustomException;
+
+    // 회원 아이디 조회
+    long getMemberId(String nickname) throws CustomException;
+
+    // 회원 닉네임 조회
+    String getMemberNickname(long memberId) throws CustomException;
+
+    // Map<아이디, 닉네임> 반환
+    Map<Long, String> getMemberMap(List<Long> memberIdList) throws CustomException;
+
 }

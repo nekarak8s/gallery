@@ -44,7 +44,8 @@ public class NicknameUtils {
     }
 
     public boolean isValid(String nickname) {
-        String regex = "^[A-Za-z0-9ㄱ-ㅎㅏ-ㅣ가-힣]{2,10}$";
+//        String regex = "^[A-Za-z0-9ㄱ-ㅎㅏ-ㅣ가-힣]{2,10}$";
+        String regex = "^[가-힣a-zA-Z0-9]{2,10}$";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(nickname);
         return matcher.matches();
