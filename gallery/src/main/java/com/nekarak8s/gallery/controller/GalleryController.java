@@ -1,6 +1,6 @@
 package com.nekarak8s.gallery.controller;
 
-import com.nekarak8s.gallery.data.dto.*;
+import com.nekarak8s.gallery.data.dto.ApiResponse;
 import com.nekarak8s.gallery.data.dto.gallery.*;
 import com.nekarak8s.gallery.data.entity.place.Place;
 import com.nekarak8s.gallery.exception.CustomException;
@@ -30,6 +30,7 @@ public class GalleryController {
     @GetMapping("/health")
     public String health() {
         log.info("헬스 체크 !!");
+
         return "갤러리서버 ok";
     }
 
@@ -150,14 +151,16 @@ public class GalleryController {
         return ResponseEntity.ok(apiResponse);
     }
 
+    // 갤러리 검색 (by Query)
     @GetMapping("/search")
-    public ResponseEntity<ApiResponse> searchGalleryByQuery(@RequestParam(value = "query") String query,
+    public ResponseEntity<ApiResponse> searchGalleryByQuery(
                                                             @RequestParam(value = "type") String type,
+                                                            @RequestParam(value = "query") String query,
                                                             @RequestParam(value = "page", defaultValue = "0") int page) throws CustomException {
         log.debug("갤러리 조건부 검색 요청옴");
         log.debug("type: {}, query: {}, page: {}", type, query, page);
 
-        Page<GallerySearchDTO> result = galleryService.searchGalleryByQueryV2(type, query, page);
+        Page<GallerySearchDTO> result = galleryService.search(type, query, page);
 
         ApiResponse apiResponse = ApiResponse.builder()
                 .message("갤러리 검색을 성공했습니다")

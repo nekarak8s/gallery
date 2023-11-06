@@ -26,7 +26,7 @@ public interface GalleryService {
     // 공간 목록 조회
     List<Place> selectPlaceList();
 
-    // 갤러리 단일 조회
+    // 갤러리 단일 조회 (by 갤러리 Id)
     GalleryInfoResponseDTO findGalleryByGalleryId(long galleryId) throws  CustomException;
 
     // 갤러리 수정
@@ -35,6 +35,6 @@ public interface GalleryService {
     // 갤러리 삭제
     void deleteGallery(long memberId, long galleryId) throws CustomException;
 
-    Page<GallerySearchDTO> searchGalleryByQueryV1(String type, String query, int page) throws CustomException;
-    Page<GallerySearchDTO> searchGalleryByQueryV2(String type, String query, int page) throws CustomException;
+    // 갤러리 검색 (by Query)
+    Page<GallerySearchDTO> search(String type, String query, int page) throws CustomException;
 }

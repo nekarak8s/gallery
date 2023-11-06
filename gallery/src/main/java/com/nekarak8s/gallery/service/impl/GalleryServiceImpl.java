@@ -11,23 +11,20 @@ import com.nekarak8s.gallery.data.repository.place.PlaceRepository;
 import com.nekarak8s.gallery.exception.CustomException;
 import com.nekarak8s.gallery.service.GalleryService;
 import com.nekarak8s.gallery.util.PlaceUtil;
-import com.nekarak8s.gallery.util.RegexUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.SetOperations;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -38,13 +35,15 @@ public class GalleryServiceImpl implements GalleryService {
     private final GalleryRepository galleryRepository;
     private final PlaceUtil placeUtil;
     private final PlaceRepository placeRepository;
+    private final RestTemplate restTemplate;
 
-    // Util
-    private final RegexUtil regexUtil;
+    // 회원 서버 URI
+    @Value("${spring.member-service.uri}")
+    private String memberServiceUri;
 
-    @Autowired
-    private RedisTemplate<String, String> redisTemplate;
-
+    /**
+     * 갤러리 생성
+     */
     @Transactional
     @Override
     public long createGallery(long memberId, GalleryCreateRequestDTO requestDTO) throws CustomException {
@@ -72,6 +71,9 @@ public class GalleryServiceImpl implements GalleryService {
         return gallery.getGalleryId();
     }
 
+    /**
+     * 갤러리 이름 중복 검사
+     */
     @Override
     public boolean isGalleryNameUnique(String name, long memberId){
         Optional<Gallery> optionalGallery = galleryRepository.findByNameAndMemberId(name, memberId);
@@ -79,6 +81,9 @@ public class GalleryServiceImpl implements GalleryService {
         return optionalGallery.isEmpty();
     }
 
+    /**
+     * 회원이 보유한 갤러리 목록 조회
+     */
     @Override
     public List<GalleryInfoResponseDTO> findGalleryListByMemberId(long memberId) {
         List<GalleryInfoResponseDTO> galleryInfoResponseDTOS = galleryRepository.findByMemberId(memberId);
@@ -87,11 +92,17 @@ public class GalleryServiceImpl implements GalleryService {
         return galleryInfoResponseDTOS;
     }
 
+    /**
+     * 공간 목록 조회
+     */
     @Override
     public List<Place> selectPlaceList() {
         return placeRepository.findAll();
     }
 
+    /**
+     * Id로 갤러리 조회
+     */
     @Override
     public GalleryInfoResponseDTO findGalleryByGalleryId(long galleryId) throws CustomException{
         GalleryInfoResponseDTO galleryInfoResponseDTO = galleryRepository.findByGalleryId(galleryId)
@@ -100,6 +111,9 @@ public class GalleryServiceImpl implements GalleryService {
         return galleryInfoResponseDTO;
     }
 
+    /**
+     * 갤러리 수정
+     */
     @Transactional
     @Override
     public void modifyGallery(long memberId, long galleryId, GalleryModifyRequestDTO requestDTO) throws CustomException{
@@ -121,9 +135,11 @@ public class GalleryServiceImpl implements GalleryService {
         gallery.setName(requestDTO.getName());
         gallery.setContent(requestDTO.getContent());
         gallery.setPlaceId(requestDTO.getPlaceId());
-
     }
 
+    /**
+     * 갤러리 삭제
+     */
     @Transactional
     @Override
     public void deleteGallery(long memberId, long galleryId) throws CustomException {
@@ -134,83 +150,149 @@ public class GalleryServiceImpl implements GalleryService {
         galleryRepository.deleteById(galleryId);
     }
 
-    // [Version 1] 검색 조건에 따른 갤러리 조회
+
+    /**
+     * 검색어로 갤러리 조회
+     *
+     * Type : all(회원 닉네임 or 갤러리 이름) / author(회원 닉네임) / title(갤러리 이름)
+     */
     @Override
-    public Page<GallerySearchDTO> searchGalleryByQueryV1(String type, String query, int page) throws CustomException {
-        PageRequest pagable = PageRequest.of(page, 10, Sort.by(Sort.Direction.DESC, "createdDate"));
-        Page<GallerySearchDTO> dtos = galleryRepository.findByQueryV1(pagable);
-        SetOperations<String, String> setOperations = redisTemplate.opsForSet(); // RedisTemplate를 사용한 Set 조회 도구
+    public Page<GallerySearchDTO> search(String type, String query, int page) throws CustomException {
 
-        fillNickname(setOperations, dtos);
+        PageRequest pageable = PageRequest.of(page, 10, Sort.by(Sort.Direction.DESC, "createdDate"));
+        GallerySearchAPI searchAPI = new GallerySearchAPI();
 
-        // type, query 필터링 실시
-        List<GallerySearchDTO> filteredContent = dtos.getContent().stream()
-                .filter(item -> {
-                    if ("title".equals(type)) { // 갤러리 이름
-                        return item.getTitle().contains(query);
-                    } else if ("author".equals(type)) { // 회원 닉네임
-                        return item.getNickname().contains(query);
-                    } else { // 갤러리 이름 + 회원 닉네임
-                        return (item.getTitle().contains(query) || item.getNickname().contains(query));
-                    }
-                })
-                .map(item -> new GallerySearchDTO(
-                        item.getGalleryId(),
-                        item.getTitle(),
-                        item.getContent(),
-                        null, // memberId를 null로 설정
-                        item.getNickname(),
-                        item.getCreatedDate()))
-                .collect(Collectors.toList());
-
-        Page<GallerySearchDTO> filteredPage = new PageImpl<>(filteredContent, dtos.getPageable(), dtos.getTotalElements()); // 필터링 결과
-
-        return filteredPage;
-    }
-
-    @Override
-    public Page<GallerySearchDTO> searchGalleryByQueryV2(String type, String query, int page) throws CustomException {
-        PageRequest pagable = PageRequest.of(page, 10, Sort.by(Sort.Direction.DESC, "createdDate"));
-        SetOperations<String, String> setOperations = redisTemplate.opsForSet(); // RedisTemplate를 사용한 Set 조회 도구
-
-        Page<GallerySearchDTO> filteredPage = null;
-
-        if ("author".equals(type)) { // 회원 닉네임으로 검색
-            String key = "nickname:" + query + ":idx"; // Redis Key
-            long memberId = regexUtil.extractMemberId(setOperations.members(key)+"");
-
-            Page<GallerySearchDTO> dtos = galleryRepository.findByQueryByMemberIdV2(pagable, memberId);
-            for (GallerySearchDTO dto : dtos.getContent()) {
-                dto.setNickname(query);
-                dto.setMemberId(null);
-            }
-            filteredPage = dtos;
-        } else if ("title".equals(type)) {
-            Page<GallerySearchDTO> dtos = galleryRepository.findByQueryByNameV2(pagable, query);
-            fillNickname(setOperations, dtos);
-            filteredPage = dtos;
-        } else if ("all".equals(type)) {
-            String key = "nickname:" + query + ":idx";
-            long memberId = regexUtil.extractMemberId(setOperations.members(key)+"");
-
-            Page<GallerySearchDTO> dtos = galleryRepository.findByQueryByAllV2(pagable, query, memberId);
-            fillNickname(setOperations, dtos);
-            filteredPage = dtos;
+        Long memberId = searchAPI.getMemberId(query); // query -> memberId
+        if (memberId == null && "author".equals(type)) {
+            List<GallerySearchDTO> emptyList = Collections.emptyList();
+            return new PageImpl<>(emptyList);
         }
-        return filteredPage;
+
+        Page<GallerySearchDTO> results = null;
+        switch(type) {
+            case "all":
+                if (memberId == null) memberId = -999L;
+                results = galleryRepository.findByQueryByAll(pageable, query, memberId); // 조회 결과
+                List<Long> memberIdList = searchAPI.getMemberIdList(results.getContent()); // 조회 결과에서 회원 아이디 리스트 추출
+                Map<Long, String> map = searchAPI.getMemberNicknameMap(memberIdList); // 닉네임 목록 조회
+                for (GallerySearchDTO dto : results.getContent()) {
+                    long id = dto.getMemberId();
+                    String nickname = map.get(id+"");
+                    dto.setNickname(nickname);
+                }
+                break;
+            case "author": // 회원 닉네임으로 조회
+                results = galleryRepository.findByQueryByAuthor(pageable, memberId);
+                String nickname = searchAPI.getMemberNickname(memberId);
+                for (GallerySearchDTO dto : results.getContent()) {
+                    dto.setNickname(nickname);
+                }
+                break;
+            case "title":
+                results = galleryRepository.findByQueryByTitle(pageable, query);
+                memberIdList = searchAPI.getMemberIdList(results.getContent()); // 조회 결과에서 회원 아이디 리스트 추출
+                map = searchAPI.getMemberNicknameMap(memberIdList); // 닉네임 목록 조회
+                for (GallerySearchDTO dto : results.getContent()) {
+                    long id = dto.getMemberId();
+                    nickname = map.get(id+"");
+                    dto.setNickname(nickname);
+                }
+                break;
+        }
+        return results;
     }
 
-    // Redis에서 Nickname 찾아서 응답에 채워넣는 함수
-    private void fillNickname(SetOperations<String, String> setOperations, Page<GallerySearchDTO> dtos) {
-        for (GallerySearchDTO dto : dtos.getContent()) {
-            // 닉네임 찾기
-            String key = "nickname:memberId:" + dto.getMemberId(); // Redis에서 memberId에 맞는 member nickname 조회
-            if (Boolean.TRUE.equals(redisTemplate.hasKey(key))) {
-                String str = setOperations.members(key)+"";
-                String nickname = str.substring(1, str.length()-1);
-                dto.setNickname(nickname); // 찾은 닉네임을 dto에 추가
+
+    /**
+     * 회원 서버 호출 API
+     */
+    private class GallerySearchAPI {
+        /**
+         * 회원 서버에서 닉네임 -> 회원아이디 조회
+         */
+        private Long getMemberId(String nickname) {
+            HttpHeaders headers = new HttpHeaders();
+            HttpEntity entity = new HttpEntity(headers);
+            UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder.fromHttpUrl(memberServiceUri+"/memberId")
+                    .queryParam("nickname", nickname);
+
+            System.out.println("!!!!!");
+            Long response = null;
+            try {
+                response =  Long.valueOf((Integer) restTemplate.exchange(uriComponentsBuilder.build().encode().toUri(), HttpMethod.GET, entity, Map.class)
+                        .getBody().get("data"));
+                System.out.println(response);
+            } catch (Exception ex) {
+                System.out.println(ex.getMessage());
             }
-            dto.setMemberId(null);
+
+            return response;
+//
+//            return (long) response.getBody().get("data");
+        }
+
+        /**
+         * 회원 서버에서 List<회원아이디> 조회
+         * 갤러리 제목을 포함하는 회원 아이디 List
+         */
+        private List<Long> getMemberIdList(List<GallerySearchDTO> list) {
+            Set<Long> set = new HashSet<>();
+
+            for (GallerySearchDTO dto : list) {
+                set.add(dto.getMemberId());
+            }
+
+            return new ArrayList<>(set);
+        }
+
+        /**
+         * 회원 서버에서 List<회원아이디> 조회
+         * 회원 닉네임을 포함하는 회원 아이디 List
+         */
+//        private List<Long> getMemberIdListByMemberServer(String query) {
+//
+//        }
+
+        /**
+         * 회원 서버에서 아이디 -> 닉네임 조회
+         */
+        public String getMemberNickname(long memberId) {
+            HttpHeaders headers = new HttpHeaders();
+            HttpEntity entity = new HttpEntity<>(headers);
+
+            UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder.fromHttpUrl(memberServiceUri+"/nickname")
+                    .queryParam("memberId", memberId);
+
+            ResponseEntity<Map> response = restTemplate.exchange(uriComponentsBuilder.build().encode().toUri(), HttpMethod.GET, entity, Map.class);
+            return (String) response.getBody().get("data");
+        }
+
+        /**
+         * 회원 서버에서 Map<회원아이디, 닉네임> 조회
+         */
+        private Map<Long, String> getMemberNicknameMap(List<Long> memberIdList) {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+
+            HttpEntity<List<Long>> entity = new HttpEntity<>(memberIdList, headers);
+
+            // POST 요청을 위해 exchange() 메서드를 사용하고 HttpMethod을 HttpMethod.POST로 설정
+            ResponseEntity<Map> response = restTemplate.exchange(
+                    memberServiceUri + "/nickname/list",
+                    HttpMethod.POST,
+                    entity,
+                    Map.class
+            );
+
+            return (Map<Long, String>) response.getBody().get("data");
         }
     }
+
+
+
+
+
+
+
+
 }
