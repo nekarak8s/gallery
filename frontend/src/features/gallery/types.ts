@@ -27,7 +27,7 @@ type Place = {
   threeDimensionImageUrl: string
 }
 
-type Frame = {
+type TFrame = {
   frameId: number
   order: number
   title: string

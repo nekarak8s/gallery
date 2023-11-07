@@ -18,9 +18,20 @@
     position: absolute;
     top: 0;
     left: 0;
-    transform: translate(-5%, -5%);
-    height: 110%;
-    width: 110%;
+
+    height: 100%;
+    width: 100%;
+  }
+
+  &__background::after {
+    content: '';
+
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: rgba(14, 24, 46, 0.2);
+    height: 100%;
+    width: 100%;
   }
 
   &__form {

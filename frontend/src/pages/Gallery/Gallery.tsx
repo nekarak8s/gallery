@@ -3,7 +3,6 @@ import GalleryCanvas from '@/features/gallery/components/GalleryCanvas'
 import './Gallery.scss'
 
 const Gallery = () => {
-  GalleryCanvas
   return (
     <div className="gallery">
       <div className="gallery__navbar">

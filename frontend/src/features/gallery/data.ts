@@ -129,7 +129,7 @@ export const placeListData: Place[] = [
 
 // <iframe width="560" height="315" src="https://www.youtube.com/embed/iEfIcJHEb70?si=Lqv77NhgOQfHZfkp" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
-export const frameItemData: Frame = {
+export const frameItemData: TFrame = {
   frameId: 1,
   order: 1,
   title: '액자 제목',
@@ -147,7 +147,7 @@ export const frameItemData: Frame = {
   },
 }
 
-export const frameListData: Frame[] = [
+export const frameListData: TFrame[] = [
   {
     frameId: 1,
     order: 1,
@@ -185,6 +185,125 @@ export const frameListData: Frame[] = [
   {
     frameId: 3,
     order: 3,
+    title: '액자 제목',
+    content: '액자 설명',
+    framePictureUrl: 'https://source.unsplash.com/500x500',
+    createdDate: '2023-08-03T23:59:59',
+    modifiedDate: '2023-08-04T00:59:59',
+    music: {
+      musicId: 1,
+      title: '비밀번호 486',
+      singer: '윤하',
+      releasedDate: '2023-08-03T23:59:59',
+      videoUrl: 'https://www.youtube.com/embed/iEfIcJHEb70?si=Lqv77NhgOQfHZfkp',
+      thumbnailUrl: 'https://source.unsplash.com/500x500',
+    },
+  },
+  {
+    frameId: 4,
+    order: 4,
+    title: '액자 제목',
+    content: '액자 설명',
+    framePictureUrl: 'https://source.unsplash.com/500x500',
+    createdDate: '2023-08-03T23:59:59',
+    modifiedDate: '2023-08-04T00:59:59',
+    music: {
+      musicId: 1,
+      title: '비밀번호 486',
+      singer: '윤하',
+      releasedDate: '2023-08-03T23:59:59',
+      videoUrl: 'https://www.youtube.com/embed/iEfIcJHEb70?si=Lqv77NhgOQfHZfkp',
+      thumbnailUrl: 'https://source.unsplash.com/500x500',
+    },
+  },
+  {
+    frameId: 5,
+    order: 5,
+    title: '액자 제목',
+    content: '액자 설명',
+    framePictureUrl: 'https://source.unsplash.com/500x500',
+    createdDate: '2023-08-03T23:59:59',
+    modifiedDate: '2023-08-04T00:59:59',
+    music: {
+      musicId: 1,
+      title: '비밀번호 486',
+      singer: '윤하',
+      releasedDate: '2023-08-03T23:59:59',
+      videoUrl: 'https://www.youtube.com/embed/iEfIcJHEb70?si=Lqv77NhgOQfHZfkp',
+      thumbnailUrl: 'https://source.unsplash.com/500x500',
+    },
+  },
+  {
+    frameId: 6,
+    order: 6,
+    title: '액자 제목',
+    content: '액자 설명',
+    framePictureUrl: 'https://source.unsplash.com/500x500',
+    createdDate: '2023-08-03T23:59:59',
+    modifiedDate: '2023-08-04T00:59:59',
+    music: {
+      musicId: 1,
+      title: '비밀번호 486',
+      singer: '윤하',
+      releasedDate: '2023-08-03T23:59:59',
+      videoUrl: 'https://www.youtube.com/embed/iEfIcJHEb70?si=Lqv77NhgOQfHZfkp',
+      thumbnailUrl: 'https://source.unsplash.com/500x500',
+    },
+  },
+  {
+    frameId: 7,
+    order: 7,
+    title: '액자 제목',
+    content: '액자 설명',
+    framePictureUrl: 'https://source.unsplash.com/500x500',
+    createdDate: '2023-08-03T23:59:59',
+    modifiedDate: '2023-08-04T00:59:59',
+    music: {
+      musicId: 1,
+      title: '비밀번호 486',
+      singer: '윤하',
+      releasedDate: '2023-08-03T23:59:59',
+      videoUrl: 'https://www.youtube.com/embed/iEfIcJHEb70?si=Lqv77NhgOQfHZfkp',
+      thumbnailUrl: 'https://source.unsplash.com/500x500',
+    },
+  },
+  {
+    frameId: 8,
+    order: 8,
+    title: '액자 제목',
+    content: '액자 설명',
+    framePictureUrl: 'https://source.unsplash.com/500x500',
+    createdDate: '2023-08-03T23:59:59',
+    modifiedDate: '2023-08-04T00:59:59',
+    music: {
+      musicId: 1,
+      title: '비밀번호 486',
+      singer: '윤하',
+      releasedDate: '2023-08-03T23:59:59',
+      videoUrl: 'https://www.youtube.com/embed/iEfIcJHEb70?si=Lqv77NhgOQfHZfkp',
+      thumbnailUrl: 'https://source.unsplash.com/500x500',
+    },
+  },
+  {
+    frameId: 9,
+    order: 9,
+    title: '액자 제목',
+    content: '액자 설명',
+    framePictureUrl: 'https://source.unsplash.com/500x500',
+    createdDate: '2023-08-03T23:59:59',
+    modifiedDate: '2023-08-04T00:59:59',
+    music: {
+      musicId: 1,
+      title: '비밀번호 486',
+      singer: '윤하',
+      releasedDate: '2023-08-03T23:59:59',
+      videoUrl: 'https://www.youtube.com/embed/iEfIcJHEb70?si=Lqv77NhgOQfHZfkp',
+      thumbnailUrl: 'https://source.unsplash.com/500x500',
+    },
+  },
+  {
+    frameId: 10,
+    order: 10,
     title: '액자 제목',
     content: '액자 설명',
     framePictureUrl: 'https://source.unsplash.com/500x500',

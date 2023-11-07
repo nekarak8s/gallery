@@ -4,14 +4,19 @@ import { frameListData, galleryItemData } from '../../data'
 import './GalleryCanvas.scss'
 
 const GalleryCanvas = () => {
+  const containerRef = useRef<HTMLDivElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
 
   const gallery = galleryItemData
   const frameList = frameListData
 
-  useGreenary({ placeId: 1, canvasRef, gallery, frameList })
+  useGreenary({ placeId: 1, containerRef, canvasRef, gallery, frameList })
 
-  return <canvas className="gallery-canvas" ref={canvasRef} />
+  return (
+    <div className="gallery-canvas" ref={containerRef}>
+      <canvas ref={canvasRef} />
+    </div>
+  )
 }
 
 export default GalleryCanvas
