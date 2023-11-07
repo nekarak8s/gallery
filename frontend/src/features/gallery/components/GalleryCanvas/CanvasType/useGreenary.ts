@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import * as THREE from 'three'
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
+import { FirstPersonControls } from 'three/examples/jsm/controls/FirstPersonControls'
 import { Floor } from './Floor'
 import { Frame } from './Frame'
 import { Wall } from './Wall'
@@ -34,7 +34,7 @@ const HORIZONTAL_WALLS = [
     frames: [
       {
         order: 5,
-        x: -7,
+        x: -8,
         isDownRight: true,
       },
     ],
@@ -137,7 +137,7 @@ const VERTICAL_WALLS = [
     frames: [
       {
         order: 10,
-        x: -7,
+        x: -5,
         isDownRight: true,
       },
     ],
@@ -193,15 +193,22 @@ const useGreenary = ({
      * Camera
      */
     const camera = new THREE.PerspectiveCamera(
-      75,
+      60,
       window.innerWidth / window.innerHeight,
       0.1,
-      1000
+      100
     )
-    camera.position.x = 32
-    camera.position.y = 20
-    camera.position.z = 49
+    camera.position.x = 7
+    camera.position.y = 1.6
+    camera.position.z = 29
     scene.add(camera)
+
+    /**
+     * Controls
+     */
+    const controls = new FirstPersonControls(camera, renderer.domElement)
+    controls.movementSpeed = 2
+    controls.lookSpeed = 0.1
 
     /**
      * Light
@@ -218,11 +225,9 @@ const useGreenary = ({
     directionalLight.castShadow = true
     scene.add(directionalLight)
 
-    /**
-     * Control
-     */
-    const controls = new OrbitControls(camera, renderer.domElement)
-    controls.enableDamping = true
+    // LightHelper
+    const helper = new THREE.CameraHelper(directionalLight.shadow.camera)
+    scene.add(helper)
 
     /**
      * Floor Mesh
@@ -232,7 +237,8 @@ const useGreenary = ({
       name: 'floor',
       width: 20,
       depth: 30,
-      textureRepeat: 4,
+      repeatX: 4,
+      repeatY: 6,
     })
 
     /**
@@ -319,7 +325,8 @@ const useGreenary = ({
     const clock = new THREE.Clock()
 
     function draw() {
-      controls.update() // control damping
+      const delta = clock.getDelta()
+      controls.update(delta)
       renderer.render(scene, camera) // rerender
       renderer.setAnimationLoop(draw)
     }
@@ -334,10 +341,6 @@ const useGreenary = ({
       renderer.setSize(window.innerWidth, window.innerHeight)
       renderer.render(scene, camera)
     }
-
-    //Create a helper for the shadow camera (optional)
-    const helper = new THREE.CameraHelper(directionalLight.shadow.camera)
-    scene.add(helper)
 
     window.addEventListener('resize', setSize)
 
