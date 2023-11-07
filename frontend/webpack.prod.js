@@ -96,7 +96,16 @@ module.exports = merge(common, {
   },
   optimization: {
     minimize: true,
-    minimizer: [new TerserPlugin(), new CssMinimizerPlugin()],
+    minimizer: [
+      new TerserPlugin({
+        terserOptions: {
+          compress: {
+            drop_console: true,
+          },
+        },
+      }),
+      new CssMinimizerPlugin(),
+    ],
     usedExports: true,
     // https://webpack.kr/plugins/split-chunks-plugin/
     splitChunks: {

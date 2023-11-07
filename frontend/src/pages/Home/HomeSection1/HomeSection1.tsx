@@ -45,7 +45,9 @@ function HomeSection1() {
   }, [])
 
   useEffect(() => {
+    window.scrollTo(0, 0)
     addEventListener('scroll', disableScroll, { passive: false }) // actively disable scroll
+
     return () => {
       removeEventListener('scroll', disableScroll)
     }

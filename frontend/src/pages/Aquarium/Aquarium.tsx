@@ -1,11 +1,10 @@
-import React, { useRef, useEffect } from 'react'
+import React, { useEffect } from 'react'
+import dat from 'dat.gui'
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
-import dat from 'dat.gui'
 import { WallMesh } from './wallMesh'
-
-import floorTexture from '@/assets/images/home-section-3/white-wall.jpg'
 import AquaTexture from '@/assets/images/home-section-1/ocean.png'
+import floorTexture from '@/assets/images/home-section-3/white-wall.jpg'
 
 const FLOOR_X = 40,
   FLOOR_Y = 30,
