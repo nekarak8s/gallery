@@ -503,7 +503,7 @@ function HomeSection2() {
                 imgSrc={posterImg}
                 webpSrc={posterWebp}
                 width="clamp(226px, 40vw, 500px)"
-                height="clamp(301px, 5.3.vw, 667px)"
+                height="clamp(301px, 53vw, 667px)"
                 sizes="(max-width: 452px) 226px, (max-width: 1250px) 40vw, 500px"
                 description="The cloud poster"
                 depth={10}

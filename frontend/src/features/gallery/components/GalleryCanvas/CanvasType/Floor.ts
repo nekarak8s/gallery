@@ -16,7 +16,8 @@ import roughImg from '@/assets/textures/wood_herringbone/Wood_Herringbone_Tiles_
 type FloorArgs = StuffArgs & {
   container: THREE.Scene | THREE.Mesh
   color?: string
-  textureRepeat?: number
+  repeatX?: number
+  repeatY?: number
   baseImg?: string
   normalImg?: string
   ambientImg?: string
@@ -62,15 +63,15 @@ export class Floor extends Stuff {
       info.ambientImg || ambientImg
     )
 
-    if (info.textureRepeat) {
+    if (info.repeatX || info.repeatY) {
       for (const key in this.textures) {
         const texture = this.textures[key]
 
         texture.wrapS = RepeatWrapping
         texture.wrapT = RepeatWrapping
 
-        texture.repeat.x = info.textureRepeat
-        texture.repeat.y = info.textureRepeat
+        texture.repeat.x = info.repeatX || 1
+        texture.repeat.y = info.repeatY || 1
       }
     }
 

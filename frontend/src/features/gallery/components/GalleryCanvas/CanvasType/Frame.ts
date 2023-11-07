@@ -4,6 +4,7 @@ import {
   BoxGeometry,
   Texture,
   TextureLoader,
+  SpotLight,
 } from 'three'
 import { Stuff, StuffArgs } from './Stuff'
 
@@ -61,6 +62,15 @@ export class Frame extends Stuff {
     this.mesh.position.set(this.x, this.y, this.z)
     this.mesh.rotation.set(this.rotationX, this.rotationY, this.rotationZ)
     this.mesh.receiveShadow = true
+
+    /**
+     * Light
+     */
+    const spotLight = new SpotLight('white', 1.5, 3, Math.PI / 5)
+    spotLight.position.z = info.isDownRight ? 1 : -1
+    spotLight.position.y = 1
+    spotLight.target = this.mesh
+    this.mesh.add(spotLight)
 
     /**
      * Add to the scene
