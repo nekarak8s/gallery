@@ -12,6 +12,8 @@ import java.util.regex.Pattern;
 @Component
 @Slf4j
 public class WhitelistManager {
+
+    // 토큰 검증 없이 통과시킬 URI
     private static final Set<UriMethodPair> whitelist = new HashSet<>(
             Arrays.asList(
                     new UriMethodPair("/health", "GET"),
@@ -24,6 +26,7 @@ public class WhitelistManager {
     );
 
 
+    // 화이트 리스트 포험 여부 체크
     public boolean shouldValidateJwt(String uri, String method) {
         for (UriMethodPair pair : whitelist) {
             String whiteUri = pair.uri;

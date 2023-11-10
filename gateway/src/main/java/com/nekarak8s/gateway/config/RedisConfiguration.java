@@ -22,13 +22,6 @@ public class RedisConfiguration {
     @Value("${spring.redis.password}")
     private String password;
 
-//    @Bean
-//    public RedisConnectionFactory redisConnectionFactory() {
-//        LettuceConnectionFactory factory = new LettuceConnectionFactory(host, port);
-//        factory.setPassword(password); // deprecated
-//        log.info("pass : {}", factory.getPassword());
-//        return factory;
-//    }
     @Bean
     public LettuceConnectionFactory redisConnectionFactory() {
         RedisStandaloneConfiguration redisConfig = new RedisStandaloneConfiguration(host, port);
