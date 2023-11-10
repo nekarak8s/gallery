@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
-@Table(name = "gallery")
+@Table(name = "gallery", indexes = @Index(name = "idx_member_id", columnList = "member_id"))
 public class Gallery {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)

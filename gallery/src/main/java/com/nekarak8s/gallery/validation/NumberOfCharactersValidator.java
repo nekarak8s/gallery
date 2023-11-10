@@ -4,7 +4,7 @@ import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
 public class NumberOfCharactersValidator implements ConstraintValidator<NumberOfCharacters, String> {
-    private static final String REGEX_PATTERN = "^[a-zA-Z가-힣0-9\\s]{1,15}$";
+    private static final String REGEX_PATTERN = "^[A-Za-z\\dㄱ-ㅎㅏ-ㅣ가-힣]{1,10}$";
 
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {

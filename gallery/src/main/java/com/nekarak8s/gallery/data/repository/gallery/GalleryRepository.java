@@ -9,7 +9,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -18,10 +17,12 @@ public interface GalleryRepository extends JpaRepository<Gallery, Long> {
     Optional<Gallery> findByNameAndMemberId(String name, long memberId);
 
     // 회원이 보유한 갤러리 목록 조회
+    // 기존 : (성능 : 2.37s)
+    // 인덱스 : (성능 : 0.5s)
     @Query("SELECT new com.nekarak8s.gallery.data.dto.gallery.GalleryInfoResponseDTO(g.galleryId, g.name, g.content, g.createdDate, g.modifiedDate, p) " +
             "FROM Gallery g " +
             "JOIN Place p ON p.placeId = g.placeId WHERE g.memberId = :memberId")
-    List<GalleryInfoResponseDTO> findByMemberId(long memberId);
+    Page<GalleryInfoResponseDTO> findByMemberId(Pageable pageable, long memberId);
 
     // 갤러리 조회
     @Query("SELECT new com.nekarak8s.gallery.data.dto.gallery.GalleryInfoResponseDTO(g.galleryId, g.name, g.content, g.createdDate, g.modifiedDate, p) " +

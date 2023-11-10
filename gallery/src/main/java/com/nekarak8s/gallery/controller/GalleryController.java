@@ -4,12 +4,12 @@ import com.nekarak8s.gallery.data.dto.ApiResponse;
 import com.nekarak8s.gallery.data.dto.gallery.*;
 import com.nekarak8s.gallery.data.entity.place.Place;
 import com.nekarak8s.gallery.exception.CustomException;
+import com.nekarak8s.gallery.kafka.service.KafkaProducerService;
 import com.nekarak8s.gallery.service.GalleryService;
 import com.nekarak8s.gallery.validation.NoWhitespace;
 import com.nekarak8s.gallery.validation.NumberOfCharacters;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -27,11 +27,12 @@ import java.util.List;
 public class GalleryController {
 
     private final GalleryService galleryService;
+    private final KafkaProducerService kafkaProducerService;
 
     @GetMapping("/health")
     public String health() {
         log.info("헬스 체크 !!");
-
+        kafkaProducerService.sendMessage("health", "hi");
         return "갤러리서버 ok";
     }
 
@@ -54,7 +55,7 @@ public class GalleryController {
     @PostMapping()
     public ResponseEntity<ApiResponse> createGallery(@RequestHeader(value = "X-Member-ID", required = false) long memberId, @RequestBody @Valid GalleryCreateRequestDTO requestDTO) throws CustomException {
         log.debug("갤러리 생성 요청옴");
-        log.debug("게이트웨이에서 넘어온 member ID : {}", memberId);
+        log.debug("게이트웨이에서 넘어온 member Id : {}", memberId);
         long galleryId = galleryService.createGallery(memberId, requestDTO);
 
         GalleryCreateResponseDTO galleryCreateResponseDTO = GalleryCreateResponseDTO.builder()
@@ -71,15 +72,17 @@ public class GalleryController {
 
     // 보유 갤러리 목록 조회
     @GetMapping("/list")
-    public ResponseEntity<ApiResponse> findGalleryList(@RequestHeader(value = "X-Member-ID", required = false) long memberId) throws CustomException {
+    public ResponseEntity<ApiResponse> findGalleryList(
+            @RequestHeader(value = "X-Member-ID", required = false) long memberId,
+            @RequestParam(value = "page", defaultValue = "0") int page) throws CustomException {
         log.debug("보유한 갤러리 목록 조회 요청옴");
         log.debug("게이트웨이에서 넘어온 member ID : {}", memberId);
 
-        List<GalleryInfoResponseDTO> galleryInfoResponseDTOList = galleryService.findGalleryListByMemberId(memberId);
+        List<GalleryInfoResponseDTO> list = galleryService.findGalleryListByMemberId(memberId, page).getContent();
 
         ApiResponse apiResponse = ApiResponse.builder()
                 .message("갤러리 목록 조회를 성공했습니다")
-                .data(galleryInfoResponseDTOList)
+                .data(list)
                 .build();
 
         return ResponseEntity.ok(apiResponse);
@@ -125,7 +128,7 @@ public class GalleryController {
     public ResponseEntity<ApiResponse> modifyGallery(@RequestHeader(value = "X-Member-ID", required = false) long memberId,
                                                      @PathVariable(value = "galleryId", required = false) long galleryId,
                                                      @RequestBody @Valid GalleryModifyRequestDTO requestDTO) throws CustomException {
-        log.debug("갤러리 수정 요청옴");
+        log.info("갤러리 수정 요청옴");
         log.debug("galleryId : {}", galleryId);
         log.debug("게이트웨이에서 넘어온 member ID : {}", memberId);
 
@@ -162,11 +165,11 @@ public class GalleryController {
         log.debug("갤러리 조건부 검색 요청옴");
         log.debug("type: {}, query: {}, page: {}", type, query, page);
 
-        Page<GallerySearchDTO> result = galleryService.search(type, query, page);
+        List<GallerySearchDTO> list = galleryService.search(type, query, page).getContent();
 
         ApiResponse apiResponse = ApiResponse.builder()
                 .message("갤러리 검색을 성공했습니다")
-                .data(result)
+                .data(list)
                 .build();
         return ResponseEntity.ok(apiResponse);
     }
