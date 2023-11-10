@@ -69,13 +69,13 @@ public class JwtAuthenticationGatewayFilterFactory extends
                 if (!containsCookie(request)) {
                     return onError_v2(response, "missing cookie", HttpStatus.BAD_REQUEST, "GATE004");
                 }
-
                 if (!containsToken(request)) {
                     return onError_v2(response, "missing token", HttpStatus.UNAUTHORIZED, "GATE002");
                 }
 
                 String token = extractToken(request);
                 if (!jwtUtils.isValid(token)) {
+                    log.info("비정상적인 토큰");
                     return onError_v2(response, "invalid token", HttpStatus.UNAUTHORIZED, "GATE003");
                 }
 
@@ -84,10 +84,7 @@ public class JwtAuthenticationGatewayFilterFactory extends
                     return onError_v2(response, "invalid token(blacklist)", HttpStatus.UNAUTHORIZED, "GATE003");
                 }
 
-                log.info("토큰 검증 완료");
-
                 if (uri.contains("/logout")) {
-                    log.info("로그 아웃 요청옴");
                     TokenMember tokenMember = jwtUtils.decode(token);
                     long expTime = tokenMember.getExpTime();
                     exchange.getRequest().mutate().header("X-Access-Token", token);
@@ -96,10 +93,8 @@ public class JwtAuthenticationGatewayFilterFactory extends
                     TokenMember tokenMember = jwtUtils.decode(token);
                     exchange.getRequest().mutate().header("X-Member-ID", tokenMember.getId());
                 }
-
                 return chain.filter(exchange);
             }
-
 //            TokenMember tokenMember = jwtUtils.decode(token);
 //            if (!hasRole(tokenMember, config.role)) {
 //                return onError_v2(response, "invalid role", HttpStatus.FORBIDDEN);
@@ -107,20 +102,21 @@ public class JwtAuthenticationGatewayFilterFactory extends
         };
     }
 
+    // 쿠키 파라미터 체크
     private boolean containsCookie(ServerHttpRequest request) {
         return request.getCookies().containsKey(COOKIE_NAME);
     }
 
+    // 토크 파라미터 체크
     private boolean containsToken(ServerHttpRequest request) {
         HttpCookie cookie = request.getCookies().getFirst(COOKIE_NAME);
-
         if (cookie != null) {
             return !cookie.getValue().isEmpty();
         }
-
         return false;
     }
 
+    // 쿠키에서 토큰 꺼내기
     private String extractToken(ServerHttpRequest request) {
         HttpCookie cookie = request.getCookies().getFirst(COOKIE_NAME);
 
@@ -132,32 +128,7 @@ public class JwtAuthenticationGatewayFilterFactory extends
         return role.equals(tokenMember.getRole());
     }
 
-//    private Mono<Void> onError(ServerHttpResponse response, String message, HttpStatus status) {
-//        response.setStatusCode(status);
-//        DataBuffer buffer = response.bufferFactory().wrap(message.getBytes(StandardCharsets.UTF_8));
-//        return response.writeWith(Mono.just(buffer));
-//    }
-
-    // JWT 허용 (없어도 허용)
-//    private boolean shoudValidateJwt(String uri, int port, String method) {
-//        // 허용할 경로면 true
-//        if (uri.contains("/health") && method.equals("GET")) {
-//            return true;
-//        } else if (uri.contains("/login") && method.equals("POST")) {
-//            return true;
-//        } else if (uri.contains("/callback") && method.equals("POST")) {
-//            return true;
-//        } else if (uri.contains("/check/nickname") && method.equals("GET")) {
-//            return true;
-//        } else if (uri.contains("/place/list") && method.equals("GET")) {
-//            return true;
-//        }
-//        // 아니면 false
-//        return false;
-//    }
-
-
-
+    // 예외 처리
     private Mono<Void> onError_v2(ServerHttpResponse response, String message, HttpStatus status, String errorCode) {
         response.setStatusCode(status);
         response.getHeaders().setContentType(MediaType.APPLICATION_JSON);
@@ -176,8 +147,6 @@ public class JwtAuthenticationGatewayFilterFactory extends
         }
         return str.matches("\\d+");
     }
-
-
 
     @Setter
     public static class Config {

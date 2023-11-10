@@ -11,19 +11,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @Slf4j
 public class HealthController {
-
-    private final JwtUtils jwtUtils;
     @GetMapping("/health")
     public String health() {
         log.info("헬스 체크 !!!");
-        return "ok";
-    }
-
-    // 쿠키 테스트용 컨트롤러
-    @GetMapping("/check")
-    public String tokenInCookieCheck(@CookieValue(value = "gallery_cookie") String token) {
-        log.info("is Valid? : {}", jwtUtils.isValid(token));
-        return "ok";
+        return "게이트웨이서버 ok";
     }
 }
 

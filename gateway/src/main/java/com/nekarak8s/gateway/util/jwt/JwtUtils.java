@@ -26,7 +26,6 @@ public class JwtUtils implements InitializingBean {
     @Override
     public void afterPropertiesSet() {
         this.algorithm = Algorithm.HMAC512(jwtProperties.getSecret());
-        log.info("시크릿 키 : {}", jwtProperties.getSecret());
         this.jwtVerifier = JWT.require(algorithm).acceptLeeway(5).build(); // 여유 시간 5분 설정
     }
 

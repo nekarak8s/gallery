@@ -9,9 +9,8 @@ public class CorsConfiguration implements WebFluxConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("http://192.168.152.1:3000", "http://192.168.152.1", "http://localhost:3000")
-                .allowedMethods("GET", "POST", "PUT", "DELETE")
-                //.allowedHeaders("Authorization", "Content-Type")
+                .allowedOrigins("http://localhost:3000", "http://localhost:8080")
+                .allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH")
                 .allowCredentials(false);
     }
 }
