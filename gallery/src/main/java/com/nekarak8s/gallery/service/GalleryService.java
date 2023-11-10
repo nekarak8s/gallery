@@ -21,7 +21,7 @@ public interface GalleryService {
     boolean isGalleryNameUnique(String name, long memberId);
 
     // 보유한 갤러리 목록 조회
-    List<GalleryInfoResponseDTO> findGalleryListByMemberId(long memberId);
+    Page<GalleryInfoResponseDTO> findGalleryListByMemberId(long memberId, int page);
 
     // 공간 목록 조회
     List<Place> selectPlaceList();

@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
-@Table(name = "gallery")
+@Table(name = "gallery", indexes = @Index(name = "idx_member_id", columnList = "member_id"))
 public class Gallery {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,7 +33,7 @@ public class Gallery {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "content")
+    @Column(name = "content", length = 150)
     private String content;
 
     @CreatedDate
