@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react'
 import { NavLink, Outlet, useLocation } from 'react-router-dom'
-import { navbarRoutes } from '@/App'
+import { routes } from '@/App'
 import Modal from '@/atoms/ui/Modal'
 import { CURSOR_SCALE } from '@/constants'
 import LoginForm from '@/features/members/components/LoginForm'
@@ -86,7 +86,7 @@ function Navbar() {
           ref={navbarRef}
         >
           <NavLink
-            to={navbarRoutes['Home'].path}
+            to={routes['Home']}
             onFocus={showNavbar}
             data-cursor-scale={CURSOR_SCALE}
           >
@@ -106,7 +106,7 @@ function Navbar() {
           <ul className="navbar__menu" ref={menuRef}>
             <li>
               <NavLink
-                to={navbarRoutes['Guide'].path}
+                to={routes['Guide']}
                 onFocus={showNavbar}
                 data-cursor-scale={CURSOR_SCALE}
               >
@@ -116,7 +116,7 @@ function Navbar() {
             <li>
               {isLogin ? (
                 <NavLink
-                  to={navbarRoutes['MyPage'].path}
+                  to={routes['MyPage']}
                   onFocus={showNavbar}
                   data-cursor-scale={CURSOR_SCALE}
                 >

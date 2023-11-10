@@ -40,7 +40,7 @@ export function useGalleryListQuery() {
 export function useCreateGallery() {
   const queryClient = useQueryClient()
   return useMutation<MessageResponse, ErrorResponse, GalleryForm>(
-    (data) => axiosInstance.patch(`/member`, data),
+    (data) => axiosInstance.post(`/gallery`, data),
     {
       onSuccess: () => {
         queryClient.invalidateQueries(['gallery-list'])

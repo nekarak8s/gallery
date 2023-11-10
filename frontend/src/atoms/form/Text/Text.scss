@@ -25,7 +25,7 @@
 }
 
 .text input:focus,
-.text input.fill {
+.text input:not(:placeholder-shown) {
   border-bottom: 2px solid var(--color-ft, c.$ft-black);
 }
 
@@ -41,7 +41,7 @@
 }
 
 .text input:focus ~ label,
-.text input.fill ~ label {
+.text input:not(:placeholder-shown) ~ label {
   color: var(--color-ft, c.$ft-black);
   font-size: 0.7em;
   font-weight: 600;

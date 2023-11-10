@@ -1,6 +1,5 @@
-import { useRef, useEffect } from 'react'
+import { KeyboardEvent } from 'react'
 import { CURSOR_SCALE } from '@/constants'
-
 import './Button.scss'
 
 interface ButtonProps {
@@ -26,31 +25,23 @@ const Button = ({
   onFocus,
   onBlur,
 }: ButtonProps) => {
-  const buttonRef = useRef<HTMLButtonElement>(null)
-
-  useEffect(() => {
-    const button = buttonRef.current!
-
-    const handleKeyup = function clickButton(e: KeyboardEvent) {
-      if (e.key === 'Enter') {
-        button.click()
-      }
+  const handleKeydown = function clickButton(
+    e: KeyboardEvent<HTMLButtonElement>
+  ) {
+    if (e.key === 'Enter') {
+      ;(e.target as HTMLButtonElement).click()
     }
-
-    button.addEventListener('keyup', handleKeyup)
-    return () => {
-      button.removeEventListener('keyup', handleKeyup)
-    }
-  }, [])
+  }
 
   return (
     <button
-      ref={buttonRef}
+      // ref={buttonRef}
       className={`button ${direction} ${size} ${color}`}
       type={type}
       onClick={onClick}
       onFocus={onFocus}
       onBlur={onBlur}
+      onKeyDown={handleKeydown}
       aria-label={ariaLabel}
       data-cursor-scale={CURSOR_SCALE}
     >

@@ -244,7 +244,7 @@ function HomeSection3() {
         <div className="hs3-button" ref={buttonRef}>
           <Button3D
             ariaLabel="3D 전시회 체험하기"
-            to={routes['Gallery'].path}
+            to={routes['Gallery']}
             color="primary"
           >
             <p data-cursor-scale={CURSOR_SCALE}>체험하기</p>

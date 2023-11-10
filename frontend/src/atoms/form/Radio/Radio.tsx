@@ -1,6 +1,5 @@
-import { PropsWithChildren } from 'react'
+import { PropsWithChildren, KeyboardEvent } from 'react'
 import { CURSOR_SCALE } from '@/constants'
-
 import './Radio.scss'
 
 type RadioProps = {
@@ -17,6 +16,13 @@ const Radio = ({
   label = '',
   children,
 }: PropsWithChildren<RadioProps>) => {
+  const handleKeydown = function clickRadio(
+    e: KeyboardEvent<HTMLInputElement>
+  ) {
+    if (e.key === 'Enter') {
+      ;(e.target as HTMLButtonElement).click()
+    }
+  }
   return (
     <label htmlFor={id} className="radio" data-cursor-scale={CURSOR_SCALE}>
       <div className="radio__label" data-cursor-scale={CURSOR_SCALE}>
@@ -25,6 +31,7 @@ const Radio = ({
           id={id}
           name={name}
           value={value}
+          onKeyDown={handleKeydown}
           data-cursor-scale={CURSOR_SCALE}
         />{' '}
         {label}

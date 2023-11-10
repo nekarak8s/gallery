@@ -4,11 +4,11 @@ import axiosInstance from '@/utils/axiosInstance'
 import toastManager from '@/utils/toastManager'
 
 export function useLogin() {
-  return useMutation<string, ErrorResponse, string>(
+  return useMutation<MessageResponse<string>, ErrorResponse, string>(
     (type) => axiosInstance.post(`/member/login?type=${type}`),
     {
       onSuccess: (data) => {
-        const redirectURL = data
+        const redirectURL = data.data
         window.location.href = redirectURL
       },
       onError: () => {

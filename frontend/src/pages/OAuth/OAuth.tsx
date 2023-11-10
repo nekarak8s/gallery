@@ -32,15 +32,15 @@ function OAuth() {
     if (isSuccess) {
       const pathname = window.sessionStorage.getItem('login-pathname')
       console.log('pathname', pathname)
-      if (pathname && pathname !== routes['Login'].path) {
+      if (pathname && pathname !== routes['Login']) {
         navigate(pathname)
       } else {
-        navigate(routes['MyPage'].path)
+        navigate(routes['MyPage'])
       }
     }
 
     if (isError) {
-      navigate(routes['Login'].path)
+      navigate(routes['Login'])
     }
   }, [isSuccess, isError])
 
