@@ -1,15 +1,15 @@
 import { useEffect, useState } from 'react'
-import { userData } from '../../data'
-
 import './Profile.scss'
+import { useUserQuery } from '../../services'
+import Loading from '@/atoms/ui/Loading'
 
 interface ProfileProps {
   onLoaded?: () => void
 }
 
 const Profile = ({ onLoaded }: ProfileProps) => {
-  // const { data: user, isLoading, isError } = useUserQuery()
-  const user = userData
+  const { data: user, isLoading, isError } = useUserQuery()
+  // const user = userData
 
   /**
    * Handle loaded data
@@ -41,13 +41,13 @@ const Profile = ({ onLoaded }: ProfileProps) => {
     }
   }, [user])
 
-  // if (isLoading) {
-  //   return <Loading />
-  // }
+  if (isLoading) {
+    return <Loading />
+  }
 
-  // if (isError) {
-  //   return <div />
-  // }
+  if (isError) {
+    return <div />
+  }
 
   return (
     <div className="profile">

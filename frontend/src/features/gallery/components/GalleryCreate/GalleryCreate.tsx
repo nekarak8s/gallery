@@ -22,7 +22,7 @@ const GalleryCreate = () => {
         <PlusIcon />
       </button>
       <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
-        <GalleryForm />
+        <GalleryForm onSuccess={() => setIsOpen(false)} />
       </Modal>
     </>
   )

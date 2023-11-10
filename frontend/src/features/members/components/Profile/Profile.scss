@@ -13,25 +13,25 @@
   background-clip: text;
   -webkit-background-clip: text;
   color: transparent;
-  font-size: 7rem;
+  font-size: 6rem;
   font-weight: 600;
   line-height: 120%;
 }
 
 @include laptop {
   .profile {
-    font-size: 6rem;
+    font-size: 5rem;
   }
 }
 
 @include tablet {
   .profile {
-    font-size: 5rem;
+    font-size: 4rem;
   }
 }
 
 @include mobile {
   .profile {
-    font-size: 11vw;
+    font-size: 10vw;
   }
 }

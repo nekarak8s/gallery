@@ -1,16 +1,16 @@
 import React, { useRef, useEffect } from 'react'
-import { galleryListData } from '../../data'
+import { useGalleryListQuery } from '../../services'
 import GalleryCreate from '../GalleryCreate'
 import GalleryItem from '../GalleryItem'
-
 import './GalleryList.scss'
+import Loading from '@/atoms/ui/Loading'
 
 const GalleryList = () => {
   const containerRef = useRef<HTMLDivElement>(null)
 
-  const galleryList = galleryListData
+  // const galleryList = galleryListData
+  const { data: galleryList, isLoading, isError } = useGalleryListQuery()
 
-  // const { data: galleryList, isLoading, isError } = useGalleryListQuery()
   useEffect(() => {
     if (!galleryList) return
 
@@ -34,9 +34,9 @@ const GalleryList = () => {
     })
   }, [galleryList])
 
-  // if (isLoading) return <Loading />
+  if (isLoading) return <Loading />
 
-  // if (isError) return
+  if (isError) return
 
   return (
     <div className="gallery-list" ref={containerRef}>

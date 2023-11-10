@@ -31,15 +31,15 @@ const Button3D = ({
   useEffect(() => {
     const button = to ? linkRef.current! : buttonRef.current!
 
-    const handleKeyup = function clickButton(e: KeyboardEvent) {
+    const handleKeydown = function clickButton(e: KeyboardEvent) {
       if (e.key === 'Enter') {
         !disabled && button.click()
       }
     }
 
-    button.addEventListener('keyup', handleKeyup as EventListener)
+    button.addEventListener('keydown', handleKeydown as EventListener)
     return () => {
-      button.removeEventListener('keyup', handleKeyup as EventListener)
+      button.removeEventListener('keydown', handleKeydown as EventListener)
     }
   }, [])
 

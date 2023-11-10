@@ -16,6 +16,7 @@
   right: 0;
   // transform: rotate(90deg);
 }
+
 .profile-form h2 {
   color: transparent;
   margin: 0.5em 0em 0.5em;
@@ -27,4 +28,9 @@
   );
   background-clip: text;
   -webkit-background-clip: text;
+}
+
+.profile-form__loading {
+  position: fixed;
+  inset: 0 0 0 0;
 }
