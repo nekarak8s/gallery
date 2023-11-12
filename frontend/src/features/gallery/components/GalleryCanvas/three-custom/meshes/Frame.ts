@@ -1,12 +1,7 @@
-import {
-  Mesh,
-  MeshStandardMaterial,
-  BoxGeometry,
-  Texture,
-  TextureLoader,
-  SpotLight,
-} from 'three'
+import { Mesh, MeshStandardMaterial, BoxGeometry, Texture, TextureLoader, SpotLight } from 'three'
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import { Stuff, StuffArgs } from './Stuff'
+import lightGlb from '@/assets/glbs/spotlight.glb'
 
 type FrameArgs = StuffArgs & {
   container: THREE.Mesh
@@ -71,6 +66,21 @@ export class Frame extends Stuff {
     spotLight.position.y = 1
     spotLight.target = this.mesh
     this.mesh.add(spotLight)
+
+    const gltfLoader = new GLTFLoader()
+    gltfLoader.load(lightGlb, (glb) => {
+      // glb.scene.traverse((child) => {
+      //   if (child.isMesh) {
+      //     child.castShadow = true
+      //   }
+      // })
+
+      const light = glb.scene
+      light.position.set(0, 1, info.isDownRight ? 1 : -1)
+      light.rotation.set(0, info.isDownRight ? Math.PI / 2 : -Math.PI / 2, 0)
+      light.castShadow = true
+      this.mesh.add(light)
+    })
 
     /**
      * Add to the scene

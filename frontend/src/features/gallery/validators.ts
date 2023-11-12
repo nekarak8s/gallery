@@ -1,8 +1,6 @@
 import * as regexes from './regexes'
 
-export function validateGalleryForm(
-  formData: FormData
-): RegexResult<GalleryForm> {
+export function validateGalleryForm(formData: FormData): RegexResult<GalleryForm> {
   // validate name
   const name = formData.get('name') as string
   if (!regexes.name.reg.test(name)) {

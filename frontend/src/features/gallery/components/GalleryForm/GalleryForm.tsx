@@ -60,8 +60,6 @@ const GalleryForm = ({ onSuccess, onError }: GalleryFormProps) => {
   return (
     <>
       <Form className="gallery-form" onSubmit={handleSubmit}>
-        {/* <BlobIcon /> */}
-
         <Text label="전시회 이름" name="name" initialValue="" />
         <Textarea label="소개글" name="content" initialValue="" />
         <div className="gallery-form__place">
@@ -73,19 +71,11 @@ const GalleryForm = ({ onSuccess, onError }: GalleryFormProps) => {
               label={place.name}
               value={place.placeId}
             >
-              <img
-                src={place.twoDimensionImageUrl}
-                alt={`${place.name} 공간`}
-              />
+              <img src={place.twoDimensionImageUrl} alt={`${place.name} 공간`} />
             </Radio>
           ))}
         </div>
-        <Button
-          type="submit"
-          direction="left"
-          ariaLabel="전시회 생성"
-          text="전시회 개관"
-        />
+        <Button type="submit" direction="left" ariaLabel="전시회 생성" text="전시회 개관" />
       </Form>
       {isCreateLoading && (
         <div className="gallery-form__loading">

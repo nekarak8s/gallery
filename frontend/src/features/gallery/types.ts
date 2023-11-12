@@ -44,3 +44,14 @@ type TFrame = {
     thumbnailUrl: string
   }
 }
+
+type GalleryTypeProps = {
+  loadingManager: THREE.LoadingManager
+  canvas: HTMLCanvasElement
+  gallery: Gallery
+  frameList: TFrame[]
+}
+
+type GalleryTypeReturns = {
+  dispose: () => void
+}

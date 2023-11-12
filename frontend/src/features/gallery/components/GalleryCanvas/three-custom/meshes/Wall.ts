@@ -1,54 +1,61 @@
 import {
-  MathUtils,
   Mesh,
   MeshStandardMaterial,
-  PlaneGeometry,
+  BoxGeometry,
   RepeatWrapping,
   Texture,
   TextureLoader,
+  MathUtils,
 } from 'three'
 import { Stuff, StuffArgs } from './Stuff'
-import ambientImg from '@/assets/textures/wood_herringbone/Wood_Herringbone_Tiles_001_ambientOcclusion.jpg'
-import baseImg from '@/assets/textures/wood_herringbone/Wood_Herringbone_Tiles_001_basecolor.jpg'
-import normalImg from '@/assets/textures/wood_herringbone/Wood_Herringbone_Tiles_001_normal.jpg'
-import roughImg from '@/assets/textures/wood_herringbone/Wood_Herringbone_Tiles_001_roughness.jpg'
+import baseImg from '@/assets/textures/plaster_rough/Plaster_Rough_001_COLOR.jpg'
+import normalImg from '@/assets/textures/plaster_rough/Plaster_Rough_001_NORM.jpg'
+import ambientImg from '@/assets/textures/plaster_rough/Plaster_Rough_001_OCC.jpg'
+import roughImg from '@/assets/textures/plaster_rough/Plaster_Rough_001_ROUGH.jpg'
 
-type FloorArgs = StuffArgs & {
+type WallArgs = StuffArgs & {
   container: THREE.Scene | THREE.Mesh
   color?: string
+  transparent?: boolean
+  opacity?: number
+  direction?: 'horizontal' | 'vertical'
   repeatX?: number
   repeatY?: number
+  noTexture?: boolean
   baseImg?: string
   normalImg?: string
   ambientImg?: string
   roughImg?: string
 }
 
-export class Floor extends Stuff {
-  type: string = 'floor'
-  geometry: THREE.PlaneGeometry
+export class Wall extends Stuff {
+  type: string = 'wall'
+  geometry: THREE.BoxGeometry
   material: THREE.MeshStandardMaterial
   mesh: THREE.Mesh
+  direction: 'horizontal' | 'vertical' = 'horizontal'
   textures: Record<string, Texture>
 
-  constructor(info: FloorArgs) {
+  constructor(info: WallArgs) {
     super(info)
+
     /**
      * Adjust position
      */
-    this.x += this.width / 2
-    this.z += this.depth / 2
+    this.y += this.height / 2
 
-    if (!this.rotationX) {
-      this.rotationX = -MathUtils.degToRad(90)
+    if (info.direction === 'vertical') {
+      this.direction = 'vertical'
+      this.rotationY = MathUtils.degToRad(90)
+      this.z += this.width / 2
     } else {
-      this.rotationX += -MathUtils.degToRad(90)
+      this.x += this.width / 2
     }
 
     /**
      * Geometry
      */
-    this.geometry = new PlaneGeometry(this.width, this.depth)
+    this.geometry = new BoxGeometry(this.width, this.height, this.depth)
 
     /**
      * Texture
@@ -56,12 +63,12 @@ export class Floor extends Stuff {
     this.textures = {}
     const textureLoader = new TextureLoader()
 
-    this.textures['baseTex'] = textureLoader.load(info.baseImg || baseImg)
-    this.textures['normalTex'] = textureLoader.load(info.normalImg || normalImg)
-    this.textures['roughTex'] = textureLoader.load(info.roughImg || roughImg)
-    this.textures['ambientTex'] = textureLoader.load(
-      info.ambientImg || ambientImg
-    )
+    if (!info.noTexture) {
+      this.textures['baseTex'] = textureLoader.load(info.baseImg || baseImg)
+      this.textures['normalTex'] = textureLoader.load(info.normalImg || normalImg)
+      this.textures['roughTex'] = textureLoader.load(info.roughImg || roughImg)
+      this.textures['ambientTex'] = textureLoader.load(info.ambientImg || ambientImg)
+    }
 
     if (info.repeatX || info.repeatY) {
       for (const key in this.textures) {
@@ -80,12 +87,13 @@ export class Floor extends Stuff {
      */
     this.material = new MeshStandardMaterial({
       color: info.color || '#ffffff',
+      transparent: info.transparent || false,
+      opacity: info.opacity || 1.0,
       map: this.textures['baseTex'],
       normalMap: this.textures['normalTex'],
       roughnessMap: this.textures['roughTex'],
-      roughness: 0.1,
+      roughness: 0.2,
       aoMap: this.textures['ambientTex'],
-      // side: DoubleSide,
     })
 
     /**
@@ -94,6 +102,7 @@ export class Floor extends Stuff {
     this.mesh = new Mesh(this.geometry, this.material)
     this.mesh.position.set(this.x, this.y, this.z)
     this.mesh.rotation.set(this.rotationX, this.rotationY, this.rotationZ)
+    this.mesh.castShadow = !info.transparent || false
     this.mesh.receiveShadow = true
 
     /**

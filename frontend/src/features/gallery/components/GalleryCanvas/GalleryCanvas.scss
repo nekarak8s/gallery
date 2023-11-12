@@ -1,4 +1,21 @@
 .gallery-canvas {
-  width: 100%s;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
+
+  canvas {
+    width: 100% !important;
+    height: 100% !important;
+  }
+}
+
+.gallery-canvas__loading {
+  opacity: 0;
+
+  &--enter {
+    opacity: 1;
+  }
+
+  &--leave {
+    opacity: 0;
+  }
 }

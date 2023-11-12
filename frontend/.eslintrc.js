@@ -58,6 +58,7 @@ module.exports = {
   rules: {
     'react/react-in-jsx-scope': 0,
     '@typescript-eslint/no-var-requires': 0, // allow commonJS
+    // typescript
     '@typescript-eslint/no-explicit-any': 0,
     '@typescript-eslint/no-unsafe-return': 0,
     '@typescript-eslint/no-floating-promises': 1,

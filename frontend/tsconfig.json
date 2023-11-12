@@ -11,14 +11,15 @@
     "strict": true,
     "strictNullChecks": true,
     "skipLibCheck": true,
-    "target": "es5",
+    "target": "es6",
     "jsx": "react-jsx",
     "module": "ESNext",
     "moduleResolution": "node",
     "typeRoots": [
       "./node_modules/@types",
       "./src/**/@types",
-      "./src/**/types.*"
+      "./src/**/types.*",
+      "./src/**/types.ts"
     ],
     "baseUrl": ".",
     "paths": {

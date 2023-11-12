@@ -100,9 +100,7 @@ function HomeSection1() {
   useEffect(() => {
     // Get the elements
     const interact = interactRef.current!
-    const interactEles = Array.from(
-      interact.children as HTMLCollectionOf<HTMLDivElement>
-    )
+    const interactEles = Array.from(interact.children as HTMLCollectionOf<HTMLDivElement>)
 
     // Handle mouse event
     const handleMousemove = function moveHS1Elements(e: MouseEvent) {
@@ -141,7 +139,7 @@ function HomeSection1() {
   }, [])
 
   /**
-   * Scroll Event Hadling
+   * Scroll Event Handling
    */
   const mainRef = useRef<HTMLDivElement>(null)
   const fadeRef = useRef<HTMLDivElement>(null)
@@ -165,10 +163,7 @@ function HomeSection1() {
       const scrollTop = window.scrollY
 
       // Scroll & Mouse optimization
-      if (
-        scrollTop < scrollStart ||
-        scrollTop > scrollEnd + main.offsetHeight
-      ) {
+      if (scrollTop < scrollStart || scrollTop > scrollEnd + main.offsetHeight) {
         isMousemove.current = false
         return
       }
@@ -178,12 +173,9 @@ function HomeSection1() {
 
       // handle fade gradient layer opacity
       if (scrollTop < scrollStart + SCROLL_OFFSET) {
-        fade.style.opacity = `0`
+        fade.classList.remove('fade')
       } else {
-        fade.style.opacity = `${
-          (scrollTop - scrollStart - SCROLL_OFFSET) /
-          (scrollEnd - scrollStart - SCROLL_OFFSET)
-        }`
+        fade.classList.add('fade')
       }
     }
 
@@ -207,12 +199,7 @@ function HomeSection1() {
             <ScrollDown />
           </div>
           <div className="hs1-interact" ref={interactRef}>
-            <div
-              className="hs1-interact__sky"
-              data-speedx="0"
-              data-speedy="0"
-              data-speedr="0"
-            >
+            <div className="hs1-interact__sky" data-speedx="0" data-speedy="0" data-speedr="0">
               <StaticImage
                 imgSrc={skyImg}
                 webpSrc={skyWebp}
@@ -325,9 +312,9 @@ function HomeSection1() {
         {imagesLoaded >= TOTAL_IMAGE ? (
           <div className="hs1-cover__phrase">
             <h1 tabIndex={0} onKeyDown={handleClick}>
-              클릭하세요
+              환영합니다
             </h1>
-            <h2>배경 음악이 재생됩니다</h2>
+            <h2>클릭하면 배경음악이 재생됩니다</h2>
           </div>
         ) : (
           <div className="hs1-cover__loading">
