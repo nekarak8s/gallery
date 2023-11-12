@@ -14,6 +14,7 @@ import { DefaultCamera } from '../three-custom/cameras/DefaultCamera'
 import { Ceiling } from '../three-custom/meshes/Ceiling'
 import { Floor } from '../three-custom/meshes/Floor'
 import { Frame } from '../three-custom/meshes/Frame'
+import { SpotLighting } from '../three-custom/meshes/SpotLighting'
 import { Wall } from '../three-custom/meshes/Wall'
 import { DefaultRenderer } from '../three-custom/renderers/DefaultRenderer'
 import nx from '@/assets/cubemaps/clear_sky/nx.png'
@@ -208,7 +209,7 @@ const greenary = ({ canvas, loadingManager, gallery, frameList }: GalleryTypePro
    */
 
   // Ambient light
-  const ambientLight = new AmbientLight('white', 0.2)
+  const ambientLight = new AmbientLight('white', 0.4)
   scene.add(ambientLight)
 
   // Direct Light
@@ -285,7 +286,7 @@ const greenary = ({ canvas, loadingManager, gallery, frameList }: GalleryTypePro
       },
     })
     frames.forEach((frame) => {
-      new Frame({
+      const f = new Frame({
         container: wall.mesh,
         name: `frame_${frame.order}`,
         baseImg: frameList[frame.order - 1].framePictureUrl,
@@ -297,6 +298,18 @@ const greenary = ({ canvas, loadingManager, gallery, frameList }: GalleryTypePro
         height: 1,
         depth: 0.05,
         rotationY: frame.isDownRight ? 0 : MathUtils.degToRad(180),
+      })
+      new SpotLighting({
+        container: f.mesh,
+        name: 'spotlight',
+        gltfLoader,
+        targetMesh: f.mesh,
+        color: '#ffffff',
+        intensity: 9,
+        distance: 6,
+        angle: Math.PI / 14,
+        y: UNIT.WALL_HEIGHT - UNIT.FRAME_HEIGHT,
+        z: 3,
       })
     })
   })
@@ -322,7 +335,7 @@ const greenary = ({ canvas, loadingManager, gallery, frameList }: GalleryTypePro
       },
     })
     frames.forEach((frame) => {
-      new Frame({
+      const f = new Frame({
         container: wall.mesh,
         name: `frame_${frame.order}`,
         baseImg: frameList[frame.order - 1].framePictureUrl,
@@ -334,6 +347,18 @@ const greenary = ({ canvas, loadingManager, gallery, frameList }: GalleryTypePro
         height: 1,
         depth: 0.02,
         rotationY: frame.isDownRight ? 0 : MathUtils.degToRad(180),
+      })
+      new SpotLighting({
+        container: f.mesh,
+        name: 'spotlight',
+        gltfLoader,
+        targetMesh: f.mesh,
+        color: '#ffffff',
+        intensity: 9,
+        distance: 6,
+        angle: Math.PI / 14,
+        y: UNIT.WALL_HEIGHT - UNIT.FRAME_HEIGHT,
+        z: 3,
       })
     })
   })
