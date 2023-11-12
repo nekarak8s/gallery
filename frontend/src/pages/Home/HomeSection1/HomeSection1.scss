@@ -24,7 +24,7 @@
   @include z-index(top);
   position: absolute;
   width: 100%;
-  height: 100%;
+  height: 130%;
   top: 0;
   left: 0;
   background: linear-gradient(
@@ -34,9 +34,15 @@
     var(--background-color, rgb(122, 200, 219)) 100%
   );
   opacity: 0;
+  transform: translateY(0);
   transition:
-    opacity 300ms cubic-bezier(0.2, 0.49, 0.32, 0.99),
-    background-color var(--transition-time-home) ease-in-out;
+    opacity 800ms cubic-bezier(0.2, 0.49, 0.32, 0.99),
+    transform 1200ms ease-in-out;
+
+  &.fade {
+    opacity: 1;
+    transform: translateY(-15%);
+  }
 }
 
 .hs1-scroll {
@@ -365,7 +371,7 @@
       }
 
       h2 {
-        font-size: 0.5em;
+        font-size: 0.4em;
       }
     }
   }
@@ -426,7 +432,7 @@
       }
 
       h2 {
-        font-size: 0.5em;
+        font-size: 0.4em;
       }
     }
   }

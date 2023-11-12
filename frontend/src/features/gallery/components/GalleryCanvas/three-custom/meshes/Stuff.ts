@@ -1,3 +1,5 @@
+import { Box, Vec3, Body, Material, World } from 'cannon-es'
+
 export type StuffArgs = {
   name: string
   x?: number
@@ -22,6 +24,7 @@ export class Stuff {
   width: number
   height: number
   depth: number
+  cannonBody: Body | undefined
 
   constructor(info: StuffArgs) {
     this.name = info.name
@@ -34,5 +37,19 @@ export class Stuff {
     this.width = info.width || 0
     this.height = info.height || 0
     this.depth = info.depth || 0
+  }
+
+  setCannonBody(world: World, mass?: number, material?: Material) {
+    const shape = new Box(new Vec3(this.width / 2, this.height / 2, this.depth / 2))
+    this.cannonBody = new Body({
+      mass,
+      position: new Vec3(this.x, this.y, this.z),
+      shape,
+      material,
+    })
+    this.cannonBody.quaternion.setFromAxisAngle(new Vec3(1, 0, 0), this.rotationX)
+    this.cannonBody.quaternion.setFromAxisAngle(new Vec3(0, 1, 0), this.rotationY)
+    this.cannonBody.quaternion.setFromAxisAngle(new Vec3(0, 0, 1), this.rotationZ)
+    world.addBody(this.cannonBody)
   }
 }
