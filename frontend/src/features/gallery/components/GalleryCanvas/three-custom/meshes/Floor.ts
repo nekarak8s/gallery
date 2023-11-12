@@ -16,6 +16,8 @@ type TextureProps = {
   normalImg?: string
   ambientImg?: string
   roughImg?: string
+  repeatX?: number
+  repeatY?: number
 }
 
 type FloorProps = StuffArgs & {
@@ -23,9 +25,7 @@ type FloorProps = StuffArgs & {
   world: World
   cannonMaterial?: Material
   color?: string
-  repeatX?: number
-  repeatY?: number
-  texture: TextureProps
+  texture?: TextureProps
 }
 
 export class Floor extends Stuff {
@@ -71,15 +71,15 @@ export class Floor extends Stuff {
         textures['ambientTex'] = info.texture.textureLoader.load(info.texture.ambientImg)
       }
 
-      if (info.repeatX || info.repeatY) {
+      if (info.texture.repeatX || info.texture.repeatY) {
         for (const key in textures) {
           const texture = textures[key]
 
           texture.wrapS = RepeatWrapping
           texture.wrapT = RepeatWrapping
 
-          texture.repeat.x = info.repeatX || 1
-          texture.repeat.y = info.repeatY || 1
+          texture.repeat.x = info.texture.repeatX || 1
+          texture.repeat.y = info.texture.repeatY || 1
         }
       }
     }

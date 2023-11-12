@@ -179,7 +179,7 @@ const greenary = ({ canvas, loadingManager, gallery, frameList }: GalleryTypePro
   scene.background = cubeTextureLoader.load([px, nx, py, ny, pz, nz])
 
   /**
-   *
+   * Cannon world
    */
   const world = new World()
 
@@ -237,14 +237,14 @@ const greenary = ({ canvas, loadingManager, gallery, frameList }: GalleryTypePro
     name: 'floor',
     width: 20,
     depth: 30,
-    repeatX: 4,
-    repeatY: 6,
     texture: {
       textureLoader,
       baseImg: floorBaseImg,
       normalImg: floorNormalImg,
       ambientImg: floorAmbientImg,
       roughImg: floorRoughImg,
+      repeatX: 4,
+      repeatY: 6,
     },
   })
 
