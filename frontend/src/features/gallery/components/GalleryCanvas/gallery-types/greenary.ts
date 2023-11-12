@@ -10,6 +10,7 @@ import {
 import { FirstPersonControls } from 'three/examples/jsm/controls/FirstPersonControls'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import { DefaultCamera } from '../three-custom/cameras/DefaultCamera'
+import { Ceiling } from '../three-custom/meshes/Ceiling'
 import { Floor } from '../three-custom/meshes/Floor'
 import { Frame } from '../three-custom/meshes/Frame'
 import { Wall } from '../three-custom/meshes/Wall'
@@ -195,7 +196,7 @@ const greenary = ({ canvas, loadingManager, gallery, frameList }: GalleryTypePro
    */
   const controls = new FirstPersonControls(camera, renderer.domElement)
   controls.movementSpeed = 2
-  controls.lookSpeed = 0.01
+  controls.lookSpeed = 0.1
 
   /**
    * Light
@@ -210,7 +211,7 @@ const greenary = ({ canvas, loadingManager, gallery, frameList }: GalleryTypePro
   directionalLight.position.set(30, 30, 0)
   directionalLight.shadow.camera.left = -30
   directionalLight.shadow.camera.right = 0
-  directionalLight.shadow.camera.top = 0
+  directionalLight.shadow.camera.top = 10
   directionalLight.shadow.camera.bottom = -20
   directionalLight.castShadow = true
   scene.add(directionalLight)
@@ -313,6 +314,16 @@ const greenary = ({ canvas, loadingManager, gallery, frameList }: GalleryTypePro
       transparent: true,
       opacity: 0.2,
     })
+  })
+
+  // Ceiling mesh
+  const ceiling = new Ceiling({
+    container: scene,
+    world,
+    name: 'ceiling',
+    width: 20,
+    height: UNIT.WALL_HEIGHT,
+    depth: 30,
   })
 
   /**
