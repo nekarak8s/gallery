@@ -14,7 +14,7 @@ export class DefaultCamera extends PerspectiveCamera {
   constructor(info: DefaultCameraProps) {
     super(
       info.fov,
-      info.canvas instanceof HTMLCanvasElement
+      info.canvas
         ? info.canvas.offsetWidth / info.canvas.offsetHeight
         : window.innerWidth / window.innerHeight,
       info.near || 0.01,
@@ -24,9 +24,8 @@ export class DefaultCamera extends PerspectiveCamera {
   }
 
   setDefaultAspect() {
-    this.aspect =
-      this.canvas instanceof HTMLCanvasElement
-        ? this.canvas.offsetWidth / this.canvas.offsetHeight
-        : window.innerWidth / window.innerHeight
+    this.aspect = this.canvas
+      ? this.canvas.offsetWidth / this.canvas.offsetHeight
+      : window.innerWidth / window.innerHeight
   }
 }

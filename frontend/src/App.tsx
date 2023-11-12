@@ -10,7 +10,7 @@ import '@/styles/_reset.scss'
 import '@/styles/_global.scss'
 import './App.scss'
 
-const Home = lazy(() => import('@/pages/Home'))
+const Home = lazy(() => import('@/pages/Home')) // 120kb
 const Guide = lazy(() => import('@/pages/Guide'))
 const MyPage = lazy(() => import('@/pages/MyPage'))
 const Gallery = lazy(() => import('@/pages/Gallery'))
