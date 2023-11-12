@@ -7,7 +7,6 @@ import {
   RepeatWrapping,
   Texture,
   TextureLoader,
-  DoubleSide,
 } from 'three'
 import { Stuff, StuffArgs } from './Stuff'
 
@@ -42,13 +41,12 @@ export class Ceiling extends Stuff {
      * Adjust position & angle
      */
     this.x += this.width / 2
-    this.y += this.height
     this.z += this.depth / 2
 
     if (!this.rotationX) {
-      this.rotationX = -MathUtils.degToRad(90)
+      this.rotationX = MathUtils.degToRad(90)
     } else {
-      this.rotationX += -MathUtils.degToRad(90)
+      this.rotationX += MathUtils.degToRad(90)
     }
 
     /**
@@ -90,13 +88,11 @@ export class Ceiling extends Stuff {
      * Material
      */
     this.material = new MeshStandardMaterial({
-      color: info.color || '#ffffff',
+      color: info.color,
       map: textures['baseTex'],
       normalMap: textures['normalTex'],
       roughnessMap: textures['roughTex'],
-      roughness: 0.1,
       aoMap: textures['ambientTex'],
-      side: DoubleSide,
     })
 
     /**

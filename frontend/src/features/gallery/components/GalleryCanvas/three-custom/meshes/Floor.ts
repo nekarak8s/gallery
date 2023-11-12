@@ -1,5 +1,6 @@
 import { Material, World } from 'cannon-es'
 import {
+  ColorRepresentation,
   MathUtils,
   Mesh,
   MeshStandardMaterial,
@@ -24,7 +25,7 @@ type FloorProps = StuffArgs & {
   container: THREE.Scene | THREE.Mesh
   world: World
   cannonMaterial?: Material
-  color?: string
+  color?: ColorRepresentation
   texture?: TextureProps
 }
 
@@ -88,11 +89,11 @@ export class Floor extends Stuff {
      * Material
      */
     this.material = new MeshStandardMaterial({
-      color: info.color || '#ffffff',
+      color: info.color,
+      roughness: 0.1,
       map: textures['baseTex'],
       normalMap: textures['normalTex'],
       roughnessMap: textures['roughTex'],
-      roughness: 0.1,
       aoMap: textures['ambientTex'],
     })
 

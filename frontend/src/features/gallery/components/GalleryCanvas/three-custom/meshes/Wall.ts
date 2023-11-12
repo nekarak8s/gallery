@@ -5,27 +5,25 @@ import {
   RepeatWrapping,
   Texture,
   TextureLoader,
-  MathUtils,
 } from 'three'
 import { Stuff, StuffArgs } from './Stuff'
-import baseImg from '@/assets/textures/plaster_rough/Plaster_Rough_001_COLOR.jpg'
-import normalImg from '@/assets/textures/plaster_rough/Plaster_Rough_001_NORM.jpg'
-import ambientImg from '@/assets/textures/plaster_rough/Plaster_Rough_001_OCC.jpg'
-import roughImg from '@/assets/textures/plaster_rough/Plaster_Rough_001_ROUGH.jpg'
+
+type TextureProps = {
+  textureLoader: TextureLoader
+  baseImg: string
+  normalImg?: string
+  ambientImg?: string
+  roughImg?: string
+  repeatX?: number
+  repeatY?: number
+}
 
 type WallArgs = StuffArgs & {
   container: THREE.Scene | THREE.Mesh
   color?: string
   transparent?: boolean
   opacity?: number
-  direction?: 'horizontal' | 'vertical'
-  repeatX?: number
-  repeatY?: number
-  noTexture?: boolean
-  baseImg?: string
-  normalImg?: string
-  ambientImg?: string
-  roughImg?: string
+  texture?: TextureProps
 }
 
 export class Wall extends Stuff {
@@ -33,8 +31,6 @@ export class Wall extends Stuff {
   geometry: THREE.BoxGeometry
   material: THREE.MeshStandardMaterial
   mesh: THREE.Mesh
-  direction: 'horizontal' | 'vertical' = 'horizontal'
-  textures: Record<string, Texture>
 
   constructor(info: WallArgs) {
     super(info)
@@ -42,15 +38,9 @@ export class Wall extends Stuff {
     /**
      * Adjust position
      */
+    this.x += (this.width * Math.cos(this.rotationY)) / 2
     this.y += this.height / 2
-
-    if (info.direction === 'vertical') {
-      this.direction = 'vertical'
-      this.rotationY = MathUtils.degToRad(90)
-      this.z += this.width / 2
-    } else {
-      this.x += this.width / 2
-    }
+    this.z += (this.width * Math.sin(this.rotationY)) / 2
 
     /**
      * Geometry
@@ -60,25 +50,30 @@ export class Wall extends Stuff {
     /**
      * Texture
      */
-    this.textures = {}
-    const textureLoader = new TextureLoader()
+    const textures: Record<string, Texture> = {}
 
-    if (!info.noTexture) {
-      this.textures['baseTex'] = textureLoader.load(info.baseImg || baseImg)
-      this.textures['normalTex'] = textureLoader.load(info.normalImg || normalImg)
-      this.textures['roughTex'] = textureLoader.load(info.roughImg || roughImg)
-      this.textures['ambientTex'] = textureLoader.load(info.ambientImg || ambientImg)
-    }
+    if (info.texture) {
+      textures['baseTex'] = info.texture.textureLoader.load(info.texture.baseImg)
+      if (info.texture.normalImg) {
+        textures['normalTex'] = info.texture.textureLoader.load(info.texture.normalImg)
+      }
+      if (info.texture.roughImg) {
+        textures['roughTex'] = info.texture.textureLoader.load(info.texture.roughImg)
+      }
+      if (info.texture.ambientImg) {
+        textures['ambientTex'] = info.texture.textureLoader.load(info.texture.ambientImg)
+      }
 
-    if (info.repeatX || info.repeatY) {
-      for (const key in this.textures) {
-        const texture = this.textures[key]
+      if (info.texture.repeatX || info.texture.repeatY) {
+        for (const key in textures) {
+          const texture = textures[key]
 
-        texture.wrapS = RepeatWrapping
-        texture.wrapT = RepeatWrapping
+          texture.wrapS = RepeatWrapping
+          texture.wrapT = RepeatWrapping
 
-        texture.repeat.x = info.repeatX || 1
-        texture.repeat.y = info.repeatY || 1
+          texture.repeat.x = info.texture.repeatX || 1
+          texture.repeat.y = info.texture.repeatY || 1
+        }
       }
     }
 
@@ -86,14 +81,14 @@ export class Wall extends Stuff {
      * Material
      */
     this.material = new MeshStandardMaterial({
-      color: info.color || '#ffffff',
+      color: info.color,
       transparent: info.transparent || false,
-      opacity: info.opacity || 1.0,
-      map: this.textures['baseTex'],
-      normalMap: this.textures['normalTex'],
-      roughnessMap: this.textures['roughTex'],
-      roughness: 0.2,
-      aoMap: this.textures['ambientTex'],
+      opacity: info.opacity,
+      roughness: 0.1,
+      map: textures['baseTex'],
+      normalMap: textures['normalTex'],
+      roughnessMap: textures['roughTex'],
+      aoMap: textures['ambientTex'],
     })
 
     /**

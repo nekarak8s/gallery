@@ -4,6 +4,7 @@ import {
   Clock,
   CubeTextureLoader,
   DirectionalLight,
+  MathUtils,
   Scene,
   TextureLoader,
 } from 'three'
@@ -21,6 +22,10 @@ import nz from '@/assets/cubemaps/clear_sky/nz.png'
 import px from '@/assets/cubemaps/clear_sky/px.png'
 import py from '@/assets/cubemaps/clear_sky/py.png'
 import pz from '@/assets/cubemaps/clear_sky/pz.png'
+import wallBaseImg from '@/assets/textures/plaster_rough/Plaster_Rough_001_COLOR.jpg'
+import wallNormalImg from '@/assets/textures/plaster_rough/Plaster_Rough_001_NORM.jpg'
+import wallAmbientImg from '@/assets/textures/plaster_rough/Plaster_Rough_001_OCC.jpg'
+import wallRoughImg from '@/assets/textures/plaster_rough/Plaster_Rough_001_ROUGH.jpg'
 import floorAmbientImg from '@/assets/textures/wood_herringbone/Wood_Herringbone_Tiles_001_ambientOcclusion.jpg'
 import floorBaseImg from '@/assets/textures/wood_herringbone/Wood_Herringbone_Tiles_001_basecolor.jpg'
 import floorNormalImg from '@/assets/textures/wood_herringbone/Wood_Herringbone_Tiles_001_normal.jpg'
@@ -28,7 +33,7 @@ import floorRoughImg from '@/assets/textures/wood_herringbone/Wood_Herringbone_T
 
 const UNIT = {
   WALL_DEPTH: 0.2,
-  WALL_HEIGHT: 3,
+  WALL_HEIGHT: 4.5,
   GLASS_WALL_DEPTH: 0.1,
   FRAME_HEIGHT: 2,
 }
@@ -203,7 +208,7 @@ const greenary = ({ canvas, loadingManager, gallery, frameList }: GalleryTypePro
    */
 
   // Ambient light
-  const ambientLight = new AmbientLight('white', 0.5)
+  const ambientLight = new AmbientLight('white', 0.2)
   scene.add(ambientLight)
 
   // Direct Light
@@ -211,7 +216,7 @@ const greenary = ({ canvas, loadingManager, gallery, frameList }: GalleryTypePro
   directionalLight.position.set(30, 30, 0)
   directionalLight.shadow.camera.left = -30
   directionalLight.shadow.camera.right = 0
-  directionalLight.shadow.camera.top = 10
+  directionalLight.shadow.camera.top = 5
   directionalLight.shadow.camera.bottom = -20
   directionalLight.castShadow = true
   scene.add(directionalLight)
@@ -249,27 +254,49 @@ const greenary = ({ canvas, loadingManager, gallery, frameList }: GalleryTypePro
     },
   })
 
-  // Wall mesh
+  // Ceiling mesh
+  const ceiling = new Ceiling({
+    container: scene,
+    world,
+    name: 'ceiling',
+    width: 20,
+    depth: 30,
+    y: UNIT.WALL_HEIGHT,
+  })
+
+  // Wall & Frame mesh
   HORIZONTAL_WALLS.forEach(({ x, z, width, frames = [] }, idx) => {
     const wall = new Wall({
       container: scene,
-      name: `horizontal_wall_${idx + 1}`,
+      name: `horizontal-wall-${idx + 1}`,
       x,
       z,
       width,
       height: UNIT.WALL_HEIGHT,
       depth: UNIT.WALL_DEPTH,
-      repeatX: width * 3,
-      repeatY: UNIT.WALL_HEIGHT * 3,
+      texture: {
+        textureLoader,
+        repeatX: width * 3,
+        repeatY: UNIT.WALL_HEIGHT * 3,
+        baseImg: wallBaseImg,
+        ambientImg: wallAmbientImg,
+        roughImg: wallRoughImg,
+        normalImg: wallNormalImg,
+      },
     })
     frames.forEach((frame) => {
       new Frame({
         container: wall.mesh,
         name: `frame_${frame.order}`,
         baseImg: frameList[frame.order - 1].framePictureUrl,
+        textureLoader,
         x: frame.x,
         y: UNIT.FRAME_HEIGHT - UNIT.WALL_HEIGHT / 2,
-        isDownRight: frame.isDownRight,
+        z: frame.isDownRight ? UNIT.WALL_DEPTH / 2 : -UNIT.WALL_DEPTH / 2,
+        width: 1,
+        height: 1,
+        depth: 0.05,
+        rotationY: frame.isDownRight ? 0 : MathUtils.degToRad(180),
       })
     })
   })
@@ -277,24 +304,36 @@ const greenary = ({ canvas, loadingManager, gallery, frameList }: GalleryTypePro
   VERTICAL_WALLS.forEach(({ x, z, width, frames = [] }, idx) => {
     const wall = new Wall({
       container: scene,
-      name: `vertical_wall_${idx + 1}`,
-      direction: 'vertical',
+      name: `vertical-wall-${idx + 1}`,
       x,
       z,
       width,
       height: UNIT.WALL_HEIGHT,
       depth: UNIT.WALL_DEPTH,
-      repeatX: width * 3,
-      repeatY: UNIT.WALL_HEIGHT * 3,
+      rotationY: MathUtils.degToRad(90),
+      texture: {
+        textureLoader,
+        repeatX: width * 3,
+        repeatY: UNIT.WALL_HEIGHT * 3,
+        baseImg: wallBaseImg,
+        ambientImg: wallAmbientImg,
+        roughImg: wallRoughImg,
+        normalImg: wallNormalImg,
+      },
     })
     frames.forEach((frame) => {
       new Frame({
         container: wall.mesh,
         name: `frame_${frame.order}`,
         baseImg: frameList[frame.order - 1].framePictureUrl,
+        textureLoader,
         x: frame.x,
         y: UNIT.FRAME_HEIGHT - UNIT.WALL_HEIGHT / 2,
-        isDownRight: frame.isDownRight,
+        z: frame.isDownRight ? UNIT.WALL_DEPTH / 2 : -UNIT.WALL_DEPTH / 2,
+        width: 1,
+        height: 1,
+        depth: 0.02,
+        rotationY: frame.isDownRight ? 0 : MathUtils.degToRad(180),
       })
     })
   })
@@ -302,28 +341,16 @@ const greenary = ({ canvas, loadingManager, gallery, frameList }: GalleryTypePro
   VERTICAL_GLASS_WALLS.forEach(({ x, z, width }, idx) => {
     new Wall({
       container: scene,
-      name: `vertical_glass_wall_${idx + 1}`,
-      direction: 'vertical',
+      name: `vertical-glass-wall-${idx + 1}`,
       x,
       z,
       width,
       height: UNIT.WALL_HEIGHT,
       depth: UNIT.GLASS_WALL_DEPTH,
-      noTexture: true,
-      color: '#ffffff',
+      rotationY: MathUtils.degToRad(90),
       transparent: true,
       opacity: 0.2,
     })
-  })
-
-  // Ceiling mesh
-  const ceiling = new Ceiling({
-    container: scene,
-    world,
-    name: 'ceiling',
-    width: 20,
-    height: UNIT.WALL_HEIGHT,
-    depth: 30,
   })
 
   /**
