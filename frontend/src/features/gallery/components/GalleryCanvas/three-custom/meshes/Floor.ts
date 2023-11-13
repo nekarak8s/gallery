@@ -1,12 +1,10 @@
 import { Material, World } from 'cannon-es'
 import {
-  ColorRepresentation,
   MathUtils,
   Mesh,
   MeshStandardMaterial,
   PlaneGeometry,
   RepeatWrapping,
-  Texture,
   TextureLoader,
 } from 'three'
 import { Stuff, StuffArgs } from './Stuff'
@@ -25,7 +23,7 @@ type FloorProps = StuffArgs & {
   container: THREE.Scene | THREE.Mesh
   world: World
   cannonMaterial?: Material
-  color?: ColorRepresentation
+  color?: THREE.ColorRepresentation
   texture?: TextureProps
 }
 
@@ -34,6 +32,7 @@ export class Floor extends Stuff {
   geometry: THREE.PlaneGeometry
   material: THREE.MeshStandardMaterial
   mesh: THREE.Mesh
+  textures: Record<string, THREE.Texture> = {}
 
   constructor(info: FloorProps) {
     super(info)
@@ -58,23 +57,21 @@ export class Floor extends Stuff {
     /**
      * Texture
      */
-    const textures: Record<string, Texture> = {}
-
     if (info.texture) {
-      textures['baseTex'] = info.texture.textureLoader.load(info.texture.baseImg)
+      this.textures['baseTex'] = info.texture.textureLoader.load(info.texture.baseImg)
       if (info.texture.normalImg) {
-        textures['normalTex'] = info.texture.textureLoader.load(info.texture.normalImg)
+        this.textures['normalTex'] = info.texture.textureLoader.load(info.texture.normalImg)
       }
       if (info.texture.roughImg) {
-        textures['roughTex'] = info.texture.textureLoader.load(info.texture.roughImg)
+        this.textures['roughTex'] = info.texture.textureLoader.load(info.texture.roughImg)
       }
       if (info.texture.ambientImg) {
-        textures['ambientTex'] = info.texture.textureLoader.load(info.texture.ambientImg)
+        this.textures['ambientTex'] = info.texture.textureLoader.load(info.texture.ambientImg)
       }
 
       if (info.texture.repeatX || info.texture.repeatY) {
-        for (const key in textures) {
-          const texture = textures[key]
+        for (const key in this.textures) {
+          const texture = this.textures[key]
 
           texture.wrapS = RepeatWrapping
           texture.wrapT = RepeatWrapping
@@ -91,10 +88,10 @@ export class Floor extends Stuff {
     this.material = new MeshStandardMaterial({
       color: info.color,
       roughness: 0.1,
-      map: textures['baseTex'],
-      normalMap: textures['normalTex'],
-      roughnessMap: textures['roughTex'],
-      aoMap: textures['ambientTex'],
+      map: this.textures['baseTex'] || null,
+      normalMap: this.textures['normalTex'] || null,
+      roughnessMap: this.textures['roughTex'] || null,
+      aoMap: this.textures['ambientTex'] || null,
     })
 
     /**

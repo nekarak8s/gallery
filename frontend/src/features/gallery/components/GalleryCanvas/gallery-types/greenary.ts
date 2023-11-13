@@ -5,6 +5,7 @@ import {
   CubeTextureLoader,
   DirectionalLight,
   MathUtils,
+  RectAreaLight,
   Scene,
   TextureLoader,
 } from 'three'
@@ -32,11 +33,31 @@ import floorBaseImg from '@/assets/textures/wood_herringbone/Wood_Herringbone_Ti
 import floorNormalImg from '@/assets/textures/wood_herringbone/Wood_Herringbone_Tiles_001_normal.jpg'
 import floorRoughImg from '@/assets/textures/wood_herringbone/Wood_Herringbone_Tiles_001_roughness.jpg'
 
-const UNIT = {
-  WALL_DEPTH: 0.2,
-  WALL_HEIGHT: 4.5,
-  GLASS_WALL_DEPTH: 0.1,
-  FRAME_HEIGHT: 2,
+const WALL_INFO = {
+  depth: 0.2,
+  height: 4.5,
+}
+
+const GLASS_WALL_INFO = {
+  depth: 0.1,
+  height: 4.5,
+  transparent: true,
+  opacity: 0.2,
+}
+
+const FRAME_INFO = {
+  y: 2,
+  width: 1,
+  height: 1,
+  depth: 0.05,
+}
+
+const SPOTLIGHT_INFO = {
+  color: '#FFFFFF',
+  intensity: 8,
+  distance: 4.5,
+  angle: Math.PI / 14,
+  z: 3,
 }
 
 const HORIZONTAL_WALLS = [
@@ -150,7 +171,7 @@ const VERTICAL_WALLS = [
     frames: [
       {
         order: 10,
-        x: -5,
+        x: -6,
         isDownRight: true,
       },
     ],
@@ -202,18 +223,20 @@ const greenary = ({ canvas, loadingManager, gallery, frameList }: GalleryTypePro
    */
   const controls = new FirstPersonControls(camera, renderer.domElement)
   controls.movementSpeed = 2
-  controls.lookSpeed = 0.1
+  controls.lookSpeed = 0.05
 
   /**
    * Light
    */
+  const lights: THREE.Light[] = []
 
   // Ambient light
-  const ambientLight = new AmbientLight('white', 0.4)
+  const ambientLight = new AmbientLight('white', 0.2)
   scene.add(ambientLight)
+  lights.push(ambientLight)
 
   // Direct Light
-  const directionalLight = new DirectionalLight('white', 1)
+  const directionalLight = new DirectionalLight('white', 2)
   directionalLight.position.set(30, 30, 0)
   directionalLight.shadow.camera.left = -30
   directionalLight.shadow.camera.right = 0
@@ -221,12 +244,51 @@ const greenary = ({ canvas, loadingManager, gallery, frameList }: GalleryTypePro
   directionalLight.shadow.camera.bottom = -20
   directionalLight.castShadow = true
   scene.add(directionalLight)
+  lights.push(directionalLight)
+
+  // RectArea Light
+  const rectAreaLight = new RectAreaLight(
+    'white',
+    1,
+    VERTICAL_GLASS_WALLS[0].width,
+    WALL_INFO.height
+  )
+  rectAreaLight.position.set(
+    VERTICAL_GLASS_WALLS[0].x,
+    WALL_INFO.height / 2,
+    VERTICAL_GLASS_WALLS[0].z + VERTICAL_GLASS_WALLS[0].width / 2
+  )
+  rectAreaLight.lookAt(
+    0,
+    WALL_INFO.height / 2,
+    VERTICAL_GLASS_WALLS[0].z + VERTICAL_GLASS_WALLS[0].width / 2
+  )
+  scene.add(rectAreaLight)
+  lights.push(rectAreaLight)
+
+  const rectAreaLight2 = new RectAreaLight(
+    'white',
+    1,
+    VERTICAL_GLASS_WALLS[1].width,
+    WALL_INFO.height
+  )
+  rectAreaLight2.position.set(
+    VERTICAL_GLASS_WALLS[1].x,
+    WALL_INFO.height / 2,
+    VERTICAL_GLASS_WALLS[1].z + VERTICAL_GLASS_WALLS[1].width / 2
+  )
+  rectAreaLight2.lookAt(
+    0,
+    WALL_INFO.height / 2,
+    VERTICAL_GLASS_WALLS[1].z + VERTICAL_GLASS_WALLS[1].width / 2
+  )
+  scene.add(rectAreaLight2)
+  lights.push(rectAreaLight2)
 
   // Light Helper : Development
   if (process.env.NODE_ENV !== 'production') {
     import('three').then(({ CameraHelper }) => {
-      const helper = new CameraHelper(directionalLight.shadow.camera)
-      scene.add(helper)
+      scene.add(new CameraHelper(directionalLight.shadow.camera))
     })
   }
 
@@ -235,7 +297,13 @@ const greenary = ({ canvas, loadingManager, gallery, frameList }: GalleryTypePro
    */
 
   // Array for meshes that affected by physics engine
-  const objects = []
+  const objects: {
+    mesh?: THREE.Mesh
+    glb?: THREE.Group<THREE.Object3DEventMap>
+    material?: THREE.Material
+    geometry?: THREE.BufferGeometry
+    textures?: Record<string, THREE.Texture>
+  }[] = []
 
   // Floor mesh
   const floor = new Floor({
@@ -254,6 +322,7 @@ const greenary = ({ canvas, loadingManager, gallery, frameList }: GalleryTypePro
       repeatY: 6,
     },
   })
+  objects.push(floor)
 
   // Ceiling mesh
   const ceiling = new Ceiling({
@@ -262,120 +331,116 @@ const greenary = ({ canvas, loadingManager, gallery, frameList }: GalleryTypePro
     name: 'ceiling',
     width: 20,
     depth: 30,
-    y: UNIT.WALL_HEIGHT,
+    y: WALL_INFO.height,
   })
+  objects.push(ceiling)
 
-  // Wall & Frame mesh
-  HORIZONTAL_WALLS.forEach(({ x, z, width, frames = [] }, idx) => {
+  // Horizontal Wall & Frame & SpotLighting mesh
+  HORIZONTAL_WALLS.forEach((wallInfo, idx) => {
     const wall = new Wall({
+      ...WALL_INFO,
       container: scene,
       name: `horizontal-wall-${idx + 1}`,
-      x,
-      z,
-      width,
-      height: UNIT.WALL_HEIGHT,
-      depth: UNIT.WALL_DEPTH,
+      x: wallInfo.x,
+      z: wallInfo.z,
+      width: wallInfo.width,
       texture: {
         textureLoader,
-        repeatX: width * 3,
-        repeatY: UNIT.WALL_HEIGHT * 3,
+        repeatX: wallInfo.width * 3,
+        repeatY: WALL_INFO.height * 3,
         baseImg: wallBaseImg,
         ambientImg: wallAmbientImg,
         roughImg: wallRoughImg,
         normalImg: wallNormalImg,
       },
     })
-    frames.forEach((frame) => {
-      const f = new Frame({
-        container: wall.mesh,
-        name: `frame_${frame.order}`,
-        baseImg: frameList[frame.order - 1].framePictureUrl,
-        textureLoader,
-        x: frame.x,
-        y: UNIT.FRAME_HEIGHT - UNIT.WALL_HEIGHT / 2,
-        z: frame.isDownRight ? UNIT.WALL_DEPTH / 2 : -UNIT.WALL_DEPTH / 2,
-        width: 1,
-        height: 1,
-        depth: 0.05,
-        rotationY: frame.isDownRight ? 0 : MathUtils.degToRad(180),
+    objects.push(wall)
+    wallInfo.frames &&
+      wallInfo.frames.forEach((frameInfo) => {
+        const frame = new Frame({
+          ...FRAME_INFO,
+          container: wall.mesh,
+          name: `frame_${frameInfo.order}`,
+          baseImg: frameList[frameInfo.order - 1].framePictureUrl,
+          textureLoader,
+          x: frameInfo.x,
+          y: FRAME_INFO.y - WALL_INFO.height / 2,
+          z: frameInfo.isDownRight ? WALL_INFO.depth / 2 : -WALL_INFO.depth / 2,
+          rotationY: frameInfo.isDownRight ? 0 : MathUtils.degToRad(180),
+        })
+        objects.push(frame)
+        const spotLight = new SpotLighting({
+          ...SPOTLIGHT_INFO,
+          container: frame.mesh,
+          name: 'spotlight',
+          gltfLoader,
+          targetMesh: frame.mesh,
+          y: WALL_INFO.height - FRAME_INFO.y,
+        })
+        objects.push(spotLight)
       })
-      new SpotLighting({
-        container: f.mesh,
-        name: 'spotlight',
-        gltfLoader,
-        targetMesh: f.mesh,
-        color: '#ffffff',
-        intensity: 9,
-        distance: 6,
-        angle: Math.PI / 14,
-        y: UNIT.WALL_HEIGHT - UNIT.FRAME_HEIGHT,
-        z: 3,
-      })
-    })
   })
 
-  VERTICAL_WALLS.forEach(({ x, z, width, frames = [] }, idx) => {
+  // Vertical Wall & Frame & SpotLighting mesh
+  VERTICAL_WALLS.forEach((wallInfo, idx) => {
     const wall = new Wall({
+      ...WALL_INFO,
       container: scene,
       name: `vertical-wall-${idx + 1}`,
-      x,
-      z,
-      width,
-      height: UNIT.WALL_HEIGHT,
-      depth: UNIT.WALL_DEPTH,
+      x: wallInfo.x,
+      z: wallInfo.z,
+      width: wallInfo.width,
       rotationY: MathUtils.degToRad(90),
       texture: {
         textureLoader,
-        repeatX: width * 3,
-        repeatY: UNIT.WALL_HEIGHT * 3,
+        repeatX: wallInfo.width * 3,
+        repeatY: WALL_INFO.height * 3,
         baseImg: wallBaseImg,
         ambientImg: wallAmbientImg,
         roughImg: wallRoughImg,
         normalImg: wallNormalImg,
       },
     })
-    frames.forEach((frame) => {
-      const f = new Frame({
-        container: wall.mesh,
-        name: `frame_${frame.order}`,
-        baseImg: frameList[frame.order - 1].framePictureUrl,
-        textureLoader,
-        x: frame.x,
-        y: UNIT.FRAME_HEIGHT - UNIT.WALL_HEIGHT / 2,
-        z: frame.isDownRight ? UNIT.WALL_DEPTH / 2 : -UNIT.WALL_DEPTH / 2,
-        width: 1,
-        height: 1,
-        depth: 0.02,
-        rotationY: frame.isDownRight ? 0 : MathUtils.degToRad(180),
+    objects.push(wall)
+    wallInfo.frames &&
+      wallInfo.frames.forEach((frameInfo) => {
+        const frame = new Frame({
+          ...FRAME_INFO,
+          container: wall.mesh,
+          name: `frame_${frameInfo.order}`,
+          baseImg: frameList[frameInfo.order - 1].framePictureUrl,
+          textureLoader,
+          x: frameInfo.x,
+          y: FRAME_INFO.y - WALL_INFO.height / 2,
+          z: frameInfo.isDownRight ? WALL_INFO.depth / 2 : -WALL_INFO.depth / 2,
+          rotationY: frameInfo.isDownRight ? 0 : MathUtils.degToRad(180),
+        })
+        objects.push(frame)
+        const spotLight = new SpotLighting({
+          ...SPOTLIGHT_INFO,
+          container: frame.mesh,
+          name: 'spotlight',
+          gltfLoader,
+          targetMesh: frame.mesh,
+          y: WALL_INFO.height - FRAME_INFO.y,
+        })
+        objects.push(spotLight)
       })
-      new SpotLighting({
-        container: f.mesh,
-        name: 'spotlight',
-        gltfLoader,
-        targetMesh: f.mesh,
-        color: '#ffffff',
-        intensity: 9,
-        distance: 6,
-        angle: Math.PI / 14,
-        y: UNIT.WALL_HEIGHT - UNIT.FRAME_HEIGHT,
-        z: 3,
-      })
-    })
   })
 
-  VERTICAL_GLASS_WALLS.forEach(({ x, z, width }, idx) => {
-    new Wall({
+  // Glass Wall & Frame & SpotLighting mesh
+  VERTICAL_GLASS_WALLS.forEach((wallInfo, idx) => {
+    const wall = new Wall({
+      ...GLASS_WALL_INFO,
       container: scene,
       name: `vertical-glass-wall-${idx + 1}`,
-      x,
-      z,
-      width,
-      height: UNIT.WALL_HEIGHT,
-      depth: UNIT.GLASS_WALL_DEPTH,
+      x: wallInfo.x,
+      z: wallInfo.z,
+      width: wallInfo.width,
       rotationY: MathUtils.degToRad(90),
-      transparent: true,
-      opacity: 0.2,
     })
+    console.log(wall)
+    objects.push(wall)
   })
 
   /**
@@ -425,6 +490,23 @@ const greenary = ({ canvas, loadingManager, gallery, frameList }: GalleryTypePro
    * Dispose function: Release all the resources
    */
   const dispose = function () {
+    lights.forEach((light) => {
+      light.dispose()
+      scene.remove(light)
+    })
+    objects.forEach((object) => {
+      object.mesh && scene.remove(object.mesh)
+      object.glb && scene.remove(object.glb)
+      object.geometry && object.geometry.dispose()
+      object.material && object.material.dispose()
+      if (object.textures) {
+        for (const key in object.textures) {
+          const texture = object.textures[key]
+          texture.dispose()
+        }
+      }
+    })
+    scene.remove(camera)
     renderer.dispose()
     controls.dispose()
     window.removeEventListener('resize', handleSize)

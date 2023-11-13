@@ -1,11 +1,11 @@
 import { Material, World } from 'cannon-es'
 import {
+  DoubleSide,
   MathUtils,
   Mesh,
   MeshStandardMaterial,
   PlaneGeometry,
   RepeatWrapping,
-  Texture,
   TextureLoader,
 } from 'three'
 import { Stuff, StuffArgs } from './Stuff'
@@ -31,8 +31,9 @@ type CeilingProps = StuffArgs & {
 export class Ceiling extends Stuff {
   type: string = 'ceiling'
   geometry: THREE.PlaneGeometry
-  material: THREE.MeshStandardMaterial
+  material: THREE.Material
   mesh: THREE.Mesh
+  textures: Record<string, THREE.Texture> = {}
 
   constructor(info: CeilingProps) {
     super(info)
@@ -57,23 +58,22 @@ export class Ceiling extends Stuff {
     /**
      * Texture
      */
-    const textures: Record<string, Texture> = {}
 
     if (info.texture) {
-      textures['baseTex'] = info.texture.textureLoader.load(info.texture.baseImg)
+      this.textures['baseTex'] = info.texture.textureLoader.load(info.texture.baseImg)
       if (info.texture.normalImg) {
-        textures['normalTex'] = info.texture.textureLoader.load(info.texture.normalImg)
+        this.textures['normalTex'] = info.texture.textureLoader.load(info.texture.normalImg)
       }
       if (info.texture.roughImg) {
-        textures['roughTex'] = info.texture.textureLoader.load(info.texture.roughImg)
+        this.textures['roughTex'] = info.texture.textureLoader.load(info.texture.roughImg)
       }
       if (info.texture.ambientImg) {
-        textures['ambientTex'] = info.texture.textureLoader.load(info.texture.ambientImg)
+        this.textures['ambientTex'] = info.texture.textureLoader.load(info.texture.ambientImg)
       }
 
       if (info.texture.repeatX || info.texture.repeatY) {
-        for (const key in textures) {
-          const texture = textures[key]
+        for (const key in this.textures) {
+          const texture = this.textures[key]
 
           texture.wrapS = RepeatWrapping
           texture.wrapT = RepeatWrapping
@@ -89,10 +89,11 @@ export class Ceiling extends Stuff {
      */
     this.material = new MeshStandardMaterial({
       color: info.color,
-      map: textures['baseTex'],
-      normalMap: textures['normalTex'],
-      roughnessMap: textures['roughTex'],
-      aoMap: textures['ambientTex'],
+      map: this.textures['baseTex'] || null,
+      normalMap: this.textures['normalTex'] || null,
+      roughnessMap: this.textures['roughTex'] || null,
+      aoMap: this.textures['ambientTex'] || null,
+      shadowSide: DoubleSide,
     })
 
     /**
@@ -102,6 +103,7 @@ export class Ceiling extends Stuff {
     this.mesh.position.set(this.x, this.y, this.z)
     this.mesh.rotation.set(this.rotationX, this.rotationY, this.rotationZ)
     this.mesh.castShadow = true
+    this.mesh.receiveShadow = true
     this.mesh.name = this.name
 
     /**

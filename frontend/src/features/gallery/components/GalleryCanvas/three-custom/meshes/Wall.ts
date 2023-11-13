@@ -1,11 +1,4 @@
-import {
-  Mesh,
-  MeshStandardMaterial,
-  BoxGeometry,
-  RepeatWrapping,
-  Texture,
-  TextureLoader,
-} from 'three'
+import { Mesh, MeshStandardMaterial, BoxGeometry, RepeatWrapping, TextureLoader } from 'three'
 import { Stuff, StuffArgs } from './Stuff'
 
 type TextureProps = {
@@ -29,8 +22,9 @@ type WallArgs = StuffArgs & {
 export class Wall extends Stuff {
   type: string = 'wall'
   geometry: THREE.BoxGeometry
-  material: THREE.MeshStandardMaterial
+  material: THREE.Material
   mesh: THREE.Mesh
+  textures: Record<string, THREE.Texture> = {}
 
   constructor(info: WallArgs) {
     super(info)
@@ -50,23 +44,22 @@ export class Wall extends Stuff {
     /**
      * Texture
      */
-    const textures: Record<string, Texture> = {}
 
     if (info.texture) {
-      textures['baseTex'] = info.texture.textureLoader.load(info.texture.baseImg)
+      this.textures['baseTex'] = info.texture.textureLoader.load(info.texture.baseImg)
       if (info.texture.normalImg) {
-        textures['normalTex'] = info.texture.textureLoader.load(info.texture.normalImg)
+        this.textures['normalTex'] = info.texture.textureLoader.load(info.texture.normalImg)
       }
       if (info.texture.roughImg) {
-        textures['roughTex'] = info.texture.textureLoader.load(info.texture.roughImg)
+        this.textures['roughTex'] = info.texture.textureLoader.load(info.texture.roughImg)
       }
       if (info.texture.ambientImg) {
-        textures['ambientTex'] = info.texture.textureLoader.load(info.texture.ambientImg)
+        this.textures['ambientTex'] = info.texture.textureLoader.load(info.texture.ambientImg)
       }
 
       if (info.texture.repeatX || info.texture.repeatY) {
-        for (const key in textures) {
-          const texture = textures[key]
+        for (const key in this.textures) {
+          const texture = this.textures[key]
 
           texture.wrapS = RepeatWrapping
           texture.wrapT = RepeatWrapping
@@ -85,10 +78,10 @@ export class Wall extends Stuff {
       transparent: info.transparent || false,
       opacity: info.opacity,
       roughness: 0.1,
-      map: textures['baseTex'],
-      normalMap: textures['normalTex'],
-      roughnessMap: textures['roughTex'],
-      aoMap: textures['ambientTex'],
+      map: this.textures['baseTex'] || null,
+      normalMap: this.textures['normalTex'] || null,
+      roughnessMap: this.textures['roughTex'] || null,
+      aoMap: this.textures['ambientTex'] || null,
     })
 
     /**
@@ -97,8 +90,8 @@ export class Wall extends Stuff {
     this.mesh = new Mesh(this.geometry, this.material)
     this.mesh.position.set(this.x, this.y, this.z)
     this.mesh.rotation.set(this.rotationX, this.rotationY, this.rotationZ)
-    this.mesh.castShadow = !info.transparent || false
-    this.mesh.receiveShadow = true
+    this.mesh.castShadow = !info.transparent ? true : false
+    this.mesh.receiveShadow = !info.transparent ? true : false
 
     /**
      * Add to the scene

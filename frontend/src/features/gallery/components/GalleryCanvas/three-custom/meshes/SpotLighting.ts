@@ -1,12 +1,4 @@
-import {
-  Box3,
-  ColorRepresentation,
-  Group,
-  MathUtils,
-  Object3DEventMap,
-  SpotLight,
-  Vector3,
-} from 'three'
+import { Box3, ColorRepresentation, MathUtils, SpotLight, Vector3 } from 'three'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import { Stuff, StuffArgs } from './Stuff'
 import spotLightGlb from '@/assets/glbs/spotlight.glb'
@@ -25,7 +17,7 @@ export type SpotLightingProps = StuffArgs & {
 
 export class SpotLighting extends Stuff {
   type: string = 'spotlight'
-  mesh: Group<Object3DEventMap> | undefined
+  glb: THREE.Group<THREE.Object3DEventMap> | undefined
 
   constructor(info: SpotLightingProps) {
     super(info)
@@ -36,7 +28,7 @@ export class SpotLighting extends Stuff {
      * Load GLTF
      */
     info.gltfLoader.load(spotLightGlb, (glb) => {
-      this.mesh = glb.scene
+      this.glb = glb.scene
 
       /**
        * Get size
@@ -53,14 +45,6 @@ export class SpotLighting extends Stuff {
       this.x -= this.height / 2
 
       /**
-       * Set Position
-       */
-      console.log(this.x, this.y, this.z, this.width, this.height, this.depth)
-      this.mesh.position.set(this.x, this.y, this.z)
-      this.mesh.rotation.set(this.rotationX, this.rotationY, this.rotationZ)
-      this.mesh.name = 'spotlight'
-
-      /**
        * SpotLight
        */
       const spotLight = new SpotLight(
@@ -71,13 +55,22 @@ export class SpotLighting extends Stuff {
         info.penumbra,
         info.decay
       )
+      spotLight.position.x = this.width / 2
+      spotLight.position.y = -this.height / 2
       spotLight.target = info.targetMesh
-      this.mesh.add(spotLight)
+      this.glb.add(spotLight)
+
+      /**
+       * Set Position
+       */
+      this.glb.position.set(this.x, this.y, this.z)
+      this.glb.rotation.set(this.rotationX, this.rotationY, this.rotationZ)
+      this.glb.name = 'spotlight'
 
       /**
        * Add to the container
        */
-      info.container.add(this.mesh)
+      info.container.add(this.glb)
     })
   }
 }
