@@ -4,6 +4,7 @@ import { Quaternion as ThreeQuaternion, Vector3 } from 'three'
 const _xAxis = new Vec3(1, 0, 0)
 const _yAxis = new Vec3(0, 1, 0)
 const _zAxis = new Vec3(0, 0, 1)
+const _forceDirection = new Vec3()
 const _cameraDirection = new Vector3()
 const _rotationQuaternion = new Quaternion()
 const _cannonQuaternion = new ThreeQuaternion()
@@ -17,7 +18,7 @@ export class CannonKeypadControls {
   // API
   enabled: boolean = true
 
-  movementSpeed: number = 6
+  movementSpeed: number = 1
   lookSpeed: number = 0.3
 
   dispose: () => void
@@ -127,33 +128,40 @@ export class CannonKeypadControls {
     /**
      * Update cannonBody position
      */
-    const actualMoveSpeed = delta * this.movementSpeed
+    this.cannonBody.velocity.set(0, 0, 0)
 
-    const currentPosition = this.cannonBody.position
-    this.camera.getWorldDirection(_cameraDirection).normalize().multiplyScalar(actualMoveSpeed)
+    if (this.#moveForward || this.#moveBackward) {
+      const actualMoveSpeed = 8000 * this.movementSpeed
+      this.camera.getWorldDirection(_cameraDirection).normalize().multiplyScalar(actualMoveSpeed)
 
-    if (this.#moveForward) {
-      currentPosition.x += _cameraDirection.x * actualMoveSpeed
-      currentPosition.z += _cameraDirection.z * actualMoveSpeed
+      if (this.#moveForward) {
+        this.cannonBody.applyForce(
+          _forceDirection.set(_cameraDirection.x, _cameraDirection.y, _cameraDirection.z)
+        )
+      }
+      if (this.#moveBackward) {
+        this.cannonBody.applyForce(
+          _forceDirection.set(-_cameraDirection.x, -_cameraDirection.y, -_cameraDirection.z)
+        )
+      }
     }
-    if (this.#moveBackward) {
-      currentPosition.x -= _cameraDirection.x * actualMoveSpeed
-      currentPosition.z -= _cameraDirection.z * actualMoveSpeed
-    }
-
-    this.cannonBody.position.copy(currentPosition)
 
     /**
      * Update cannonBody angle
      */
-    const actualLookSpeed = delta * this.lookSpeed
 
-    const currentQuaternion = this.cannonBody.quaternion
-    _rotationQuaternion.set(0, 0, 0, 1)
-    if (this.#lookLeft) _rotationQuaternion.setFromAxisAngle(_yAxis, actualLookSpeed)
-    if (this.#lookRight) _rotationQuaternion.setFromAxisAngle(_yAxis, -actualLookSpeed)
+    if (this.#lookLeft || this.#lookRight) {
+      const actualLookSpeed = delta * this.lookSpeed
 
-    this.cannonBody.quaternion.copy(currentQuaternion.mult(_rotationQuaternion, currentQuaternion))
+      const currentQuaternion = this.cannonBody.quaternion
+      _rotationQuaternion.set(0, 0, 0, 1)
+      if (this.#lookLeft) _rotationQuaternion.setFromAxisAngle(_yAxis, actualLookSpeed)
+      if (this.#lookRight) _rotationQuaternion.setFromAxisAngle(_yAxis, -actualLookSpeed)
+
+      this.cannonBody.quaternion.copy(
+        currentQuaternion.mult(_rotationQuaternion, currentQuaternion)
+      )
+    }
 
     /**
      * Move camera to the cannonBody

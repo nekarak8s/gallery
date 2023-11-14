@@ -16,7 +16,7 @@ import { Ceiling } from '../three-custom/meshes/Ceiling'
 import { Floor } from '../three-custom/meshes/Floor'
 import { Frame } from '../three-custom/meshes/Frame'
 import { PanelLighting } from '../three-custom/meshes/PanelLighting'
-import { PointLighting } from '../three-custom/meshes/PointLighting'
+import { SimplePointLighting } from '../three-custom/meshes/SimplePointLighting'
 import { SpotLighting } from '../three-custom/meshes/SpotLighting'
 import { Wall } from '../three-custom/meshes/Wall'
 import { DefaultRenderer } from '../three-custom/renderers/DefaultRenderer'
@@ -26,10 +26,6 @@ import nz from '@/assets/cubemaps/clear_sky/nz.png'
 import px from '@/assets/cubemaps/clear_sky/px.png'
 import py from '@/assets/cubemaps/clear_sky/py.png'
 import pz from '@/assets/cubemaps/clear_sky/pz.png'
-import wallBaseImg from '@/assets/textures/plaster_rough/Plaster_Rough_001_COLOR.jpg'
-import wallNormalImg from '@/assets/textures/plaster_rough/Plaster_Rough_001_NORM.jpg'
-import wallAmbientImg from '@/assets/textures/plaster_rough/Plaster_Rough_001_OCC.jpg'
-import wallRoughImg from '@/assets/textures/plaster_rough/Plaster_Rough_001_ROUGH.jpg'
 import floorAmbientImg from '@/assets/textures/wood_herringbone/Wood_Herringbone_Tiles_001_ambientOcclusion.jpg'
 import floorBaseImg from '@/assets/textures/wood_herringbone/Wood_Herringbone_Tiles_001_basecolor.jpg'
 import floorNormalImg from '@/assets/textures/wood_herringbone/Wood_Herringbone_Tiles_001_normal.jpg'
@@ -63,7 +59,7 @@ const SPOTLIGHT_INFO = {
 
 const PANELLIGHT_INFO = {
   color: '#FFFCE5',
-  intensity: 1,
+  intensity: 0.6,
   y: WALL_INFO.height,
   width: 1,
   height: 0.01,
@@ -72,9 +68,11 @@ const PANELLIGHT_INFO = {
 
 const POINTLIGHT_INFO = {
   color: '#FFFCE5',
-  intensity: 0.2,
+  intensity: 0.1,
   distance: 5,
   y: WALL_INFO.height,
+  width: 0.07,
+  height: 0.02,
 }
 
 const HORIZONTAL_WALLS = [
@@ -214,7 +212,10 @@ const PANELLIGHTS = [
   { x: 15.6, z: 20.4 },
 ]
 
-const POINTLIGHTS = [
+const POINTLIGHTS: {
+  x: number
+  z: number
+}[] = [
   { x: 1.8, z: 3.4 },
   { x: 1.8, z: 7.2 },
   { x: 1.8, z: 11 },
@@ -386,15 +387,6 @@ const greenary = ({ canvas, loadingManager, gallery, frameList }: GalleryTypePro
       x: wallInfo.x,
       z: wallInfo.z,
       width: wallInfo.width,
-      texture: {
-        textureLoader,
-        repeatX: wallInfo.width * 2,
-        repeatY: WALL_INFO.height * 2,
-        baseImg: wallBaseImg,
-        ambientImg: wallAmbientImg,
-        roughImg: wallRoughImg,
-        normalImg: wallNormalImg,
-      },
     })
     objects.push(wall)
     wallInfo.frames &&
@@ -434,15 +426,6 @@ const greenary = ({ canvas, loadingManager, gallery, frameList }: GalleryTypePro
       z: wallInfo.z,
       width: wallInfo.width,
       rotationY: MathUtils.degToRad(90),
-      texture: {
-        textureLoader,
-        repeatX: wallInfo.width * 2,
-        repeatY: WALL_INFO.height * 2,
-        baseImg: wallBaseImg,
-        ambientImg: wallAmbientImg,
-        roughImg: wallRoughImg,
-        normalImg: wallNormalImg,
-      },
     })
     objects.push(wall)
     wallInfo.frames &&
@@ -500,10 +483,9 @@ const greenary = ({ canvas, loadingManager, gallery, frameList }: GalleryTypePro
 
   // PointLighting mesh
   POINTLIGHTS.forEach((pointLightInfo, idx) => {
-    const pointLight = new PointLighting({
+    const pointLight = new SimplePointLighting({
       ...POINTLIGHT_INFO,
       container: scene,
-      gltfLoader,
       name: `pointlight-${idx + 1}`,
       x: pointLightInfo.x,
       z: pointLightInfo.z,

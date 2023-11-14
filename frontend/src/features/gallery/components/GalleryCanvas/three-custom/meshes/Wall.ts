@@ -1,5 +1,5 @@
 import { Material, World } from 'cannon-es'
-import { Mesh, MeshStandardMaterial, BoxGeometry, RepeatWrapping, TextureLoader } from 'three'
+import { Mesh, MeshStandardMaterial, BoxGeometry, TextureLoader, RepeatWrapping } from 'three'
 import { Stuff, StuffArgs } from './Stuff'
 
 type TextureProps = {
@@ -80,7 +80,8 @@ export class Wall extends Stuff {
       color: info.color,
       transparent: info.transparent || false,
       opacity: info.opacity,
-      roughness: 0.1,
+      roughness: 1,
+      metalness: 0,
       map: this.textures['baseTex'] || null,
       normalMap: this.textures['normalTex'] || null,
       roughnessMap: this.textures['roughTex'] || null,
