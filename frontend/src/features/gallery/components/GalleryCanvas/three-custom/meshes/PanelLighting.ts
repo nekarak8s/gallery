@@ -14,7 +14,7 @@ export class PanelLighting extends Stuff {
   geometry: THREE.BoxGeometry
   material: THREE.Material
   mesh: THREE.Mesh
-  textures: Record<string, THREE.Texture> = {}
+  light: THREE.Light
 
   constructor(info: PanelLightingProps) {
     super(info)
@@ -44,13 +44,14 @@ export class PanelLighting extends Stuff {
     this.mesh = new Mesh(this.geometry, this.material)
     this.mesh.position.set(this.x, this.y, this.z)
     this.mesh.rotation.set(this.rotationX, this.rotationY, this.rotationZ)
+    this.mesh.name = this.name || this.type
 
     /**
      * PanelLight
      */
-    const rectLight = new RectAreaLight(info.color, info.intensity, this.width, this.depth)
-    rectLight.lookAt(0, -1, 0)
-    this.mesh.add(rectLight)
+    this.light = new RectAreaLight(info.color, info.intensity, this.width, this.depth)
+    this.light.lookAt(0, -1, 0)
+    this.mesh.add(this.light)
 
     info.container.add(this.mesh)
   }

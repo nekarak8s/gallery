@@ -104,7 +104,7 @@ export class Ceiling extends Stuff {
     this.mesh.rotation.set(this.rotationX, this.rotationY, this.rotationZ)
     this.mesh.castShadow = true
     this.mesh.receiveShadow = true
-    this.mesh.name = this.name
+    this.mesh.name = this.name || this.type
 
     /**
      * Add to the container

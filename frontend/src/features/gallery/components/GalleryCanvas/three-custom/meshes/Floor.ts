@@ -101,7 +101,7 @@ export class Floor extends Stuff {
     this.mesh.position.set(this.x, this.y, this.z)
     this.mesh.rotation.set(this.rotationX, this.rotationY, this.rotationZ)
     this.mesh.receiveShadow = true
-    this.mesh.name = this.name
+    this.mesh.name = this.name || this.type
 
     /**
      * Add to the container

@@ -66,7 +66,7 @@ export class SpotLighting extends Stuff {
        */
       this.glb.position.set(this.x, this.y, this.z)
       this.glb.rotation.set(this.rotationX, this.rotationY, this.rotationZ)
-      this.glb.name = 'spotlight'
+      this.glb.name = this.name || this.type
 
       /**
        * Add to the container

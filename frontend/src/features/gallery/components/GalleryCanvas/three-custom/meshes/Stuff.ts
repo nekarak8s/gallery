@@ -1,7 +1,7 @@
 import { Box, Vec3, Body, Material, World } from 'cannon-es'
 
 export type StuffArgs = {
-  name: string
+  name?: string
   x?: number
   y?: number
   z?: number
@@ -14,7 +14,7 @@ export type StuffArgs = {
 }
 
 export class Stuff {
-  name: string
+  name: string = ''
   x: number
   y: number
   z: number
@@ -27,7 +27,7 @@ export class Stuff {
   cannonBody: Body | undefined
 
   constructor(info: StuffArgs) {
-    this.name = info.name
+    this.name = info.name || ''
     this.x = info.x || 0
     this.y = info.y || 0
     this.z = info.z || 0
@@ -47,6 +47,7 @@ export class Stuff {
       shape,
       material,
     })
+
     this.cannonBody.quaternion.setFromAxisAngle(new Vec3(0, 1, 0), this.rotationY)
     world.addBody(this.cannonBody)
   }

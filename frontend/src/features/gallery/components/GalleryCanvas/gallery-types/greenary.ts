@@ -1,4 +1,4 @@
-import { SAPBroadphase, World } from 'cannon-es'
+import { Body, SAPBroadphase, World } from 'cannon-es'
 import {
   AmbientLight,
   Clock,
@@ -47,36 +47,33 @@ const GLASS_WALL_INFO = {
 }
 
 const FRAME_INFO = {
-  y: 2,
-  width: 1,
-  height: 1,
+  y: 2.5,
+  width: 1.5,
+  height: 1.5,
   depth: 0.05,
 }
 
 const SPOTLIGHT_INFO = {
   color: '#FFFFFF',
   intensity: 8,
-  distance: 4.5,
-  angle: Math.PI / 14,
+  distance: 4,
+  angle: Math.PI / 8,
   z: 3,
 }
 
 const PANELLIGHT_INFO = {
-  color: '#FFFFFF',
-  intensity: 2,
+  color: '#FFFCE5',
+  intensity: 1,
+  y: WALL_INFO.height,
   width: 1,
   height: 0.01,
   depth: 1,
-  y: WALL_INFO.height,
 }
 
 const POINTLIGHT_INFO = {
-  color: '#FFFFFF',
-  intensity: 2,
-  distance: 0.1,
-  width: 0.1,
-  height: 0.15,
-  depth: 0.1,
+  color: '#FFFCE5',
+  intensity: 0.2,
+  distance: 5,
   y: WALL_INFO.height,
 }
 
@@ -207,20 +204,24 @@ const VERTICAL_GLASS_WALLS = [
 ]
 
 const PANELLIGHTS = [
-  { x: 1.49, z: 4.45 },
-  { x: 1.49, z: 10.23 },
-  { x: 9.96, z: 4.45 },
-  { x: 4.49, z: 16.75 },
+  { x: 5, z: 16.7 },
+  { x: 5, z: 23.1 },
+  { x: 8.5, z: 3.5 },
+  { x: 8.5, z: 9.2 },
+  { x: 15.6, z: 3.5 },
+  { x: 15.6, z: 9.2 },
+  { x: 15.6, z: 14.6 },
+  { x: 15.6, z: 20.4 },
 ]
 
 const POINTLIGHTS = [
-  { x: 3.99, z: 23.12 },
-  { x: 2.57, z: 27.94 },
-  { x: 6.26, z: 27.94 },
-  { x: 12.1, z: 19.56 },
-  { x: 13.7, z: 25.26 },
-  { x: 13.7, z: 28.26 },
-  { x: 17.2, z: 28.26 },
+  { x: 1.8, z: 3.4 },
+  { x: 1.8, z: 7.2 },
+  { x: 1.8, z: 11 },
+  { x: 1.8, z: 25.9 },
+  { x: 7.2, z: 27.9 },
+  { x: 13.2, z: 25.5 },
+  { x: 13.2, z: 28.5 },
 ]
 
 const greenary = ({ canvas, loadingManager, gallery, frameList }: GalleryTypeProps) => {
@@ -247,24 +248,21 @@ const greenary = ({ canvas, loadingManager, gallery, frameList }: GalleryTypePro
    * Cannon world
    */
   const world = new World()
-  // world.allowSleep = true
   world.broadphase = new SAPBroadphase(world)
-  world.gravity.set(0, -10, 0)
+  // world.gravity.set(0, -10, 0)
 
   /**
    * Camera
    */
   const camera = new DefaultCamera({ canvas })
-  camera.position.set(7, 3, 29)
+  camera.position.set(3, 1.6, 29)
   scene.add(camera)
 
   /**
    * Controls
    */
-  // const controls = new FirstPersonControls(camera, renderer.domElement)
-  // controls.movementSpeed = 2
-  // controls.lookSpeed = 0.05
-  const controls = new CannonKeypadControls(camera, world)
+  // const controls = new OrbitControls(camera, canvas)
+  const controls = new CannonKeypadControls(camera, world, 1.6)
 
   /**
    * Light
@@ -272,12 +270,12 @@ const greenary = ({ canvas, loadingManager, gallery, frameList }: GalleryTypePro
   const lights: THREE.Light[] = []
 
   // Ambient light
-  const ambientLight = new AmbientLight('white', 0.2)
+  const ambientLight = new AmbientLight('white', 0.05)
   scene.add(ambientLight)
   lights.push(ambientLight)
 
   // Direct Light
-  const directionalLight = new DirectionalLight('white', 2)
+  const directionalLight = new DirectionalLight('white', 1)
   directionalLight.position.set(30, 30, 0)
   directionalLight.shadow.camera.left = -30
   directionalLight.shadow.camera.right = 0
@@ -345,6 +343,7 @@ const greenary = ({ canvas, loadingManager, gallery, frameList }: GalleryTypePro
     geometry?: THREE.BufferGeometry
     light?: THREE.Light
     textures?: Record<string, THREE.Texture>
+    cannonBody?: Body
   }[] = []
 
   // Floor mesh
@@ -389,8 +388,8 @@ const greenary = ({ canvas, loadingManager, gallery, frameList }: GalleryTypePro
       width: wallInfo.width,
       texture: {
         textureLoader,
-        repeatX: wallInfo.width * 3,
-        repeatY: WALL_INFO.height * 3,
+        repeatX: wallInfo.width * 2,
+        repeatY: WALL_INFO.height * 2,
         baseImg: wallBaseImg,
         ambientImg: wallAmbientImg,
         roughImg: wallRoughImg,
@@ -437,8 +436,8 @@ const greenary = ({ canvas, loadingManager, gallery, frameList }: GalleryTypePro
       rotationY: MathUtils.degToRad(90),
       texture: {
         textureLoader,
-        repeatX: wallInfo.width * 3,
-        repeatY: WALL_INFO.height * 3,
+        repeatX: wallInfo.width * 2,
+        repeatY: WALL_INFO.height * 2,
         baseImg: wallBaseImg,
         ambientImg: wallAmbientImg,
         roughImg: wallRoughImg,
@@ -500,7 +499,6 @@ const greenary = ({ canvas, loadingManager, gallery, frameList }: GalleryTypePro
   })
 
   // PointLighting mesh
-
   POINTLIGHTS.forEach((pointLightInfo, idx) => {
     const pointLight = new PointLighting({
       ...POINTLIGHT_INFO,
@@ -582,6 +580,7 @@ const greenary = ({ canvas, loadingManager, gallery, frameList }: GalleryTypePro
           texture.dispose()
         }
       }
+      object.cannonBody && world.removeBody(object.cannonBody)
     })
     scene.remove(camera)
     renderer.dispose()

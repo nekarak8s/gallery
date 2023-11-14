@@ -1,4 +1,4 @@
-import { World } from 'cannon-es'
+import { Material, World } from 'cannon-es'
 import { Mesh, MeshStandardMaterial, BoxGeometry, RepeatWrapping, TextureLoader } from 'three'
 import { Stuff, StuffArgs } from './Stuff'
 
@@ -15,6 +15,7 @@ type TextureProps = {
 type WallArgs = StuffArgs & {
   container: THREE.Scene | THREE.Mesh
   world: World
+  cannonMaterial?: Material
   color?: string
   transparent?: boolean
   opacity?: number
@@ -101,8 +102,6 @@ export class Wall extends Stuff {
      */
     info.container.add(this.mesh)
 
-    this.setCannonBody(info.world, 0)
-
-    console.log(this.cannonBody, this.mesh.name)
+    this.setCannonBody(info.world, 0, info.cannonMaterial)
   }
 }
