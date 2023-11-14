@@ -16,6 +16,7 @@ import { Ceiling } from '../three-custom/meshes/Ceiling'
 import { Floor } from '../three-custom/meshes/Floor'
 import { Frame } from '../three-custom/meshes/Frame'
 import { PanelLighting } from '../three-custom/meshes/PanelLighting'
+import { PointLighting } from '../three-custom/meshes/PointLighting'
 import { SpotLighting } from '../three-custom/meshes/SpotLighting'
 import { Wall } from '../three-custom/meshes/Wall'
 import { DefaultRenderer } from '../three-custom/renderers/DefaultRenderer'
@@ -62,11 +63,21 @@ const SPOTLIGHT_INFO = {
 
 const PANELLIGHT_INFO = {
   color: '#FFFFFF',
+  intensity: 2,
   width: 1,
   height: 0.01,
   depth: 1,
   y: WALL_INFO.height,
-  intensity: 1,
+}
+
+const POINTLIGHT_INFO = {
+  color: '#FFFFFF',
+  intensity: 2,
+  distance: 0.1,
+  width: 0.1,
+  height: 0.15,
+  depth: 0.1,
+  y: WALL_INFO.height,
 }
 
 const HORIZONTAL_WALLS = [
@@ -200,6 +211,16 @@ const PANELLIGHTS = [
   { x: 1.49, z: 10.23 },
   { x: 9.96, z: 4.45 },
   { x: 4.49, z: 16.75 },
+]
+
+const POINTLIGHTS = [
+  { x: 3.99, z: 23.12 },
+  { x: 2.57, z: 27.94 },
+  { x: 6.26, z: 27.94 },
+  { x: 12.1, z: 19.56 },
+  { x: 13.7, z: 25.26 },
+  { x: 13.7, z: 28.26 },
+  { x: 17.2, z: 28.26 },
 ]
 
 const greenary = ({ canvas, loadingManager, gallery, frameList }: GalleryTypeProps) => {
@@ -467,7 +488,6 @@ const greenary = ({ canvas, loadingManager, gallery, frameList }: GalleryTypePro
   })
 
   // PanelLighting mesh
-
   PANELLIGHTS.forEach((panelLightInfo, idx) => {
     const panelLight = new PanelLighting({
       ...PANELLIGHT_INFO,
@@ -477,6 +497,20 @@ const greenary = ({ canvas, loadingManager, gallery, frameList }: GalleryTypePro
       z: panelLightInfo.z,
     })
     objects.push(panelLight)
+  })
+
+  // PointLighting mesh
+
+  POINTLIGHTS.forEach((pointLightInfo, idx) => {
+    const pointLight = new PointLighting({
+      ...POINTLIGHT_INFO,
+      container: scene,
+      gltfLoader,
+      name: `pointlight-${idx + 1}`,
+      x: pointLightInfo.x,
+      z: pointLightInfo.z,
+    })
+    objects.push(pointLight)
   })
 
   /**
