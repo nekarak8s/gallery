@@ -17,7 +17,8 @@ export type SpotLightingProps = StuffArgs & {
 
 export class SpotLighting extends Stuff {
   type: string = 'spotlight'
-  glb: THREE.Group<THREE.Object3DEventMap> | undefined
+  glb?: THREE.Group<THREE.Object3DEventMap>
+  light?: THREE.SpotLight
 
   constructor(info: SpotLightingProps) {
     super(info)
@@ -47,7 +48,7 @@ export class SpotLighting extends Stuff {
       /**
        * SpotLight
        */
-      const spotLight = new SpotLight(
+      this.light = new SpotLight(
         info.color,
         info.intensity,
         info.distance,
@@ -55,10 +56,10 @@ export class SpotLighting extends Stuff {
         info.penumbra,
         info.decay
       )
-      spotLight.position.x = this.width / 2
-      spotLight.position.y = -this.height / 2
-      spotLight.target = info.targetMesh
-      this.glb.add(spotLight)
+      this.light.position.x = this.width / 2
+      this.light.position.y = -this.height / 2
+      this.light.target = info.targetMesh
+      this.glb.add(this.light)
 
       /**
        * Set Position

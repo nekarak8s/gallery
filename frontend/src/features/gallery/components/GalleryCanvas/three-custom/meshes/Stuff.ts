@@ -47,9 +47,7 @@ export class Stuff {
       shape,
       material,
     })
-    this.cannonBody.quaternion.setFromAxisAngle(new Vec3(1, 0, 0), this.rotationX)
     this.cannonBody.quaternion.setFromAxisAngle(new Vec3(0, 1, 0), this.rotationY)
-    this.cannonBody.quaternion.setFromAxisAngle(new Vec3(0, 0, 1), this.rotationZ)
     world.addBody(this.cannonBody)
   }
 }

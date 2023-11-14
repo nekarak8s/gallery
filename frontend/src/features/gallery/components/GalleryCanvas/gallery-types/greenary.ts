@@ -1,4 +1,4 @@
-import { World } from 'cannon-es'
+import { SAPBroadphase, World } from 'cannon-es'
 import {
   AmbientLight,
   Clock,
@@ -9,9 +9,9 @@ import {
   Scene,
   TextureLoader,
 } from 'three'
-import { FirstPersonControls } from 'three/examples/jsm/controls/FirstPersonControls'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import { DefaultCamera } from '../three-custom/cameras/DefaultCamera'
+import { CannonKeypadControls } from '../three-custom/controls/CannonKeypadControls'
 import { Ceiling } from '../three-custom/meshes/Ceiling'
 import { Floor } from '../three-custom/meshes/Floor'
 import { Frame } from '../three-custom/meshes/Frame'
@@ -210,20 +210,24 @@ const greenary = ({ canvas, loadingManager, gallery, frameList }: GalleryTypePro
    * Cannon world
    */
   const world = new World()
+  // world.allowSleep = true
+  world.broadphase = new SAPBroadphase(world)
+  world.gravity.set(0, -10, 0)
 
   /**
    * Camera
    */
   const camera = new DefaultCamera({ canvas })
-  camera.position.set(7, 1.6, 29)
+  camera.position.set(7, 3, 29)
   scene.add(camera)
 
   /**
    * Controls
    */
-  const controls = new FirstPersonControls(camera, renderer.domElement)
-  controls.movementSpeed = 2
-  controls.lookSpeed = 0.05
+  // const controls = new FirstPersonControls(camera, renderer.domElement)
+  // controls.movementSpeed = 2
+  // controls.lookSpeed = 0.05
+  const controls = new CannonKeypadControls(camera, world)
 
   /**
    * Light
@@ -302,6 +306,7 @@ const greenary = ({ canvas, loadingManager, gallery, frameList }: GalleryTypePro
     glb?: THREE.Group<THREE.Object3DEventMap>
     material?: THREE.Material
     geometry?: THREE.BufferGeometry
+    light?: THREE.Light
     textures?: Record<string, THREE.Texture>
   }[] = []
 
@@ -340,6 +345,7 @@ const greenary = ({ canvas, loadingManager, gallery, frameList }: GalleryTypePro
     const wall = new Wall({
       ...WALL_INFO,
       container: scene,
+      world,
       name: `horizontal-wall-${idx + 1}`,
       x: wallInfo.x,
       z: wallInfo.z,
@@ -387,6 +393,7 @@ const greenary = ({ canvas, loadingManager, gallery, frameList }: GalleryTypePro
       ...WALL_INFO,
       container: scene,
       name: `vertical-wall-${idx + 1}`,
+      world,
       x: wallInfo.x,
       z: wallInfo.z,
       width: wallInfo.width,
@@ -434,12 +441,12 @@ const greenary = ({ canvas, loadingManager, gallery, frameList }: GalleryTypePro
       ...GLASS_WALL_INFO,
       container: scene,
       name: `vertical-glass-wall-${idx + 1}`,
+      world,
       x: wallInfo.x,
       z: wallInfo.z,
       width: wallInfo.width,
       rotationY: MathUtils.degToRad(90),
     })
-    console.log(wall)
     objects.push(wall)
   })
 
@@ -460,10 +467,15 @@ const greenary = ({ canvas, loadingManager, gallery, frameList }: GalleryTypePro
   const draw = function renderCanvas() {
     const delta = clock.getDelta()
 
-    // controls update
+    // update cannon world
+    let step = 1 / 60
+    if (delta < 0.01) step = 1 / 120
+    world.step(step, delta, 3)
+
+    // update controls
     controls.update(delta)
 
-    // rendrer update
+    // update renderer
     renderer.render(scene, camera)
     renderer.setAnimationLoop(draw)
   }
@@ -491,12 +503,14 @@ const greenary = ({ canvas, loadingManager, gallery, frameList }: GalleryTypePro
    */
   const dispose = function () {
     lights.forEach((light) => {
-      light.dispose()
       scene.remove(light)
+      light.dispose()
     })
     objects.forEach((object) => {
       object.mesh && scene.remove(object.mesh)
       object.glb && scene.remove(object.glb)
+      object.light && scene.remove(object.light)
+      object.light && object.light.dispose()
       object.geometry && object.geometry.dispose()
       object.material && object.material.dispose()
       if (object.textures) {

@@ -1,3 +1,4 @@
+import { World } from 'cannon-es'
 import { Mesh, MeshStandardMaterial, BoxGeometry, RepeatWrapping, TextureLoader } from 'three'
 import { Stuff, StuffArgs } from './Stuff'
 
@@ -13,6 +14,7 @@ type TextureProps = {
 
 type WallArgs = StuffArgs & {
   container: THREE.Scene | THREE.Mesh
+  world: World
   color?: string
   transparent?: boolean
   opacity?: number
@@ -92,10 +94,15 @@ export class Wall extends Stuff {
     this.mesh.rotation.set(this.rotationX, this.rotationY, this.rotationZ)
     this.mesh.castShadow = !info.transparent ? true : false
     this.mesh.receiveShadow = !info.transparent ? true : false
+    this.mesh.name = this.name
 
     /**
      * Add to the scene
      */
     info.container.add(this.mesh)
+
+    this.setCannonBody(info.world, 0)
+
+    console.log(this.cannonBody, this.mesh.name)
   }
 }
