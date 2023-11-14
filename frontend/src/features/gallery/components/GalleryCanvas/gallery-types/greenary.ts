@@ -15,6 +15,7 @@ import { CannonKeypadControls } from '../three-custom/controls/CannonKeypadContr
 import { Ceiling } from '../three-custom/meshes/Ceiling'
 import { Floor } from '../three-custom/meshes/Floor'
 import { Frame } from '../three-custom/meshes/Frame'
+import { PanelLighting } from '../three-custom/meshes/PanelLighting'
 import { SpotLighting } from '../three-custom/meshes/SpotLighting'
 import { Wall } from '../three-custom/meshes/Wall'
 import { DefaultRenderer } from '../three-custom/renderers/DefaultRenderer'
@@ -32,7 +33,6 @@ import floorAmbientImg from '@/assets/textures/wood_herringbone/Wood_Herringbone
 import floorBaseImg from '@/assets/textures/wood_herringbone/Wood_Herringbone_Tiles_001_basecolor.jpg'
 import floorNormalImg from '@/assets/textures/wood_herringbone/Wood_Herringbone_Tiles_001_normal.jpg'
 import floorRoughImg from '@/assets/textures/wood_herringbone/Wood_Herringbone_Tiles_001_roughness.jpg'
-
 const WALL_INFO = {
   depth: 0.2,
   height: 4.5,
@@ -58,6 +58,15 @@ const SPOTLIGHT_INFO = {
   distance: 4.5,
   angle: Math.PI / 14,
   z: 3,
+}
+
+const PANELLIGHT_INFO = {
+  color: '#FFFFFF',
+  width: 1,
+  height: 0.01,
+  depth: 1,
+  y: WALL_INFO.height,
+  intensity: 1,
 }
 
 const HORIZONTAL_WALLS = [
@@ -184,6 +193,13 @@ const VERTICAL_WALLS = [
 const VERTICAL_GLASS_WALLS = [
   { x: 20, z: 0.95, width: 15.68 },
   { x: 20, z: 18.23, width: 4.77 },
+]
+
+const PANELLIGHTS = [
+  { x: 1.49, z: 4.45 },
+  { x: 1.49, z: 10.23 },
+  { x: 9.96, z: 4.45 },
+  { x: 4.49, z: 16.75 },
 ]
 
 const greenary = ({ canvas, loadingManager, gallery, frameList }: GalleryTypeProps) => {
@@ -448,6 +464,19 @@ const greenary = ({ canvas, loadingManager, gallery, frameList }: GalleryTypePro
       rotationY: MathUtils.degToRad(90),
     })
     objects.push(wall)
+  })
+
+  // PanelLighting mesh
+
+  PANELLIGHTS.forEach((panelLightInfo, idx) => {
+    const panelLight = new PanelLighting({
+      ...PANELLIGHT_INFO,
+      container: scene,
+      name: `panellight-${idx + 1}`,
+      x: panelLightInfo.x,
+      z: panelLightInfo.z,
+    })
+    objects.push(panelLight)
   })
 
   /**
