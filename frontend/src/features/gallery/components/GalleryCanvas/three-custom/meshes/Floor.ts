@@ -2,7 +2,7 @@ import { Material, World } from 'cannon-es'
 import {
   MathUtils,
   Mesh,
-  MeshStandardMaterial,
+  MeshLambertMaterial,
   PlaneGeometry,
   RepeatWrapping,
   TextureLoader,
@@ -30,7 +30,7 @@ type FloorProps = StuffArgs & {
 export class Floor extends Stuff {
   type: string = 'floor'
   geometry: THREE.PlaneGeometry
-  material: THREE.MeshStandardMaterial
+  material: THREE.Material
   mesh: THREE.Mesh
   textures: Record<string, THREE.Texture> = {}
 
@@ -85,12 +85,12 @@ export class Floor extends Stuff {
     /**
      * Material
      */
-    this.material = new MeshStandardMaterial({
+    this.material = new MeshLambertMaterial({
       color: info.color,
-      roughness: 0.1,
+      // roughness: 0.1,
       map: this.textures['baseTex'] || null,
       normalMap: this.textures['normalTex'] || null,
-      roughnessMap: this.textures['roughTex'] || null,
+      // roughnessMap: this.textures['roughTex'] || null,
       aoMap: this.textures['ambientTex'] || null,
     })
 

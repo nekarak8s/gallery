@@ -1,9 +1,8 @@
 import { Material, World } from 'cannon-es'
 import {
-  DoubleSide,
   MathUtils,
   Mesh,
-  MeshStandardMaterial,
+  MeshLambertMaterial,
   PlaneGeometry,
   RepeatWrapping,
   TextureLoader,
@@ -87,13 +86,13 @@ export class Ceiling extends Stuff {
     /**
      * Material
      */
-    this.material = new MeshStandardMaterial({
+    this.material = new MeshLambertMaterial({
       color: info.color,
-      map: this.textures['baseTex'] || null,
-      normalMap: this.textures['normalTex'] || null,
-      roughnessMap: this.textures['roughTex'] || null,
-      aoMap: this.textures['ambientTex'] || null,
-      shadowSide: DoubleSide,
+      // map: this.textures['baseTex'] || null,
+      // normalMap: this.textures['normalTex'] || null,
+      // roughnessMap: this.textures['roughTex'] || null,
+      // aoMap: this.textures['ambientTex'] || null,
+      // shadowSide: DoubleSide,
     })
 
     /**

@@ -1,4 +1,4 @@
-import { Mesh, MeshStandardMaterial, BoxGeometry, TextureLoader } from 'three'
+import { Mesh, BoxGeometry, TextureLoader, MeshPhongMaterial } from 'three'
 import { Stuff, StuffArgs } from './Stuff'
 
 type FrameArgs = StuffArgs & {
@@ -10,7 +10,7 @@ type FrameArgs = StuffArgs & {
 export class Frame extends Stuff {
   type: string = 'frame'
   geometry: THREE.BoxGeometry
-  material: THREE.MeshStandardMaterial
+  material: THREE.Material
   mesh: THREE.Mesh
 
   constructor(info: FrameArgs) {
@@ -29,9 +29,8 @@ export class Frame extends Stuff {
     /**
      * Material
      */
-    this.material = new MeshStandardMaterial({
+    this.material = new MeshPhongMaterial({
       map: frameImg,
-      roughness: 0.2,
     })
 
     /**

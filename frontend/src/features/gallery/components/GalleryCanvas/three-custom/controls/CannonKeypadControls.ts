@@ -19,7 +19,7 @@ export class CannonKeypadControls {
   enabled: boolean = true
 
   movementSpeed: number = 1
-  lookSpeed: number = 0.3
+  lookSpeed: number = 0.4
 
   dispose: () => void
 
@@ -131,7 +131,7 @@ export class CannonKeypadControls {
     this.cannonBody.velocity.set(0, 0, 0)
 
     if (this.#moveForward || this.#moveBackward) {
-      const actualMoveSpeed = 8000 * this.movementSpeed
+      const actualMoveSpeed = 10000 * this.movementSpeed
       this.camera.getWorldDirection(_cameraDirection).normalize().multiplyScalar(actualMoveSpeed)
 
       if (this.#moveForward) {

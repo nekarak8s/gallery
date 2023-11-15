@@ -1,5 +1,5 @@
 import { Material, World } from 'cannon-es'
-import { Mesh, MeshStandardMaterial, BoxGeometry, TextureLoader, RepeatWrapping } from 'three'
+import { Mesh, BoxGeometry, TextureLoader, RepeatWrapping, MeshLambertMaterial } from 'three'
 import { Stuff, StuffArgs } from './Stuff'
 
 type TextureProps = {
@@ -76,16 +76,16 @@ export class Wall extends Stuff {
     /**
      * Material
      */
-    this.material = new MeshStandardMaterial({
+    this.material = new MeshLambertMaterial({
       color: info.color,
       transparent: info.transparent || false,
       opacity: info.opacity,
-      roughness: 1,
-      metalness: 0,
-      map: this.textures['baseTex'] || null,
-      normalMap: this.textures['normalTex'] || null,
-      roughnessMap: this.textures['roughTex'] || null,
-      aoMap: this.textures['ambientTex'] || null,
+      // roughness: 1,
+      // metalness: 0,
+      // map: this.textures['baseTex'] || null,
+      // normalMap: this.textures['normalTex'] || null,
+      // roughnessMap: this.textures['roughTex'] || null,
+      // aoMap: this.textures['ambientTex'] || null,
     })
 
     /**

@@ -5,14 +5,13 @@ import {
   CubeTextureLoader,
   DirectionalLight,
   MathUtils,
-  RectAreaLight,
+  Object3D,
   Scene,
   TextureLoader,
 } from 'three'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import { DefaultCamera } from '../three-custom/cameras/DefaultCamera'
 import { CannonKeypadControls } from '../three-custom/controls/CannonKeypadControls'
-import { Ceiling } from '../three-custom/meshes/Ceiling'
 import { Floor } from '../three-custom/meshes/Floor'
 import { Frame } from '../three-custom/meshes/Frame'
 import { PanelLighting } from '../three-custom/meshes/PanelLighting'
@@ -29,8 +28,9 @@ import pz from '@/assets/cubemaps/clear_sky/pz.png'
 import floorAmbientImg from '@/assets/textures/wood_herringbone/Wood_Herringbone_Tiles_001_ambientOcclusion.jpg'
 import floorBaseImg from '@/assets/textures/wood_herringbone/Wood_Herringbone_Tiles_001_basecolor.jpg'
 import floorNormalImg from '@/assets/textures/wood_herringbone/Wood_Herringbone_Tiles_001_normal.jpg'
-import floorRoughImg from '@/assets/textures/wood_herringbone/Wood_Herringbone_Tiles_001_roughness.jpg'
+
 const WALL_INFO = {
+  color: '#fffeef',
   depth: 0.2,
   height: 4.5,
 }
@@ -105,7 +105,7 @@ const HORIZONTAL_WALLS = [
       },
     ],
   },
-  { x: 10.34, z: 17.43, width: 0.77 },
+  // { x: 10.34, z: 17.43, width: 0.77 },
   {
     x: 13.53,
     z: 17.43,
@@ -118,8 +118,8 @@ const HORIZONTAL_WALLS = [
       },
     ],
   },
-  { x: 0, z: 20.78, width: 6.53 },
-  { x: 9.57, z: 20.78, width: 0.77 },
+  // { x: 0, z: 20.78, width: 6.53 },
+  // { x: 9.57, z: 20.78, width: 0.77 },
   {
     x: 10.34,
     z: 23.88,
@@ -132,7 +132,7 @@ const HORIZONTAL_WALLS = [
       },
     ],
   },
-  { x: 19.22, z: 23.88, width: 0.77 },
+  // { x: 19.22, z: 23.88, width: 0.77 },
   {
     x: 4.34,
     z: 25.96,
@@ -145,7 +145,7 @@ const HORIZONTAL_WALLS = [
       },
     ],
   },
-  { x: 15.12, z: 26.98, width: 4.88 },
+  // { x: 15.12, z: 26.98, width: 4.88 },
   { x: 0, z: 30, width: 20 },
 ]
 
@@ -179,18 +179,6 @@ const VERTICAL_WALLS = [
       },
     ],
   },
-  {
-    x: 10.34,
-    z: 13.42,
-    width: 16.62,
-    frames: [
-      {
-        order: 10,
-        x: -6,
-        isDownRight: true,
-      },
-    ],
-  },
   { x: 20, z: 0, width: 1 },
   { x: 20, z: 16.63, width: 1.6 },
   { x: 20, z: 23, width: 7 },
@@ -201,28 +189,31 @@ const VERTICAL_GLASS_WALLS = [
   { x: 20, z: 18.23, width: 4.77 },
 ]
 
-const PANELLIGHTS = [
-  { x: 5, z: 16.7 },
-  { x: 5, z: 23.1 },
-  { x: 8.5, z: 3.5 },
-  { x: 8.5, z: 9.2 },
-  { x: 15.6, z: 3.5 },
-  { x: 15.6, z: 9.2 },
-  { x: 15.6, z: 14.6 },
-  { x: 15.6, z: 20.4 },
+const PANELLIGHTS: {
+  x: number
+  z: number
+}[] = [
+  // { x: 5, z: 16.7 },
+  // { x: 5, z: 23.1 },
+  // { x: 8.5, z: 3.5 },
+  // { x: 8.5, z: 9.2 },
+  // { x: 15.6, z: 3.5 },
+  // { x: 15.6, z: 9.2 },
+  // { x: 15.6, z: 14.6 },
+  // { x: 15.6, z: 20.4 },
 ]
 
 const POINTLIGHTS: {
   x: number
   z: number
 }[] = [
-  { x: 1.8, z: 3.4 },
-  { x: 1.8, z: 7.2 },
-  { x: 1.8, z: 11 },
-  { x: 1.8, z: 25.9 },
-  { x: 7.2, z: 27.9 },
-  { x: 13.2, z: 25.5 },
-  { x: 13.2, z: 28.5 },
+  // { x: 1.8, z: 3.4 },
+  // { x: 1.8, z: 7.2 },
+  // { x: 1.8, z: 11 },
+  // { x: 1.8, z: 25.9 },
+  // { x: 7.2, z: 27.9 },
+  // { x: 13.2, z: 25.5 },
+  // { x: 13.2, z: 28.5 },
 ]
 
 const greenary = ({ canvas, loadingManager, gallery, frameList }: GalleryTypeProps) => {
@@ -263,6 +254,7 @@ const greenary = ({ canvas, loadingManager, gallery, frameList }: GalleryTypePro
    * Controls
    */
   // const controls = new OrbitControls(camera, canvas)
+  // const controls = new FirstPersonControls(camera, canvas)
   const controls = new CannonKeypadControls(camera, world, 1.6)
 
   /**
@@ -271,59 +263,23 @@ const greenary = ({ canvas, loadingManager, gallery, frameList }: GalleryTypePro
   const lights: THREE.Light[] = []
 
   // Ambient light
-  const ambientLight = new AmbientLight('white', 0.05)
+  const ambientLight = new AmbientLight('white', 0.5)
   scene.add(ambientLight)
   lights.push(ambientLight)
 
   // Direct Light
-  const directionalLight = new DirectionalLight('white', 1)
-  directionalLight.position.set(30, 30, 0)
+  const directionalLight = new DirectionalLight('white', 2)
+  directionalLight.position.set(0, 40, 60)
+  directionalLight.target = new Object3D()
+  directionalLight.target.position.set(40, -30, -10)
   directionalLight.shadow.camera.left = -30
   directionalLight.shadow.camera.right = 0
   directionalLight.shadow.camera.top = 5
   directionalLight.shadow.camera.bottom = -20
   directionalLight.castShadow = true
   scene.add(directionalLight)
+  scene.add(directionalLight.target)
   lights.push(directionalLight)
-
-  // RectArea Light
-  const rectAreaLight = new RectAreaLight(
-    'white',
-    1,
-    VERTICAL_GLASS_WALLS[0].width,
-    WALL_INFO.height
-  )
-  rectAreaLight.position.set(
-    VERTICAL_GLASS_WALLS[0].x,
-    WALL_INFO.height / 2,
-    VERTICAL_GLASS_WALLS[0].z + VERTICAL_GLASS_WALLS[0].width / 2
-  )
-  rectAreaLight.lookAt(
-    0,
-    WALL_INFO.height / 2,
-    VERTICAL_GLASS_WALLS[0].z + VERTICAL_GLASS_WALLS[0].width / 2
-  )
-  scene.add(rectAreaLight)
-  lights.push(rectAreaLight)
-
-  const rectAreaLight2 = new RectAreaLight(
-    'white',
-    1,
-    VERTICAL_GLASS_WALLS[1].width,
-    WALL_INFO.height
-  )
-  rectAreaLight2.position.set(
-    VERTICAL_GLASS_WALLS[1].x,
-    WALL_INFO.height / 2,
-    VERTICAL_GLASS_WALLS[1].z + VERTICAL_GLASS_WALLS[1].width / 2
-  )
-  rectAreaLight2.lookAt(
-    0,
-    WALL_INFO.height / 2,
-    VERTICAL_GLASS_WALLS[1].z + VERTICAL_GLASS_WALLS[1].width / 2
-  )
-  scene.add(rectAreaLight2)
-  lights.push(rectAreaLight2)
 
   // Light Helper : Development
   if (process.env.NODE_ENV !== 'production') {
@@ -359,7 +315,7 @@ const greenary = ({ canvas, loadingManager, gallery, frameList }: GalleryTypePro
       baseImg: floorBaseImg,
       normalImg: floorNormalImg,
       ambientImg: floorAmbientImg,
-      roughImg: floorRoughImg,
+      // roughImg: floorRoughImg,
       repeatX: 4,
       repeatY: 6,
     },
@@ -367,15 +323,15 @@ const greenary = ({ canvas, loadingManager, gallery, frameList }: GalleryTypePro
   objects.push(floor)
 
   // Ceiling mesh
-  const ceiling = new Ceiling({
-    container: scene,
-    world,
-    name: 'ceiling',
-    width: 20,
-    depth: 30,
-    y: WALL_INFO.height,
-  })
-  objects.push(ceiling)
+  // const ceiling = new Ceiling({
+  //   container: scene,
+  //   world,
+  //   name: 'ceiling',
+  //   width: 20,
+  //   depth: 30,
+  //   y: WALL_INFO.height,
+  // })
+  // objects.push(ceiling)
 
   // Horizontal Wall & Frame & SpotLighting mesh
   HORIZONTAL_WALLS.forEach((wallInfo, idx) => {
