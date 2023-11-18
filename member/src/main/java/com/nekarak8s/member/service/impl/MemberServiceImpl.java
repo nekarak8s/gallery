@@ -7,6 +7,8 @@ import com.nekarak8s.member.data.dto.response.LoginResponse;
 import com.nekarak8s.member.data.dto.response.MemberDTO;
 import com.nekarak8s.member.data.entity.Member;
 import com.nekarak8s.member.data.repository.MemberRepository;
+import com.nekarak8s.member.kafka.dto.MemberEvent;
+import com.nekarak8s.member.kafka.producer.KafkaProducer;
 import com.nekarak8s.member.redis.service.NicknameService;
 import com.nekarak8s.member.service.AuthService;
 import com.nekarak8s.member.service.MemberService;
@@ -21,6 +23,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -40,6 +43,8 @@ public class MemberServiceImpl implements MemberService{
     private final JwtProperties jwtProperties;
     private final NicknameUtils nicknameUtils;
     private final NicknameService nicknameService;
+    private final KafkaProducer producer;
+    private final static String MEMBER_TOPIC = "member";
 
     /**
      * 로그인
@@ -170,6 +175,7 @@ public class MemberServiceImpl implements MemberService{
     /**
      * 회원 삭제
      */
+    private final TransactionTemplate transactionTemplate;
     @Transactional
     @Override
     public void deleteMember(long memberId) throws CustomException {
@@ -178,12 +184,33 @@ public class MemberServiceImpl implements MemberService{
         // 삭제된 회원인지 체크 : 삭제된 상태 -> Custom Exception
         checkDeletedMember(member);
 
-        String nickname = nicknameService.getNicknameInRedisByMemberId(memberId);
-
-        nicknameService.deleteNicknameInRedis(nickname);
-        member.setIsDeleted(true);
+        // update RDBMS (MySQL)
+        log.info("mysql delete");
+        member.setIsDeleted(true); // Todo : Spring Batch -> 일괄 삭제
         member.setDeletedDate(LocalDateTime.now());
         memberRepository.save(member);
+
+        try {
+            // produce event (to Kafka)
+            MemberEvent memberEvent = new MemberEvent();
+            memberEvent.setMemberId(memberId);
+            memberEvent.setType("delete");
+            // 토픽 존재 여부 체크
+            if (producer.isExist(MEMBER_TOPIC)) producer.sendMessage(MEMBER_TOPIC, memberEvent);
+        } catch (Exception e) {
+            log.error("kafka error occurred");
+            throw new CustomException(HttpStatus.INTERNAL_SERVER_ERROR, "GA001", "kafka 통신 예외 발생");
+        }
+
+        try {
+            // update Redis cache
+            log.info("redis delete");
+            String nickname = nicknameService.getNicknameInRedisByMemberId(memberId);
+            nicknameService.deleteNicknameInRedis(nickname);
+        } catch (Exception e) {
+            log.error("redis error occurred");
+            throw new CustomException(HttpStatus.INTERNAL_SERVER_ERROR, "GA001", "redis 예외 발생");
+        }
     }
 
     /**
