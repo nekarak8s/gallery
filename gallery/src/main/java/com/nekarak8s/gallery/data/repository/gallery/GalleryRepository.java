@@ -6,6 +6,7 @@ import com.nekarak8s.gallery.data.entity.gallery.Gallery;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -47,4 +48,9 @@ public interface GalleryRepository extends JpaRepository<Gallery, Long> {
     @Query("SELECT new com.nekarak8s.gallery.data.dto.gallery.GallerySearchDTO(g.galleryId, g.name, g.content, g.memberId, g.content, g.createdDate) " +
             "FROM Gallery g WHERE (g.name like %:name%)")
     Page<GallerySearchDTO> findByQueryByTitle(Pageable pageable, String name);
+
+    // 회원 보유 갤러리 모두 삭제 (갤러리 아이디 반환 필요?? -> 액자 삭제 하려면)
+    @Modifying
+    @Query("DELETE FROM Gallery g WHERE g.memberId = :memberId")
+    void deleteAllByMemberId(long memberId);
 }

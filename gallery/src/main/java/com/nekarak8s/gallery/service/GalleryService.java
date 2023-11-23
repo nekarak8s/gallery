@@ -32,8 +32,11 @@ public interface GalleryService {
     // 갤러리 수정
     void modifyGallery(long memberId, long galleryId, GalleryModifyRequestDTO requestDTO) throws CustomException;
 
-    // 갤러리 삭제
+    // 갤러리 단건 삭제
     void deleteGallery(long memberId, long galleryId) throws CustomException;
+
+    // 회원탈퇴 -> 모든 갤러리 삭제
+    void deleteAllGallery(long memberId) throws CustomException;
 
     // 갤러리 검색 (by Query)
     Page<GallerySearchDTO> search(String type, String query, int page) throws CustomException;

@@ -1,4 +1,4 @@
-package com.nekarak8s.gallery.kafka.service;
+package com.nekarak8s.gallery.kafka.producer;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -11,7 +11,7 @@ import org.springframework.util.concurrent.ListenableFutureCallback;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class KafkaProducerService {
+public class KafkaProducer {
 
     private final KafkaTemplate<String, String> kafkaTemplate;
 
