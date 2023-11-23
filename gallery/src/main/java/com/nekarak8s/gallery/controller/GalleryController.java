@@ -4,7 +4,7 @@ import com.nekarak8s.gallery.data.dto.ApiResponse;
 import com.nekarak8s.gallery.data.dto.gallery.*;
 import com.nekarak8s.gallery.data.entity.place.Place;
 import com.nekarak8s.gallery.exception.CustomException;
-import com.nekarak8s.gallery.kafka.service.KafkaProducerService;
+import com.nekarak8s.gallery.kafka.producer.KafkaProducer;
 import com.nekarak8s.gallery.service.GalleryService;
 import com.nekarak8s.gallery.validation.NoWhitespace;
 import com.nekarak8s.gallery.validation.NumberOfCharacters;
@@ -27,12 +27,12 @@ import java.util.List;
 public class GalleryController {
 
     private final GalleryService galleryService;
-    private final KafkaProducerService kafkaProducerService;
+    private final KafkaProducer kafkaProducer;
 
     @GetMapping("/health")
     public String health() {
         log.info("헬스 체크 !!");
-        kafkaProducerService.sendMessage("health", "hi");
+        kafkaProducer.sendMessage("health", "hi");
         return "갤러리서버 ok";
     }
 

@@ -145,6 +145,16 @@ public class GalleryServiceImpl implements GalleryService {
         galleryRepository.deleteById(galleryId);
     }
 
+    /**
+     회원 탈퇴 -> 관련 갤러리 모두 삭제
+     */
+    @Transactional
+    @Override
+    public void deleteAllGallery(long memberId) throws CustomException {
+        log.info("갤러리 모두 삭제!!!");
+        galleryRepository.deleteAllByMemberId(memberId);
+    }
+
 
     /**
      * 검색어로 갤러리 조회

@@ -34,6 +34,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
     // kafka
     implementation 'org.springframework.kafka:spring-kafka'
+    // jackson
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.3'
 }
 
 tasks.named('test') {
