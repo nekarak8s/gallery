@@ -8,6 +8,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -22,21 +25,29 @@ public class PostServiceImpl implements PostService {
      */
     @Transactional
     @Override
-    public void createPost(long galleryId, int count) {
+    public void createPostByGallery(long galleryId, int count) {
+        List<Post> posts = new ArrayList<>();
         try {
             // count 개수 만큼 게시물 반복 생성
             for (int i = 0; i < count; i++) {
                 Post post = new Post();
                 post.setGalleryId(galleryId);
-//                post.setImageUrl(null);
-//                post.setTitle(null);
-//                post.setContent(null);
-//                post.setModifiedDate(null);
                 post.setOrder((long) (i + 1));
-                postRepo.save(post);
+                posts.add(post);
             }
+            postRepo.saveAll(posts);
         } catch (Exception e) {
             log.error("게시물 생성 중 예외 발생 : {}", e.getMessage());
         }
+    }
+
+    /**
+     * 게시물 삭제
+     * @param galleryId
+     */
+    @Transactional
+    @Override
+    public void deletePostByGallery(long galleryId) {
+        postRepo.deleteAllByGalleryId(galleryId);
     }
 }

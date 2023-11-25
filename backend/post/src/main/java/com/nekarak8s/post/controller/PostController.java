@@ -24,9 +24,18 @@ public class PostController {
      * 게시물 10개 더미 데이터 생성
      * @param galleryId
      */
-    @PostMapping("/dumy")
-    public void createPost(@RequestParam(name = "galleryId") Long galleryId) {
-        System.out.println(galleryId.getClass().getName());
-        postService.createPost(galleryId, 10);
+    @PostMapping("/dummy")
+    public void createPostByGallery(@RequestParam(name = "galleryId") Long galleryId) {
+        postService.createPostByGallery(galleryId, 10);
+    }
+
+    /**
+     * Todo : Kafka 이벤트 수신 -> 게시물 삭제로 변경 예정
+     * 게시물 10개 삭제
+     * @Param galleryId
+     */
+    @DeleteMapping("/dummy")
+    public void deletePostByGallery(@RequestParam(name = "galleryId") Long galleryId) {
+        postService.deletePostByGallery(galleryId);
     }
 }
