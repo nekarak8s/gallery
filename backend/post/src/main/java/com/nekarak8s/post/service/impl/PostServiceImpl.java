@@ -1,5 +1,8 @@
 package com.nekarak8s.post.service.impl;
 
+import com.nekarak8s.post.data.dto.response.MusicInfo;
+import com.nekarak8s.post.data.dto.response.PostAndMusic;
+import com.nekarak8s.post.data.dto.response.PostInfo;
 import com.nekarak8s.post.data.entity.Post;
 import com.nekarak8s.post.data.repo.PostRepo;
 import com.nekarak8s.post.service.PostService;
@@ -9,7 +12,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -18,6 +23,41 @@ import java.util.List;
 public class PostServiceImpl implements PostService {
 
     private final PostRepo postRepo;
+
+    /**
+     * 게시물 목록 조회
+     * @param galleryId
+     * @return
+     */
+    @Override
+    public List<PostInfo> selectPosts(long galleryId) {
+        List<PostAndMusic> postAndMusics = postRepo.findPostInfosByGalleryId(galleryId);
+        
+        List<PostInfo> postInfos = new ArrayList<>();
+        for (PostAndMusic postAndMusic : postAndMusics) {
+            PostInfo postInfo = new PostInfo();
+            postInfo.setPostId(postAndMusic.getPostId());
+            postInfo.setOrder(postAndMusic.getOrder());
+            postInfo.setTitle(postAndMusic.getTitle());
+            postInfo.setContent(postAndMusic.getContent());
+            postInfo.setImageUrl(postAndMusic.getImageUrl());
+            postInfo.setCreatedDate(postAndMusic.getCreatedDate());
+            postInfo.setModifiedDate(postAndMusic.getModifiedDate());
+
+            if (postAndMusic.getMusicId() != -1)
+            {
+                MusicInfo musicInfo = new MusicInfo(postAndMusic.getMusicId(), postAndMusic.getMusicTitle(), postAndMusic.getSinger(), postAndMusic.getReleasedDate(), postAndMusic.getMusicUrl(), postAndMusic.getThumbnailUrl());
+                postInfo.setMusic(musicInfo);
+            }
+
+
+            postInfos.add(postInfo);
+        }
+
+        return postInfos.stream()
+                .sorted(Comparator.comparing(PostInfo::getOrder))
+                .collect(Collectors.toList());
+    }
 
     /**
      * 게시물 생성
@@ -33,6 +73,9 @@ public class PostServiceImpl implements PostService {
                 Post post = new Post();
                 post.setGalleryId(galleryId);
                 post.setOrder((long) (i + 1));
+                post.setTitle("제목" + (i + 1));
+                post.setContent("내용" + (i + 1));
+                post.setImageUrl("이미지" + (i + 1));
                 posts.add(post);
             }
             postRepo.saveAll(posts);

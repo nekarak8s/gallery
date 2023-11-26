@@ -21,7 +21,7 @@ public class Post extends BaseEntity{
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Long Id;
+    private Long id;
 
     @Column(name = "gallery_id", nullable = false)
     private Long galleryId;
@@ -38,6 +38,6 @@ public class Post extends BaseEntity{
     @Column(name = "image_url")
     private String imageUrl;
 
-    @Column(name = "music_id")
-    private Long musicId;
+    @Column(name = "music_id", nullable = false)
+    private Long musicId = -1L; // Join시 null 에러 방지를 위해 -1 설정
 }
