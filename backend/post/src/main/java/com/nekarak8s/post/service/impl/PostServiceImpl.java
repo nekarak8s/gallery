@@ -1,8 +1,8 @@
 package com.nekarak8s.post.service.impl;
 
 import com.nekarak8s.post.data.dto.response.MusicInfo;
-import com.nekarak8s.post.data.dto.response.PostAndMusic;
 import com.nekarak8s.post.data.dto.response.PostInfo;
+import com.nekarak8s.post.data.entity.Music;
 import com.nekarak8s.post.data.entity.Post;
 import com.nekarak8s.post.data.repo.PostRepo;
 import com.nekarak8s.post.service.PostService;
@@ -31,26 +31,34 @@ public class PostServiceImpl implements PostService {
      */
     @Override
     public List<PostInfo> selectPosts(long galleryId) {
-        List<PostAndMusic> postAndMusics = postRepo.findPostInfosByGalleryId(galleryId);
-        
+        List<Post> posts = postRepo.findAllByGalleryId(galleryId);
         List<PostInfo> postInfos = new ArrayList<>();
-        for (PostAndMusic postAndMusic : postAndMusics) {
-            PostInfo postInfo = new PostInfo();
-            postInfo.setPostId(postAndMusic.getPostId());
-            postInfo.setOrder(postAndMusic.getOrder());
-            postInfo.setTitle(postAndMusic.getTitle());
-            postInfo.setContent(postAndMusic.getContent());
-            postInfo.setImageUrl(postAndMusic.getImageUrl());
-            postInfo.setCreatedDate(postAndMusic.getCreatedDate());
-            postInfo.setModifiedDate(postAndMusic.getModifiedDate());
 
-            if (postAndMusic.getMusicId() != -1)
-            {
-                MusicInfo musicInfo = new MusicInfo(postAndMusic.getMusicId(), postAndMusic.getMusicTitle(), postAndMusic.getSinger(), postAndMusic.getReleasedDate(), postAndMusic.getMusicUrl(), postAndMusic.getThumbnailUrl());
+        for (Post post : posts) {
+            PostInfo postInfo = new PostInfo().builder()
+                    .postId(post.getId())
+                    .order(post.getOrder())
+                    .title(post.getTitle())
+                    .content(post.getContent())
+                    .imageUrl(post.getImageUrl())
+                    .createdDate(post.getCreatedDate())
+                    .modifiedDate(post.getModifiedDate())
+                    .build();
+
+            if (post.getMusic() == null) {
+                postInfo.setMusic(null);
+            } else {
+                Music music = post.getMusic();
+                MusicInfo musicInfo = MusicInfo.builder()
+                        .id(music.getId())
+                        .title(music.getTitle())
+                        .singer(music.getSinger())
+                        .musicUrl(music.getMusicUrl())
+                        .releasedDate(music.getReleasedDate())
+                        .thumbnailUrl(music.getThumbnailUrl())
+                        .build();
                 postInfo.setMusic(musicInfo);
             }
-
-
             postInfos.add(postInfo);
         }
 
