@@ -21,7 +21,8 @@ public class WhitelistManager {
                     new UriMethodPair("/callback", "POST"),
                     new UriMethodPair("/check/nickname", "GET"),
                     new UriMethodPair("/place/list", "GET"),
-                    new UriMethodPair("/gallery/search", "GET")
+                    new UriMethodPair("/gallery/search", "GET"),
+                    new UriMethodPair("/post", "GET")
             )
     );
 
