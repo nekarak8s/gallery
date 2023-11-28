@@ -1,6 +1,7 @@
 package com.nekarak8s.post.data.repo;
 
 import com.nekarak8s.post.data.entity.Post;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -13,6 +14,7 @@ import java.util.List;
 public interface PostRepo extends JpaRepository<Post, Long> {
 
     // Post 목록 조회
+    @EntityGraph(attributePaths = "music")
     @Query("SELECT p FROM Post p WHERE p.galleryId = :galleryId")
     List<Post> findAllByGalleryId(@Param("galleryId") long galleryId);
 
