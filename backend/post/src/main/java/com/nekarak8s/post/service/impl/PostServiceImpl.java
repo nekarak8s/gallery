@@ -4,6 +4,7 @@ import com.nekarak8s.post.data.dto.response.MusicInfo;
 import com.nekarak8s.post.data.dto.response.PostInfo;
 import com.nekarak8s.post.data.entity.Music;
 import com.nekarak8s.post.data.entity.Post;
+import com.nekarak8s.post.data.repo.CommentRepo;
 import com.nekarak8s.post.data.repo.PostRepo;
 import com.nekarak8s.post.service.PostService;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +24,7 @@ import java.util.stream.Collectors;
 public class PostServiceImpl implements PostService {
 
     private final PostRepo postRepo;
+    private final CommentRepo commentRepo;
 
     /**
      * 게시물 목록 조회
@@ -52,10 +54,10 @@ public class PostServiceImpl implements PostService {
                 MusicInfo musicInfo = MusicInfo.builder()
                         .id(music.getId())
                         .title(music.getTitle())
-                        .singer(music.getSinger())
-                        .musicUrl(music.getMusicUrl())
+                        .artist(music.getArtist())
+                        .musicURL(music.getMusicURL())
                         .releasedDate(music.getReleasedDate())
-                        .thumbnailUrl(music.getThumbnailUrl())
+                        .coverURL(music.getCoverURL())
                         .build();
                 postInfo.setMusic(musicInfo);
             }
