@@ -1,11 +1,10 @@
 package com.nekarak8s.post.data.dto.response;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
@@ -13,16 +12,17 @@ import java.time.LocalDateTime;
 @Builder
 public class MusicInfo {
 
-    private long id;
+    @JsonInclude(JsonInclude.Include.NON_NULL) // 값이 null 이면, 제외
+    private Long id;
 
     private String title;
 
-    private String singer;
+    private String artist;
 
-    private LocalDateTime releasedDate;
+    private String releasedDate;
 
-    private String musicUrl;
+    private String musicURL;
 
-    private String thumbnailUrl;
+    private String coverURL;
 
 }

@@ -25,6 +25,7 @@ public class PostServiceImpl implements PostService {
 
     private final PostRepo postRepo;
     private final CommentRepo commentRepo;
+    private static final String YOUTUBE_BASE_URL = "https://www.youtube.com/watch?v=";
 
     /**
      * 게시물 목록 조회
@@ -55,7 +56,7 @@ public class PostServiceImpl implements PostService {
                         .id(music.getId())
                         .title(music.getTitle())
                         .artist(music.getArtist())
-                        .musicURL(music.getMusicURL())
+                        .musicURL(YOUTUBE_BASE_URL + music.getVideoId())
                         .releasedDate(music.getReleasedDate())
                         .coverURL(music.getCoverURL())
                         .build();

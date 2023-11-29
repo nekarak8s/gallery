@@ -5,34 +5,30 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
-import java.time.LocalDateTime;
 
 @Entity
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@EntityListeners(AuditingEntityListener.class)
 @Table(name = "music")
 public class Music {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "title")
+    @Column(name = "title", nullable = false)
     private String title;
 
-    @Column(name = "singer", nullable = false)
-    private String singer;
+    @Column(name = "artist", nullable = false)
+    private String artist;
 
-    @Column(name = "music_url", nullable = false)
-    private String musicUrl;
+    @Column(name = "video_id", nullable = false)
+    private String videoId;
 
-    @Column(name = "thumbnail_url")
-    private String thumbnailUrl;
+    @Column(name = "cover_url")
+    private String coverURL;
 
-    @Column(name = "released_date",nullable = false)
-    private LocalDateTime releasedDate;
+    @Column(name = "released_date", nullable = false)
+    private String releasedDate;
 }

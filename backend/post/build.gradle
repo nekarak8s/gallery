@@ -25,6 +25,18 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.kafka:spring-kafka'
+
+    // WebFlux
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
+
+    // Youtube Data API
+    implementation 'com.google.api-client:google-api-client:1.30.9'
+    implementation 'com.google.oauth-client:google-oauth-client-jetty:1.23.0'
+    implementation 'com.google.apis:google-api-services-youtube:v3-rev222-1.25.0'
+
+    // Spotify API (https://github.com/spotify-web-api-java/spotify-web-api-java)
+    implementation 'se.michaelthelin.spotify:spotify-web-api-java:8.3.0'
+
     compileOnly 'org.projectlombok:lombok'
     runtimeOnly 'com.mysql:mysql-connector-j'
     annotationProcessor 'org.projectlombok:lombok'
