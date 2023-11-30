@@ -29,8 +29,7 @@ export class CannonKeypadControls {
   dispose: () => void
 
   // internals
-  #targetPosition = new Vec3()
-  #targetQuaternion = new Quaternion()
+  #isGround: boolean = false
 
   #lookLeft: number = 0
   #lookRight: number = 0
@@ -86,6 +85,7 @@ export class CannonKeypadControls {
    * Keydown event handler
    */
   onKeyDown(event: KeyboardEvent) {
+    event.preventDefault()
     switch (event.code) {
       case 'ArrowUp':
       case 'KeyW':
@@ -109,8 +109,9 @@ export class CannonKeypadControls {
 
       case 'AltLeft':
       case 'AltRight':
-        event.preventDefault()
-        this.cannonBody.applyForce(_forceDirection.set(0, 150000, 0))
+        if (this.#isGround) {
+          this.cannonBody.applyForce(_forceDirection.set(0, 180000, 0))
+        }
         break
     }
   }
@@ -148,12 +149,14 @@ export class CannonKeypadControls {
     /**
      * Keep the cannonBody up the floor
      */
+    this.#isGround = false
     this.raycaster.set(this.camera.position, _raycasterDirection)
 
     const intersects = this.raycaster.intersectObjects(this.floors)
     for (const item of intersects) {
       if (item.distance < this.height) {
         this.cannonBody.position.y += this.height - item.distance
+        this.#isGround = true
       }
       break
     }

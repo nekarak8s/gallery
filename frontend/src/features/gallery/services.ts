@@ -55,7 +55,7 @@ export function useCreateGallery() {
 export function useCreateArtwork() {
   return useMutation<MessageResponse, ErrorResponse, FormData>(
     (data) =>
-      axiosInstance.patch(`/post/dto`, data, {
+      axiosInstance.patch(`/post/list`, data, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
