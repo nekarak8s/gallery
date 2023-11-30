@@ -51,3 +51,20 @@ export function useCreateGallery() {
     }
   )
 }
+
+export function useCreateArtwork() {
+  return useMutation<MessageResponse, ErrorResponse, FormData>(
+    (data) =>
+      axiosInstance.patch(`/post/dto`, data, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      }),
+    {
+      onSuccess: () => {},
+      onError: (err) => {
+        toastManager.addToast('error', err.message)
+      },
+    }
+  )
+}

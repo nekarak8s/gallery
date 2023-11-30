@@ -1,10 +1,11 @@
 import { Body, Box, Quaternion, Vec3, World } from 'cannon-es'
-import { Quaternion as ThreeQuaternion, Vector3 } from 'three'
+import { Quaternion as ThreeQuaternion, Vector3, Raycaster } from 'three'
 
 const _xAxis = new Vec3(1, 0, 0)
 const _yAxis = new Vec3(0, 1, 0)
 const _zAxis = new Vec3(0, 0, 1)
 const _forceDirection = new Vec3()
+const _raycasterDirection = new Vector3(0, -1, 0)
 const _cameraDirection = new Vector3()
 const _rotationQuaternion = new Quaternion()
 const _cannonQuaternion = new ThreeQuaternion()
@@ -13,12 +14,16 @@ export class CannonKeypadControls {
   camera: THREE.Camera
   world: World
   height: number
+  floors: THREE.Object3D<THREE.Object3DEventMap>[]
+
+  // object
+  raycaster: Raycaster
   cannonBody: Body
 
   // API
   enabled: boolean = true
 
-  movementSpeed: number = 1
+  movementSpeed: number = 2
   lookSpeed: number = 0.4
 
   dispose: () => void
@@ -33,10 +38,19 @@ export class CannonKeypadControls {
   #moveForward: boolean = false
   #moveBackward: boolean = false
 
-  constructor(camera: THREE.Camera, world: World, height: number = 1.6) {
+  constructor(
+    camera: THREE.Camera,
+    world: World,
+    height: number = 1.6,
+    floors: THREE.Object3D<THREE.Object3DEventMap>[] = []
+  ) {
     this.camera = camera
     this.world = world
     this.height = height
+    this.floors = floors
+
+    // Create raycayster
+    this.raycaster = new Raycaster()
 
     // Create cannon body
     const shape = new Box(new Vec3(0.2, height / 2, 0.2))
@@ -92,6 +106,12 @@ export class CannonKeypadControls {
       case 'KeyD':
         this.#lookRight = 1
         break
+
+      case 'AltLeft':
+      case 'AltRight':
+        event.preventDefault()
+        this.cannonBody.applyForce(_forceDirection.set(0, 150000, 0))
+        break
     }
   }
 
@@ -124,6 +144,19 @@ export class CannonKeypadControls {
 
   update(delta: number) {
     if (!this.enabled) return
+
+    /**
+     * Keep the cannonBody up the floor
+     */
+    this.raycaster.set(this.camera.position, _raycasterDirection)
+
+    const intersects = this.raycaster.intersectObjects(this.floors)
+    for (const item of intersects) {
+      if (item.distance < this.height) {
+        this.cannonBody.position.y += this.height - item.distance
+      }
+      break
+    }
 
     /**
      * Update cannonBody position

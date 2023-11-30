@@ -19,6 +19,12 @@ type GalleryForm = {
   content: string
 }
 
+type ArtworkForm = {
+  name: string
+  description: string
+  frame: File
+}
+
 type Place = {
   placeId: number
   name: string

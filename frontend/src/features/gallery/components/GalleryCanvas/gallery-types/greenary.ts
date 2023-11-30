@@ -1,10 +1,10 @@
 import { Body, SAPBroadphase, World } from 'cannon-es'
+import CannonDebugger from 'cannon-es-debugger'
 import {
   AmbientLight,
   Clock,
   CubeTextureLoader,
   DirectionalLight,
-  MathUtils,
   Object3D,
   Scene,
   TextureLoader,
@@ -12,12 +12,6 @@ import {
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import { DefaultCamera } from '../three-custom/cameras/DefaultCamera'
 import { CannonKeypadControls } from '../three-custom/controls/CannonKeypadControls'
-import { Floor } from '../three-custom/meshes/Floor'
-import { Frame } from '../three-custom/meshes/Frame'
-import { PanelLighting } from '../three-custom/meshes/PanelLighting'
-import { SimplePointLighting } from '../three-custom/meshes/SimplePointLighting'
-import { SpotLighting } from '../three-custom/meshes/SpotLighting'
-import { Wall } from '../three-custom/meshes/Wall'
 import { DefaultRenderer } from '../three-custom/renderers/DefaultRenderer'
 import nx from '@/assets/cubemaps/clear_sky/nx.png'
 import ny from '@/assets/cubemaps/clear_sky/ny.png'
@@ -25,9 +19,7 @@ import nz from '@/assets/cubemaps/clear_sky/nz.png'
 import px from '@/assets/cubemaps/clear_sky/px.png'
 import py from '@/assets/cubemaps/clear_sky/py.png'
 import pz from '@/assets/cubemaps/clear_sky/pz.png'
-import floorAmbientImg from '@/assets/textures/wood_herringbone/Wood_Herringbone_Tiles_001_ambientOcclusion.jpg'
-import floorBaseImg from '@/assets/textures/wood_herringbone/Wood_Herringbone_Tiles_001_basecolor.jpg'
-import floorNormalImg from '@/assets/textures/wood_herringbone/Wood_Herringbone_Tiles_001_normal.jpg'
+import greenaryGlb from '@/assets/glbs/greenary.glb'
 
 const WALL_INFO = {
   color: '#fffeef',
@@ -217,7 +209,7 @@ const POINTLIGHTS: {
 ]
 
 const greenary = ({ canvas, loadingManager, gallery, frameList }: GalleryTypeProps) => {
-  console.log(gallery)
+  console.log(gallery, frameList)
   /**
    * Loaders
    */
@@ -241,7 +233,10 @@ const greenary = ({ canvas, loadingManager, gallery, frameList }: GalleryTypePro
    */
   const world = new World()
   world.broadphase = new SAPBroadphase(world)
-  // world.gravity.set(0, -10, 0)
+  world.gravity.set(0, -70, 0)
+
+  // Cannon Helper : Development
+  const cannonDebugger = CannonDebugger(scene, world, {})
 
   /**
    * Camera
@@ -252,10 +247,11 @@ const greenary = ({ canvas, loadingManager, gallery, frameList }: GalleryTypePro
 
   /**
    * Controls
-   */
+  //  */
+  const floors: THREE.Object3D<THREE.Object3DEventMap>[] = []
   // const controls = new OrbitControls(camera, canvas)
   // const controls = new FirstPersonControls(camera, canvas)
-  const controls = new CannonKeypadControls(camera, world, 1.6)
+  const controls = new CannonKeypadControls(camera, world, 1.6, floors)
 
   /**
    * Light
@@ -303,24 +299,44 @@ const greenary = ({ canvas, loadingManager, gallery, frameList }: GalleryTypePro
     cannonBody?: Body
   }[] = []
 
-  // Floor mesh
-  const floor = new Floor({
-    container: scene,
-    world,
-    name: 'floor',
-    width: 20,
-    depth: 30,
-    texture: {
-      textureLoader,
-      baseImg: floorBaseImg,
-      normalImg: floorNormalImg,
-      ambientImg: floorAmbientImg,
-      // roughImg: floorRoughImg,
-      repeatX: 4,
-      repeatY: 6,
-    },
+  // greeneary floor
+  gltfLoader.load(greenaryGlb, (glb) => {
+    const mesh = glb.scene
+
+    /**
+     * Get size
+     */
+    // const box = new Box3().setFromObject(glb.scene)
+    // const size = box.getSize(new Vector3())
+    // console.log(size.x, size.y, size.z)
+
+    /**
+     * Add to the container
+     */
+    scene.add(mesh)
+    floors.push(mesh)
+
+    objects.push({ glb: mesh })
   })
-  objects.push(floor)
+
+  // Floor mesh
+  // const floor = new Floor({
+  //   container: scene,
+  //   world,
+  //   name: 'floor',
+  //   width: 20,
+  //   depth: 30,
+  //   texture: {
+  //     textureLoader,
+  //     baseImg: floorBaseImg,
+  //     normalImg: floorNormalImg,
+  //     ambientImg: floorAmbientImg,
+  //     // roughImg: floorRoughImg,
+  //     repeatX: 4,
+  //     repeatY: 6,
+  //   },
+  // })
+  // objects.push(floor)
 
   // Ceiling mesh
   // const ceiling = new Ceiling({
@@ -333,121 +349,121 @@ const greenary = ({ canvas, loadingManager, gallery, frameList }: GalleryTypePro
   // })
   // objects.push(ceiling)
 
-  // Horizontal Wall & Frame & SpotLighting mesh
-  HORIZONTAL_WALLS.forEach((wallInfo, idx) => {
-    const wall = new Wall({
-      ...WALL_INFO,
-      container: scene,
-      world,
-      name: `horizontal-wall-${idx + 1}`,
-      x: wallInfo.x,
-      z: wallInfo.z,
-      width: wallInfo.width,
-    })
-    objects.push(wall)
-    wallInfo.frames &&
-      wallInfo.frames.forEach((frameInfo) => {
-        const frame = new Frame({
-          ...FRAME_INFO,
-          container: wall.mesh,
-          name: `frame_${frameInfo.order}`,
-          baseImg: frameList[frameInfo.order - 1].framePictureUrl,
-          textureLoader,
-          x: frameInfo.x,
-          y: FRAME_INFO.y - WALL_INFO.height / 2,
-          z: frameInfo.isDownRight ? WALL_INFO.depth / 2 : -WALL_INFO.depth / 2,
-          rotationY: frameInfo.isDownRight ? 0 : MathUtils.degToRad(180),
-        })
-        objects.push(frame)
-        const spotLight = new SpotLighting({
-          ...SPOTLIGHT_INFO,
-          container: frame.mesh,
-          name: 'spotlight',
-          gltfLoader,
-          targetMesh: frame.mesh,
-          y: WALL_INFO.height - FRAME_INFO.y,
-        })
-        objects.push(spotLight)
-      })
-  })
+  // // Horizontal Wall & Frame & SpotLighting mesh
+  // HORIZONTAL_WALLS.forEach((wallInfo, idx) => {
+  //   const wall = new Wall({
+  //     ...WALL_INFO,
+  //     container: scene,
+  //     world,
+  //     name: `horizontal-wall-${idx + 1}`,
+  //     x: wallInfo.x,
+  //     z: wallInfo.z,
+  //     width: wallInfo.width,
+  //   })
+  //   objects.push(wall)
+  //   wallInfo.frames &&
+  //     wallInfo.frames.forEach((frameInfo) => {
+  //       const frame = new Frame({
+  //         ...FRAME_INFO,
+  //         container: wall.mesh,
+  //         name: `frame_${frameInfo.order}`,
+  //         baseImg: frameList[frameInfo.order - 1].framePictureUrl,
+  //         textureLoader,
+  //         x: frameInfo.x,
+  //         y: FRAME_INFO.y - WALL_INFO.height / 2,
+  //         z: frameInfo.isDownRight ? WALL_INFO.depth / 2 : -WALL_INFO.depth / 2,
+  //         rotationY: frameInfo.isDownRight ? 0 : MathUtils.degToRad(180),
+  //       })
+  //       objects.push(frame)
+  //       const spotLight = new SpotLighting({
+  //         ...SPOTLIGHT_INFO,
+  //         container: frame.mesh,
+  //         name: 'spotlight',
+  //         gltfLoader,
+  //         targetMesh: frame.mesh,
+  //         y: WALL_INFO.height - FRAME_INFO.y,
+  //       })
+  //       objects.push(spotLight)
+  //     })
+  // })
 
-  // Vertical Wall & Frame & SpotLighting mesh
-  VERTICAL_WALLS.forEach((wallInfo, idx) => {
-    const wall = new Wall({
-      ...WALL_INFO,
-      container: scene,
-      name: `vertical-wall-${idx + 1}`,
-      world,
-      x: wallInfo.x,
-      z: wallInfo.z,
-      width: wallInfo.width,
-      rotationY: MathUtils.degToRad(90),
-    })
-    objects.push(wall)
-    wallInfo.frames &&
-      wallInfo.frames.forEach((frameInfo) => {
-        const frame = new Frame({
-          ...FRAME_INFO,
-          container: wall.mesh,
-          name: `frame_${frameInfo.order}`,
-          baseImg: frameList[frameInfo.order - 1].framePictureUrl,
-          textureLoader,
-          x: frameInfo.x,
-          y: FRAME_INFO.y - WALL_INFO.height / 2,
-          z: frameInfo.isDownRight ? WALL_INFO.depth / 2 : -WALL_INFO.depth / 2,
-          rotationY: frameInfo.isDownRight ? 0 : MathUtils.degToRad(180),
-        })
-        objects.push(frame)
-        const spotLight = new SpotLighting({
-          ...SPOTLIGHT_INFO,
-          container: frame.mesh,
-          name: 'spotlight',
-          gltfLoader,
-          targetMesh: frame.mesh,
-          y: WALL_INFO.height - FRAME_INFO.y,
-        })
-        objects.push(spotLight)
-      })
-  })
+  // // Vertical Wall & Frame & SpotLighting mesh
+  // VERTICAL_WALLS.forEach((wallInfo, idx) => {
+  //   const wall = new Wall({
+  //     ...WALL_INFO,
+  //     container: scene,
+  //     name: `vertical-wall-${idx + 1}`,
+  //     world,
+  //     x: wallInfo.x,
+  //     z: wallInfo.z,
+  //     width: wallInfo.width,
+  //     rotationY: MathUtils.degToRad(90),
+  //   })
+  //   objects.push(wall)
+  //   wallInfo.frames &&
+  //     wallInfo.frames.forEach((frameInfo) => {
+  //       const frame = new Frame({
+  //         ...FRAME_INFO,
+  //         container: wall.mesh,
+  //         name: `frame_${frameInfo.order}`,
+  //         baseImg: frameList[frameInfo.order - 1].framePictureUrl,
+  //         textureLoader,
+  //         x: frameInfo.x,
+  //         y: FRAME_INFO.y - WALL_INFO.height / 2,
+  //         z: frameInfo.isDownRight ? WALL_INFO.depth / 2 : -WALL_INFO.depth / 2,
+  //         rotationY: frameInfo.isDownRight ? 0 : MathUtils.degToRad(180),
+  //       })
+  //       objects.push(frame)
+  //       const spotLight = new SpotLighting({
+  //         ...SPOTLIGHT_INFO,
+  //         container: frame.mesh,
+  //         name: 'spotlight',
+  //         gltfLoader,
+  //         targetMesh: frame.mesh,
+  //         y: WALL_INFO.height - FRAME_INFO.y,
+  //       })
+  //       objects.push(spotLight)
+  //     })
+  // })
 
-  // Glass Wall & Frame & SpotLighting mesh
-  VERTICAL_GLASS_WALLS.forEach((wallInfo, idx) => {
-    const wall = new Wall({
-      ...GLASS_WALL_INFO,
-      container: scene,
-      name: `vertical-glass-wall-${idx + 1}`,
-      world,
-      x: wallInfo.x,
-      z: wallInfo.z,
-      width: wallInfo.width,
-      rotationY: MathUtils.degToRad(90),
-    })
-    objects.push(wall)
-  })
+  // // Glass Wall & Frame & SpotLighting mesh
+  // VERTICAL_GLASS_WALLS.forEach((wallInfo, idx) => {
+  //   const wall = new Wall({
+  //     ...GLASS_WALL_INFO,
+  //     container: scene,
+  //     name: `vertical-glass-wall-${idx + 1}`,
+  //     world,
+  //     x: wallInfo.x,
+  //     z: wallInfo.z,
+  //     width: wallInfo.width,
+  //     rotationY: MathUtils.degToRad(90),
+  //   })
+  //   objects.push(wall)
+  // })
 
-  // PanelLighting mesh
-  PANELLIGHTS.forEach((panelLightInfo, idx) => {
-    const panelLight = new PanelLighting({
-      ...PANELLIGHT_INFO,
-      container: scene,
-      name: `panellight-${idx + 1}`,
-      x: panelLightInfo.x,
-      z: panelLightInfo.z,
-    })
-    objects.push(panelLight)
-  })
+  // // PanelLighting mesh
+  // PANELLIGHTS.forEach((panelLightInfo, idx) => {
+  //   const panelLight = new PanelLighting({
+  //     ...PANELLIGHT_INFO,
+  //     container: scene,
+  //     name: `panellight-${idx + 1}`,
+  //     x: panelLightInfo.x,
+  //     z: panelLightInfo.z,
+  //   })
+  //   objects.push(panelLight)
+  // })
 
-  // PointLighting mesh
-  POINTLIGHTS.forEach((pointLightInfo, idx) => {
-    const pointLight = new SimplePointLighting({
-      ...POINTLIGHT_INFO,
-      container: scene,
-      name: `pointlight-${idx + 1}`,
-      x: pointLightInfo.x,
-      z: pointLightInfo.z,
-    })
-    objects.push(pointLight)
-  })
+  // // PointLighting mesh
+  // POINTLIGHTS.forEach((pointLightInfo, idx) => {
+  //   const pointLight = new SimplePointLighting({
+  //     ...POINTLIGHT_INFO,
+  //     container: scene,
+  //     name: `pointlight-${idx + 1}`,
+  //     x: pointLightInfo.x,
+  //     z: pointLightInfo.z,
+  //   })
+  //   objects.push(pointLight)
+  // })
 
   /**
    * dat.gui : Development
@@ -470,6 +486,7 @@ const greenary = ({ canvas, loadingManager, gallery, frameList }: GalleryTypePro
     let step = 1 / 60
     if (delta < 0.01) step = 1 / 120
     world.step(step, delta, 3)
+    cannonDebugger.update() // Update the CannonDebugger meshes
 
     // update controls
     controls.update(delta)
@@ -521,6 +538,7 @@ const greenary = ({ canvas, loadingManager, gallery, frameList }: GalleryTypePro
       object.cannonBody && world.removeBody(object.cannonBody)
     })
     scene.remove(camera)
+    renderer.setAnimationLoop(null)
     renderer.dispose()
     controls.dispose()
     window.removeEventListener('resize', handleSize)

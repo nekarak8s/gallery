@@ -13,7 +13,7 @@ export class DefaultCamera extends PerspectiveCamera {
 
   constructor(info: DefaultCameraProps) {
     super(
-      info.fov,
+      info.fov || 30,
       info.canvas
         ? info.canvas.offsetWidth / info.canvas.offsetHeight
         : window.innerWidth / window.innerHeight,
