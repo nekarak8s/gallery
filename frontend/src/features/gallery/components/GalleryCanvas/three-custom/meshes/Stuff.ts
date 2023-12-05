@@ -1,4 +1,4 @@
-import { Box, Vec3, Body, Material, World } from 'cannon-es'
+import { Box, Vec3, Body, Material, World, Quaternion, Cylinder } from 'cannon-es'
 
 export type StuffArgs = {
   name?: string
@@ -39,8 +39,24 @@ export class Stuff {
     this.depth = info.depth || 0
   }
 
-  setCannonBody(world: World, mass?: number, material?: Material) {
-    const shape = new Box(new Vec3(this.width / 2, this.height / 2, this.depth / 2))
+  setBoxCannonBody(
+    world: World,
+    mass: number = 0,
+    material?: Material,
+    width?: number,
+    height?: number,
+    depth?: number
+  ) {
+    // create shape
+    const shape = new Box(
+      new Vec3(
+        width ? width / 2 : this.width / 2,
+        height ? height / 2 : this.height / 2,
+        depth ? depth / 2 : this.depth / 2
+      )
+    )
+
+    // create cannon body
     this.cannonBody = new Body({
       mass,
       position: new Vec3(this.x, this.y, this.z),
@@ -48,7 +64,53 @@ export class Stuff {
       material,
     })
 
-    this.cannonBody.quaternion.setFromAxisAngle(new Vec3(0, 1, 0), this.rotationY)
+    // set the cannonbody quaternion
+    const quaternionX = new Quaternion()
+    const quaternionY = new Quaternion()
+    const quaternionZ = new Quaternion()
+    quaternionX.setFromAxisAngle(new Vec3(1, 0, 0), this.rotationX)
+    quaternionY.setFromAxisAngle(new Vec3(0, 1, 0), this.rotationY)
+    quaternionZ.setFromAxisAngle(new Vec3(0, 0, 1), this.rotationZ)
+    this.cannonBody.quaternion.copy(quaternionX.mult(quaternionY).mult(quaternionZ))
+
+    // add to the world
+    world.addBody(this.cannonBody)
+  }
+
+  setCylinderCannonBody(
+    world: World,
+    mass: number = 0,
+    material?: Material,
+    width?: number,
+    height?: number,
+    numSegments?: number
+  ) {
+    // create shape
+    const shape = new Cylinder(
+      width ? width / 2 : this.width / 2,
+      width ? width / 2 : this.width / 2,
+      height ? height / 2 : this.height / 2,
+      numSegments ? numSegments : 12
+    )
+
+    // create cannon body
+    this.cannonBody = new Body({
+      mass,
+      position: new Vec3(this.x, this.y, this.z),
+      shape,
+      material,
+    })
+
+    // set the cannonbody quaternion
+    const quaternionX = new Quaternion()
+    const quaternionY = new Quaternion()
+    const quaternionZ = new Quaternion()
+    quaternionX.setFromAxisAngle(new Vec3(1, 0, 0), this.rotationX)
+    quaternionY.setFromAxisAngle(new Vec3(0, 1, 0), this.rotationY)
+    quaternionZ.setFromAxisAngle(new Vec3(0, 0, 1), this.rotationZ)
+    this.cannonBody.quaternion.copy(quaternionX.mult(quaternionY).mult(quaternionZ))
+
+    // add to the world
     world.addBody(this.cannonBody)
   }
 }

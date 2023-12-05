@@ -14,7 +14,7 @@ export class CannonKeypadControls {
   camera: THREE.Camera
   world: World
   height: number
-  floors: THREE.Object3D<THREE.Object3DEventMap>[]
+  floors: THREE.Object3D<THREE.Object3DEventMap>[] = []
 
   // object
   raycaster: Raycaster
@@ -37,16 +37,10 @@ export class CannonKeypadControls {
   #moveForward: boolean = false
   #moveBackward: boolean = false
 
-  constructor(
-    camera: THREE.Camera,
-    world: World,
-    height: number = 1.6,
-    floors: THREE.Object3D<THREE.Object3DEventMap>[] = []
-  ) {
+  constructor(camera: THREE.Camera, world: World, height: number = 1.6) {
     this.camera = camera
     this.world = world
     this.height = height
-    this.floors = floors
 
     // Create raycayster
     this.raycaster = new Raycaster()
@@ -54,7 +48,7 @@ export class CannonKeypadControls {
     // Create cannon body
     const shape = new Box(new Vec3(0.2, height / 2, 0.2))
     this.cannonBody = new Body({
-      mass: 60,
+      mass: 40,
       position: new Vec3(
         this.camera.position.x,
         this.camera.position.y - height / 2,
@@ -63,7 +57,13 @@ export class CannonKeypadControls {
       shape,
       fixedRotation: true,
     })
-    this.cannonBody.quaternion.setFromAxisAngle(new Vec3(0, 1, 0), this.camera.rotation.y)
+    const quaternionX = new Quaternion()
+    const quaternionY = new Quaternion()
+    const quaternionZ = new Quaternion()
+    quaternionX.setFromAxisAngle(new Vec3(1, 0, 0), this.camera.rotation.x)
+    quaternionY.setFromAxisAngle(new Vec3(0, 1, 0), this.camera.rotation.y)
+    quaternionZ.setFromAxisAngle(new Vec3(0, 0, 1), this.camera.rotation.z)
+    this.cannonBody.quaternion.copy(quaternionX.mult(quaternionY).mult(quaternionZ))
     this.world.addBody(this.cannonBody)
 
     // Add event listener

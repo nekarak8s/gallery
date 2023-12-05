@@ -28,26 +28,20 @@ export class Wall extends Stuff {
   material: THREE.Material
   mesh: THREE.Mesh
   textures: Record<string, THREE.Texture> = {}
+  dispose: () => void
 
   constructor(info: WallArgs) {
     super(info)
 
-    /**
-     * Adjust position
-     */
+    // Adjust position
     this.x += (this.width * Math.cos(this.rotationY)) / 2
     this.y += this.height / 2
     this.z += (this.width * Math.sin(this.rotationY)) / 2
 
-    /**
-     * Geometry
-     */
+    // Geometry
     this.geometry = new BoxGeometry(this.width, this.height, this.depth)
 
-    /**
-     * Texture
-     */
-
+    // Texture
     if (info.texture) {
       this.textures['baseTex'] = info.texture.textureLoader.load(info.texture.baseImg)
       if (info.texture.normalImg) {
@@ -73,24 +67,17 @@ export class Wall extends Stuff {
       }
     }
 
-    /**
-     * Material
-     */
+    // Material
     this.material = new MeshLambertMaterial({
       color: info.color,
       transparent: info.transparent || false,
       opacity: info.opacity,
-      // roughness: 1,
-      // metalness: 0,
-      // map: this.textures['baseTex'] || null,
-      // normalMap: this.textures['normalTex'] || null,
-      // roughnessMap: this.textures['roughTex'] || null,
-      // aoMap: this.textures['ambientTex'] || null,
+      map: this.textures['baseTex'] || null,
+      normalMap: this.textures['normalTex'] || null,
+      aoMap: this.textures['ambientTex'] || null,
     })
 
-    /**
-     * Mesh
-     */
+    // Mesh
     this.mesh = new Mesh(this.geometry, this.material)
     this.mesh.position.set(this.x, this.y, this.z)
     this.mesh.rotation.set(this.rotationX, this.rotationY, this.rotationZ)
@@ -98,11 +85,18 @@ export class Wall extends Stuff {
     this.mesh.receiveShadow = !info.transparent ? true : false
     this.mesh.name = this.name
 
-    /**
-     * Add to the scene
-     */
+    // Add to the scene
     info.container.add(this.mesh)
 
-    this.setCannonBody(info.world, 0, info.cannonMaterial)
+    // Create cannon body
+    this.setBoxCannonBody(info.world, 0, info.cannonMaterial)
+
+    // Set the dispose function
+    this.dispose = () => {
+      this.mesh && info.container.remove(this.mesh)
+      this.geometry && this.geometry.dispose()
+      this.material && this.material.dispose()
+      this.cannonBody && info.world.removeBody(this.cannonBody)
+    }
   }
 }
