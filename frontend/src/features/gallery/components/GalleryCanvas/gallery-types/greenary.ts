@@ -1,4 +1,4 @@
-import { SAPBroadphase, World } from 'cannon-es'
+import { Body, Box, SAPBroadphase, Vec3, World } from 'cannon-es'
 import CannonDebugger from 'cannon-es-debugger'
 import {
   AmbientLight,
@@ -6,6 +6,7 @@ import {
   BoxGeometry,
   Clock,
   CubeTextureLoader,
+  CylinderGeometry,
   DoubleSide,
   DirectionalLight,
   Scene,
@@ -42,99 +43,213 @@ const FRAME_INFO = {
   depth: 0.05,
 }
 
-const LEFT_FOREST_TREE = [
+const FOREST_TREE = [
   {
+    // 1
     type: 0,
-    x: 66.7,
+    x: 61,
     y: 0,
-    z: 17.6,
+    z: 19,
     scale: 1.5,
   },
   {
+    // 2
     type: 0,
-    x: 76.5,
+    x: 68,
     y: 0,
-    z: 17.1,
+    z: 17,
     scale: 2,
   },
   {
+    // 3
     type: 0,
-    x: 61.2,
+    x: 76,
     y: 0,
-    z: 18.6,
-    scale: 1.5,
+    z: 17,
+    scale: 1.7,
   },
   {
+    // 4
     type: 0,
-    x: 58.2,
+    x: 59,
+    y: 0.5,
+    z: 24,
+    scale: 1.8,
+  },
+  {
+    // 5
+    type: 0,
+    x: 66,
+    y: 0.5,
+    z: 23,
+    scale: 2,
+  },
+  {
+    // 6
+    type: 0,
+    x: 72,
+    y: 0.5,
+    z: 21,
+    scale: 2.1,
+  },
+  {
+    // 7
+    type: 0,
+    x: 80,
+    y: 0,
+    z: 22,
+    scale: 1.9,
+  },
+  {
+    // 8
+    type: 0,
+    x: 63,
     y: 1,
-    z: 23.7,
-    scale: 1,
+    z: 27,
+    scale: 1.75,
   },
   {
+    // 9
     type: 0,
-    x: 63.2,
-    y: 0,
-    z: 27.3,
-    scale: 2,
-  },
-
-  {
-    type: 0,
-    x: 60.7,
-    y: 0,
-    z: 27.3,
-    scale: 2,
+    x: 81,
+    y: 0.5,
+    z: 26,
+    scale: 1.95,
   },
   {
+    // 10
     type: 0,
-    x: 63.2,
-    y: 0,
-    z: 43.3,
+    x: 64,
+    y: 1.3,
+    z: 33,
+    scale: 1.75,
+  },
+  {
+    // 11
+    type: 0,
+    x: 70,
+    y: 1.3,
+    z: 31,
+    scale: 1.8,
+  },
+  {
+    // 12
+    type: 0,
+    x: 75,
+    y: 1.3,
+    z: 32,
+    scale: 1.82,
+  },
+  {
+    // 13
+    type: 0,
+    x: 80,
+    y: 1.3,
+    z: 31,
     scale: 2,
   },
 ]
 
 const MOUNTAIN_TREE = [
   {
-    type: 1,
-    x: 62.7,
-    y: 2,
-    z: 57,
+    // 14
+    type: 6,
+    x: 81,
+    y: 10,
+    z: 73,
     scale: 2,
   },
   {
-    type: 2,
-    x: 54,
-    y: 3,
-    z: 60,
-    scale: 2,
+    // 10
+    type: 17, // 6, 14, 17
+    x: 82,
+    y: 6.7,
+    z: 65,
+    scale: 1.8,
+  },
+  {
+    // 8
+    type: 7,
+    x: 59,
+    y: 8,
+    z: 72,
+    scale: 1.9,
+  },
+  {
+    // 1
+    type: 26, // 7, 23, 26
+    x: 51,
+    y: 8,
+    z: 80,
+    scale: 1.6,
   },
 ]
 
-const TREE_DATA = [...LEFT_FOREST_TREE, ...MOUNTAIN_TREE]
+const BEACH_TREE = [
+  {
+    // 1
+    type: 28,
+    x: 91,
+    y: 0,
+    z: 28,
+    scale: 2,
+  },
+  {
+    // 2
+    type: 28,
+    x: 96,
+    y: 0,
+    z: 37,
+    scale: 1.8,
+  },
+  {
+    // 3
+    type: 28,
+    x: 98,
+    y: 0,
+    z: 45,
+    scale: 1.9,
+  },
+  {
+    // 4
+    type: 28,
+    x: 96,
+    y: 0,
+    z: 53,
+    scale: 2,
+  },
+  {
+    // 5
+    type: 28,
+    x: 97,
+    y: 0,
+    z: 61,
+    scale: 1.85,
+  },
+]
+
+// 18 lake
+
+const PLAIN_TREE = [
+  {
+    type: 24,
+    x: 63.2,
+    y: 0,
+    z: 43.3,
+    scale: 1.8,
+  },
+]
+
+const TREE_DATA = [...FOREST_TREE, ...MOUNTAIN_TREE, ...BEACH_TREE, ...PLAIN_TREE]
 
 const FLOWER_DATA = [
   {
-    type: 3,
-    x: 50.4,
-    y: 4.2,
-    z: 64.2,
-    scale: 2,
-  },
-  {
-    type: 1,
-    x: 30.4,
-    y: 1.2,
-    z: 34.2,
-    scale: 2,
-  },
-  {
-    type: 2,
-    x: 40.4,
-    y: 1,
-    z: 54.2,
-    scale: 2,
+    type: 10,
+    x: 27,
+    y: 3,
+    z: 60,
+    rotation: 0,
+    scale: 4,
   },
 ]
 
@@ -244,22 +359,58 @@ const greenary = ({ canvas, loadingManager, gallery, frameList }: GalleryTypePro
     controls.floors.push(mesh)
   })
 
-  // ocean
-  const oceanGeometry = new BoxGeometry(130, 5, 130)
+  // ocean: ocean mesh
+  const oceanGeometry = new BoxGeometry(530, 5, 530)
   const oceanMaterial = new MeshLambertMaterial({
-    color: 0x00000ff,
-    transparent: true,
-    opacity: 0.5,
+    color: 0x008cf1,
     side: DoubleSide,
   })
   const ocean = new Mesh(oceanGeometry, oceanMaterial)
-  ocean.position.set(65, -3, 65)
+  ocean.position.set(55, -3.5, 55)
   scene.add(ocean)
   objects.push({
     dispose: () => {
       oceanGeometry.dispose()
       oceanMaterial.dispose()
       scene.remove(ocean)
+    },
+  })
+
+  // ocean: ocean cannon body
+  const oceanShape1 = new Box(new Vec3(55, 50, 1))
+  const oceanBody1 = new Body({
+    mass: 0,
+    position: new Vec3(55, 0, -1),
+    shape: oceanShape1,
+  })
+  world.addBody(oceanBody1)
+  const oceanShape2 = new Box(new Vec3(55, 50, 1))
+  const oceanBody2 = new Body({
+    mass: 0,
+    position: new Vec3(55, 0, 109),
+    shape: oceanShape2,
+  })
+  world.addBody(oceanBody2)
+  const oceanShape3 = new Box(new Vec3(1, 50, 55))
+  const oceanBody3 = new Body({
+    mass: 0,
+    position: new Vec3(-1, 0, 55),
+    shape: oceanShape3,
+  })
+  world.addBody(oceanBody3)
+  const oceanShape4 = new Box(new Vec3(1, 50, 55))
+  const oceanBody4 = new Body({
+    mass: 0,
+    position: new Vec3(109, 0, 55),
+    shape: oceanShape4,
+  })
+  world.addBody(oceanBody4)
+  objects.push({
+    dispose: () => {
+      world.removeBody(oceanBody1)
+      world.removeBody(oceanBody2)
+      world.removeBody(oceanBody3)
+      world.removeBody(oceanBody4)
     },
   })
 
@@ -272,23 +423,21 @@ const greenary = ({ canvas, loadingManager, gallery, frameList }: GalleryTypePro
   objects.push(flowers)
 
   // lake
-  // const lakeGeometry = new CylinderGeometry(17, 17, 5)
-  // const lakeMaterial = new MeshLambertMaterial({
-  //   color: 0x0bd3ff,
-  //   transparent: true,
-  //   opacity: 0.5,
-  //   side: DoubleSide,
-  // })
-  // const lake = new Mesh(lakeGeometry, lakeMaterial)
-  // lake.position.set(45, -3, 43)
-  // scene.add(lake)
-  // objects.push({
-  //   dispose: () => {
-  //     lakeGeometry.dispose()
-  //     lakeMaterial.dispose()
-  //     scene.remove(lake)
-  //   },
-  // })
+  const lakeGeometry = new CylinderGeometry(17, 17, 5)
+  const lakeMaterial = new MeshLambertMaterial({
+    color: 0x0bd3ff,
+    side: DoubleSide,
+  })
+  const lake = new Mesh(lakeGeometry, lakeMaterial)
+  lake.position.set(45, -3, 43)
+  scene.add(lake)
+  objects.push({
+    dispose: () => {
+      lakeGeometry.dispose()
+      lakeMaterial.dispose()
+      scene.remove(lake)
+    },
+  })
 
   /**
    * Render canvas

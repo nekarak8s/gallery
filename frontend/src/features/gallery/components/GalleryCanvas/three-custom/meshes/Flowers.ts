@@ -8,6 +8,7 @@ type FlowerData = {
   x: number
   y: number
   z: number
+  rotation?: number
   scale: number
 }
 
@@ -46,7 +47,7 @@ export class Flowers {
 
         // Set position
         object.position.set(flower.x, flower.y, flower.z)
-        object.rotation.set(degToRad(-90), 0, 0)
+        object.rotation.set(degToRad(-90), 0, flower.rotation || 0)
 
         // Add to the container
         info.container.add(object)
