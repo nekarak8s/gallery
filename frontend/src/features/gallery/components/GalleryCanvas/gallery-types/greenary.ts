@@ -8,7 +8,6 @@ import {
   CubeTextureLoader,
   DoubleSide,
   DirectionalLight,
-  Object3D,
   Scene,
   TextureLoader,
   Vector3,
@@ -19,6 +18,7 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import { degToRad } from 'three/src/math/MathUtils'
 import { DefaultCamera } from '../three-custom/cameras/DefaultCamera'
 import { CannonKeypadControls } from '../three-custom/controls/CannonKeypadControls'
+import { Flowers } from '../three-custom/meshes/Flowers'
 import { Trees } from '../three-custom/meshes/Trees'
 import { DefaultRenderer } from '../three-custom/renderers/DefaultRenderer'
 import nx from '@/assets/cubemaps/clear_sky/nx.png'
@@ -42,7 +42,7 @@ const FRAME_INFO = {
   depth: 0.05,
 }
 
-const TREE_DATA = [
+const LEFT_FOREST_TREE = [
   {
     type: 0,
     x: 66.7,
@@ -93,6 +93,9 @@ const TREE_DATA = [
     z: 43.3,
     scale: 2,
   },
+]
+
+const MOUNTAIN_TREE = [
   {
     type: 1,
     x: 62.7,
@@ -107,11 +110,30 @@ const TREE_DATA = [
     z: 60,
     scale: 2,
   },
+]
+
+const TREE_DATA = [...LEFT_FOREST_TREE, ...MOUNTAIN_TREE]
+
+const FLOWER_DATA = [
   {
     type: 3,
     x: 50.4,
-    y: 4,
+    y: 4.2,
     z: 64.2,
+    scale: 2,
+  },
+  {
+    type: 1,
+    x: 30.4,
+    y: 1.2,
+    z: 34.2,
+    scale: 2,
+  },
+  {
+    type: 2,
+    x: 40.4,
+    y: 1,
+    z: 54.2,
     scale: 2,
   },
 ]
@@ -141,7 +163,7 @@ const greenary = ({ canvas, loadingManager, gallery, frameList }: GalleryTypePro
    */
   const world = new World()
   world.broadphase = new SAPBroadphase(world)
-  world.gravity.set(0, -100, 0)
+  // world.gravity.set(0, -100, 0)
 
   // Cannon Helper : Development
   let cannonDebugger: {
@@ -178,16 +200,13 @@ const greenary = ({ canvas, loadingManager, gallery, frameList }: GalleryTypePro
 
   // Direct Light
   const directionalLight = new DirectionalLight('white', 1.8)
-  directionalLight.position.set(0, 40, 60)
-  directionalLight.target = new Object3D()
-  directionalLight.target.position.set(40, -30, -10)
-  directionalLight.shadow.camera.left = -50
-  directionalLight.shadow.camera.right = 20
-  directionalLight.shadow.camera.top = 25
-  directionalLight.shadow.camera.bottom = -40
+  directionalLight.position.set(110, 220, 110)
+  directionalLight.shadow.camera.left = -60
+  directionalLight.shadow.camera.right = 60
+  directionalLight.shadow.camera.top = 60
+  directionalLight.shadow.camera.bottom = -100
   directionalLight.castShadow = true
   scene.add(directionalLight)
-  scene.add(directionalLight.target)
   lights.push(directionalLight)
 
   // Light Helper : Development
@@ -225,9 +244,6 @@ const greenary = ({ canvas, loadingManager, gallery, frameList }: GalleryTypePro
     controls.floors.push(mesh)
   })
 
-  const tree = new Trees({ container: scene, world, gltfLoader, treesData: TREE_DATA })
-  objects.push(tree)
-
   // ocean
   const oceanGeometry = new BoxGeometry(130, 5, 130)
   const oceanMaterial = new MeshLambertMaterial({
@@ -246,6 +262,14 @@ const greenary = ({ canvas, loadingManager, gallery, frameList }: GalleryTypePro
       scene.remove(ocean)
     },
   })
+
+  // trees
+  const trees = new Trees({ container: scene, world, gltfLoader, treeData: TREE_DATA })
+  objects.push(trees)
+
+  // flowers
+  const flowers = new Flowers({ container: scene, gltfLoader, flowerData: FLOWER_DATA })
+  objects.push(flowers)
 
   // lake
   // const lakeGeometry = new CylinderGeometry(17, 17, 5)

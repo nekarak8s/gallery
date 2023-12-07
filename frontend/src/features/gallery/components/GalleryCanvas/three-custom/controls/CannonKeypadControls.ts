@@ -86,6 +86,7 @@ export class CannonKeypadControls {
    */
   onKeyDown(event: KeyboardEvent) {
     event.preventDefault()
+
     switch (event.code) {
       case 'ArrowUp':
       case 'KeyW':
@@ -107,12 +108,12 @@ export class CannonKeypadControls {
         this.#lookRight = 1
         break
 
-      case 'AltLeft':
-      case 'AltRight':
-        if (this.#isGround) {
-          this.cannonBody.applyForce(_forceDirection.set(0, 180000, 0))
-        }
-        break
+      // case 'AltLeft':
+      // case 'AltRight':
+      //   if (this.#isGround) {
+      //     this.cannonBody.applyForce(_forceDirection.set(0, 180000, 0))
+      //   }
+      //   break
     }
   }
 
@@ -154,10 +155,10 @@ export class CannonKeypadControls {
 
     const intersects = this.raycaster.intersectObjects(this.floors)
     for (const item of intersects) {
-      if (item.distance < this.height) {
-        this.cannonBody.position.y += this.height - item.distance
-        this.#isGround = true
-      }
+      this.cannonBody.position.y += this.height - item.distance
+      this.#isGround = true
+      // if (item.distance < this.height) {
+      // }
       break
     }
 
@@ -185,7 +186,6 @@ export class CannonKeypadControls {
     /**
      * Update cannonBody angle
      */
-
     if (this.#lookLeft || this.#lookRight) {
       const actualLookSpeed = delta * this.lookSpeed
 

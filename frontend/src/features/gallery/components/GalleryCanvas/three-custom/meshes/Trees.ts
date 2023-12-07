@@ -4,7 +4,7 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import { degToRad } from 'three/src/math/MathUtils'
 import spotLightGlb from '@/assets/glbs/trees.glb'
 
-type TreesData = {
+type TreeData = {
   type: number
   x: number
   y: number
@@ -16,7 +16,7 @@ export type TreesProps = {
   container: THREE.Mesh | THREE.Scene
   world: World
   gltfLoader: GLTFLoader
-  treesData: TreesData[]
+  treeData: TreeData[]
 }
 
 export class Trees {
@@ -31,7 +31,7 @@ export class Trees {
      */
     info.gltfLoader.load(spotLightGlb, (glb) => {
       // Create Trees
-      info.treesData.forEach((tree) => {
+      info.treeData.forEach((tree) => {
         // Get an object
         const object = new Object3D()
         object.copy(glb.scene.children[tree.type])

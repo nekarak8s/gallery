@@ -1,10 +1,9 @@
-import { Body, Cylinder, Vec3, World } from 'cannon-es'
-import { Box3, Vector3 } from 'three'
+import { Box3, Vector3, Object3D } from 'three'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import { degToRad } from 'three/src/math/MathUtils'
-import spotLightGlb from '@/assets/glbs/trees.glb'
+import spotLightGlb from '@/assets/glbs/flowers.glb'
 
-type TreesData = {
+type FlowerData = {
   type: number
   x: number
   y: number
@@ -12,30 +11,29 @@ type TreesData = {
   scale: number
 }
 
-export type TreesProps = {
+export type FlowersProps = {
   container: THREE.Mesh | THREE.Scene
-  world: World
   gltfLoader: GLTFLoader
-  treeData: TreesData[]
+  flowerData: FlowerData[]
 }
 
-export class Trees {
-  type: string = 'tree'
+export class Flowers {
+  type: string = 'flower'
   meshes: THREE.Object3D[] = []
-  cannonBodies: Body[] = []
   dispose: () => void
 
-  constructor(info: TreesProps) {
+  constructor(info: FlowersProps) {
     /**
      * Load GLTF
      */
     info.gltfLoader.load(spotLightGlb, (glb) => {
-      // Create Trees
-      info.treeData.forEach((tree) => {
+      // Create Flowers
+      info.flowerData.forEach((flower) => {
         // Get an object
-        const object = glb.scene.children[tree.type]
+        const object = new Object3D()
+        object.copy(glb.scene.children[flower.type])
         object.name = this.type
-        object.scale.multiplyScalar(0.01 * tree.scale)
+        object.scale.multiplyScalar(0.001 * flower.scale)
         object.children[0].castShadow = true
         object.children[0].receiveShadow = true
 
@@ -47,34 +45,16 @@ export class Trees {
         const { x: width, y: height, z: depth } = box.getSize(new Vector3())
 
         // Set position
-        object.position.set(tree.x, tree.y, tree.z)
+        object.position.set(flower.x, flower.y, flower.z)
         object.rotation.set(degToRad(-90), 0, 0)
 
         // Add to the container
         info.container.add(object)
-
-        // create shape
-        const shape = new Cylinder(width / 4, width / 4, height)
-
-        // create cannon body
-        const cannonBody = new Body({
-          mass: 0,
-          position: new Vec3(tree.x, tree.y, tree.z),
-          shape,
-        })
-
-        // Add to the mesh array
-        this.cannonBodies.push(cannonBody)
-
-        // add to the world
-        info.world.addBody(cannonBody)
       })
     })
 
+    // Set the dispose function
     this.dispose = () => {
-      this.cannonBodies.forEach((cannonBody) => {
-        info.world.removeBody(cannonBody)
-      })
       this.meshes.forEach((glb) => {
         info.container.remove(glb)
       })
