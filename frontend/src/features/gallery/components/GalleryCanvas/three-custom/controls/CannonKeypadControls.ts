@@ -1,5 +1,6 @@
 import { Body, Box, Quaternion, Vec3, World } from 'cannon-es'
-import { Quaternion as ThreeQuaternion, Vector3, Raycaster } from 'three'
+import { Quaternion as ThreeQuaternion, Vector2, Vector3, Raycaster } from 'three'
+import './target.scss'
 
 const _xAxis = new Vec3(1, 0, 0)
 const _yAxis = new Vec3(0, 1, 0)
@@ -7,14 +8,18 @@ const _zAxis = new Vec3(0, 0, 1)
 const _forceDirection = new Vec3()
 const _raycasterDirection = new Vector3(0, -1, 0)
 const _cameraDirection = new Vector3()
+const _canvasOrigin = new Vector2(0, 0)
 const _rotationQuaternion = new Quaternion()
 const _cannonQuaternion = new ThreeQuaternion()
 
 export class CannonKeypadControls {
+  canvas: HTMLCanvasElement
   camera: THREE.Camera
   world: World
   height: number
   floors: THREE.Object3D<THREE.Object3DEventMap>[] = []
+  rayItems: THREE.Object3D<THREE.Object3DEventMap>[] = []
+  raycast?: (item: THREE.Intersection<THREE.Object3D<THREE.Object3DEventMap>>) => void
 
   // object
   raycaster: Raycaster
@@ -23,8 +28,8 @@ export class CannonKeypadControls {
   // API
   enabled: boolean = true
 
-  movementSpeed: number = 2
-  lookSpeed: number = 0.4
+  movementSpeed: number = 1.8
+  lookSpeed: number = 0.5
 
   dispose: () => void
 
@@ -37,7 +42,8 @@ export class CannonKeypadControls {
   #moveForward: boolean = false
   #moveBackward: boolean = false
 
-  constructor(camera: THREE.Camera, world: World, height: number = 1.6) {
+  constructor(canvas: HTMLCanvasElement, camera: THREE.Camera, world: World, height: number = 1.6) {
+    this.canvas = canvas
     this.camera = camera
     this.world = world
     this.height = height
@@ -73,11 +79,20 @@ export class CannonKeypadControls {
     window.addEventListener('keydown', _onKeyDown)
     window.addEventListener('keyup', _onKeyUp)
 
+    // Add raycaster target
+    const target = document.createElement('div')
+    target.id = 'target'
+    this.canvas.parentNode!.insertBefore(target, canvas.nextSibling)
+
     // Set dispose function
     this.dispose = () => {
       this.world.removeBody(this.cannonBody)
       window.removeEventListener('keydown', _onKeyDown)
       window.removeEventListener('keyup', _onKeyUp)
+      const target = document.getElementById('target')
+      if (target) {
+        target.remove()
+      }
     }
   }
 
@@ -106,6 +121,17 @@ export class CannonKeypadControls {
       case 'ArrowRight':
       case 'KeyD':
         this.#lookRight = 1
+        break
+
+      case 'Space':
+        if (this.raycast) {
+          this.raycaster.setFromCamera(_canvasOrigin, this.camera)
+          const intersects = this.raycaster.intersectObjects(this.rayItems)
+          for (const item of intersects) {
+            this.raycast(item)
+            break
+          }
+        }
         break
 
       // case 'AltLeft':

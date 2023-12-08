@@ -19,7 +19,7 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import { degToRad } from 'three/src/math/MathUtils'
 import { DefaultCamera } from '../three-custom/cameras/DefaultCamera'
 import { CannonKeypadControls } from '../three-custom/controls/CannonKeypadControls'
-import { Flowers } from '../three-custom/meshes/Flowers'
+import { Frame } from '../three-custom/meshes/Frame'
 import { Trees } from '../three-custom/meshes/Trees'
 import { DefaultRenderer } from '../three-custom/renderers/DefaultRenderer'
 import nx from '@/assets/cubemaps/clear_sky/nx.png'
@@ -29,6 +29,7 @@ import px from '@/assets/cubemaps/clear_sky/px.png'
 import py from '@/assets/cubemaps/clear_sky/py.png'
 import pz from '@/assets/cubemaps/clear_sky/pz.png'
 import greenaryGlb from '@/assets/glbs/greenary.glb'
+import toastManager from '@/utils/toastManager'
 
 const WALL_INFO = {
   color: '#fffeef',
@@ -37,11 +38,19 @@ const WALL_INFO = {
 }
 
 const FRAME_INFO = {
-  y: 2.5,
-  width: 1.5,
-  height: 1.5,
+  width: 2,
+  height: 2,
   depth: 0.05,
 }
+
+const FRAME_DATA = [
+  {
+    // 1
+    x: 55,
+    y: 4,
+    z: 55,
+  },
+]
 
 const FOREST_TREE = [
   {
@@ -152,36 +161,52 @@ const FOREST_TREE = [
 
 const MOUNTAIN_TREE = [
   {
-    // 14
-    type: 6,
+    // 1
+    type: 6, // 6, 14, 17
     x: 81,
     y: 10,
     z: 73,
     scale: 2,
   },
   {
-    // 10
-    type: 17, // 6, 14, 17
+    // 2
+    type: 17,
     x: 82,
     y: 6.7,
     z: 65,
     scale: 1.8,
   },
   {
-    // 8
-    type: 7,
+    // 3
+    type: 14,
+    x: 76,
+    y: 6.7,
+    z: 82,
+    scale: 1.7,
+  },
+  {
+    // 4
+    type: 7, // 7, 23, 26
     x: 59,
     y: 8,
     z: 72,
     scale: 1.9,
   },
   {
-    // 1
-    type: 26, // 7, 23, 26
+    // 5
+    type: 26,
     x: 51,
     y: 8,
     z: 80,
     scale: 1.6,
+  },
+  {
+    // 6
+    type: 23,
+    x: 65,
+    y: 6,
+    z: 89,
+    scale: 1.4,
   },
 ]
 
@@ -226,9 +251,60 @@ const BEACH_TREE = [
     z: 61,
     scale: 1.85,
   },
+  {
+    // 5
+    type: 28,
+    x: 38,
+    y: 0,
+    z: 88,
+    scale: 1.85,
+  },
 ]
 
-// 18 lake
+const LAKE_TREE = [
+  {
+    type: 18,
+    x: 30,
+    y: 1.5,
+    z: 28,
+    scale: 2.1,
+  },
+  {
+    type: 2,
+    x: 40,
+    y: 0.3,
+    z: 25,
+    scale: 1.7,
+  },
+  {
+    type: 2,
+    x: 47,
+    y: 0,
+    z: 24,
+    scale: 1.8,
+  },
+  {
+    type: 1,
+    x: 23,
+    y: 0.5,
+    z: 43,
+    scale: 1.8,
+  },
+  {
+    type: 1,
+    x: 24,
+    y: 0.5,
+    z: 51,
+    scale: 1.9,
+  },
+  {
+    type: 1,
+    x: 28,
+    y: 0.5,
+    z: 48,
+    scale: 1.85,
+  },
+]
 
 const PLAIN_TREE = [
   {
@@ -238,20 +314,23 @@ const PLAIN_TREE = [
     z: 43.3,
     scale: 1.8,
   },
-]
-
-const TREE_DATA = [...FOREST_TREE, ...MOUNTAIN_TREE, ...BEACH_TREE, ...PLAIN_TREE]
-
-const FLOWER_DATA = [
   {
-    type: 10,
-    x: 27,
-    y: 3,
+    type: 19,
+    x: 70,
+    y: 0,
+    z: 45,
+    scale: 1.7,
+  },
+  {
+    type: 24,
+    x: 31,
+    y: 1,
     z: 60,
-    rotation: 0,
-    scale: 4,
+    scale: 1.85,
   },
 ]
+
+const TREE_DATA = [...FOREST_TREE, ...MOUNTAIN_TREE, ...BEACH_TREE, ...LAKE_TREE, ...PLAIN_TREE]
 
 const greenary = ({ canvas, loadingManager, gallery, frameList }: GalleryTypeProps) => {
   console.log(gallery, frameList)
@@ -292,16 +371,24 @@ const greenary = ({ canvas, loadingManager, gallery, frameList }: GalleryTypePro
    * Camera
    */
   const camera = new DefaultCamera({ canvas })
-  camera.position.set(23.1, 5, 23.1)
+  camera.position.set(25.1, 5, 25.1)
   camera.rotation.set(0, degToRad(-135), 0)
   scene.add(camera)
 
   /**
    * Controls
    */
-  const controls = new CannonKeypadControls(camera, world, 1.6)
+  const controls = new CannonKeypadControls(canvas, camera, world, 1.6)
   // const controls = new OrbitControls(camera, canvas)
   // const controls = new FirstPersonControls(camera, canvas)
+  controls.raycast = (item) => {
+    if (item.object.name.slice(0, 5) !== 'frame') return
+    if (item.distance > 10) {
+      toastManager.addToast('error', '너무 멂')
+    } else {
+      toastManager.addToast('success', item.object.name)
+    }
+  }
 
   /**
    * Light
@@ -338,6 +425,7 @@ const greenary = ({ canvas, loadingManager, gallery, frameList }: GalleryTypePro
   // Array for meshes that affected by physics engine
   const objects: {
     dispose?: () => void
+    update?: (delta: number) => void
   }[] = []
 
   // greeneary floor
@@ -357,6 +445,7 @@ const greenary = ({ canvas, loadingManager, gallery, frameList }: GalleryTypePro
     // Add to data structure
     objects.push({ dispose: () => scene.remove(mesh) })
     controls.floors.push(mesh)
+    controls.rayItems.push(mesh)
   })
 
   // ocean: ocean mesh
@@ -368,6 +457,7 @@ const greenary = ({ canvas, loadingManager, gallery, frameList }: GalleryTypePro
   const ocean = new Mesh(oceanGeometry, oceanMaterial)
   ocean.position.set(55, -3.5, 55)
   scene.add(ocean)
+  controls.rayItems.push(ocean)
   objects.push({
     dispose: () => {
       oceanGeometry.dispose()
@@ -414,14 +504,6 @@ const greenary = ({ canvas, loadingManager, gallery, frameList }: GalleryTypePro
     },
   })
 
-  // trees
-  const trees = new Trees({ container: scene, world, gltfLoader, treeData: TREE_DATA })
-  objects.push(trees)
-
-  // flowers
-  const flowers = new Flowers({ container: scene, gltfLoader, flowerData: FLOWER_DATA })
-  objects.push(flowers)
-
   // lake
   const lakeGeometry = new CylinderGeometry(17, 17, 5)
   const lakeMaterial = new MeshLambertMaterial({
@@ -431,12 +513,36 @@ const greenary = ({ canvas, loadingManager, gallery, frameList }: GalleryTypePro
   const lake = new Mesh(lakeGeometry, lakeMaterial)
   lake.position.set(45, -3, 43)
   scene.add(lake)
+  controls.rayItems.push(lake)
   objects.push({
     dispose: () => {
       lakeGeometry.dispose()
       lakeMaterial.dispose()
       scene.remove(lake)
     },
+  })
+
+  // trees
+  const trees = new Trees({ container: scene, world, gltfLoader, treeData: TREE_DATA })
+  objects.push(trees)
+  controls.rayItems = [...controls.rayItems, ...trees.meshes]
+
+  // frame
+  FRAME_DATA.forEach((frameData, idx) => {
+    const frame = new Frame({
+      name: `frame-${frameList[idx].frameId}`,
+      x: frameData.x,
+      y: frameData.y,
+      z: frameData.z,
+      width: FRAME_INFO.width,
+      height: FRAME_INFO.height,
+      depth: FRAME_INFO.depth,
+      container: scene,
+      textureLoader,
+      baseImg: frameList[idx].framePictureUrl,
+    })
+    objects.push(frame)
+    controls.rayItems.push(frame.mesh)
   })
 
   /**
@@ -458,6 +564,11 @@ const greenary = ({ canvas, loadingManager, gallery, frameList }: GalleryTypePro
 
     // update controls
     controls.update(delta)
+
+    // update meshes
+    objects.forEach((object) => {
+      object.update && object.update(delta)
+    })
 
     // update renderer
     renderer.render(scene, camera)
