@@ -1,11 +1,15 @@
 package com.nekarak8s.post.controller;
 
+import com.nekarak8s.post.data.dto.request.PostModifyRequest;
 import com.nekarak8s.post.data.dto.response.ApiResponse;
+import com.nekarak8s.post.exception.CustomException;
 import com.nekarak8s.post.service.PostService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.io.IOException;
 
 @Slf4j
 @RestController
@@ -27,7 +31,7 @@ public class PostController {
      * @return
      */
     @GetMapping("/list/{galleryId}")
-    public ResponseEntity<ApiResponse> getPosts(@PathVariable(value = "galleryId") long galleryId) {
+    public ResponseEntity<ApiResponse> getPosts(@PathVariable(value = "galleryId") Long galleryId) {
         log.debug("게시물 목록 조회 요청옴, 갤러리 Id : {}", galleryId);
 
         ApiResponse apiResponse = ApiResponse.builder()
@@ -38,13 +42,32 @@ public class PostController {
     }
 
     /**
+     * 게시물 목록 수정
+     * @param request
+     * @param galleryId
+     * @return
+     * @throws CustomException
+     */
+    @PatchMapping("list/{galleryId}")
+    public ResponseEntity<?> updatePosts(@ModelAttribute PostModifyRequest request,
+                                         @PathVariable(value = "galleryId") Long galleryId) throws CustomException, IOException {
+        log.debug("게시물 목록 수정 요청옴 : {}개", request.getPosts().size());
+        postService.modifyPosts(request.getPosts(), galleryId);
+
+        ApiResponse apiResponse = ApiResponse.builder()
+                .message("게시물 목록 수정 성공")
+                .build();
+        return ResponseEntity.ok(apiResponse);
+    }
+
+    /**
      * Todo : Kafka 이벤트 수신 -> 게시물 생성으로 변경 예정
      * 게시물 10개 더미 데이터 생성
      * @param galleryId
      */
     @PostMapping("/dummy")
-    public void createPostByGallery(@RequestParam(name = "galleryId") Long galleryId) {
-        postService.createPostByGallery(galleryId, 10);
+    public void createPostByGallery(@RequestParam(name = "galleryId") Long galleryId) throws CustomException{
+        postService.createPostByGallery(galleryId, 2);
     }
 
     /**
