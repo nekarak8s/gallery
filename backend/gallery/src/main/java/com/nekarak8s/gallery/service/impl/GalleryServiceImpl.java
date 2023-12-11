@@ -9,6 +9,8 @@ import com.nekarak8s.gallery.data.entity.place.Place;
 import com.nekarak8s.gallery.data.repository.gallery.GalleryRepository;
 import com.nekarak8s.gallery.data.repository.place.PlaceRepository;
 import com.nekarak8s.gallery.exception.CustomException;
+import com.nekarak8s.gallery.kafka.dto.GalleryEvent;
+import com.nekarak8s.gallery.kafka.producer.KafkaProducer;
 import com.nekarak8s.gallery.service.GalleryService;
 import com.nekarak8s.gallery.util.PlaceUtil;
 import lombok.RequiredArgsConstructor;
@@ -33,6 +35,7 @@ public class GalleryServiceImpl implements GalleryService {
     private final PlaceUtil placeUtil;
     private final PlaceRepository placeRepository;
     private final RestTemplate restTemplate;
+    private final KafkaProducer producer;
 
     // 회원 서버 URI
     @Value("${spring.member-service.uri}")
@@ -64,6 +67,19 @@ public class GalleryServiceImpl implements GalleryService {
                 .build();
 
         galleryRepository.save(gallery);
+
+        try {
+            // produce event (to kafka)
+            GalleryEvent galleryEvent = new GalleryEvent();
+            log.info("갤러리 아이디 : {}", gallery.getGalleryId());
+            galleryEvent.setGalleryId(gallery.getGalleryId());
+            galleryEvent.setType("create");
+            // 토픽 존재 여부 체크
+            if (producer.isExist("gallery")) producer.sendMessage("gallery", galleryEvent);
+        } catch (Exception e) {
+            log.error("kafka error occured");
+            throw new CustomException(HttpStatus.INTERNAL_SERVER_ERROR, "GG001", "Kafka 통신 예외 발생");
+        }
 
         return gallery.getGalleryId();
     }
@@ -143,6 +159,19 @@ public class GalleryServiceImpl implements GalleryService {
                 .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "GG007", "해당 갤러리 정보가 없습니다"));
 
         galleryRepository.deleteById(galleryId);
+
+        try {
+            // produce event (to kafka)
+            GalleryEvent galleryEvent = new GalleryEvent();
+            log.info("갤러리 아이디 : {}", gallery.getGalleryId());
+            galleryEvent.setGalleryId(gallery.getGalleryId());
+            galleryEvent.setType("delete");
+            // 토픽 존재 여부 체크
+            if (producer.isExist("gallery")) producer.sendMessage("gallery", galleryEvent);
+        } catch (Exception e) {
+            log.error("kafka error occured");
+            throw new CustomException(HttpStatus.INTERNAL_SERVER_ERROR, "GG001", "Kafka 통신 예외 발생");
+        }
     }
 
     /**
@@ -292,12 +321,5 @@ public class GalleryServiceImpl implements GalleryService {
             return (Map<Long, String>) response.getBody().get("data");
         }
     }
-
-
-
-
-
-
-
 
 }
