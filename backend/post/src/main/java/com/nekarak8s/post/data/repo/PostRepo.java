@@ -13,12 +13,13 @@ import java.util.List;
 @Repository
 public interface PostRepo extends JpaRepository<Post, Long> {
 
-    // Post 목록 조회
+    // 게시물 목록 조회
     @EntityGraph(attributePaths = "music")
-    @Query("SELECT p FROM Post p WHERE p.galleryId = :galleryId")
+    @Query("SELECT p FROM Post p WHERE p.galleryId = :galleryId AND p.isActive = true")
     List<Post> findAllByGalleryId(@Param("galleryId") long galleryId);
 
-    // 게시물 삭제
+
+    // 게시물 목록 삭제
     @Modifying
     @Query("DELETE FROM Post p WHERE p.galleryId = :galleryId")
     void deleteAllByGalleryId(@Param("galleryId") long galleryId);

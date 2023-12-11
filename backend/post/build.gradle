@@ -37,6 +37,10 @@ dependencies {
     // Spotify API (https://github.com/spotify-web-api-java/spotify-web-api-java)
     implementation 'se.michaelthelin.spotify:spotify-web-api-java:8.3.0'
 
+    // AWS - S3
+    implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
+    implementation 'javax.xml.bind:jaxb-api:2.3.1'
+
     compileOnly 'org.projectlombok:lombok'
     runtimeOnly 'com.mysql:mysql-connector-j'
     annotationProcessor 'org.projectlombok:lombok'

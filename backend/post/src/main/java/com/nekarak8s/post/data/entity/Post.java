@@ -47,4 +47,6 @@ public class Post extends BaseEntity{
     @OneToMany(mappedBy = "post", fetch = FetchType.LAZY)
     private List<Comment> comments = new ArrayList<>();
 
+    @Column(name = "isActive")
+    private boolean isActive = true;
 }
