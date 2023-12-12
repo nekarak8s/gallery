@@ -43,8 +43,9 @@ dependencies {
 
     // kafka
     implementation 'org.springframework.kafka:spring-kafka'
-    // jackson
-//    implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.4.2'
+
+    // validation
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
 
     compileOnly 'org.projectlombok:lombok'
     runtimeOnly 'com.mysql:mysql-connector-j'
