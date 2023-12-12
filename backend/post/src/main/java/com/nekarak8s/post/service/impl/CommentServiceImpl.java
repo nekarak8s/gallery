@@ -1,6 +1,7 @@
 package com.nekarak8s.post.service.impl;
 
 import com.nekarak8s.post.data.dto.request.CommentCreateDTO;
+import com.nekarak8s.post.data.dto.response.CommentInfo;
 import com.nekarak8s.post.data.entity.Comment;
 import com.nekarak8s.post.data.entity.Post;
 import com.nekarak8s.post.data.repo.CommentRepo;
@@ -9,6 +10,9 @@ import com.nekarak8s.post.exception.CustomException;
 import com.nekarak8s.post.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,5 +44,17 @@ public class CommentServiceImpl implements CommentService {
 
         // 댓글 저장 (DB)
         commentRepo.save(comment);
+    }
+
+    /**
+     * 댓글 목록 조회
+     * @param postId
+     * @param page
+     * @return
+     */
+    @Override
+    public Page<CommentInfo> findCommentList(long postId, int page) {
+        PageRequest pageRequest = PageRequest.of(page, 20, Sort.by(Sort.Direction.DESC, "createdDate"));
+        return commentRepo.findAllByPostId(pageRequest, postId);
     }
 }
