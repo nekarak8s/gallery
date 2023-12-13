@@ -1,6 +1,7 @@
 package com.nekarak8s.post.service.impl;
 
 import com.nekarak8s.post.data.dto.request.CommentCreateDTO;
+import com.nekarak8s.post.data.dto.request.CommentModifyDTO;
 import com.nekarak8s.post.data.dto.response.CommentInfo;
 import com.nekarak8s.post.data.entity.Comment;
 import com.nekarak8s.post.data.entity.Post;
@@ -56,6 +57,19 @@ public class CommentServiceImpl implements CommentService {
     public Page<CommentInfo> findCommentList(long postId, int page) {
         PageRequest pageRequest = PageRequest.of(page, 20, Sort.by(Sort.Direction.DESC, "createdDate"));
         return commentRepo.findAllByPostId(pageRequest, postId);
+    }
+
+    /**
+     * 댓글 수정
+     * @param requestDTO
+     * @throws CustomException
+     */
+    @Transactional
+    @Override
+    public void modifyComment(CommentModifyDTO requestDTO) throws CustomException {
+        Comment comment = commentRepo.findById(requestDTO.getCommentId()).orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "GP007", "존재하지 않는 댓글입니다"));
+        comment.setContent(requestDTO.getContent());
+        commentRepo.save(comment);
     }
 
     /**

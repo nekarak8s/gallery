@@ -1,6 +1,7 @@
 package com.nekarak8s.post.controller;
 
 import com.nekarak8s.post.data.dto.request.CommentCreateDTO;
+import com.nekarak8s.post.data.dto.request.CommentModifyDTO;
 import com.nekarak8s.post.data.dto.response.ApiResponse;
 import com.nekarak8s.post.data.dto.response.CommentInfo;
 import com.nekarak8s.post.exception.CustomException;
@@ -56,6 +57,29 @@ public class CommentController {
         return ResponseEntity.ok(apiResponse);
     }
 
+    /**
+     * 댓글 수정
+     * @param requestDTO
+     * @return
+     * @throws CustomException
+     */
+    @PatchMapping
+    public ResponseEntity<?> modifyComment(@Valid @RequestBody CommentModifyDTO requestDTO) throws CustomException{
+        log.debug("댓글 수정 : {}", requestDTO);
+        commentService.modifyComment(requestDTO);
+
+        ApiResponse apiResponse = ApiResponse.builder()
+                .message("댓글이 수정되었습니다")
+                .build();
+        return ResponseEntity.ok(apiResponse);
+    }
+
+    /**
+     * 댓글 삭제
+     * @param commentId
+     * @return
+     * @throws CustomException
+     */
     @DeleteMapping("/{commentId}")
     public ResponseEntity<?> deleteComment(@PathVariable(value = "commentId") Long commentId) throws CustomException{
         log.debug("댓글 삭제 / 댓글 아이디 : {}", commentId);
