@@ -1,6 +1,7 @@
 package com.nekarak8s.post.service;
 
 import com.nekarak8s.post.data.dto.request.CommentCreateDTO;
+import com.nekarak8s.post.data.dto.request.CommentModifyDTO;
 import com.nekarak8s.post.data.dto.response.CommentInfo;
 import com.nekarak8s.post.exception.CustomException;
 import org.springframework.data.domain.Page;
@@ -14,6 +15,9 @@ public interface CommentService {
 
     // 댓글 목록 조회
     Page<CommentInfo> findCommentList(long postId, int page);
+
+    // 댓글 수정
+    void modifyComment(CommentModifyDTO requestDTO) throws CustomException;
 
     // 댓글 삭제
     void deleteComment(long commentId) throws CustomException;
