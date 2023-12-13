@@ -48,7 +48,7 @@ const ProfileEdit = () => {
   const navigate = useNavigate()
   useEffect(() => {
     if (isLogoutSuccess) {
-      navigate(routes['Home'])
+      navigate(routes['Home'].path)
     }
   }, [isLogoutSuccess])
 

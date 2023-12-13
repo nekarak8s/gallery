@@ -26,14 +26,8 @@ function HomeSection3() {
   useEffect(() => {
     const back = backRef.current!
 
-    back.style.setProperty(
-      '--height-back',
-      `calc(${BACK_HEIGHT * 100}vh + ${SCROLL_OFFSET}px)`
-    )
-    back.style.setProperty(
-      '--min-height-back',
-      `calc(${BACK_HEIGHT * 600}px + ${SCROLL_OFFSET}px)`
-    )
+    back.style.setProperty('--height-back', `calc(${BACK_HEIGHT * 100}vh + ${SCROLL_OFFSET}px)`)
+    back.style.setProperty('--min-height-back', `calc(${BACK_HEIGHT * 600}px + ${SCROLL_OFFSET}px)`)
   }, [])
 
   /**
@@ -91,12 +85,10 @@ function HomeSection3() {
       const scrollTop = window.scrollY
 
       // Scroll optimization
-      if (scrollTop < scrollStart || scrollTop > scrollEnd + main.offsetHeight)
-        return
+      if (scrollTop < scrollStart || scrollTop > scrollEnd + main.offsetHeight) return
 
       // Move art work
-      const factor =
-        (scrollTop - scrollStart) / (scrollEnd - SCROLL_OFFSET - scrollStart)
+      const factor = (scrollTop - scrollStart) / (scrollEnd - SCROLL_OFFSET - scrollStart)
       work.style.transform = `
         translateY(calc(-50% - ${(factor > 1 ? 1 : factor) * 85}vh))
       `
@@ -216,12 +208,7 @@ function HomeSection3() {
     <div className="hs3-back" ref={backRef}>
       <div className="hs3-main" ref={mainRef}>
         <div className="hs3-main__back">
-          <StaticImage
-            imgSrc={wallImg}
-            webpSrc={wallWebp}
-            alt="하얀 벽 배경"
-            loading="lazy"
-          />
+          <StaticImage imgSrc={wallImg} webpSrc={wallWebp} alt="하얀 벽 배경" loading="lazy" />
         </div>
         <div className="hs3-fade" ref={fadeRef} />
         <div className="hs3-circle" ref={circleRef}>
@@ -242,20 +229,11 @@ function HomeSection3() {
         </div>
 
         <div className="hs3-button" ref={buttonRef}>
-          <Button3D
-            ariaLabel="3D 전시회 체험하기"
-            to={routes['Gallery']}
-            color="primary"
-          >
+          <Button3D ariaLabel="3D 전시회 체험하기" to={routes['Gallery'].path} color="primary">
             <p data-cursor-scale={CURSOR_SCALE}>체험하기</p>
           </Button3D>
         </div>
-        <div
-          data-posx="-0.1"
-          data-posy="1.5"
-          ref={workRef}
-          className="hs3-work"
-        >
+        <div data-posx="-0.1" data-posy="1.5" ref={workRef} className="hs3-work">
           <div className="hs3-video" ref={videoRef}>
             <div className="hs3-video__frame" ref={videoFrameRef}>
               <div className="hs3-video__frame--left" />
@@ -265,21 +243,12 @@ function HomeSection3() {
               <div className="hs3-video__frame--back" />
             </div>
             <div className="hs3-video__src">
-              <StaticVideo
-                vidSrc={vidSrc}
-                webmSrc={webmSrc}
-                ariaLabel="랜덤 이미지"
-              />
+              <StaticVideo vidSrc={vidSrc} webmSrc={webmSrc} ariaLabel="랜덤 이미지" />
             </div>
             <div className="hs3-video__light" ref={videoLightRef} />
           </div>
           <div className="hs3-work__label" ref={labelRef}>
-            <StaticImage
-              imgSrc={labelImg}
-              webpSrc={labelWebp}
-              sizes="200px"
-              alt="작품 라벨"
-            />
+            <StaticImage imgSrc={labelImg} webpSrc={labelWebp} sizes="200px" alt="작품 라벨" />
             <div className="hs3-work__label--phrase">
               <p>작품명</p>
               <p>마우스를 올려보세요</p>

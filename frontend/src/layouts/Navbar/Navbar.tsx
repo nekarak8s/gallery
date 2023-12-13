@@ -83,7 +83,7 @@ function Navbar() {
           className={`navbar ${WHITE_PATHNAME.includes(location.pathname) ? 'white' : ''}`}
           ref={navbarRef}
         >
-          <NavLink to={routes['Home']} onFocus={showNavbar} data-cursor-scale={CURSOR_SCALE}>
+          <NavLink to={routes['Home'].path} onFocus={showNavbar} data-cursor-scale={CURSOR_SCALE}>
             The Gallery
           </NavLink>
           <button
@@ -99,14 +99,18 @@ function Navbar() {
           </button>
           <ul className="navbar__menu" ref={menuRef}>
             <li>
-              <NavLink to={routes['Guide']} onFocus={showNavbar} data-cursor-scale={CURSOR_SCALE}>
+              <NavLink
+                to={routes['Guide'].path}
+                onFocus={showNavbar}
+                data-cursor-scale={CURSOR_SCALE}
+              >
                 Guide
               </NavLink>
             </li>
             <li>
               {isLogin ? (
                 <NavLink
-                  to={routes['MyPage']}
+                  to={routes['MyPage'].path}
                   onFocus={showNavbar}
                   data-cursor-scale={CURSOR_SCALE}
                 >

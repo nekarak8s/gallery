@@ -16,16 +16,6 @@ const MyPage = lazy(() => import('@/pages/MyPage'))
 const Gallery = lazy(() => import('@/pages/Gallery'))
 const Aquarium = lazy(() => import('./pages/Aquarium'))
 
-export const routes: Record<string, string> = {
-  Home: '/',
-  Guide: '/guide',
-  MyPage: '/mypage',
-  Login: '/login',
-  OAuth: '/oauth/:type',
-  Aquarium: '/aquarium',
-  Gallery: '/gallery',
-}
-
 const navbarRoutes: Record<string, RouteElement> = {
   Home: { path: '/', element: <Home /> },
   Guide: { path: '/guide', element: <Guide /> },
@@ -38,6 +28,8 @@ const plainRoutes: Record<string, RouteElement> = {
   Aquarium: { path: '/aquarium', element: <Aquarium /> },
   Gallery: { path: '/gallery', element: <Gallery /> },
 }
+
+export const routes = { ...navbarRoutes, ...plainRoutes }
 
 function App() {
   const isMobile = useMobile()

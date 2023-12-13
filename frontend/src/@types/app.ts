@@ -4,8 +4,8 @@ type RouteElement = {
 }
 
 type RegexCondition = {
-  reg: RegExp
-  con: string
+  regex: RegExp
+  condition: string
 }
 
 type RegexPass<T = any> = {
