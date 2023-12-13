@@ -14,4 +14,7 @@ public interface CommentService {
 
     // 댓글 목록 조회
     Page<CommentInfo> findCommentList(long postId, int page);
+
+    // 댓글 삭제
+    void deleteComment(long commentId) throws CustomException;
 }

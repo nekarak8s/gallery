@@ -57,4 +57,15 @@ public class CommentServiceImpl implements CommentService {
         PageRequest pageRequest = PageRequest.of(page, 20, Sort.by(Sort.Direction.DESC, "createdDate"));
         return commentRepo.findAllByPostId(pageRequest, postId);
     }
+
+    /**
+     * 댓글 삭제
+     * @param commentId
+     * @throws CustomException
+     */
+    @Transactional
+    @Override
+    public void deleteComment(long commentId) throws CustomException {
+        commentRepo.deleteById(commentId);
+    }
 }
