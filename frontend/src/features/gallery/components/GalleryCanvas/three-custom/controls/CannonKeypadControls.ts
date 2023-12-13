@@ -1,6 +1,5 @@
 import { Body, Box, Quaternion, Vec3, World } from 'cannon-es'
-import { Quaternion as ThreeQuaternion, Vector2, Vector3, Raycaster } from 'three'
-import './target.scss'
+import { Quaternion as ThreeQuaternion, Vector3, Raycaster } from 'three'
 
 const _xAxis = new Vec3(1, 0, 0)
 const _yAxis = new Vec3(0, 1, 0)
@@ -8,39 +7,31 @@ const _zAxis = new Vec3(0, 0, 1)
 const _forceDirection = new Vec3()
 const _raycasterDirection = new Vector3(0, -1, 0)
 const _cameraDirection = new Vector3()
-const _canvasOrigin = new Vector2(0, 0)
 const _rotationQuaternion = new Quaternion()
 const _cannonQuaternion = new ThreeQuaternion()
 
 export class CannonKeypadControls {
+  // arguments
   canvas: HTMLCanvasElement
   camera: THREE.Camera
   world: World
   height: number
-  floors: THREE.Object3D<THREE.Object3DEventMap>[] = []
-  rayItems: THREE.Object3D<THREE.Object3DEventMap>[] = []
-  raycast?: (item: THREE.Intersection<THREE.Object3D<THREE.Object3DEventMap>>) => void
 
-  // object
-  raycaster: Raycaster
-  cannonBody: Body
+  // internals
+  #cannonBody: Body
+  #raycaster: Raycaster = new Raycaster()
+
+  #movementSpeed: number = 0
+  #maxMovementSpeed: number = 1.6
+
+  #lookSpeed: number = 0
+  #maxLookSpeed: number = 0.6
 
   // API
   enabled: boolean = true
-
-  movementSpeed: number = 1.8
-  lookSpeed: number = 0.5
+  floors: THREE.Object3D<THREE.Object3DEventMap>[] = [] // Array for floor meshes
 
   dispose: () => void
-
-  // internals
-  #isGround: boolean = false
-
-  #lookLeft: number = 0
-  #lookRight: number = 0
-
-  #moveForward: boolean = false
-  #moveBackward: boolean = false
 
   constructor(canvas: HTMLCanvasElement, camera: THREE.Camera, world: World, height: number = 1.6) {
     this.canvas = canvas
@@ -48,12 +39,9 @@ export class CannonKeypadControls {
     this.world = world
     this.height = height
 
-    // Create raycayster
-    this.raycaster = new Raycaster()
-
     // Create cannon body
     const shape = new Box(new Vec3(0.2, height / 2, 0.2))
-    this.cannonBody = new Body({
+    this.#cannonBody = new Body({
       mass: 40,
       position: new Vec3(
         this.camera.position.x,
@@ -66,11 +54,13 @@ export class CannonKeypadControls {
     const quaternionX = new Quaternion()
     const quaternionY = new Quaternion()
     const quaternionZ = new Quaternion()
+
     quaternionX.setFromAxisAngle(new Vec3(1, 0, 0), this.camera.rotation.x)
     quaternionY.setFromAxisAngle(new Vec3(0, 1, 0), this.camera.rotation.y)
     quaternionZ.setFromAxisAngle(new Vec3(0, 0, 1), this.camera.rotation.z)
-    this.cannonBody.quaternion.copy(quaternionX.mult(quaternionY).mult(quaternionZ))
-    this.world.addBody(this.cannonBody)
+
+    this.#cannonBody.quaternion.copy(quaternionX.mult(quaternionY).mult(quaternionZ))
+    this.world.addBody(this.#cannonBody)
 
     // Add event listener
     const _onKeyDown = this.onKeyDown.bind(this)
@@ -79,21 +69,65 @@ export class CannonKeypadControls {
     window.addEventListener('keydown', _onKeyDown)
     window.addEventListener('keyup', _onKeyUp)
 
-    // Add raycaster target
-    const target = document.createElement('div')
-    target.id = 'target'
-    this.canvas.parentNode!.insertBefore(target, canvas.nextSibling)
-
-    // Set dispose function
+    // Set dispose function: Release resources
     this.dispose = () => {
-      this.world.removeBody(this.cannonBody)
+      this.world.removeBody(this.#cannonBody)
+
       window.removeEventListener('keydown', _onKeyDown)
       window.removeEventListener('keyup', _onKeyUp)
-      const target = document.getElementById('target')
-      if (target) {
-        target.remove()
-      }
     }
+  }
+
+  /**
+   * Set cannonBody position
+   */
+  setPosition(x: number, y: number, z: number) {
+    this.#cannonBody.position.x = x
+    this.#cannonBody.position.y = y
+    this.#cannonBody.position.z = z
+  }
+
+  /**
+   * Set cannonBody quaternion
+   */
+  setQuaternion(x: number, y: number, z: number) {
+    this.#cannonBody.quaternion.x = x
+    this.#cannonBody.quaternion.y = y
+    this.#cannonBody.quaternion.z = z
+  }
+
+  /**
+   * Set movementSpeed
+   */
+  set movementSpeed(speed: number) {
+    if (speed > 1) this.#movementSpeed = 1
+    else if (speed < -1) this.#movementSpeed = -1
+    else this.#movementSpeed = speed
+  }
+
+  /**
+   * Set maxMovementSpeed
+   */
+  set maxMovementSpeed(speed: number) {
+    if (speed > 0) this.#maxMovementSpeed = speed
+    else this.#maxMovementSpeed = 1.6
+  }
+
+  /**
+   * Set lookSpeed
+   */
+  set lookSpeed(speed: number) {
+    if (speed > 1) this.#lookSpeed = 1
+    else if (speed < -1) this.#lookSpeed = -1
+    else this.#lookSpeed = speed
+  }
+
+  /**
+   * Set maxLookSpeed
+   */
+  set maxLookSpeed(speed: number) {
+    if (speed > 0) this.#maxLookSpeed = speed
+    else this.#maxLookSpeed = 1.6
   }
 
   /**
@@ -105,41 +139,23 @@ export class CannonKeypadControls {
     switch (event.code) {
       case 'ArrowUp':
       case 'KeyW':
-        this.#moveForward = true
+        this.#movementSpeed = 1
         break
 
       case 'ArrowLeft':
       case 'KeyA':
-        this.#lookLeft = -1
+        this.#lookSpeed = 1
         break
 
       case 'ArrowDown':
       case 'KeyS':
-        this.#moveBackward = true
+        this.#movementSpeed = -1
         break
 
       case 'ArrowRight':
       case 'KeyD':
-        this.#lookRight = 1
+        this.#lookSpeed = -1
         break
-
-      case 'Space':
-        if (this.raycast) {
-          this.raycaster.setFromCamera(_canvasOrigin, this.camera)
-          const intersects = this.raycaster.intersectObjects(this.rayItems)
-          for (const item of intersects) {
-            this.raycast(item)
-            break
-          }
-        }
-        break
-
-      // case 'AltLeft':
-      // case 'AltRight':
-      //   if (this.#isGround) {
-      //     this.cannonBody.applyForce(_forceDirection.set(0, 180000, 0))
-      //   }
-      //   break
     }
   }
 
@@ -150,93 +166,74 @@ export class CannonKeypadControls {
     switch (event.code) {
       case 'ArrowUp':
       case 'KeyW':
-        this.#moveForward = false
+        this.#movementSpeed = 0
         break
 
       case 'ArrowLeft':
       case 'KeyA':
-        this.#lookLeft = 0
+        this.#lookSpeed = 0
         break
 
       case 'ArrowDown':
       case 'KeyS':
-        this.#moveBackward = false
+        this.#movementSpeed = 0
         break
 
       case 'ArrowRight':
       case 'KeyD':
-        this.#lookRight = 0
+        this.#lookSpeed = 0
         break
     }
   }
 
+  /**
+   * Move camera tagging along with cannon body
+   */
   update(delta: number) {
     if (!this.enabled) return
 
-    /**
-     * Keep the cannonBody up the floor
-     */
-    this.#isGround = false
-    this.raycaster.set(this.camera.position, _raycasterDirection)
+    // Position the cannonBody on the floor
+    this.#raycaster.set(this.camera.position, _raycasterDirection)
 
-    const intersects = this.raycaster.intersectObjects(this.floors)
+    const intersects = this.#raycaster.intersectObjects(this.floors)
     for (const item of intersects) {
-      this.cannonBody.position.y += this.height - item.distance
-      this.#isGround = true
-      // if (item.distance < this.height) {
-      // }
+      this.#cannonBody.position.y += this.height - item.distance
       break
     }
 
-    /**
-     * Update cannonBody position
-     */
-    this.cannonBody.velocity.set(0, 0, 0)
+    // Move cannonBody forward or backward
+    this.#cannonBody.velocity.set(0, 0, 0)
 
-    if (this.#moveForward || this.#moveBackward) {
-      const actualMoveSpeed = 10000 * this.movementSpeed
+    if (this.#movementSpeed) {
+      const actualMoveSpeed = 10000 * this.#movementSpeed * this.#maxMovementSpeed
       this.camera.getWorldDirection(_cameraDirection).normalize().multiplyScalar(actualMoveSpeed)
 
-      if (this.#moveForward) {
-        this.cannonBody.applyForce(
-          _forceDirection.set(_cameraDirection.x, _cameraDirection.y, _cameraDirection.z)
-        )
-      }
-      if (this.#moveBackward) {
-        this.cannonBody.applyForce(
-          _forceDirection.set(-_cameraDirection.x, -_cameraDirection.y, -_cameraDirection.z)
-        )
-      }
+      this.#cannonBody.applyForce(
+        _forceDirection.set(_cameraDirection.x, _cameraDirection.y, _cameraDirection.z)
+      )
     }
 
-    /**
-     * Update cannonBody angle
-     */
-    if (this.#lookLeft || this.#lookRight) {
-      const actualLookSpeed = delta * this.lookSpeed
+    // Rotate cannonBody angle
+    if (this.#lookSpeed) {
+      const actualLookSpeed = delta * this.#lookSpeed * this.#maxLookSpeed
+      _rotationQuaternion.setFromAxisAngle(_yAxis, actualLookSpeed)
 
-      const currentQuaternion = this.cannonBody.quaternion
-      _rotationQuaternion.set(0, 0, 0, 1)
-      if (this.#lookLeft) _rotationQuaternion.setFromAxisAngle(_yAxis, actualLookSpeed)
-      if (this.#lookRight) _rotationQuaternion.setFromAxisAngle(_yAxis, -actualLookSpeed)
-
-      this.cannonBody.quaternion.copy(
+      const currentQuaternion = this.#cannonBody.quaternion
+      this.#cannonBody.quaternion.copy(
         currentQuaternion.mult(_rotationQuaternion, currentQuaternion)
       )
     }
 
-    /**
-     * Move camera to the cannonBody
-     */
-    this.camera.position.x = this.cannonBody.position.x
-    this.camera.position.y = this.cannonBody.position.y + this.height
-    this.camera.position.z = this.cannonBody.position.z
+    // Move camera to the cannonBody
+    this.camera.position.x = this.#cannonBody.position.x
+    this.camera.position.y = this.#cannonBody.position.y + this.height
+    this.camera.position.z = this.#cannonBody.position.z
     this.camera.quaternion.copy(
       _cannonQuaternion.set(
-        this.cannonBody.quaternion.x,
-        this.cannonBody.quaternion.y,
-        this.cannonBody.quaternion.z,
-        this.cannonBody.quaternion.w
+        this.#cannonBody.quaternion.x,
+        this.#cannonBody.quaternion.y,
+        this.#cannonBody.quaternion.z,
+        this.#cannonBody.quaternion.w
       )
     )
   }

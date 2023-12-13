@@ -19,6 +19,7 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import { degToRad } from 'three/src/math/MathUtils'
 import { DefaultCamera } from '../three-custom/cameras/DefaultCamera'
 import { CannonKeypadControls } from '../three-custom/controls/CannonKeypadControls'
+import { RaycasterControls } from '../three-custom/controls/RaycasterControls.ts'
 import { Frame } from '../three-custom/meshes/Frame'
 import { Trees } from '../three-custom/meshes/Trees'
 import { DefaultRenderer } from '../three-custom/renderers/DefaultRenderer'
@@ -381,7 +382,8 @@ const greenary = ({ canvas, loadingManager, gallery, frameList }: GalleryTypePro
   const controls = new CannonKeypadControls(canvas, camera, world, 1.6)
   // const controls = new OrbitControls(camera, canvas)
   // const controls = new FirstPersonControls(camera, canvas)
-  controls.raycast = (item) => {
+  const rayControls = new RaycasterControls(canvas, camera)
+  rayControls.raycast = (item) => {
     if (item.object.name.slice(0, 5) !== 'frame') return
     if (item.distance > 10) {
       toastManager.addToast('error', '너무 멂')
@@ -445,7 +447,7 @@ const greenary = ({ canvas, loadingManager, gallery, frameList }: GalleryTypePro
     // Add to data structure
     objects.push({ dispose: () => scene.remove(mesh) })
     controls.floors.push(mesh)
-    controls.rayItems.push(mesh)
+    rayControls.rayItems.push(mesh)
   })
 
   // ocean: ocean mesh
@@ -457,7 +459,7 @@ const greenary = ({ canvas, loadingManager, gallery, frameList }: GalleryTypePro
   const ocean = new Mesh(oceanGeometry, oceanMaterial)
   ocean.position.set(55, -3.5, 55)
   scene.add(ocean)
-  controls.rayItems.push(ocean)
+  rayControls.rayItems.push(ocean)
   objects.push({
     dispose: () => {
       oceanGeometry.dispose()
@@ -513,7 +515,7 @@ const greenary = ({ canvas, loadingManager, gallery, frameList }: GalleryTypePro
   const lake = new Mesh(lakeGeometry, lakeMaterial)
   lake.position.set(45, -3, 43)
   scene.add(lake)
-  controls.rayItems.push(lake)
+  rayControls.rayItems.push(lake)
   objects.push({
     dispose: () => {
       lakeGeometry.dispose()
@@ -525,7 +527,7 @@ const greenary = ({ canvas, loadingManager, gallery, frameList }: GalleryTypePro
   // trees
   const trees = new Trees({ container: scene, world, gltfLoader, treeData: TREE_DATA })
   objects.push(trees)
-  controls.rayItems = [...controls.rayItems, ...trees.meshes]
+  rayControls.rayItems = [...rayControls.rayItems, ...trees.meshes]
 
   // frame
   FRAME_DATA.forEach((frameData, idx) => {
@@ -542,7 +544,7 @@ const greenary = ({ canvas, loadingManager, gallery, frameList }: GalleryTypePro
       baseImg: frameList[idx].framePictureUrl,
     })
     objects.push(frame)
-    controls.rayItems.push(frame.mesh)
+    rayControls.rayItems.push(frame.mesh)
   })
 
   /**
