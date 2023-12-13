@@ -28,17 +28,26 @@ export class Stuff {
 
   constructor(info: StuffArgs) {
     this.name = info.name || ''
+
+    // position
     this.x = info.x || 0
     this.y = info.y || 0
     this.z = info.z || 0
+
+    // rotation
     this.rotationX = info.rotationX || 0
     this.rotationY = info.rotationY || 0
     this.rotationZ = info.rotationZ || 0
+
+    // size
     this.width = info.width || 0
     this.height = info.height || 0
     this.depth = info.depth || 0
   }
 
+  /**
+   * Create Box shaped cannonBody
+   */
   setBoxCannonBody(
     world: World,
     mass: number = 0,
@@ -47,7 +56,7 @@ export class Stuff {
     height?: number,
     depth?: number
   ) {
-    // create shape
+    // Create shape
     const shape = new Box(
       new Vec3(
         width ? width / 2 : this.width / 2,
@@ -56,7 +65,7 @@ export class Stuff {
       )
     )
 
-    // create cannon body
+    // Create cannon body
     this.cannonBody = new Body({
       mass,
       position: new Vec3(this.x, this.y, this.z),
@@ -64,7 +73,7 @@ export class Stuff {
       material,
     })
 
-    // set the cannonbody quaternion
+    // Set the cannonbody quaternion
     const quaternionX = new Quaternion()
     const quaternionY = new Quaternion()
     const quaternionZ = new Quaternion()
@@ -73,10 +82,13 @@ export class Stuff {
     quaternionZ.setFromAxisAngle(new Vec3(0, 0, 1), this.rotationZ)
     this.cannonBody.quaternion.copy(quaternionX.mult(quaternionY).mult(quaternionZ))
 
-    // add to the world
+    // Add to the world
     world.addBody(this.cannonBody)
   }
 
+  /**
+   * Create Cylinder shaped cannonBody
+   */
   setCylinderCannonBody(
     world: World,
     mass: number = 0,
@@ -85,7 +97,7 @@ export class Stuff {
     height?: number,
     numSegments?: number
   ) {
-    // create shape
+    // Create shape
     const shape = new Cylinder(
       width ? width / 2 : this.width / 2,
       width ? width / 2 : this.width / 2,
@@ -93,7 +105,7 @@ export class Stuff {
       numSegments ? numSegments : 12
     )
 
-    // create cannon body
+    // Create cannon body
     this.cannonBody = new Body({
       mass,
       position: new Vec3(this.x, this.y, this.z),
@@ -101,7 +113,7 @@ export class Stuff {
       material,
     })
 
-    // set the cannonbody quaternion
+    // Set the cannonbody quaternion
     const quaternionX = new Quaternion()
     const quaternionY = new Quaternion()
     const quaternionZ = new Quaternion()

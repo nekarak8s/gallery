@@ -1,3 +1,5 @@
+import { UserData } from './types'
+
 export const userData: UserData = {
   nickname: '홍길동',
   role: '회원',

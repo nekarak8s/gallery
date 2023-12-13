@@ -1,10 +1,12 @@
-import { Mesh, BoxGeometry, TextureLoader, MeshPhongMaterial } from 'three'
+import * as THREE from 'three'
 import { Stuff, StuffArgs } from './Stuff'
+import { FrameMesh } from '../meshes/FrameMesh'
 
 type FrameArgs = StuffArgs & {
   container: THREE.Scene | THREE.Mesh
   baseImg: string
-  textureLoader: TextureLoader
+  textureLoader: THREE.TextureLoader
+  order: number
 }
 
 export class Frame extends Stuff {
@@ -19,18 +21,18 @@ export class Frame extends Stuff {
     super(info)
 
     // Geometry
-    this.geometry = new BoxGeometry(this.width, this.height, this.depth)
+    this.geometry = new THREE.BoxGeometry(this.width, this.height, this.depth)
 
     // Texture
     const frameImg = info.textureLoader.load(info.baseImg)
 
     // Material
-    this.material = new MeshPhongMaterial({
+    this.material = new THREE.MeshPhongMaterial({
       map: frameImg,
     })
 
     // Mesh
-    this.mesh = new Mesh(this.geometry, this.material)
+    this.mesh = new FrameMesh(this.geometry, this.material, info.order)
     this.mesh.position.set(this.x, this.y, this.z)
     this.mesh.rotation.set(this.rotationX, this.rotationY, this.rotationZ)
     this.mesh.receiveShadow = true
@@ -47,6 +49,7 @@ export class Frame extends Stuff {
       this.geometry.dispose()
     }
 
+    // Set update function
     this.update = (delta: number) => {
       this.mesh.rotation.y += delta
     }

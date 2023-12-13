@@ -1,15 +1,12 @@
-import { Body, Box, SAPBroadphase, Vec3, World } from 'cannon-es'
-import CannonDebugger from 'cannon-es-debugger'
+import { Body, Box, Vec3 } from 'cannon-es'
 import {
   AmbientLight,
   Box3,
   BoxGeometry,
-  Clock,
   CubeTextureLoader,
   CylinderGeometry,
   DoubleSide,
   DirectionalLight,
-  Scene,
   TextureLoader,
   Vector3,
   Mesh,
@@ -17,12 +14,8 @@ import {
 } from 'three'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import { degToRad } from 'three/src/math/MathUtils'
-import { DefaultCamera } from '../three-custom/cameras/DefaultCamera'
-import { CannonKeypadControls } from '../three-custom/controls/CannonKeypadControls'
-import { RaycasterControls } from '../three-custom/controls/RaycasterControls.ts'
-import { Frame } from '../three-custom/meshes/Frame'
-import { Trees } from '../three-custom/meshes/Trees'
-import { DefaultRenderer } from '../three-custom/renderers/DefaultRenderer'
+import { Frame } from '../three-custom/items/Frame'
+import { Trees } from '../three-custom/items/Trees'
 import nx from '@/assets/cubemaps/clear_sky/nx.png'
 import ny from '@/assets/cubemaps/clear_sky/ny.png'
 import nz from '@/assets/cubemaps/clear_sky/nz.png'
@@ -30,13 +23,7 @@ import px from '@/assets/cubemaps/clear_sky/px.png'
 import py from '@/assets/cubemaps/clear_sky/py.png'
 import pz from '@/assets/cubemaps/clear_sky/pz.png'
 import greenaryGlb from '@/assets/glbs/greenary.glb'
-import toastManager from '@/utils/toastManager'
-
-const WALL_INFO = {
-  color: '#fffeef',
-  depth: 0.2,
-  height: 4.5,
-}
+import { GalleryTypeProps } from '@/features/gallery/types'
 
 const FRAME_INFO = {
   width: 2,
@@ -333,64 +320,18 @@ const PLAIN_TREE = [
 
 const TREE_DATA = [...FOREST_TREE, ...MOUNTAIN_TREE, ...BEACH_TREE, ...LAKE_TREE, ...PLAIN_TREE]
 
-const greenary = ({ canvas, loadingManager, gallery, frameList }: GalleryTypeProps) => {
-  console.log(gallery, frameList)
-  /**
-   * Loaders
-   */
-  const textureLoader = new TextureLoader(loadingManager)
-  const cubeTextureLoader = new CubeTextureLoader(loadingManager)
-  const gltfLoader = new GLTFLoader(loadingManager)
+const greenary = (props: GalleryTypeProps) => {
+  // Loaders
+  const textureLoader = new TextureLoader(props.loadingManager)
+  const cubeTextureLoader = new CubeTextureLoader(props.loadingManager)
+  const gltfLoader = new GLTFLoader(props.loadingManager)
 
-  /**
-   * Renderer
-   */
-  const renderer = new DefaultRenderer({ canvas, antialias: true })
+  // set camera position & rotation
+  props.controls.setPosition(25.1, 5, 25.1)
+  props.controls.setQuaternion(0, degToRad(-135), 0)
 
-  /**
-   * Scene
-   */
-  const scene = new Scene()
-  scene.background = cubeTextureLoader.load([px, nx, py, ny, pz, nz])
-
-  /**
-   * Cannon world
-   */
-  const world = new World()
-  world.broadphase = new SAPBroadphase(world)
-  // world.gravity.set(0, -100, 0)
-
-  // Cannon Helper : Development
-  let cannonDebugger: {
-    update: () => void
-  } | null = null
-  if (process.env.NODE_ENV !== 'production') {
-    cannonDebugger = CannonDebugger(scene, world, {})
-  }
-
-  /**
-   * Camera
-   */
-  const camera = new DefaultCamera({ canvas })
-  camera.position.set(25.1, 5, 25.1)
-  camera.rotation.set(0, degToRad(-135), 0)
-  scene.add(camera)
-
-  /**
-   * Controls
-   */
-  const controls = new CannonKeypadControls(canvas, camera, world, 1.6)
-  // const controls = new OrbitControls(camera, canvas)
-  // const controls = new FirstPersonControls(camera, canvas)
-  const rayControls = new RaycasterControls(canvas, camera)
-  rayControls.raycast = (item) => {
-    if (item.object.name.slice(0, 5) !== 'frame') return
-    if (item.distance > 10) {
-      toastManager.addToast('error', '너무 멂')
-    } else {
-      toastManager.addToast('success', item.object.name)
-    }
-  }
+  // Set scene background cubemap
+  props.scene.background = cubeTextureLoader.load([px, nx, py, ny, pz, nz])
 
   /**
    * Light
@@ -399,7 +340,7 @@ const greenary = ({ canvas, loadingManager, gallery, frameList }: GalleryTypePro
 
   // Ambient light
   const ambientLight = new AmbientLight('white', 0.5)
-  scene.add(ambientLight)
+  props.scene.add(ambientLight)
   lights.push(ambientLight)
 
   // Direct Light
@@ -410,27 +351,25 @@ const greenary = ({ canvas, loadingManager, gallery, frameList }: GalleryTypePro
   directionalLight.shadow.camera.top = 60
   directionalLight.shadow.camera.bottom = -100
   directionalLight.castShadow = true
-  scene.add(directionalLight)
+  props.scene.add(directionalLight)
   lights.push(directionalLight)
 
   // Light Helper : Development
   if (process.env.NODE_ENV !== 'production') {
     import('three').then(({ CameraHelper }) => {
-      scene.add(new CameraHelper(directionalLight.shadow.camera))
+      props.scene.add(new CameraHelper(directionalLight.shadow.camera))
     })
   }
 
   /**
    * Meshes
    */
-
-  // Array for meshes that affected by physics engine
   const objects: {
     dispose?: () => void
     update?: (delta: number) => void
   }[] = []
 
-  // greeneary floor
+  // Greeneary floor
   gltfLoader.load(greenaryGlb, (glb) => {
     const mesh = glb.scene.children[0]
     mesh.receiveShadow = true
@@ -441,179 +380,146 @@ const greenary = ({ canvas, loadingManager, gallery, frameList }: GalleryTypePro
     mesh.position.x += width / 2
     mesh.position.z += depth / 2
 
-    // Add to the container
-    scene.add(mesh)
+    props.scene.add(mesh)
 
-    // Add to data structure
-    objects.push({ dispose: () => scene.remove(mesh) })
-    controls.floors.push(mesh)
-    rayControls.rayItems.push(mesh)
+    objects.push({ dispose: () => props.scene.remove(mesh) })
+    props.controls.floors.push(mesh)
+    props.rayControls.rayItems.push(mesh)
   })
 
-  // ocean: ocean mesh
+  // Ocean mesh
   const oceanGeometry = new BoxGeometry(530, 5, 530)
   const oceanMaterial = new MeshLambertMaterial({
     color: 0x008cf1,
     side: DoubleSide,
   })
   const ocean = new Mesh(oceanGeometry, oceanMaterial)
+
   ocean.position.set(55, -3.5, 55)
-  scene.add(ocean)
-  rayControls.rayItems.push(ocean)
+  props.scene.add(ocean)
+  props.rayControls.rayItems.push(ocean)
+
   objects.push({
     dispose: () => {
       oceanGeometry.dispose()
       oceanMaterial.dispose()
-      scene.remove(ocean)
+      props.scene.remove(ocean)
     },
   })
 
-  // ocean: ocean cannon body
+  // Ocean cannon body
   const oceanShape1 = new Box(new Vec3(55, 50, 1))
   const oceanBody1 = new Body({
     mass: 0,
     position: new Vec3(55, 0, -1),
     shape: oceanShape1,
   })
-  world.addBody(oceanBody1)
+  props.world.addBody(oceanBody1)
+
   const oceanShape2 = new Box(new Vec3(55, 50, 1))
   const oceanBody2 = new Body({
     mass: 0,
     position: new Vec3(55, 0, 109),
     shape: oceanShape2,
   })
-  world.addBody(oceanBody2)
+  props.world.addBody(oceanBody2)
+
   const oceanShape3 = new Box(new Vec3(1, 50, 55))
   const oceanBody3 = new Body({
     mass: 0,
     position: new Vec3(-1, 0, 55),
     shape: oceanShape3,
   })
-  world.addBody(oceanBody3)
+  props.world.addBody(oceanBody3)
+
   const oceanShape4 = new Box(new Vec3(1, 50, 55))
   const oceanBody4 = new Body({
     mass: 0,
     position: new Vec3(109, 0, 55),
     shape: oceanShape4,
   })
-  world.addBody(oceanBody4)
+
+  props.world.addBody(oceanBody4)
   objects.push({
     dispose: () => {
-      world.removeBody(oceanBody1)
-      world.removeBody(oceanBody2)
-      world.removeBody(oceanBody3)
-      world.removeBody(oceanBody4)
+      props.world.removeBody(oceanBody1)
+      props.world.removeBody(oceanBody2)
+      props.world.removeBody(oceanBody3)
+      props.world.removeBody(oceanBody4)
     },
   })
 
-  // lake
+  // Lake Mesh
   const lakeGeometry = new CylinderGeometry(17, 17, 5)
   const lakeMaterial = new MeshLambertMaterial({
     color: 0x0bd3ff,
     side: DoubleSide,
   })
   const lake = new Mesh(lakeGeometry, lakeMaterial)
+
   lake.position.set(45, -3, 43)
-  scene.add(lake)
-  rayControls.rayItems.push(lake)
+  props.scene.add(lake)
+  props.rayControls.rayItems.push(lake)
+
   objects.push({
     dispose: () => {
       lakeGeometry.dispose()
       lakeMaterial.dispose()
-      scene.remove(lake)
+      props.scene.remove(lake)
     },
   })
 
-  // trees
-  const trees = new Trees({ container: scene, world, gltfLoader, treeData: TREE_DATA })
+  // Trees mesh & cannon body
+  const trees = new Trees({
+    container: props.scene,
+    world: props.world,
+    gltfLoader,
+    treesData: TREE_DATA,
+  })
   objects.push(trees)
-  rayControls.rayItems = [...rayControls.rayItems, ...trees.meshes]
+  props.rayControls.rayItems = [...props.rayControls.rayItems, ...trees.meshes]
 
-  // frame
+  // Frame Mesh
   FRAME_DATA.forEach((frameData, idx) => {
     const frame = new Frame({
-      name: `frame-${frameList[idx].frameId}`,
+      order: idx,
       x: frameData.x,
       y: frameData.y,
       z: frameData.z,
       width: FRAME_INFO.width,
       height: FRAME_INFO.height,
       depth: FRAME_INFO.depth,
-      container: scene,
+      container: props.scene,
       textureLoader,
-      baseImg: frameList[idx].framePictureUrl,
+      baseImg: props.postList[idx].framePictureUrl,
     })
     objects.push(frame)
-    rayControls.rayItems.push(frame.mesh)
+    props.rayControls.rayItems.push(frame.mesh)
   })
 
   /**
-   * Render canvas
+   * Update function: Render canvas
    */
-  const clock = new Clock()
-
-  const draw = function renderCanvas() {
-    const delta = clock.getDelta()
-
-    // update cannon world
-    let step = 1 / 60
-    if (delta < 0.01) step = 1 / 120
-    world.step(step, delta, 3)
-
-    if (process.env.NODE_ENV !== 'production') {
-      cannonDebugger && cannonDebugger.update()
-    }
-
-    // update controls
-    controls.update(delta)
-
-    // update meshes
+  const update = function renderCanvas(delta: number) {
     objects.forEach((object) => {
       object.update && object.update(delta)
     })
-
-    // update renderer
-    renderer.render(scene, camera)
-    renderer.setAnimationLoop(draw)
   }
-
-  draw()
-
-  /**
-   * Resize Listener
-   */
-
-  const handleSize = function resizeCameraRenderer() {
-    // camera resize
-    camera.setDefaultAspect()
-    camera.updateProjectionMatrix()
-
-    // renderer resize
-    renderer.setDefaultSize()
-    renderer.render(scene, camera)
-  }
-
-  window.addEventListener('resize', handleSize)
 
   /**
    * Dispose function: Release all the resources
    */
   const dispose = function () {
     lights.forEach((light) => {
-      scene.remove(light)
+      props.scene.remove(light)
       light.dispose()
     })
     objects.forEach((object) => {
       object.dispose && object.dispose()
     })
-    scene.remove(camera)
-    renderer.setAnimationLoop(null)
-    renderer.dispose()
-    controls.dispose()
-    window.removeEventListener('resize', handleSize)
   }
 
-  return { dispose }
+  return { update, dispose }
 }
 
 export default greenary

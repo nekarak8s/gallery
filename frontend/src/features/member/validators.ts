@@ -1,4 +1,5 @@
 import * as regexes from './regexes'
+import { ProfileFormData } from './types'
 
 export function validateProfileForm(formData: FormData): RegexResult<ProfileFormData> {
   // validate nikcname

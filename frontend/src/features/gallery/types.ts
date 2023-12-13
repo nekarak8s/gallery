@@ -1,4 +1,15 @@
-type Gallery = {
+import { World } from 'cannon-es'
+import { CannonKeypadControls } from './components/GalleryCanvas/three-custom/controls/CannonKeypadControls'
+import { RaycasterControls } from './components/GalleryCanvas/three-custom/controls/RaycasterControls.ts'
+import { PostData } from '../post/types'
+
+export type GalleryFormData = {
+  name: string
+  content: string
+  placeId: number
+}
+
+export type GalleryData = {
   galleryId: number
   name: string
   content: string
@@ -13,19 +24,22 @@ type Gallery = {
   }
 }
 
-type GalleryForm = {
-  placeId: number
+export type GalleryItemData = {
+  galleryId: number
   name: string
   content: string
+  createdDate: string
+  modifiedDate: string
+  place: {
+    placeId: number
+    name: string
+    maximumFrameNumber: number
+    threeDimensionImageUrl: string
+    twoDimensionImageUrl: string
+  }
 }
 
-type ArtworkForm = {
-  name: string
-  description: string
-  frame: File
-}
-
-type Place = {
+export type PlaceData = {
   placeId: number
   name: string
   maximumFrameNumber: number
@@ -33,31 +47,19 @@ type Place = {
   threeDimensionImageUrl: string
 }
 
-type TFrame = {
-  frameId: number
-  order: number
-  title: string
-  content: string
-  framePictureUrl: string
-  createdDate: string
-  modifiedDate: string
-  music: {
-    musicId: number
-    title: string
-    singer: string
-    releasedDate: string
-    videoUrl: string
-    thumbnailUrl: string
-  }
-}
-
-type GalleryTypeProps = {
-  loadingManager: THREE.LoadingManager
+export type GalleryTypeProps = {
   canvas: HTMLCanvasElement
-  gallery: Gallery
-  frameList: TFrame[]
+  loadingManager: THREE.LoadingManager
+  renderer: THREE.WebGLRenderer
+  scene: THREE.Scene
+  camera: THREE.Camera
+  world: World
+  controls: CannonKeypadControls
+  rayControls: RaycasterControls
+  postList: PostData[]
 }
 
-type GalleryTypeReturns = {
+export type GalleryTypeReturns = {
+  update: (delta: number) => void
   dispose: () => void
 }

@@ -1,10 +1,11 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { GalleryData, GalleryFormData, PlaceData } from './types'
 import axiosInstance from '@/utils/axiosInstance'
 import toastManager from '@/utils/toastManager/toastManager'
 
 // 공간 목록 조회
 export function usePlaceListQuery() {
-  return useQuery<MessageResponse<Place[]>, ErrorResponse, Place[]>(
+  return useQuery<MessageResponse<PlaceData[]>, ErrorResponse, PlaceData[]>(
     ['place'],
     () => axiosInstance.get(`/gallery/place/list`),
     {
@@ -21,7 +22,7 @@ export function usePlaceListQuery() {
 }
 
 export function useGalleryListQuery() {
-  return useQuery<MessageResponse<Gallery[]>, ErrorResponse, Gallery[]>(
+  return useQuery<MessageResponse<GalleryData[]>, ErrorResponse, GalleryData[]>(
     ['gallery-list'],
     () => axiosInstance.get(`/gallery/list`),
     {
@@ -39,7 +40,7 @@ export function useGalleryListQuery() {
 
 export function useCreateGallery() {
   const queryClient = useQueryClient()
-  return useMutation<MessageResponse, ErrorResponse, GalleryForm>(
+  return useMutation<MessageResponse, ErrorResponse, GalleryFormData>(
     (data) => axiosInstance.post(`/gallery`, data),
     {
       onSuccess: () => {

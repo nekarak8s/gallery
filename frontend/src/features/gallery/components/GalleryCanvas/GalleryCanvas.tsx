@@ -1,38 +1,46 @@
 import { useEffect, useRef, useState } from 'react'
-import { LoadingManager } from 'three'
+import { SAPBroadphase, World } from 'cannon-es'
+import CannonDebugger from 'cannon-es-debugger'
+import * as THREE from 'three'
 import greenary from './gallery-types/greenary'
-import { frameListData, galleryItemData } from '../../data'
 import './GalleryCanvas.scss'
+import { DefaultCamera } from './three-custom/cameras/DefaultCamera'
+import { CannonKeypadControls } from './three-custom/controls/CannonKeypadControls'
+import { RaycasterControls } from './three-custom/controls/RaycasterControls.ts'
+import { FrameMesh } from './three-custom/meshes/FrameMesh'
+import { DefaultRenderer } from './three-custom/renderers/DefaultRenderer'
+import { galleryItemData } from '../../data'
+import { GalleryTypeProps, GalleryTypeReturns } from '../../types'
 import CSSTransition from '@/atoms/ui/CSSTransition'
 import Loading from '@/atoms/ui/Loading'
+import { postListData } from '@/features/post/data'
+import toastManager from '@/utils/toastManager'
 
 const CANVAS_TYPE: Record<number, (kwargs: GalleryTypeProps) => GalleryTypeReturns> = {
   1: greenary,
 }
 
 const GalleryCanvas = () => {
-  const canvasRef = useRef<HTMLCanvasElement>(null)
-
   /**
    * Get Data
    */
   const gallery = galleryItemData
-  const frameList = frameListData
-
+  const postList = postListData
   /**
    * Render the Three.js canvas
    */
+  const canvasRef = useRef<HTMLCanvasElement>(null)
 
   const [requiredCount, setRequiredCount] = useState(0)
   const [loadedCount, setLoadedCount] = useState(0)
 
   useEffect(() => {
-    if (!gallery || !frameList) return
+    if (!gallery || !postList) return
 
     const canvas = canvasRef.current!
 
     // loadingManager
-    const loadingManager = new LoadingManager()
+    const loadingManager = new THREE.LoadingManager()
     loadingManager.onStart = function increaseLoadCount() {
       setRequiredCount((cnt) => cnt + 1)
     }
@@ -40,51 +48,103 @@ const GalleryCanvas = () => {
       setLoadedCount((cnt) => cnt + 1)
     }
 
+    // Renderer
+    const renderer = new DefaultRenderer({ canvas, antialias: true })
+
+    // Scene
+    const scene = new THREE.Scene()
+
+    // Camera
+    const camera = new DefaultCamera({ canvas })
+    scene.add(camera)
+
+    // Cannon world
+    const world = new World()
+    world.broadphase = new SAPBroadphase(world)
+
+    // Main controls
+    const controls = new CannonKeypadControls(canvas, camera, world, 1.6)
+
+    // Raycaster controls
+    const rayControls = new RaycasterControls(canvas, camera)
+    rayControls.raycast = (item) => {
+      if (item.object instanceof FrameMesh) {
+        if (item.distance > 10) toastManager.addToast('error', '너무 멂')
+        else toastManager.addToast('success', item.object.order.toString())
+      }
+    }
+
+    // Cannon Helper : Development
+    let cannonDebugger: { update: () => void } | null = null
+    if (process.env.NODE_ENV !== 'production') cannonDebugger = CannonDebugger(scene, world, {})
+
     // Render canvas
-    const { dispose } = CANVAS_TYPE[gallery.place.placeId]({
-      loadingManager,
+    const { update: updateCanvas, dispose: disposeCanvas } = CANVAS_TYPE[gallery.place.placeId]({
       canvas,
-      gallery,
-      frameList,
+      loadingManager,
+      renderer,
+      scene,
+      camera,
+      world,
+      controls,
+      rayControls,
+      postList,
     })
 
-    // Free the resources
+    // Add Resize Listener
+    const handleSize = function resizeCameraRenderer() {
+      // camera resize
+      camera.setDefaultAspect()
+      camera.updateProjectionMatrix()
+
+      // renderer resize
+      renderer.setDefaultSize()
+      renderer.render(scene, camera)
+    }
+
+    window.addEventListener('resize', handleSize)
+
+    // Update canvas
+    const clock = new THREE.Clock()
+
+    const draw = function renderCanvas() {
+      const delta = clock.getDelta()
+
+      // Update renderer
+      renderer.render(scene, camera)
+      renderer.setAnimationLoop(draw)
+
+      // Update cannon world
+      world.step(delta < 0.01 ? 1 / 120 : 1 / 60, delta, 3)
+
+      if (process.env.NODE_ENV !== 'production') {
+        cannonDebugger && cannonDebugger.update()
+      }
+
+      // Update controls
+      controls.update(delta)
+
+      // Update canvas
+      updateCanvas(delta)
+    }
+
+    draw()
+
+    // Clean-up function: Release resources
     return () => {
       setRequiredCount(0)
       setLoadedCount(0)
-      dispose()
+
+      scene.remove(camera)
+      renderer.setAnimationLoop(null)
+      renderer.dispose()
+      controls.dispose()
+
+      disposeCanvas()
+
+      window.removeEventListener('resize', handleSize)
     }
-  }, [gallery, frameList])
-
-  /**
-   * Stat.js
-   */
-  const animationRef = useRef<number | null>(null)
-
-  useEffect(() => {
-    /* eslint-disable */
-    if (process.env.NODE_ENV === 'production') return
-
-    const Stats = require('stats-js')
-    const stats = new Stats()
-    stats.showPanel(0) // 0: fps, 1: ms, 2: mb, 3+: custom
-    document.body.appendChild(stats.dom)
-
-    function animate() {
-      stats.begin()
-      // monitored code goes here
-      stats.end()
-      animationRef.current = requestAnimationFrame(animate)
-    }
-
-    animationRef.current = requestAnimationFrame(animate)
-
-    return () => {
-      document.body.removeChild(stats.dom)
-      animationRef.current && cancelAnimationFrame(animationRef.current)
-    }
-    /* eslint-enable */
-  }, [])
+  }, [gallery, postList])
 
   return (
     <div className="gallery-canvas">

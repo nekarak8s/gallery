@@ -1,9 +1,9 @@
 import { Material, World } from 'cannon-es'
-import { Mesh, BoxGeometry, TextureLoader, RepeatWrapping, MeshLambertMaterial } from 'three'
+import * as THREE from 'three'
 import { Stuff, StuffArgs } from './Stuff'
 
 type TextureProps = {
-  textureLoader: TextureLoader
+  textureLoader: THREE.TextureLoader
   baseImg: string
   normalImg?: string
   ambientImg?: string
@@ -39,7 +39,7 @@ export class Wall extends Stuff {
     this.z += (this.width * Math.sin(this.rotationY)) / 2
 
     // Geometry
-    this.geometry = new BoxGeometry(this.width, this.height, this.depth)
+    this.geometry = new THREE.BoxGeometry(this.width, this.height, this.depth)
 
     // Texture
     if (info.texture) {
@@ -58,8 +58,8 @@ export class Wall extends Stuff {
         for (const key in this.textures) {
           const texture = this.textures[key]
 
-          texture.wrapS = RepeatWrapping
-          texture.wrapT = RepeatWrapping
+          texture.wrapS = THREE.RepeatWrapping
+          texture.wrapT = THREE.RepeatWrapping
 
           texture.repeat.x = info.texture.repeatX || 1
           texture.repeat.y = info.texture.repeatY || 1
@@ -68,7 +68,7 @@ export class Wall extends Stuff {
     }
 
     // Material
-    this.material = new MeshLambertMaterial({
+    this.material = new THREE.MeshLambertMaterial({
       color: info.color,
       transparent: info.transparent || false,
       opacity: info.opacity,
@@ -78,7 +78,7 @@ export class Wall extends Stuff {
     })
 
     // Mesh
-    this.mesh = new Mesh(this.geometry, this.material)
+    this.mesh = new THREE.Mesh(this.geometry, this.material)
     this.mesh.position.set(this.x, this.y, this.z)
     this.mesh.rotation.set(this.rotationX, this.rotationY, this.rotationZ)
     this.mesh.castShadow = !info.transparent ? true : false

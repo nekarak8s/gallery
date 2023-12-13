@@ -1,15 +1,15 @@
-type LoginData = string
+export type LoginData = string
 
-type LoginCallbackData = {
+export type LoginCallbackData = {
   expirationDate: string
 }
 
-type UserData = {
+export type UserData = {
   nickname: string
   role: string
   createdDate: string
 }
 
-type ProfileFormData = {
+export type ProfileFormData = {
   nickname: string
 }

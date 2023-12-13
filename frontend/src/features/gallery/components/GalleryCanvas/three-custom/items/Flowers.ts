@@ -1,4 +1,4 @@
-import { Box3, Vector3, Object3D } from 'three'
+import * as THREE from 'three'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import { degToRad } from 'three/src/math/MathUtils'
 import spotLightGlb from '@/assets/glbs/flowers.glb'
@@ -15,7 +15,7 @@ type FlowerData = {
 export type FlowersProps = {
   container: THREE.Mesh | THREE.Scene
   gltfLoader: GLTFLoader
-  flowerData: FlowerData[]
+  flowersData: FlowerData[]
 }
 
 export class Flowers {
@@ -29,9 +29,9 @@ export class Flowers {
      */
     info.gltfLoader.load(spotLightGlb, (glb) => {
       // Create Flowers
-      info.flowerData.forEach((flower) => {
+      info.flowersData.forEach((flower) => {
         // Get an object
-        const object = new Object3D()
+        const object = new THREE.Object3D()
         object.copy(glb.scene.children[flower.type])
         object.name = this.type
         object.scale.multiplyScalar(0.001 * flower.scale)
@@ -42,8 +42,8 @@ export class Flowers {
         this.meshes.push(object)
 
         // Set the mesh size
-        const box = new Box3().setFromObject(object)
-        const { x: width, y: height, z: depth } = box.getSize(new Vector3())
+        const box = new THREE.Box3().setFromObject(object)
+        const { x: width, y: height, z: depth } = box.getSize(new THREE.Vector3())
 
         // Set position
         object.position.set(flower.x, flower.y, flower.z)

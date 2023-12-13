@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef } from 'react'
+import { GalleryData } from '../../types'
 import EditIcon from '@/assets/svgs/edit.svg'
 import PlayIcon from '@/assets/svgs/play.svg'
 import ShareIcon from '@/assets/svgs/share.svg'
@@ -7,7 +8,7 @@ import { CURSOR_SCALE } from '@/constants'
 import './GalleryItem.scss'
 
 interface GalleryItemProps {
-  gallery: Gallery
+  gallery: GalleryData
 }
 
 const GalleryItem = ({ gallery }: GalleryItemProps) => {

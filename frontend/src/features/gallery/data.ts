@@ -1,7 +1,8 @@
+import { GalleryData, GalleryItemData, PlaceData } from './types'
 import twoDimImage from '@/assets/images/gallery/2d.png'
 import threeDimImage from '@/assets/images/gallery/3d.png'
 
-export const galleryItemData: Gallery = {
+export const galleryItemData: GalleryData = {
   galleryId: 1,
   name: '갤러리1',
   content:
@@ -17,7 +18,7 @@ export const galleryItemData: Gallery = {
   },
 }
 
-export const galleryListData: Gallery[] = [
+export const galleryListData: GalleryItemData[] = [
   {
     galleryId: 1,
     name: '갤러리1',
@@ -95,7 +96,7 @@ export const galleryListData: Gallery[] = [
   },
 ]
 
-export const placeItemData: Place = {
+export const placeItemData: PlaceData = {
   placeId: 1,
   name: '공간1',
   maximumFrameNumber: 10,
@@ -103,7 +104,7 @@ export const placeItemData: Place = {
   threeDimensionImageUrl: 'https://source.unsplash.com/random/300×300',
 }
 
-export const placeListData: Place[] = [
+export const placeListData: PlaceData[] = [
   {
     placeId: 1,
     name: '공간1',
@@ -124,198 +125,5 @@ export const placeListData: Place[] = [
     maximumFrameNumber: 10,
     twoDimensionImageUrl: 'https://source.unsplash.com/random/300×300',
     threeDimensionImageUrl: 'https://source.unsplash.com/random/300×300',
-  },
-]
-
-// <iframe width="560" height="315" src="https://www.youtube.com/embed/iEfIcJHEb70?si=Lqv77NhgOQfHZfkp" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-
-export const frameItemData: TFrame = {
-  frameId: 1,
-  order: 1,
-  title: '액자 제목',
-  content: '액자 설명',
-  framePictureUrl: 'https://source.unsplash.com/500x500',
-  createdDate: '2023-08-03T23:59:59',
-  modifiedDate: '2023-08-04T00:59:59',
-  music: {
-    musicId: 1,
-    title: '비밀번호 486',
-    singer: '윤하',
-    releasedDate: '2023-08-03T23:59:59',
-    videoUrl: 'https://www.youtube.com/embed/iEfIcJHEb70?si=Lqv77NhgOQfHZfkp',
-    thumbnailUrl: 'https://source.unsplash.com/500x500',
-  },
-}
-
-export const frameListData: TFrame[] = [
-  {
-    frameId: 1,
-    order: 1,
-    title: '액자 제목',
-    content: '액자 설명',
-    framePictureUrl: 'https://source.unsplash.com/500x500',
-    createdDate: '2023-08-03T23:59:59',
-    modifiedDate: '2023-08-04T00:59:59',
-    music: {
-      musicId: 1,
-      title: '비밀번호 486',
-      singer: '윤하',
-      releasedDate: '2023-08-03T23:59:59',
-      videoUrl: 'https://www.youtube.com/embed/iEfIcJHEb70?si=Lqv77NhgOQfHZfkp',
-      thumbnailUrl: 'https://source.unsplash.com/500x500',
-    },
-  },
-  {
-    frameId: 2,
-    order: 2,
-    title: '액자 제목',
-    content: '액자 설명',
-    framePictureUrl: 'https://source.unsplash.com/500x500',
-    createdDate: '2023-08-03T23:59:59',
-    modifiedDate: '2023-08-04T00:59:59',
-    music: {
-      musicId: 1,
-      title: '비밀번호 486',
-      singer: '윤하',
-      releasedDate: '2023-08-03T23:59:59',
-      videoUrl: 'https://www.youtube.com/embed/iEfIcJHEb70?si=Lqv77NhgOQfHZfkp',
-      thumbnailUrl: 'https://source.unsplash.com/500x500',
-    },
-  },
-  {
-    frameId: 3,
-    order: 3,
-    title: '액자 제목',
-    content: '액자 설명',
-    framePictureUrl: 'https://source.unsplash.com/500x500',
-    createdDate: '2023-08-03T23:59:59',
-    modifiedDate: '2023-08-04T00:59:59',
-    music: {
-      musicId: 1,
-      title: '비밀번호 486',
-      singer: '윤하',
-      releasedDate: '2023-08-03T23:59:59',
-      videoUrl: 'https://www.youtube.com/embed/iEfIcJHEb70?si=Lqv77NhgOQfHZfkp',
-      thumbnailUrl: 'https://source.unsplash.com/500x500',
-    },
-  },
-  {
-    frameId: 4,
-    order: 4,
-    title: '액자 제목',
-    content: '액자 설명',
-    framePictureUrl: 'https://source.unsplash.com/500x500',
-    createdDate: '2023-08-03T23:59:59',
-    modifiedDate: '2023-08-04T00:59:59',
-    music: {
-      musicId: 1,
-      title: '비밀번호 486',
-      singer: '윤하',
-      releasedDate: '2023-08-03T23:59:59',
-      videoUrl: 'https://www.youtube.com/embed/iEfIcJHEb70?si=Lqv77NhgOQfHZfkp',
-      thumbnailUrl: 'https://source.unsplash.com/500x500',
-    },
-  },
-  {
-    frameId: 5,
-    order: 5,
-    title: '액자 제목',
-    content: '액자 설명',
-    framePictureUrl: 'https://source.unsplash.com/500x500',
-    createdDate: '2023-08-03T23:59:59',
-    modifiedDate: '2023-08-04T00:59:59',
-    music: {
-      musicId: 1,
-      title: '비밀번호 486',
-      singer: '윤하',
-      releasedDate: '2023-08-03T23:59:59',
-      videoUrl: 'https://www.youtube.com/embed/iEfIcJHEb70?si=Lqv77NhgOQfHZfkp',
-      thumbnailUrl: 'https://source.unsplash.com/500x500',
-    },
-  },
-  {
-    frameId: 6,
-    order: 6,
-    title: '액자 제목',
-    content: '액자 설명',
-    framePictureUrl: 'https://source.unsplash.com/500x500',
-    createdDate: '2023-08-03T23:59:59',
-    modifiedDate: '2023-08-04T00:59:59',
-    music: {
-      musicId: 1,
-      title: '비밀번호 486',
-      singer: '윤하',
-      releasedDate: '2023-08-03T23:59:59',
-      videoUrl: 'https://www.youtube.com/embed/iEfIcJHEb70?si=Lqv77NhgOQfHZfkp',
-      thumbnailUrl: 'https://source.unsplash.com/500x500',
-    },
-  },
-  {
-    frameId: 7,
-    order: 7,
-    title: '액자 제목',
-    content: '액자 설명',
-    framePictureUrl: 'https://source.unsplash.com/500x500',
-    createdDate: '2023-08-03T23:59:59',
-    modifiedDate: '2023-08-04T00:59:59',
-    music: {
-      musicId: 1,
-      title: '비밀번호 486',
-      singer: '윤하',
-      releasedDate: '2023-08-03T23:59:59',
-      videoUrl: 'https://www.youtube.com/embed/iEfIcJHEb70?si=Lqv77NhgOQfHZfkp',
-      thumbnailUrl: 'https://source.unsplash.com/500x500',
-    },
-  },
-  {
-    frameId: 8,
-    order: 8,
-    title: '액자 제목',
-    content: '액자 설명',
-    framePictureUrl: 'https://source.unsplash.com/500x500',
-    createdDate: '2023-08-03T23:59:59',
-    modifiedDate: '2023-08-04T00:59:59',
-    music: {
-      musicId: 1,
-      title: '비밀번호 486',
-      singer: '윤하',
-      releasedDate: '2023-08-03T23:59:59',
-      videoUrl: 'https://www.youtube.com/embed/iEfIcJHEb70?si=Lqv77NhgOQfHZfkp',
-      thumbnailUrl: 'https://source.unsplash.com/500x500',
-    },
-  },
-  {
-    frameId: 9,
-    order: 9,
-    title: '액자 제목',
-    content: '액자 설명',
-    framePictureUrl: 'https://source.unsplash.com/500x500',
-    createdDate: '2023-08-03T23:59:59',
-    modifiedDate: '2023-08-04T00:59:59',
-    music: {
-      musicId: 1,
-      title: '비밀번호 486',
-      singer: '윤하',
-      releasedDate: '2023-08-03T23:59:59',
-      videoUrl: 'https://www.youtube.com/embed/iEfIcJHEb70?si=Lqv77NhgOQfHZfkp',
-      thumbnailUrl: 'https://source.unsplash.com/500x500',
-    },
-  },
-  {
-    frameId: 10,
-    order: 10,
-    title: '액자 제목',
-    content: '액자 설명',
-    framePictureUrl: 'https://source.unsplash.com/500x500',
-    createdDate: '2023-08-03T23:59:59',
-    modifiedDate: '2023-08-04T00:59:59',
-    music: {
-      musicId: 1,
-      title: '비밀번호 486',
-      singer: '윤하',
-      releasedDate: '2023-08-03T23:59:59',
-      videoUrl: 'https://www.youtube.com/embed/iEfIcJHEb70?si=Lqv77NhgOQfHZfkp',
-      thumbnailUrl: 'https://source.unsplash.com/500x500',
-    },
   },
 ]

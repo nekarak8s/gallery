@@ -1,5 +1,5 @@
 import { Body, Cylinder, Vec3, World } from 'cannon-es'
-import { Box3, Vector3, Object3D } from 'three'
+import * as THREE from 'three'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import { degToRad } from 'three/src/math/MathUtils'
 import spotLightGlb from '@/assets/glbs/trees.glb'
@@ -16,7 +16,7 @@ export type TreesProps = {
   container: THREE.Mesh | THREE.Scene
   world: World
   gltfLoader: GLTFLoader
-  treeData: TreeData[]
+  treesData: TreeData[]
 }
 
 export class Trees {
@@ -31,9 +31,9 @@ export class Trees {
      */
     info.gltfLoader.load(spotLightGlb, (glb) => {
       // Create Trees
-      info.treeData.forEach((tree) => {
+      info.treesData.forEach((tree) => {
         // Get an object
-        const object = new Object3D()
+        const object = new THREE.Object3D()
         object.copy(glb.scene.children[tree.type])
         object.name = this.type
         object.scale.multiplyScalar(0.01 * tree.scale)
@@ -44,8 +44,8 @@ export class Trees {
         this.meshes.push(object)
 
         // Set the mesh size
-        const box = new Box3().setFromObject(object)
-        const { x: width, y: height, z: depth } = box.getSize(new Vector3())
+        const box = new THREE.Box3().setFromObject(object)
+        const { x: width, y: height, z: depth } = box.getSize(new THREE.Vector3())
 
         // Set position
         object.position.set(tree.x, tree.y, tree.z)
@@ -54,10 +54,10 @@ export class Trees {
         // Add to the container
         info.container.add(object)
 
-        // create shape
+        // Create shape
         const shape = new Cylinder(width / 6, width / 6, height)
 
-        // create cannon body
+        // Create cannon body
         const cannonBody = new Body({
           mass: 0,
           position: new Vec3(tree.x, tree.y + height / 2, tree.z),
@@ -67,7 +67,7 @@ export class Trees {
         // Add to the mesh array
         this.cannonBodies.push(cannonBody)
 
-        // add to the world
+        // Add to the world
         info.world.addBody(cannonBody)
       })
     })
