@@ -13,6 +13,7 @@ import { galleryItemData } from '../../data'
 import { GalleryTypeProps, GalleryTypeReturns } from '../../types'
 import CSSTransition from '@/atoms/ui/CSSTransition'
 import Loading from '@/atoms/ui/Loading'
+import Modal from '@/atoms/ui/Modal'
 import { postListData } from '@/features/post/data'
 import toastManager from '@/utils/toastManager'
 
@@ -33,6 +34,8 @@ const GalleryCanvas = () => {
 
   const [requiredCount, setRequiredCount] = useState(0)
   const [loadedCount, setLoadedCount] = useState(0)
+
+  const [selectedPostIdx, setSelectedPostIdx] = useState<number | null>(null)
 
   useEffect(() => {
     if (!gallery || !postList) return
@@ -70,8 +73,15 @@ const GalleryCanvas = () => {
     rayControls.raycast = (item) => {
       if (item.object instanceof FrameMesh) {
         if (item.distance > 10) toastManager.addToast('error', '너무 멂')
-        else toastManager.addToast('success', item.object.order.toString())
+        else {
+          setSelectedPostIdx(item.object.order)
+          controls.enabled = false
+        }
       }
+    }
+    rayControls.onEsc = () => {
+      setSelectedPostIdx(null)
+      controls.enabled = true
     }
 
     // Cannon Helper : Development
@@ -157,6 +167,9 @@ const GalleryCanvas = () => {
       >
         <Loading />
       </CSSTransition>
+      <Modal isOpen={selectedPostIdx !== null} onClose={() => setSelectedPostIdx(null)}>
+        {selectedPostIdx} 번째 선택됨
+      </Modal>
     </div>
   )
 }
