@@ -5,7 +5,7 @@ import vidSrc from '@/assets/videos/ocean2.mp4'
 import webmSrc from '@/assets/videos/ocean2.webm'
 import StaticImage from '@/atoms/ui/StaticImage'
 import StaticVideo from '@/atoms/ui/StaticVideo'
-import LoginForm from '@/features/members/components/LoginForm'
+import LoginForm from '@/features/member/components/LoginForm'
 
 import './Login.scss'
 

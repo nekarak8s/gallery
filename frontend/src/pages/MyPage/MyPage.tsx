@@ -1,7 +1,7 @@
 import React from 'react'
 import GalleryList from '@/features/gallery/components/GalleryList/GalleryList'
-import Profile from '@/features/members/components/Profile'
-import ProfileEdit from '@/features/members/components/ProfileEdit'
+import Profile from '@/features/member/components/Profile'
+import ProfileEdit from '@/features/member/components/ProfileEdit'
 
 import './MyPage.scss'
 

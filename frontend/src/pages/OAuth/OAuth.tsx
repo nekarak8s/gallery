@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { routes } from '@/App'
 import Loading from '@/atoms/ui/Loading'
-import { useLoginCallback } from '@/features/members/services'
+import { useLoginCallback } from '@/features/member/services'
 
 import './OAuth.scss'
 
@@ -15,11 +15,7 @@ function OAuth() {
   const code = searchParams.get('code')
 
   // login callback
-  const {
-    mutate: loginCallback,
-    isSuccess,
-    isError,
-  } = useLoginCallback(type!, code!)
+  const { mutate: loginCallback, isSuccess, isError } = useLoginCallback(type!, code!)
 
   useEffect(() => {
     loginCallback()

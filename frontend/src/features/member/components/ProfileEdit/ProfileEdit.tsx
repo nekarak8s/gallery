@@ -8,7 +8,7 @@ import Button from '@/atoms/ui/Button'
 import Button3D from '@/atoms/ui/Button3D'
 import CSSTransition from '@/atoms/ui/CSSTransition'
 import Modal from '@/atoms/ui/Modal'
-import ProfileForm from '@/features/members/components/ProfileForm'
+import ProfileForm from '@/features/member/components/ProfileForm'
 import './ProfileEdit.scss'
 
 const ProfileEdit = () => {
@@ -71,12 +71,7 @@ const ProfileEdit = () => {
           direction="right"
           onClick={() => setIsUpdateOpen(true)}
         />
-        <Button
-          ariaLabel="로그아웃"
-          text="로그아웃"
-          direction="center"
-          onClick={() => logout()}
-        />
+        <Button ariaLabel="로그아웃" text="로그아웃" direction="center" onClick={() => logout()} />
         <Button
           ariaLabel="회원탈퇴"
           text="회원탈퇴"

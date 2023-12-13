@@ -6,7 +6,7 @@ import KakaoLogo from '@/assets/svgs/kakaotalk.svg'
 import WaveSvg from '@/assets/svgs/sin.svg'
 import Button3D from '@/atoms/ui/Button3D'
 import { CURSOR_SCALE } from '@/constants'
-import { useLogin } from '@/features/members/services'
+import { useLogin } from '@/features/member/services'
 
 import './LoginForm.scss'
 
@@ -31,14 +31,8 @@ function LoginForm() {
       </div>
       <ul className="login-form__menu">
         <li>
-          <Button3D
-            onClick={() => handleClick('kakao')}
-            ariaLabel="카카오 아이디로 로그인하기"
-          >
-            <div
-              data-cursor-scale={CURSOR_SCALE}
-              className="login-form__menu-item"
-            >
+          <Button3D onClick={() => handleClick('kakao')} ariaLabel="카카오 아이디로 로그인하기">
+            <div data-cursor-scale={CURSOR_SCALE} className="login-form__menu-item">
               <KakaoLogo />
               <p data-cursor-scale={CURSOR_SCALE}>카카오 아이디로 탑승</p>
             </div>

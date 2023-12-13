@@ -3,7 +3,7 @@ import { NavLink, Outlet, useLocation } from 'react-router-dom'
 import { routes } from '@/App'
 import Modal from '@/atoms/ui/Modal'
 import { CURSOR_SCALE } from '@/constants'
-import LoginForm from '@/features/members/components/LoginForm'
+import LoginForm from '@/features/member/components/LoginForm'
 import { useLoginStore } from '@/stores/auth.store'
 import throttle from '@/utils/throttle'
 import './Navbar.scss'
@@ -80,16 +80,10 @@ function Navbar() {
     <>
       <div className="navbar-layout">
         <nav
-          className={`navbar ${
-            WHITE_PATHNAME.includes(location.pathname) ? 'white' : ''
-          }`}
+          className={`navbar ${WHITE_PATHNAME.includes(location.pathname) ? 'white' : ''}`}
           ref={navbarRef}
         >
-          <NavLink
-            to={routes['Home']}
-            onFocus={showNavbar}
-            data-cursor-scale={CURSOR_SCALE}
-          >
+          <NavLink to={routes['Home']} onFocus={showNavbar} data-cursor-scale={CURSOR_SCALE}>
             The Gallery
           </NavLink>
           <button
@@ -105,11 +99,7 @@ function Navbar() {
           </button>
           <ul className="navbar__menu" ref={menuRef}>
             <li>
-              <NavLink
-                to={routes['Guide']}
-                onFocus={showNavbar}
-                data-cursor-scale={CURSOR_SCALE}
-              >
+              <NavLink to={routes['Guide']} onFocus={showNavbar} data-cursor-scale={CURSOR_SCALE}>
                 Guide
               </NavLink>
             </li>

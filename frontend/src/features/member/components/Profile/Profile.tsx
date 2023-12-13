@@ -22,10 +22,7 @@ const Profile = ({ onLoaded }: ProfileProps) => {
 
     // Init duration
     setDuration(
-      Math.floor(
-        (new Date().getTime() - new Date(user.createdDate).getTime()) /
-          (60 * 1000)
-      )
+      Math.floor((new Date().getTime() - new Date(user.createdDate).getTime()) / (60 * 1000))
     )
 
     // Set time interval on evenry minute

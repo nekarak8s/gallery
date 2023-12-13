@@ -46,12 +46,7 @@ const ProfileForm = ({ onSuccess, onError }: ProfileFormProps) => {
     <>
       <Form className="profile-form" onSubmit={handleSubmit}>
         <Input label="닉네임" name="nickname" initialValue="" />
-        <Button
-          type="submit"
-          direction="left"
-          ariaLabel="닉네임 수정"
-          text="수정하기"
-        />
+        <Button type="submit" direction="left" ariaLabel="닉네임 수정" text="수정하기" />
       </Form>
       {isLoading && (
         <div className="profile-form__loading">
