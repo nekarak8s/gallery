@@ -25,17 +25,12 @@ const Button = ({
   onFocus,
   onBlur,
 }: ButtonProps) => {
-  const handleKeydown = function clickButton(
-    e: KeyboardEvent<HTMLButtonElement>
-  ) {
-    if (e.key === 'Enter') {
-      ;(e.target as HTMLButtonElement).click()
-    }
+  const handleKeydown = function clickButton(e: KeyboardEvent<HTMLButtonElement>) {
+    if (e.key === 'Enter') (e.target as HTMLButtonElement).click()
   }
 
   return (
     <button
-      // ref={buttonRef}
       className={`button ${direction} ${size} ${color}`}
       type={type}
       onClick={onClick}

@@ -31,6 +31,7 @@ const GalleryCanvas = () => {
    * Render the Three.js canvas
    */
   const canvasRef = useRef<HTMLCanvasElement>(null)
+  const controlsRef = useRef<CannonKeypadControls | null>(null)
 
   const [requiredCount, setRequiredCount] = useState(0)
   const [loadedCount, setLoadedCount] = useState(0)
@@ -67,6 +68,7 @@ const GalleryCanvas = () => {
 
     // Main controls
     const controls = new CannonKeypadControls(canvas, camera, world, 1.6)
+    controlsRef.current = controls
 
     // Raycaster controls
     const rayControls = new RaycasterControls(canvas, camera)
@@ -167,7 +169,16 @@ const GalleryCanvas = () => {
       >
         <Loading />
       </CSSTransition>
-      <Modal isOpen={selectedPostIdx !== null} onClose={() => setSelectedPostIdx(null)}>
+      <Modal
+        isOpen={selectedPostIdx !== null}
+        onClose={() => {
+          setSelectedPostIdx(null)
+          console.log(controlsRef.current)
+          if (controlsRef.current) {
+            controlsRef.current.enabled = true
+          }
+        }}
+      >
         {selectedPostIdx} 번째 선택됨
       </Modal>
     </div>

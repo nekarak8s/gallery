@@ -65,21 +65,6 @@
   background-size: 100% 100%;
 }
 
-// size
-.button {
-  &.lg {
-    font-size: 1.8rem;
-  }
-
-  &.md {
-    font-size: 1.2rem;
-  }
-
-  &.sm {
-    font-size: 1rem;
-  }
-}
-
 // color
 .button {
   &.primary {
@@ -128,34 +113,51 @@
   }
 }
 
+// size
+.button {
+  &.lg {
+    font-size: 1.8rem;
+  }
+
+  &.md {
+    font-size: 1.2rem;
+  }
+
+  &.sm {
+    font-size: 1.2rem;
+  }
+}
+
 @include tablet {
-  .lg {
-    font-size: 1.6rem;
-  }
+  .button {
+    &.lg {
+      font-size: 1.6rem;
+    }
 
-  .md {
-    font-size: 1rem;
-  }
+    &.md {
+      font-size: 1rem;
+    }
 
-  .sm {
-    font-size: 0.8rem;
+    &.sm {
+      font-size: 0.8rem;
+    }
   }
 }
 
 @include mobile {
   .button {
-    padding: 0.4em 1.2em;
-  }
+    padding: 0.3em 0.8em;
 
-  .lg {
-    font-size: 1rem;
-  }
+    &.lg {
+      font-size: 1rem;
+    }
 
-  .md {
-    font-size: 0.8rem;
-  }
+    &.md {
+      font-size: 0.8rem;
+    }
 
-  .sm {
-    font-size: 0.6rem;
+    &.sm {
+      font-size: 0.6rem;
+    }
   }
 }

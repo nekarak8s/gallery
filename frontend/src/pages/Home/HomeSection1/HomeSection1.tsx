@@ -204,6 +204,7 @@ function HomeSection1() {
                 imgSrc={skyImg}
                 webpSrc={skyWebp}
                 alt="푸른 하늘"
+                loading="eager"
                 onLoad={handleImageLoad}
               />
             </div>
@@ -218,6 +219,7 @@ function HomeSection1() {
                 webpSrc={cloud1Webp}
                 sizes="(max-width: 720px) 110vw, (max-width: 1080px) 75vw, 65vw"
                 alt="높고 가까운 구름"
+                loading="eager"
                 onLoad={handleImageLoad}
               />
             </div>
@@ -232,6 +234,7 @@ function HomeSection1() {
                 webpSrc={cloud2Webp}
                 sizes="(max-width: 720px) 110vw, (max-width: 1080px) 75vw, 65vw"
                 alt="중간 높이의 가까운 구름"
+                loading="eager"
                 onLoad={handleImageLoad}
               />
             </div>
@@ -246,6 +249,7 @@ function HomeSection1() {
                 webpSrc={cloud3Webp}
                 sizes="(max-width: 720px) 70vw, (max-width: 1080px) 50vw, 40vw"
                 alt="낮고 먼 구름"
+                loading="eager"
                 onLoad={handleImageLoad}
               />
             </div>
@@ -275,6 +279,7 @@ function HomeSection1() {
                   webpSrc={oceanWebp}
                   sizes="(max-width: 720px) 200vw, (max-width: 1080px) 150vw, 120vw"
                   alt="일렁이는 수평선의 푸른 바다"
+                  loading="eager"
                   onLoad={handleImageLoad}
                 />
                 <OceanFilter />
@@ -301,6 +306,7 @@ function HomeSection1() {
                 webpSrc={galleryWebp}
                 alt="바로 앞에 보이는 갤러리 테라스 바닥 일부"
                 sizes="(max-width: 720px) 300vw, (max-width: 1080px) 200vw, 100vw"
+                loading="eager"
                 onLoad={handleImageLoad}
               />
             </div>

@@ -233,7 +233,8 @@ function HomeSection3() {
             <p data-cursor-scale={CURSOR_SCALE}>체험하기</p>
           </Button3D>
         </div>
-        <div data-posx="-0.1" data-posy="1.5" ref={workRef} className="hs3-work">
+
+        <div data-posx="-0.1" data-posy="1.4" ref={workRef} className="hs3-work">
           <div className="hs3-video" ref={videoRef}>
             <div className="hs3-video__frame" ref={videoFrameRef}>
               <div className="hs3-video__frame--left" />

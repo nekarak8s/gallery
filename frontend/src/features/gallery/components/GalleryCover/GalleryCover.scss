@@ -1,0 +1,209 @@
+@use '@/styles/_colors' as c;
+@use '@/styles/_animations' as a;
+@use '@/styles/_responsive' as *;
+
+.gallery-cover {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  background-color: var(--color-bg, c.$bg-white);
+  font-size: 1rem;
+
+  &--leave {
+    opacity: 0;
+  }
+}
+
+.gallery-cover__envelop {
+  @include a.animation-clear(gallery-cover__content, slow);
+  width: clamp(800px, 64vw, 960px);
+  height: clamp(450px, 36vw, 540px);
+  box-shadow: 0 10px 10px rgba(0, 0, 0, 0.3);
+  transform-style: preserve-3d;
+  transition: transform 600ms ease-in-out;
+  transition-delay: 1s;
+
+  &--content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 3em;
+    position: absolute;
+    z-index: 1;
+    top: 50%;
+    left: 50%;
+    width: 90%;
+    height: 90%;
+    padding: 1em 2em;
+    background-color: var(--color-bg, c.$bg-white);
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    transform: translate(-50%, -50%);
+    transition: transform 600ms ease-in-out;
+    transition-delay: 1s;
+
+    h1 {
+      font-size: 2.5em;
+      font-weight: 600;
+    }
+    p {
+      font-size: 1.3em;
+      line-height: 150%;
+    }
+  }
+
+  &--back {
+    position: absolute;
+    z-index: 0;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: 100%;
+    background-color: rgb(167, 167, 167);
+    transform: translate(-50%, -50%);
+  }
+
+  &--left {
+    position: absolute;
+    z-index: 2;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: 100%;
+    clip-path: polygon(0% 10%, 0% 100%, 100% 100%);
+    background-color: rgb(228, 228, 228);
+    transform: translate(-50%, -50%);
+  }
+
+  &--right {
+    position: absolute;
+    z-index: 2;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: 100%;
+    clip-path: polygon(100% 10%, 0% 100%, 100% 100%);
+    background-color: rgb(228, 228, 228);
+    transform: translate(-50%, -50%);
+  }
+
+  &--bottom {
+    position: absolute;
+    z-index: 3;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: 100%;
+    clip-path: polygon(0% 100%, 50% 55%, 100% 100%);
+    background-color: rgb(222, 222, 222);
+    transform: translate(-50%, -50%);
+  }
+
+  &--top {
+    position: absolute;
+    z-index: 5;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: 100%;
+    clip-path: polygon(0% 0%, 0% 10%, 50% 70%, 100% 10%, 100% 0%);
+    background-color: rgb(245, 245, 245);
+    transform: translate3D(-50%, -50%, 1px);
+    transition: transform 600ms ease-in-out;
+    transform-origin: top;
+    transition-delay: 1.5s;
+  }
+
+  &--top-inner {
+    position: absolute;
+    z-index: 4;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: 100%;
+    clip-path: polygon(0% 0%, 0% 10%, 50% 70%, 100% 10%, 100% 0%);
+    background-color: rgb(167, 167, 167);
+    transform: translate3D(-50%, -50%, -1px);
+    transition: transform 600ms ease-in-out;
+    transform-origin: top;
+    transition-delay: 1.5s;
+  }
+}
+
+.gallery-cover__envelop:hover,
+.gallery-cover__envelop:focus {
+  transform: translate(0%, 50%);
+  transition-delay: 0.5s;
+
+  .gallery-cover__envelop--content {
+    transform: translate(-50%, -120%);
+    transition-delay: 0.5s;
+  }
+
+  .gallery-cover__envelop--top {
+    transform: translate3D(-50%, -50%, -2px) rotateX(180deg);
+    transition-delay: 0s;
+  }
+
+  .gallery-cover__envelop--top-inner {
+    transform: translate3D(-50%, -50%, -1px) rotateX(180deg);
+    transition-delay: 0s;
+  }
+}
+
+@include laptop {
+  .gallery-cover__envelop {
+    width: 800px;
+    height: 450px;
+
+    &--content {
+      gap: 2em;
+
+      h1 {
+        font-size: 2.3em;
+      }
+      p {
+        font-size: 1.2em;
+      }
+    }
+  }
+}
+
+@include tablet {
+  .gallery-cover__envelop {
+    width: 70vw;
+    height: 52.5vw;
+
+    &--content {
+      h1 {
+        font-size: 5vw;
+      }
+      p {
+        font-size: 2vw;
+      }
+    }
+  }
+}
+
+@include mobile {
+  .gallery-cover__envelop {
+    width: 85vw;
+    height: 64vw;
+
+    &--content {
+      gap: 1em;
+      width: 93%;
+      height: 93%;
+      padding: 1em 1em;
+
+      h1 {
+        font-size: 5.5vw;
+      }
+      p {
+        font-size: 3.1vw;
+      }
+    }
+  }
+}

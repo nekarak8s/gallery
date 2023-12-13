@@ -10,15 +10,15 @@ function useMobile() {
   useEffect(() => {
     const handleResize = function checkMobile() {
       if (
-        /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-          navigator.userAgent
-        )
+        /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
       ) {
         setIsMobile(true)
       } else {
         setIsMobile(false)
       }
     }
+
+    handleResize()
 
     window.addEventListener('resize', handleResize)
     return () => {
