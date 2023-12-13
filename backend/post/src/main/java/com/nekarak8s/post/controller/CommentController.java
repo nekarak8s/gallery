@@ -55,4 +55,15 @@ public class CommentController {
                 .build();
         return ResponseEntity.ok(apiResponse);
     }
+
+    @DeleteMapping("/{commentId}")
+    public ResponseEntity<?> deleteComment(@PathVariable(value = "commentId") Long commentId) throws CustomException{
+        log.debug("댓글 삭제 / 댓글 아이디 : {}", commentId);
+        commentService.deleteComment(commentId);
+
+        ApiResponse apiResponse = ApiResponse.builder()
+                .message("댓글이 삭제되었습니다")
+                .build();
+        return ResponseEntity.ok(apiResponse);
+    }
 }
