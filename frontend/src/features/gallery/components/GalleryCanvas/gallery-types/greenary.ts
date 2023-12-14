@@ -545,7 +545,7 @@ const greenary = (props: GalleryTypeProps) => {
       depth: FRAME_INFO.depth,
       container: props.scene,
       textureLoader,
-      baseImg: props.postList[idx].framePictureUrl,
+      baseImg: props.postList[idx].imageUrl,
     })
     objects.push(frame)
     props.rayControls.rayItems.push(frame.mesh)

@@ -1,0 +1,18 @@
+#youtube {
+  visibility: hidden;
+}
+
+.music-player {
+  display: flex;
+  gap: 0.5em;
+  font-size: 1rem;
+}
+
+.music-player__thumbnail {
+  width: 3em;
+  height: 3em;
+  border-radius: 50%;
+}
+
+.music-player__info {
+}

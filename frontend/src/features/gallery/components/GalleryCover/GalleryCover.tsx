@@ -10,7 +10,6 @@ const GalleryCover = () => {
   const gallery = galleryItemData
 
   const [isShow, setIsShow] = useState(true)
-  console.log(isShow)
 
   return (
     <CSSTransition className="gallery-cover" isShow={isShow} duration={1300}>
@@ -20,7 +19,6 @@ const GalleryCover = () => {
         <div className="gallery-cover__envelop--right" data-cursor-scale={CURSOR_SCALE}></div>
         <div className="gallery-cover__envelop--bottom" data-cursor-scale={CURSOR_SCALE}></div>
         <div className="gallery-cover__envelop--top" data-cursor-scale={CURSOR_SCALE}></div>
-        <div className="gallery-cover__envelop--top-inner" data-cursor-scale={CURSOR_SCALE}></div>
         <main className="gallery-cover__envelop--content">
           <h1>{gallery.name}</h1>
           <p>{gallery.content}</p>

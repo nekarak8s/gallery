@@ -21,9 +21,12 @@
   }
 
   &__content {
+    overflow: scroll;
     position: absolute;
     top: 50%;
     left: 50%;
+    max-width: 90vw;
+    max-height: 90vh;
     border-radius: 10px;
     background-color: var(--color-bg, c.$bg-white);
     transform: translate(-50%, -50%);

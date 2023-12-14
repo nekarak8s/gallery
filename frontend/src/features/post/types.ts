@@ -1,19 +1,14 @@
+import { MusicData } from '../music/types'
+
 export type PostData = {
-  frameId: number
+  postId: number
   order: number
   title: string
   content: string
-  framePictureUrl: string
+  imageUrl: string
   createdDate: string
   modifiedDate: string
-  music: {
-    musicId: number
-    title: string
-    singer: string
-    releasedDate: string
-    videoUrl: string
-    thumbnailUrl: string
-  }
+  music: MusicData
 }
 
 export type PostFormData = {

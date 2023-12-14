@@ -14,6 +14,7 @@ import { GalleryTypeProps, GalleryTypeReturns } from '../../types'
 import CSSTransition from '@/atoms/ui/CSSTransition'
 import Loading from '@/atoms/ui/Loading'
 import Modal from '@/atoms/ui/Modal'
+import PostDetail from '@/features/post/components/PostDetail'
 import { postListData } from '@/features/post/data'
 import toastManager from '@/utils/toastManager'
 
@@ -173,13 +174,12 @@ const GalleryCanvas = () => {
         isOpen={selectedPostIdx !== null}
         onClose={() => {
           setSelectedPostIdx(null)
-          console.log(controlsRef.current)
           if (controlsRef.current) {
             controlsRef.current.enabled = true
           }
         }}
       >
-        {selectedPostIdx} 번째 선택됨
+        {selectedPostIdx !== null && <PostDetail post={postList[selectedPostIdx]} />}
       </Modal>
     </div>
   )

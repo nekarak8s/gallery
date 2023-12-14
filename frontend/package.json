@@ -28,6 +28,7 @@
     "react-dom": "^18.2.0",
     "react-query": "^3.39.3",
     "react-router-dom": "^6.15.0",
+    "react-youtube": "^10.1.0",
     "three": "^0.157.0",
     "zustand": "^4.4.4"
   },
@@ -54,6 +55,7 @@
     "@types/react": "^18.2.20",
     "@types/react-dom": "^18.2.7",
     "@types/three": "^0.157.2",
+    "@types/youtube-player": "^5.5.11",
     "@typescript-eslint/eslint-plugin": "^6.4.0",
     "@typescript-eslint/parser": "^6.4.0",
     "babel-loader": "^9.1.3",
