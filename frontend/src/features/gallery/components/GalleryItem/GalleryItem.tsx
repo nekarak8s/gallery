@@ -1,10 +1,11 @@
-import { useEffect, useMemo, useRef } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { GalleryData } from '../../types'
+import GalleryDetailForm from '../GalleryDetailForm'
 import EditIcon from '@/assets/svgs/edit.svg'
-import PlayIcon from '@/assets/svgs/play.svg'
+import EnterIcon from '@/assets/svgs/enter.svg'
 import ShareIcon from '@/assets/svgs/share.svg'
+import Modal from '@/atoms/ui/Modal'
 import { CURSOR_SCALE } from '@/constants'
-
 import './GalleryItem.scss'
 
 interface GalleryItemProps {
@@ -12,6 +13,14 @@ interface GalleryItemProps {
 }
 
 const GalleryItem = ({ gallery }: GalleryItemProps) => {
+  /**
+   * Update modal
+   */
+  const [isUpdateShow, setIsUpdateShow] = useState(false)
+
+  /**
+   * Show animattion
+   */
   const itemRef = useRef<HTMLDivElement>(null)
   const buttonsRef = useRef<HTMLUListElement>(null)
   const contentRef = useRef<HTMLDivElement>(null)
@@ -66,37 +75,42 @@ const GalleryItem = ({ gallery }: GalleryItemProps) => {
   }, [])
 
   return (
-    <div className="gallery-item" ref={itemRef}>
-      <h2 className="gallery-item__title">{gallery.name}</h2>
-      <ul className="gallery-item__icons" ref={buttonsRef}>
-        <li>
-          <button data-cursor-scale={CURSOR_SCALE}>
-            <PlayIcon />
-          </button>
-        </li>
-        <li>
-          <button data-cursor-scale={CURSOR_SCALE}>
-            <EditIcon />
-          </button>
-        </li>
-        <li>
-          <button data-cursor-scale={CURSOR_SCALE}>
-            <ShareIcon />
-          </button>
-        </li>
-      </ul>
-      <div className="gallery-item__content">
-        <div ref={contentRef}></div>
-        <p>{gallery.content}</p>
+    <>
+      <div className="gallery-item" ref={itemRef}>
+        <h2 className="gallery-item__title">{gallery.name}</h2>
+        <ul className="gallery-item__icons" ref={buttonsRef}>
+          <li>
+            <button data-cursor-scale={CURSOR_SCALE}>
+              <EnterIcon />
+            </button>
+          </li>
+          <li>
+            <button data-cursor-scale={CURSOR_SCALE}>
+              <ShareIcon />
+            </button>
+          </li>
+          <li>
+            <button data-cursor-scale={CURSOR_SCALE} onClick={() => setIsUpdateShow(true)}>
+              <EditIcon />
+            </button>
+          </li>
+        </ul>
+        <div className="gallery-item__content">
+          <div ref={contentRef}></div>
+          <p>{gallery.content}</p>
+        </div>
+        <time className="gallery-item__date">{date}</time>
+        <div className="gallery-item__borders">
+          <div />
+          <div />
+          <div />
+          <div />
+        </div>
       </div>
-      <time className="gallery-item__date">{date}</time>
-      <div className="gallery-item__borders">
-        <div />
-        <div />
-        <div />
-        <div />
-      </div>
-    </div>
+      <Modal isOpen={isUpdateShow} onClose={() => setIsUpdateShow(false)}>
+        <GalleryDetailForm galleryId={gallery.galleryId} />
+      </Modal>
+    </>
   )
 }
 

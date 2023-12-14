@@ -25,7 +25,7 @@
     "paths": {
       "@/*": ["src/*"]
     },
-    "lib": ["dom", "esnext"],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "isolatedModules": true,
     "resolveJsonModule": true
   },

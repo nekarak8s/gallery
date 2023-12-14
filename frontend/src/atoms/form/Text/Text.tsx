@@ -15,7 +15,7 @@ const Text = ({ label, name, initialValue, onChange }: InputProps) => {
       <input
         name={name}
         type="text"
-        placeholder=" "
+        placeholder=""
         defaultValue={initialValue}
         onChange={onChange}
       />

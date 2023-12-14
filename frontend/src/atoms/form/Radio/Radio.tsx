@@ -6,6 +6,7 @@ type RadioProps = {
   id: string
   name: string
   label?: string
+  defaultChecked?: boolean
   value: string | number
 }
 
@@ -14,11 +15,10 @@ const Radio = ({
   name,
   value,
   label = '',
+  defaultChecked,
   children,
 }: PropsWithChildren<RadioProps>) => {
-  const handleKeydown = function clickRadio(
-    e: KeyboardEvent<HTMLInputElement>
-  ) {
+  const handleKeydown = function clickRadio(e: KeyboardEvent<HTMLInputElement>) {
     if (e.key === 'Enter') {
       ;(e.target as HTMLButtonElement).click()
     }
@@ -31,6 +31,7 @@ const Radio = ({
           id={id}
           name={name}
           value={value}
+          defaultChecked={defaultChecked}
           onKeyDown={handleKeydown}
           data-cursor-scale={CURSOR_SCALE}
         />{' '}

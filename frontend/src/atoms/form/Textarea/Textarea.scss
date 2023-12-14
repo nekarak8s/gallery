@@ -41,7 +41,7 @@
 }
 
 .textarea textarea:focus ~ label,
-.textarea textarea.fill ~ label {
+.textarea textarea:not(:placeholder-shown) ~ label {
   color: var(--color-ft, c.$ft-black);
   font-size: 0.7em;
   font-weight: 600;
@@ -59,7 +59,7 @@
 }
 
 .textarea textarea:focus ~ div,
-.textarea textarea.fill ~ div {
+.textarea textarea:not(:placeholder-shown) ~ div {
   border: none;
   border-bottom: 2px solid var(--color-ft, c.$ft-black);
 }

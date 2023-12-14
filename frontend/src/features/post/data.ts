@@ -11,11 +11,10 @@ export const postData: PostData = {
   music: {
     musicId: 1,
     title: '비밀번호 486',
-    singer: '윤하',
+    artist: '윤하',
     releasedDate: '2023-08-03T23:59:59',
-    musicUrl: 'https://www.youtube.com/embed/iEfIcJHEb70?si=Lqv77NhgOQfHZfkp',
     videoId: 'iEfIcJHEb70',
-    thumbnailUrl: 'https://source.unsplash.com/500x500',
+    coverURL: 'https://source.unsplash.com/500x500',
   },
 }
 
@@ -31,11 +30,10 @@ export const postListData: PostData[] = [
     music: {
       musicId: 1,
       title: '비밀번호 486',
-      singer: '윤하',
+      artist: '윤하',
       releasedDate: '2023-08-03T23:59:59',
-      musicUrl: 'https://www.youtube.com/embed/iEfIcJHEb70?si=Lqv77NhgOQfHZfkp',
       videoId: 'iEfIcJHEb70',
-      thumbnailUrl: 'https://source.unsplash.com/500x500',
+      coverURL: 'https://source.unsplash.com/500x500',
     },
   },
   {
@@ -49,11 +47,10 @@ export const postListData: PostData[] = [
     music: {
       musicId: 1,
       title: '비밀번호 486',
-      singer: '윤하',
+      artist: '윤하',
       releasedDate: '2023-08-03T23:59:59',
-      musicUrl: 'https://www.youtube.com/embed/iEfIcJHEb70?si=Lqv77NhgOQfHZfkp',
       videoId: 'iEfIcJHEb70',
-      thumbnailUrl: 'https://source.unsplash.com/500x500',
+      coverURL: 'https://source.unsplash.com/500x500',
     },
   },
   {
@@ -67,11 +64,10 @@ export const postListData: PostData[] = [
     music: {
       musicId: 1,
       title: '비밀번호 486',
-      singer: '윤하',
+      artist: '윤하',
       releasedDate: '2023-08-03T23:59:59',
-      musicUrl: 'https://www.youtube.com/embed/iEfIcJHEb70?si=Lqv77NhgOQfHZfkp',
       videoId: 'iEfIcJHEb70',
-      thumbnailUrl: 'https://source.unsplash.com/500x500',
+      coverURL: 'https://source.unsplash.com/500x500',
     },
   },
   {
@@ -85,11 +81,10 @@ export const postListData: PostData[] = [
     music: {
       musicId: 1,
       title: '비밀번호 486',
-      singer: '윤하',
+      artist: '윤하',
       releasedDate: '2023-08-03T23:59:59',
-      musicUrl: 'https://www.youtube.com/embed/iEfIcJHEb70?si=Lqv77NhgOQfHZfkp',
       videoId: 'iEfIcJHEb70',
-      thumbnailUrl: 'https://source.unsplash.com/500x500',
+      coverURL: 'https://source.unsplash.com/500x500',
     },
   },
   {
@@ -103,11 +98,10 @@ export const postListData: PostData[] = [
     music: {
       musicId: 1,
       title: '비밀번호 486',
-      singer: '윤하',
+      artist: '윤하',
       releasedDate: '2023-08-03T23:59:59',
-      musicUrl: 'https://www.youtube.com/embed/iEfIcJHEb70?si=Lqv77NhgOQfHZfkp',
       videoId: 'iEfIcJHEb70',
-      thumbnailUrl: 'https://source.unsplash.com/500x500',
+      coverURL: 'https://source.unsplash.com/500x500',
     },
   },
   {
@@ -121,11 +115,10 @@ export const postListData: PostData[] = [
     music: {
       musicId: 1,
       title: '비밀번호 486',
-      singer: '윤하',
+      artist: '윤하',
       releasedDate: '2023-08-03T23:59:59',
-      musicUrl: 'https://www.youtube.com/embed/iEfIcJHEb70?si=Lqv77NhgOQfHZfkp',
       videoId: 'iEfIcJHEb70',
-      thumbnailUrl: 'https://source.unsplash.com/500x500',
+      coverURL: 'https://source.unsplash.com/500x500',
     },
   },
   {
@@ -139,11 +132,10 @@ export const postListData: PostData[] = [
     music: {
       musicId: 1,
       title: '비밀번호 486',
-      singer: '윤하',
+      artist: '윤하',
       releasedDate: '2023-08-03T23:59:59',
-      musicUrl: 'https://www.youtube.com/embed/iEfIcJHEb70?si=Lqv77NhgOQfHZfkp',
       videoId: 'iEfIcJHEb70',
-      thumbnailUrl: 'https://source.unsplash.com/500x500',
+      coverURL: 'https://source.unsplash.com/500x500',
     },
   },
   {
@@ -157,11 +149,10 @@ export const postListData: PostData[] = [
     music: {
       musicId: 1,
       title: '비밀번호 486',
-      singer: '윤하',
+      artist: '윤하',
       releasedDate: '2023-08-03T23:59:59',
-      musicUrl: 'https://www.youtube.com/embed/iEfIcJHEb70?si=Lqv77NhgOQfHZfkp',
       videoId: 'iEfIcJHEb70',
-      thumbnailUrl: 'https://source.unsplash.com/500x500',
+      coverURL: 'https://source.unsplash.com/500x500',
     },
   },
   {
@@ -175,11 +166,10 @@ export const postListData: PostData[] = [
     music: {
       musicId: 1,
       title: '비밀번호 486',
-      singer: '윤하',
+      artist: '윤하',
       releasedDate: '2023-08-03T23:59:59',
-      musicUrl: 'https://www.youtube.com/embed/iEfIcJHEb70?si=Lqv77NhgOQfHZfkp',
       videoId: 'iEfIcJHEb70',
-      thumbnailUrl: 'https://source.unsplash.com/500x500',
+      coverURL: 'https://source.unsplash.com/500x500',
     },
   },
   {
@@ -193,11 +183,10 @@ export const postListData: PostData[] = [
     music: {
       musicId: 1,
       title: '비밀번호 486',
-      singer: '윤하',
+      artist: '윤하',
       releasedDate: '2023-08-03T23:59:59',
-      musicUrl: 'https://www.youtube.com/embed/iEfIcJHEb70?si=Lqv77NhgOQfHZfkp',
       videoId: 'iEfIcJHEb70',
-      thumbnailUrl: 'https://source.unsplash.com/500x500',
+      coverURL: 'https://source.unsplash.com/500x500',
     },
   },
 ]

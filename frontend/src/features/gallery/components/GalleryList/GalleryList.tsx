@@ -8,8 +8,10 @@ import Loading from '@/atoms/ui/Loading'
 const GalleryList = () => {
   const containerRef = useRef<HTMLDivElement>(null)
 
-  // const galleryList = galleryListData
   const { data: galleryList, isLoading, isError } = useGalleryListQuery()
+  // const galleryList = galleryListData
+  // const isLoading = false
+  // const isError = false
 
   useEffect(() => {
     if (!galleryList) return

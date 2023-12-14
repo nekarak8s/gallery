@@ -2,7 +2,6 @@ import { useEffect, useRef } from 'react'
 import GalleryNavbar from './GalleryNavbar'
 import GalleryCanvas from '@/features/gallery/components/GalleryCanvas'
 import './Gallery.scss'
-import GalleryCover from '@/features/gallery/components/GalleryCover/GalleryCover'
 
 const Gallery = () => {
   /**
@@ -37,9 +36,9 @@ const Gallery = () => {
 
   return (
     <div className="gallery">
-      <div className="gallery__cover">
+      {/* <div className="gallery__cover">
         <GalleryCover />
-      </div>
+      </div> */}
       <div className="gallery__navbar">
         <GalleryNavbar />
       </div>

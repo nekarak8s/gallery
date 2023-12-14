@@ -10,6 +10,8 @@ interface ProfileProps {
 const Profile = ({ onLoaded }: ProfileProps) => {
   const { data: user, isLoading, isError } = useUserQuery()
   // const user = userData
+  // const isLoading = false
+  // const isError = false
 
   /**
    * Handle loaded data

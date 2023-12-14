@@ -1,4 +1,4 @@
-import { useRef, ChangeEvent } from 'react'
+import { ChangeEvent } from 'react'
 
 import './Textarea.scss'
 
@@ -19,23 +19,19 @@ const Textarea = ({
   maxHeight = 70,
   onChange,
 }: TextareaProps) => {
-  const containerRef = useRef<HTMLDivElement>(null)
-
   const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    e.target.classList.toggle('fill', e.target.value.length > 0)
     e.target.style.height =
-      e.target.scrollHeight > defaultHeight
-        ? e.target.scrollHeight + 'px'
-        : defaultHeight + 'px'
+      e.target.scrollHeight > defaultHeight ? e.target.scrollHeight + 'px' : defaultHeight + 'px'
     onChange && onChange(e)
   }
 
   return (
-    <div className="textarea" ref={containerRef}>
+    <div className="textarea">
       <textarea
         name={name}
         defaultValue={initialValue}
         onChange={handleChange}
+        placeholder=" "
         style={{ maxHeight }}
       ></textarea>
       <label>{label}</label>

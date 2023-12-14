@@ -5,14 +5,18 @@ export type PostData = {
   order: number
   title: string
   content: string
-  imageUrl: string
   createdDate: string
   modifiedDate: string
-  music: MusicData
+  imageUrl: string
+  music?: MusicData | undefined
 }
 
 export type PostFormData = {
-  name: string
-  description: string
-  frame: File
+  id: number
+  order: number
+  title: string
+  content: string
+  musicId: number
+  image: File | null
+  music?: MusicData | undefined
 }
