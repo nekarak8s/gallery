@@ -11,12 +11,19 @@ import com.nekarak8s.post.exception.CustomException;
 import com.nekarak8s.post.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Service
@@ -26,20 +33,27 @@ public class CommentServiceImpl implements CommentService {
 
     private final PostRepo postRepo;
     private final CommentRepo commentRepo;
+    private final RestTemplate restTemplate;
+
+    // 회원 서버 URI
+    @Value("${spring.member-service.uri}")
+    private String memberServiceUri;
 
     /**
      * 댓글 생성
+     * @param memberId
      * @param requestDTO
      * @throws CustomException
      */
     @Transactional
     @Override
-    public void createComment(CommentCreateDTO requestDTO) throws CustomException{
+    public void createComment(long memberId, CommentCreateDTO requestDTO) throws CustomException{
         // 게시물 조회
         Post post = postRepo.findById(requestDTO.getPostId()).orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "GP007", "존재하지 않는 게시물입니다"));
 
         // 댓글 엔티티 생성
         Comment comment = new Comment();
+        comment.setMemberId(memberId);
         comment.setContent(requestDTO.getContent());
         comment.setPost(post);
 
@@ -54,9 +68,32 @@ public class CommentServiceImpl implements CommentService {
      * @return
      */
     @Override
-    public Page<CommentInfo> findCommentList(long postId, int page) {
+    public List<CommentInfo> findCommentList(long postId, int page) throws CustomException {
         PageRequest pageRequest = PageRequest.of(page, 20, Sort.by(Sort.Direction.DESC, "createdDate"));
-        return commentRepo.findAllByPostId(pageRequest, postId);
+        Page<Comment> comments = commentRepo.findAllByPostId(pageRequest, postId);
+
+        List<CommentInfo> commentInfoList = new ArrayList<>();
+
+        for (Comment comment : comments) {
+            String nickname = "";
+            // 회원 서버에서 닉네임 조회
+            try {
+                log.info("회원 아이디 : {}", comment.getMemberId());
+                nickname = getMemberNickname(comment.getMemberId());
+            } catch (Exception e) {
+                log.error("닉네임 조회 통신 실패 !!!");
+                throw new CustomException(HttpStatus.INTERNAL_SERVER_ERROR, "GP001", "서버 에러");
+            }
+
+            CommentInfo commentInfo = new CommentInfo();
+            commentInfo.setCommentId(comment.getId());
+            commentInfo.setNickanme(nickname);
+            commentInfo.setContent(comment.getContent());
+            commentInfo.setCreatedDate(comment.getCreatedDate());
+            commentInfoList.add(commentInfo);
+        }
+
+        return commentInfoList;
     }
 
     /**
@@ -81,5 +118,19 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public void deleteComment(long commentId) throws CustomException {
         commentRepo.deleteById(commentId);
+    }
+
+    /**
+     * 회원 서버에서 아이디 -> 닉네임 조회
+     */
+    public String getMemberNickname(long memberId) {
+        HttpHeaders headers = new HttpHeaders();
+        HttpEntity<Object> entity = new HttpEntity<>(headers);
+
+        UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder.fromHttpUrl(memberServiceUri+"/nickname")
+                .queryParam("memberId", memberId);
+
+        ResponseEntity<Map> response = restTemplate.exchange(uriComponentsBuilder.build().encode().toUri(), HttpMethod.GET, entity, Map.class);
+        return (String) response.getBody().get("data");
     }
 }

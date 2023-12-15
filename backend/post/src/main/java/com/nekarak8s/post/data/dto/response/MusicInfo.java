@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 public class MusicInfo {
 
     @JsonInclude(JsonInclude.Include.NON_NULL) // 값이 null 이면, 제외
-    private Long id;
+    private Long musicId;
 
     private String title;
 
@@ -21,7 +21,8 @@ public class MusicInfo {
 
     private String releasedDate;
 
-    private String musicURL;
+//    private String musicURL;
+    private String videoId;
 
     private String coverURL;
 

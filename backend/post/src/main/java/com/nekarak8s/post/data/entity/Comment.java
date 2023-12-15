@@ -21,6 +21,9 @@ public class Comment extends BaseEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "member_id")
+    private Long memberId;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id")
     @OnDelete(action = OnDeleteAction.CASCADE)

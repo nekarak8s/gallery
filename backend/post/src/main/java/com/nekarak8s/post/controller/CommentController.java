@@ -29,9 +29,10 @@ public class CommentController {
      * @throws CustomException
      */
     @PostMapping
-    public ResponseEntity<?> createComment(@Valid @RequestBody CommentCreateDTO requestDTO) throws CustomException {
-        log.debug("댓글 생성 요청, 게시물 아이디 : {}", requestDTO);
-        commentService.createComment(requestDTO);
+    public ResponseEntity<?> createComment(@RequestHeader(value = "X-Member-ID", required = false) Long memberId,
+                                           @Valid @RequestBody CommentCreateDTO requestDTO) throws CustomException {
+        log.debug("댓글 생성 요청, 회원 아이디 : {}, requestDTO : {}", memberId, requestDTO);
+        commentService.createComment(memberId, requestDTO);
 
         ApiResponse apiResponse = ApiResponse.builder()
                 .message("댓글이 생성되었습니다")
@@ -48,7 +49,7 @@ public class CommentController {
     @GetMapping("/list/{postId}")
     public ResponseEntity<?> findCommentList(@PathVariable(value = "postId") Long postId) throws CustomException {
         log.debug("댓글 목록 조회, 게시물 아이디 : {}", postId);
-        List<CommentInfo> list = commentService.findCommentList(postId, 0).getContent();
+        List<CommentInfo> list = commentService.findCommentList(postId, 0);
 
         ApiResponse apiResponse = ApiResponse.builder()
                 .message("댓글 목록 조회 성공")

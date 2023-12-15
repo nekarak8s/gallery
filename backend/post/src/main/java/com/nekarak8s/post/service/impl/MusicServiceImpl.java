@@ -1,5 +1,6 @@
 package com.nekarak8s.post.service.impl;
 
+import com.nekarak8s.post.data.dto.request.MusicRequestDTO;
 import com.nekarak8s.post.data.dto.response.MusicInfo;
 import com.nekarak8s.post.data.dto.spotify.SpotifyTrackDTO;
 import com.nekarak8s.post.data.dto.youtbue.YoutubeResponse;
@@ -23,18 +24,20 @@ public class MusicServiceImpl implements MusicService {
     private final YoutubeService youtubeAPI;
     private final SpotifyService spotifyAPI;
     private final MusicRepo musicRepo;
-    private static final String YOUTUBE_BASE_URL = "https://www.youtube.com/watch?v=";
+//    private static final String YOUTUBE_BASE_URL = "https://www.youtube.com/watch?v=";
 
     /**
-     * MusicInfo 리턴
-     * @param artist
-     * @param title
-     * @param releasedDate
-     * @param coverURL
+     * 음악 단일 조회
+     * @param musicRequestDTO
      * @return
      */
     @Override
-    public MusicInfo getMusicInfo(String artist, String title, String releasedDate, String coverURL) {
+    public MusicInfo getMusicInfo(MusicRequestDTO musicRequestDTO) {
+        String artist       = musicRequestDTO.getArtist();
+        String title        = musicRequestDTO.getTitle();
+        String coverURL     = musicRequestDTO.getCoverURL();
+        String releasedDate = musicRequestDTO.getReleasedDate();
+
         String videoId;
         MusicInfo musicInfo;
 
@@ -57,11 +60,12 @@ public class MusicServiceImpl implements MusicService {
         }
 
         musicInfo = MusicInfo.builder()
+                .musicId(music.getId())
                 .title(title)
                 .artist(artist)
                 .coverURL(coverURL)
                 .releasedDate(releasedDate)
-                .musicURL(YOUTUBE_BASE_URL + videoId) // 유튜브 동영상
+                .videoId(videoId) // 유튜브 동영상
                 .build();
 
         return musicInfo;
@@ -76,5 +80,4 @@ public class MusicServiceImpl implements MusicService {
     public List<SpotifyTrackDTO> getTracks(String query) throws CustomException {
         return spotifyAPI.getSpotifyTracks(query);
     }
-
 }
