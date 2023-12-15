@@ -18,6 +18,8 @@ public class CommentInfo {
 
     private Long commentId;
 
+    private String nickanme;
+
     private String content;
 
     private LocalDateTime createdDate;

@@ -35,7 +35,7 @@ public class PostServiceImpl implements PostService {
     private final CommentRepo commentRepo;
     private final MusicRepo musicRepo;
     private final S3Service s3Service;
-    private static final String YOUTUBE_BASE_URL = "https://www.youtube.com/watch?v=";
+//    private static final String YOUTUBE_BASE_URL = "https://www.youtube.com/watch?v=";
 
     @Value("${cloud.aws.s3..url}")
     private String BUCKET_BASE_URL;
@@ -68,10 +68,10 @@ public class PostServiceImpl implements PostService {
             } else {
                 Music music = post.getMusic();
                 MusicInfo musicInfo = MusicInfo.builder()
-                        .id(music.getId())
+                        .musicId(music.getId())
                         .title(music.getTitle())
                         .artist(music.getArtist())
-                        .musicURL(YOUTUBE_BASE_URL + music.getVideoId())
+                        .videoId(music.getVideoId())
                         .releasedDate(music.getReleasedDate())
                         .coverURL(music.getCoverURL())
                         .build();

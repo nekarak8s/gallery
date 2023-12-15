@@ -4,17 +4,18 @@ import com.nekarak8s.post.data.dto.request.CommentCreateDTO;
 import com.nekarak8s.post.data.dto.request.CommentModifyDTO;
 import com.nekarak8s.post.data.dto.response.CommentInfo;
 import com.nekarak8s.post.exception.CustomException;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public interface CommentService {
 
     // 댓글 생성
-    void createComment(CommentCreateDTO requestDTO) throws CustomException;
+    void createComment(long memberId, CommentCreateDTO requestDTO) throws CustomException;
 
     // 댓글 목록 조회
-    Page<CommentInfo> findCommentList(long postId, int page);
+    List<CommentInfo> findCommentList(long postId, int page) throws CustomException;
 
     // 댓글 수정
     void modifyComment(CommentModifyDTO requestDTO) throws CustomException;
