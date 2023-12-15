@@ -37,8 +37,8 @@ public class Post extends BaseEntity{
     @Column(name = "orders", nullable = false)
     private Long order;
 
-    @Column(name = "image_url")
-    private String imageUrl;
+    @Column(name = "image_url", nullable = false) // 기본이미지 존재
+    private String imageURL;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "music_id")

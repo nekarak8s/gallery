@@ -21,11 +21,13 @@ public class PostInfo {
 
     private String content;
 
-    private String imageUrl;
+    private String imageURL;
 
     private LocalDateTime createdDate;
 
     private LocalDateTime modifiedDate;
 
     private MusicInfo music;
+
+    private boolean isActive;
 }

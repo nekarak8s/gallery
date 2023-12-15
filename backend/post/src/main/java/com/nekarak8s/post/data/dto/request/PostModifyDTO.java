@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class PostModifyDTO {
 
-    private Long id;
+    private Long postId;
 
     private String title;
 

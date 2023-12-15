@@ -15,7 +15,7 @@ public interface PostRepo extends JpaRepository<Post, Long> {
 
     // 게시물 목록 조회
     @EntityGraph(attributePaths = "music")
-    @Query("SELECT p FROM Post p WHERE p.galleryId = :galleryId AND p.isActive = true")
+    @Query("SELECT p FROM Post p WHERE p.galleryId = :galleryId")
     List<Post> findAllByGalleryId(@Param("galleryId") long galleryId);
 
 

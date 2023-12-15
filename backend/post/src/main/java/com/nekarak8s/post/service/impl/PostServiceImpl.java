@@ -35,6 +35,7 @@ public class PostServiceImpl implements PostService {
     private final CommentRepo commentRepo;
     private final MusicRepo musicRepo;
     private final S3Service s3Service;
+    private String DEFAULT_IMAGE = "https://nekarak8s-gallery-bucket.s3.ap-northeast-2.amazonaws.com/TheGallery.png";
 //    private static final String YOUTUBE_BASE_URL = "https://www.youtube.com/watch?v=";
 
     @Value("${cloud.aws.s3..url}")
@@ -51,16 +52,17 @@ public class PostServiceImpl implements PostService {
         List<PostInfo> postInfos = new ArrayList<>();
 
         for (Post post : posts) {
-            String imageURL = post.getImageUrl();
+            String imageURL = post.getImageURL();
             if (imageURL != null) imageURL = BUCKET_BASE_URL + imageURL;
             PostInfo postInfo = new PostInfo().builder()
                     .postId(post.getId())
                     .order(post.getOrder())
                     .title(post.getTitle())
                     .content(post.getContent())
-                    .imageUrl(imageURL)
+                    .imageURL(imageURL)
                     .createdDate(post.getCreatedDate())
                     .modifiedDate(post.getModifiedDate())
+                    .isActive(post.isActive())
                     .build();
 
             if (post.getMusic() == null) {
@@ -92,28 +94,33 @@ public class PostServiceImpl implements PostService {
 
     /**
      * 게시물 목록 수정
-     * @param dtos
+     * @param postModifyDTOList
      * @param galleryId
      * @throws CustomException
      */
     @Transactional
     @Override
-    public void modifyPosts(List<PostModifyDTO> dtos, Long galleryId) throws CustomException, IOException {
-        long preMaxOrder = -1; // 이전 저장 순서 최대값
+    public void modifyPosts(List<PostModifyDTO> postModifyDTOList, Long galleryId) throws CustomException, IOException {
+        long preMaxOrder = -1; // 이전 저장 순서 최댓값
         List<Post> posts = postRepo.findAllByGalleryId(galleryId);
         if (posts.size() == 0) throw new CustomException(HttpStatus.NOT_FOUND, "GP007", "갤러리 정보가 존재하지 않습니다");
+
+        // 이전 저장 order 최댓값 구하기
         for (Post post : posts) {
             preMaxOrder = Math.max(preMaxOrder, post.getOrder());
         }
 
         // 반복 수정
-        for (PostModifyDTO dto : dtos) {
+        for (PostModifyDTO dto : postModifyDTOList) {
             // id로 게시물 조회
-            log.debug("게시물 Id : {}", dto.getId());
-            Post post = postRepo.findById(dto.getId()).get();
+            log.debug("게시물 Id : {}", dto.getPostId());
+            Post post = postRepo.findById(dto.getPostId()).get();
 
-            if (!dto.getIsActive()) { // 비활성화 요청인 경우 (사용안하는 게시물 -> 화면에서 보여지면 안됨)
+            if (!dto.getIsActive()) { // 비활성화 요청인 경우 (사용안하는 게시물 -> 화면에서 보여지면 안됨) / 순서는 같이 증가
                 post.setActive(false); // 비활성화
+                log.info("비활성화 게시물도 순서는 증가 !!!");
+                post.setOrder(dto.getOrder() + preMaxOrder);
+                postRepo.save(post);
                 continue; // 게시물 무시
             }
 
@@ -125,24 +132,18 @@ public class PostServiceImpl implements PostService {
             post.setOrder(dto.getOrder() + preMaxOrder); // unique key order 충돌 회피 (나중에 order 값 낮춰주는 batch 처리 예정)
             post.setActive(true); // 화면에서 보여짐 여부
 
-            // 이미지 : String | MultipartFile | null
-            if (dto.getImage() != null) {
-                if (dto.getImage() instanceof String) { // 기존 S3 경로
-                    log.debug("기존 이미지");
-                } else if (dto.getImage() instanceof MultipartFile && !((MultipartFile) dto.getImage()).isEmpty() && ((MultipartFile) dto.getImage()).getOriginalFilename() != null) { // 이미지 파일 업로드
-                    if (post.getImageUrl() != null) {
-                        log.debug("기존 S3이미지 삭제");
-                        s3Service.deleteFile(post.getImageUrl());
-                    }
-                    log.debug("새로운 이미지 S3저장");
-                    String imageURL = s3Service.uploadFile((MultipartFile) dto.getImage()); // S3 이미지 저장
-                    log.debug("새로운 이미지로 DB업데이트");
-                    post.setImageUrl(imageURL); // S3 URL KEY 세팅
-                } else {
-                    log.debug("이미지 없음");
+            // 이미지 : String | MultipartFile
+            if (dto.getImage() instanceof String) { // 기존 S3 경로
+                log.debug("기존 이미지 사용");
+            } else if (dto.getImage() instanceof MultipartFile && !((MultipartFile) dto.getImage()).isEmpty() && ((MultipartFile) dto.getImage()).getOriginalFilename() != null) { // 이미지 파일 업로드
+                if (post.getImageURL() != null && !post.getImageURL().equals(DEFAULT_IMAGE)) {
+                    log.debug("기존 S3이미지 삭제");
+                    s3Service.deleteFile(post.getImageURL());
                 }
-            } else {
-                log.debug("이미지 없음");
+                log.debug("새로운 이미지 S3저장");
+                String imageURL = s3Service.uploadFile((MultipartFile) dto.getImage()); // S3 이미지 저장
+                log.debug("새로운 이미지로 DB업데이트");
+                post.setImageURL(imageURL); // S3 URL 세팅
             }
             postRepo.save(post); // DB update
         }
@@ -166,9 +167,9 @@ public class PostServiceImpl implements PostService {
                 Post post = new Post();
                 post.setGalleryId(galleryId);
                 post.setOrder((long) (i + 1));
-                post.setTitle("제목" + (i + 1));
-                post.setContent("내용" + (i + 1));
-                post.setImageUrl(null);
+                post.setTitle("");
+                post.setContent("");
+                post.setImageURL(DEFAULT_IMAGE); // 기본 이미지
                 post.setActive(true);
                 posts.add(post);
             }
