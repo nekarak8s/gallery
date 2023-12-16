@@ -1,0 +1,11 @@
+@use '@/styles/_z-index.scss' as *;
+@use '@/styles/_responsive.scss' as *;
+@use '@/styles/_colors.scss' as c;
+
+.navbar-layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto 1fr;
+  background-color: var(--color-bg, c.$bg-white);
+  min-height: 100vh;
+}

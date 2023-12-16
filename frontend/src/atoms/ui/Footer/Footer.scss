@@ -1,0 +1,64 @@
+@use '@/styles/_colors.scss' as c;
+@use '@/styles/_responsive.scss' as *;
+
+.footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6em;
+  padding: 3em 1em 2em;
+  background-color: c.$tertiary;
+  font-size: 0.9rem;
+  font-weight: 400;
+  line-height: 150%;
+  color: transparentize(c.$ft-white, 0.3);
+
+  &__icon-text {
+    gap: 0.3em;
+    display: inline-flex;
+    align-items: center;
+
+    svg {
+      width: 1.1em;
+      height: 1.1em;
+    }
+  }
+}
+
+.footer__license {
+  font-size: 1rem;
+  margin: 1em 2em 2em;
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    box-sizing: border-box;
+    text-align: left;
+  }
+
+  thead {
+    border-bottom: 3px solid var(--color-ft, c.$ft-black);
+
+    th {
+      padding: 0.75em 0.5em;
+      font-weight: 600;
+    }
+  }
+
+  tbody {
+    border-bottom: 3px solid var(--color-ft, c.$ft-black);
+    tr {
+      border-bottom: 2px solid #ddd;
+
+      td {
+        padding: 0.75em 0.5em;
+      }
+    }
+  }
+}
+
+@include mobile {
+  .footer__license {
+    font-size: 3vw;
+  }
+}

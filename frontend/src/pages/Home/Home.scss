@@ -1,8 +1,7 @@
 @use '@/styles/_z-index.scss' as *;
 
 .home {
-  font-size: 100px;
-  height: 500vh;
+  font-size: 1rem;
   --transition-time-home: 500ms;
 }
 

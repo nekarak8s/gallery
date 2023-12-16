@@ -15,7 +15,7 @@ import toFrame from '@/utils/toFrame'
 import './HomeSection3.scss'
 
 const BACK_HEIGHT = 3 // * 100vh
-const SCROLL_OFFSET = 200 // px.
+const SCROLL_OFFSET = 300 // px.
 
 function HomeSection3() {
   /**
@@ -234,7 +234,7 @@ function HomeSection3() {
           </Button3D>
         </div>
 
-        <div data-posx="-0.1" data-posy="1.4" ref={workRef} className="hs3-work">
+        <div data-posx="-0.1" data-posy="1.48" ref={workRef} className="hs3-work">
           <div className="hs3-video" ref={videoRef}>
             <div className="hs3-video__frame" ref={videoFrameRef}>
               <div className="hs3-video__frame--left" />

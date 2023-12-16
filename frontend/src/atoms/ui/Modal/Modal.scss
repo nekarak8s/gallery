@@ -1,11 +1,6 @@
 @use '@/styles/_colors.scss' as c;
 @use '@/styles/_z-index.scss' as *;
 
-// .modal,
-// .modal * {
-//   cursor: default !important;
-// }
-
 .modal {
   @include z-index(modal);
   position: fixed;
@@ -25,6 +20,7 @@
     position: absolute;
     top: 50%;
     left: 50%;
+    width: max-content;
     max-width: 90vw;
     max-height: 90vh;
     border-radius: 10px;

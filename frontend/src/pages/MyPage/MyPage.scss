@@ -7,7 +7,8 @@
   align-items: center;
   gap: 50px;
   width: 100%;
-  margin: 0 auto;
+  min-height: 100vh;
+  margin: 2em auto;
   font-size: 1rem;
 }
 
@@ -70,11 +71,7 @@
   display: none;
   width: 80vw;
   height: 15px;
-  background-image: radial-gradient(
-    ellipse at 50% 0%,
-    rgba(0, 0, 0, 0.3) 0%,
-    rgba(0, 0, 0, 0) 70%
-  );
+  background-image: radial-gradient(ellipse at 50% 0%, rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0) 70%);
   opacity: 0;
 }
 

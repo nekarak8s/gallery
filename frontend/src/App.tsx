@@ -3,7 +3,7 @@ import { Routes, Route } from 'react-router-dom'
 import Cursor from '@/atoms/ui/Cursor'
 import Loading from '@/atoms/ui/Loading'
 import useMobile from '@/hooks/useMobile'
-import Navbar from '@/layouts/Navbar/Navbar'
+import NavbarLayout from '@/layouts/NavbarLayout'
 import Login from '@/pages/Login'
 import OAuth from '@/pages/OAuth'
 import '@/styles/_reset.scss'
@@ -37,7 +37,7 @@ function App() {
   return (
     <Suspense fallback={<Loading />}>
       <Routes>
-        <Route path="/" element={<Navbar />}>
+        <Route path="/" element={<NavbarLayout />}>
           {Object.values(navbarRoutes).map((route) => (
             <Route key={route.path} path={route.path} element={route.element} />
           ))}
