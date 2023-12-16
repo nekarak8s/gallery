@@ -3,45 +3,10 @@ import { GalleryData, GalleryFormData, PlaceData } from './types'
 import axiosInstance from '@/utils/axiosInstance'
 import toastManager from '@/utils/toastManager/toastManager'
 
-// 공간 목록 조회
-export function usePlaceListQuery() {
-  return useQuery<MessageResponse<PlaceData[]>, ErrorResponse, PlaceData[]>(
-    ['place'],
-    () => axiosInstance.get(`/gallery/place/list`),
-    {
-      onSuccess: () => {},
-      onError: (err) => {
-        toastManager.addToast('error', err.message)
-      },
-      select: (res) => {
-        return res.data
-      },
-      staleTime: Infinity,
-    }
-  )
-}
-
 export function useGalleryListQuery() {
   return useQuery<MessageResponse<GalleryData[]>, ErrorResponse, GalleryData[]>(
-    ['gallery'],
+    ['gallery-list'],
     () => axiosInstance.get(`/gallery/list`),
-    {
-      onSuccess: () => {},
-      onError: (err) => {
-        toastManager.addToast('error', err.message)
-      },
-      select: (res) => {
-        return res.data
-      },
-      staleTime: Infinity,
-    }
-  )
-}
-
-export function useGalleryQuery(galleryId: number) {
-  return useQuery<MessageResponse<GalleryData>, ErrorResponse, GalleryData>(
-    ['gallery', galleryId],
-    () => axiosInstance.get(`/gallery/${galleryId}`),
     {
       onSuccess: () => {},
       onError: (err) => {
@@ -60,12 +25,30 @@ export function useCreateGallery() {
   return useMutation<MessageResponse, ErrorResponse, GalleryFormData>(
     (data) => axiosInstance.post(`/gallery`, data),
     {
-      onSuccess: () => {
-        queryClient.invalidateQueries(['gallery'])
+      onSuccess: (res) => {
+        queryClient.invalidateQueries(['gallery-list'])
+        toastManager.addToast('success', res.message)
       },
       onError: (err) => {
         toastManager.addToast('error', err.message)
       },
+    }
+  )
+}
+
+export function useGalleryQuery(galleryId: number) {
+  return useQuery<MessageResponse<GalleryData>, ErrorResponse, GalleryData>(
+    ['gallery', { galleryId }],
+    () => axiosInstance.get(`/gallery/${galleryId}`),
+    {
+      onSuccess: () => {},
+      onError: (err) => {
+        toastManager.addToast('error', err.message)
+      },
+      select: (res) => {
+        return res.data
+      },
+      staleTime: Infinity,
     }
   )
 }
@@ -75,8 +58,10 @@ export function useUpdateGallery(galleryId: number) {
   return useMutation<MessageResponse, ErrorResponse, GalleryFormData>(
     (data) => axiosInstance.patch(`/gallery/${galleryId}`, data),
     {
-      onSuccess: () => {
-        queryClient.invalidateQueries(['gallery', galleryId])
+      onSuccess: (res) => {
+        queryClient.invalidateQueries(['gallery-list'])
+        queryClient.invalidateQueries(['gallery', { galleryId }])
+        toastManager.addToast('success', res.message)
       },
       onError: (err) => {
         toastManager.addToast('error', err.message)
@@ -85,22 +70,19 @@ export function useUpdateGallery(galleryId: number) {
   )
 }
 
-/**
- * Test 용
- */
-export function useCreateArtwork() {
-  return useMutation<MessageResponse, ErrorResponse, FormData>(
-    (data) =>
-      axiosInstance.patch(`/post/list`, data, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      }),
+export function usePlaceListQuery() {
+  return useQuery<MessageResponse<PlaceData[]>, ErrorResponse, PlaceData[]>(
+    ['place'],
+    () => axiosInstance.get(`/gallery/place/list`),
     {
       onSuccess: () => {},
       onError: (err) => {
         toastManager.addToast('error', err.message)
       },
+      select: (res) => {
+        return res.data
+      },
+      staleTime: Infinity,
     }
   )
 }

@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { useUpdateProfile } from '../../services'
+import { useUpdateUser } from '../../services'
 import { validateProfileForm } from '../../validators'
 import Form from '@/atoms/form/Form'
 import Input from '@/atoms/form/Text'
@@ -14,7 +14,7 @@ type ProfileFormProps = {
 }
 
 const ProfileForm = ({ onSuccess, onError }: ProfileFormProps) => {
-  const { mutate: update, isSuccess, isError, isLoading } = useUpdateProfile()
+  const { mutate: update, isSuccess, isError, isLoading } = useUpdateUser()
 
   useEffect(() => {
     if (isSuccess) {

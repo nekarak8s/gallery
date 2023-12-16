@@ -5,7 +5,7 @@ import toastManager from '@/utils/toastManager/toastManager'
 
 export function usePostListQuery(galleryId: number) {
   return useQuery<MessageResponse<PostData[]>, ErrorResponse, PostData[]>(
-    ['post', galleryId],
+    ['post', { galleryId }],
     () => axiosInstance.get(`/post/list/${galleryId}`),
     {
       onSuccess: () => {},
@@ -29,8 +29,9 @@ export function useUpdatePostList(galleryId: number) {
         },
       }),
     {
-      onSuccess: () => {
-        queryClient.invalidateQueries(['post', galleryId])
+      onSuccess: (res) => {
+        toastManager.addToast('success', res.message)
+        queryClient.invalidateQueries(['post', { galleryId }])
       },
       onError: (err) => {
         toastManager.addToast('error', err.message)

@@ -5,7 +5,7 @@ const common = require('./webpack.common.js')
 const Dotenv = require('dotenv-webpack')
 
 module.exports = merge(common, {
-  mode: 'production',
+  mode: 'development',
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'main.js',
@@ -86,7 +86,7 @@ module.exports = merge(common, {
   },
   plugins: [
     new Dotenv({
-      path: '.env.development',
+      path: '.env.local',
     }),
   ],
   devServer: {

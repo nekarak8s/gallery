@@ -6,7 +6,9 @@
   "scripts": {
     "prepare": "cd .. && husky install frontend/.husky",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "webpack-dev-server --config webpack.dev.js",
+    "start": "webpack-dev-server --config webpack.local.js",
+    "develop": "webpack-dev-server --config webpack.dev.js",
+    "gh-build": "webpack --config webpack.gh.js",
     "build": "webpack --config webpack.prod.js",
     "deploy": "cp dist/index.html dist/404.html && gh-pages -d dist",
     "profile": "npm run build -- --stats && npx webpack-bundle-analyzer ./dist/bundle-stats.json",
@@ -120,6 +122,6 @@
     ]
   },
   "msw": {
-    "workerDirectory": "./public"
+    "workerDirectory": "public\\gallery"
   }
 }

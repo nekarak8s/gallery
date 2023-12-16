@@ -1,53 +1,65 @@
 import { useEffect, useRef } from 'react'
 
 function useFocusTrap(enabled: boolean = true, escape: () => void) {
+  /**
+   * Focus Trap
+   * 1. 'Esc': run escape function. ex) close the modal
+   * 2. 'Tab' && the last element : move to the first element
+   * 3. 'Shift + Tab' && the first element : move to the last element
+   */
   const containerRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     if (!enabled) return
 
     const container = containerRef.current
-
     if (!container) return
 
-    // get focusable elements
+    // Get focusable elements
     const focusEles = container.querySelectorAll(
       'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
     ) as NodeListOf<HTMLElement>
+
+    // Filter invalid condition
     const N = focusEles.length
+    if (N === 0) return
 
-    if (!N) return
-
+    // Get the edge elments
     const firstEle = focusEles[0]
     const lastEle = focusEles[N - 1]
 
-    // focus trap
     const handleKeyDown = (e: KeyboardEvent) => {
-      // escape
+      // Run escape function
       if (e.key === 'Escape') {
         escape()
         return
       }
 
-      // hanlde except tab
-      if (e.key !== 'Tab' && N === 0) return
+      // Filter invalid conditions
+      if (e.key !== 'Tab') return
 
-      // handle tab
-      if (e.shiftKey && document.activeElement === firstEle) {
-        lastEle.focus()
+      // 'Tab' && the last element : move to the first element
+      if (!e.shiftKey && document.activeElement === lastEle) {
         e.preventDefault()
-      } else if (document.activeElement === lastEle) {
         firstEle.focus()
+        return
+      }
+
+      // 'Shift + Tab' && the first element : move to the last element
+      if (e.shiftKey && document.activeElement === firstEle) {
         e.preventDefault()
+        lastEle.focus()
+        return
       }
     }
 
-    // auto focus
-
+    // Auto focus
     firstEle.focus()
 
+    // Add event listener
     document.addEventListener('keydown', handleKeyDown)
 
+    // Clean-up event listener
     return () => {
       document.removeEventListener('keydown', handleKeyDown)
     }

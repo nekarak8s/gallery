@@ -5,6 +5,13 @@ export type MusicSearchData = {
   releasedDate: string
 }
 
+export type MusicFormData = {
+  title: string
+  artist: string
+  coverURL: string
+  releasedDate: string
+}
+
 export type MusicData = {
   musicId: number
   title: string

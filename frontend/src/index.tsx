@@ -24,7 +24,11 @@ async function enableMocking() {
 
   // `worker.start()` returns a Promise that resolves
   // once the Service Worker is up and ready to intercept requests.
-  return worker.start()
+  return worker.start({
+    serviceWorker: {
+      url: '/gallery/mockServiceWorker.js',
+    },
+  })
 }
 
 const rootElement = document.getElementById('root') as HTMLElement

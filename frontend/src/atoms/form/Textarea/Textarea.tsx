@@ -21,7 +21,7 @@ const Textarea = ({
 }: TextareaProps) => {
   const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     e.target.style.height =
-      e.target.scrollHeight > defaultHeight ? e.target.scrollHeight + 'px' : defaultHeight + 'px'
+      e.target.scrollHeight > defaultHeight ? maxHeight + 'px' : defaultHeight + 'px'
     onChange && onChange(e)
   }
 
@@ -32,7 +32,7 @@ const Textarea = ({
         defaultValue={initialValue}
         onChange={handleChange}
         placeholder=" "
-        style={{ maxHeight }}
+        style={{ height: defaultHeight, maxHeight }}
       ></textarea>
       <label>{label}</label>
       <div />

@@ -12,21 +12,44 @@ import ProfileForm from '@/features/member/components/ProfileForm'
 import './ProfileEdit.scss'
 
 const ProfileEdit = () => {
+  const navigate = useNavigate()
+
   /**
-   * Show Menu buttons when container is hovered
+   * Logout
+   */
+  const { mutateAsync: logout } = useLogout()
+
+  const handleLogout = () => {
+    logout().then(() => {
+      navigate(routes['Home'].path)
+    })
+  }
+
+  /**
+   * Profile Update
+   */
+  const [isUpdateOpen, setIsUpdateOpen] = useState(false)
+
+  /**
+   * Withdraw
+   */
+  const [isWithdrawlOpen, setIsWithdrawlOpen] = useState(false)
+
+  /**
+   * Show edit buttons when container is hovered
    */
   const containerRef = useRef<HTMLDivElement>(null)
-  const [isShow, setIsShow] = useState<boolean>(false)
+  const [isButtonsShow, setIsButtonsShow] = useState<boolean>(false)
 
   useEffect(() => {
     const container = containerRef.current!
 
     const handleMouseEnter = function addOpenClass() {
-      setIsShow(true)
+      setIsButtonsShow(true)
     }
 
     const handleMouseLeave = function addOpenClass() {
-      setIsShow(false)
+      setIsButtonsShow(false)
     }
 
     container.addEventListener('mouseenter', handleMouseEnter)
@@ -38,30 +61,16 @@ const ProfileEdit = () => {
     }
   }, [])
 
-  // Modal state
-  const [isUpdateOpen, setIsUpdateOpen] = useState(false)
-  const [isWithdrawlOpen, setIsWithdrawlOpen] = useState(false)
-
-  // Logout
-  const { mutate: logout, isSuccess: isLogoutSuccess } = useLogout()
-
-  const navigate = useNavigate()
-  useEffect(() => {
-    if (isLogoutSuccess) {
-      navigate(routes['Home'].path)
-    }
-  }, [isLogoutSuccess])
-
   return (
     <div className="profile-edit" ref={containerRef}>
-      <Button3D ariaLabel="더보기" onFocus={() => setIsShow(true)}>
+      <Button3D ariaLabel="더보기" onFocus={() => setIsButtonsShow(true)}>
         <div className="profile-edit__toggle">
           <KebabIcon />
         </div>
       </Button3D>
       <CSSTransition
         className="profile-edit__menu"
-        isShow={isShow}
+        isShow={isButtonsShow}
         duration={200}
         timingFunction="ease-in-out"
       >
@@ -71,21 +80,27 @@ const ProfileEdit = () => {
           direction="right"
           onClick={() => setIsUpdateOpen(true)}
         />
-        <Button ariaLabel="로그아웃" text="로그아웃" direction="center" onClick={() => logout()} />
+        <Button ariaLabel="로그아웃" text="로그아웃" direction="center" onClick={handleLogout} />
         <Button
           ariaLabel="회원탈퇴"
           text="회원탈퇴"
           direction="bottom"
           onClick={() => setIsWithdrawlOpen(true)}
-          onBlur={() => setIsShow(false)}
+          onBlur={() => setIsButtonsShow(false)}
         />
       </CSSTransition>
-      {/* Modal */}
+      {/* Proifle Update Modal */}
       <Modal isOpen={isUpdateOpen} onClose={() => setIsUpdateOpen(false)}>
         <ProfileForm onSuccess={() => setIsUpdateOpen(false)} />
       </Modal>
+      {/* Withdrawl Modal */}
       <Modal isOpen={isWithdrawlOpen} onClose={() => setIsWithdrawlOpen(false)}>
-        <WithdrawlForm />
+        <WithdrawlForm
+          onSuccess={() => {
+            setIsWithdrawlOpen(false)
+            navigate(routes['Home'].path)
+          }}
+        />
       </Modal>
     </div>
   )

@@ -1,4 +1,4 @@
-import { CommentData } from './types'
+import { CommentData, CommentItemData } from './types'
 
 export const commentData: CommentData = {
   commentId: 1,
@@ -7,7 +7,7 @@ export const commentData: CommentData = {
   createdDate: '2023-08-04 23:59:59',
 }
 
-export const commentListData: CommentData[] = [
+export const commentListData: CommentItemData[] = [
   {
     commentId: 1,
     nickname: '개똥이',

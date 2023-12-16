@@ -8,12 +8,12 @@ export function useLogin() {
   return useMutation<MessageResponse<string>, ErrorResponse, string>(
     (type) => axiosInstance.post(`/member/login?type=${type}`),
     {
-      onSuccess: (data) => {
-        const redirectURL = data.data
+      onSuccess: (res) => {
+        const redirectURL = res.data
         window.location.href = redirectURL
       },
-      onError: () => {
-        //   toast.addMessage('error', err.data.message)
+      onError: (err) => {
+        toastManager.addToast('error', err.message)
       },
     }
   )
@@ -29,8 +29,8 @@ export function useLoginCallback(type: string, code: string) {
         queryClient.invalidateQueries(['user'])
         setExpDate(res.data.expirationDate)
       },
-      onError: () => {
-        //   toast.addMessage('error', err.data.message)
+      onError: (err) => {
+        toastManager.addToast('error', err.message)
       },
     }
   )
@@ -52,30 +52,14 @@ export function useLogout() {
   )
 }
 
-export function useWithdrawl() {
-  const resetExpDate = useLoginStore((state) => state.resetExpDate)
-  return useMutation<MessageResponse<undefined>, ErrorResponse>(
-    () => axiosInstance.delete(`/member`),
-    {
-      onSuccess: (res) => {
-        toastManager.addToast('success', res.message)
-        resetExpDate()
-      },
-      onError: (err) => {
-        toastManager.addToast('error', err.message)
-      },
-    }
-  )
-}
-
 export function useUserQuery() {
   return useQuery<MessageResponse<UserData>, ErrorResponse, UserData>(
     ['user'],
     () => axiosInstance.get(`/member`),
     {
       onSuccess: () => {},
-      onError: () => {
-        //   toast.addMessage('error', err.data.message)
+      onError: (err) => {
+        toastManager.addToast('error', err.message)
       },
       select: (res) => {
         return res.data
@@ -85,13 +69,30 @@ export function useUserQuery() {
   )
 }
 
-export function useUpdateProfile() {
+export function useUpdateUser() {
   const queryClient = useQueryClient()
   return useMutation<MessageResponse, ErrorResponse, ProfileFormData>(
     (data) => axiosInstance.patch(`/member`, data),
     {
-      onSuccess: () => {
+      onSuccess: (res) => {
+        toastManager.addToast('success', res.message)
         queryClient.invalidateQueries(['user'])
+      },
+      onError: (err) => {
+        toastManager.addToast('error', err.message)
+      },
+    }
+  )
+}
+
+export function useWithdrawl() {
+  const resetExpDate = useLoginStore((state) => state.resetExpDate)
+  return useMutation<MessageResponse<undefined>, ErrorResponse>(
+    () => axiosInstance.delete(`/member`),
+    {
+      onSuccess: (res) => {
+        toastManager.addToast('success', res.message)
+        resetExpDate()
       },
       onError: (err) => {
         toastManager.addToast('error', err.message)

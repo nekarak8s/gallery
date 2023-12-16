@@ -1,4 +1,3 @@
-import { KeyboardEvent } from 'react'
 import { CURSOR_SCALE } from '@/constants'
 import './Button.scss'
 
@@ -25,10 +24,6 @@ const Button = ({
   onFocus,
   onBlur,
 }: ButtonProps) => {
-  const handleKeydown = function clickButton(e: KeyboardEvent<HTMLButtonElement>) {
-    if (e.key === 'Enter') (e.target as HTMLButtonElement).click()
-  }
-
   return (
     <button
       className={`button ${direction} ${size} ${color}`}
@@ -36,7 +31,6 @@ const Button = ({
       onClick={onClick}
       onFocus={onFocus}
       onBlur={onBlur}
-      onKeyDown={handleKeydown}
       aria-label={ariaLabel}
       data-cursor-scale={CURSOR_SCALE}
     >
