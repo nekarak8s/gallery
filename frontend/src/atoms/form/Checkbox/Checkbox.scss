@@ -1,0 +1,13 @@
+@use '@/styles/_colors.scss' as c;
+
+.checkbox {
+  display: flex;
+  align-items: center;
+  gap: 1em;
+
+  input[type='checkbox'] {
+    accent-color: var(--color-ft, c.$ft-black);
+    margin: 0;
+    border: 0;
+  }
+}

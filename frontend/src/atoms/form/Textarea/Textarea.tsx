@@ -1,4 +1,4 @@
-import { ChangeEvent } from 'react'
+import { ChangeEventHandler } from 'react'
 
 import './Textarea.scss'
 
@@ -6,33 +6,19 @@ interface TextareaProps {
   label: string
   name: string
   initialValue: string
-  defaultHeight?: number
-  maxHeight?: number
-  onChange?: (e: ChangeEvent<HTMLTextAreaElement>) => void
+  height?: string | undefined
+  onChange?: ChangeEventHandler<HTMLTextAreaElement>
 }
 
-const Textarea = ({
-  label,
-  name,
-  initialValue,
-  defaultHeight = 50,
-  maxHeight = 70,
-  onChange,
-}: TextareaProps) => {
-  const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    e.target.style.height =
-      e.target.scrollHeight > defaultHeight ? maxHeight + 'px' : defaultHeight + 'px'
-    onChange && onChange(e)
-  }
-
+const Textarea = ({ label, name, initialValue, height = '6em', onChange }: TextareaProps) => {
   return (
     <div className="textarea">
       <textarea
         name={name}
         defaultValue={initialValue}
-        onChange={handleChange}
+        onChange={onChange}
         placeholder=" "
-        style={{ height: defaultHeight, maxHeight }}
+        style={{ height }}
       ></textarea>
       <label>{label}</label>
       <div />

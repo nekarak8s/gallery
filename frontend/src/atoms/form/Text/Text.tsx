@@ -1,4 +1,4 @@
-import React, { ChangeEvent } from 'react'
+import React, { ChangeEventHandler } from 'react'
 
 import './Text.scss'
 
@@ -6,7 +6,7 @@ interface InputProps {
   label: string
   name: string
   initialValue: string
-  onChange?: (e: ChangeEvent<HTMLInputElement>) => void
+  onChange?: ChangeEventHandler<HTMLInputElement>
 }
 
 const Text = ({ label, name, initialValue, onChange }: InputProps) => {

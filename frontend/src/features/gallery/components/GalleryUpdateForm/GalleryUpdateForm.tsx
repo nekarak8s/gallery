@@ -5,16 +5,21 @@ import Form from '@/atoms/form/Form'
 import Text from '@/atoms/form/Text'
 import Textarea from '@/atoms/form/Textarea'
 import Button from '@/atoms/ui/Button'
-import './GalleryUpdateForm.scss'
 import Loading from '@/atoms/ui/Loading'
-import PostForm from '@/features/post/components/PostItemForm'
+import PostListForm from '@/features/post/components/PostListForm/PostListForm'
 import { usePostListQuery, useUpdatePostList } from '@/features/post/services'
+import './GalleryUpdateForm.scss'
 
 type GalleryDetailFormProps = {
   galleryId: number
+  onSuccess?: () => void
+  onError?: () => void
 }
 
-const GalleryUpdateForm = ({ galleryId }: GalleryDetailFormProps) => {
+const GalleryUpdateForm = ({ galleryId, onSuccess, onError }: GalleryDetailFormProps) => {
+  /**
+   * Get data
+   */
   const {
     data: gallery,
     isLoading: isGalleryLoading,
@@ -27,14 +32,18 @@ const GalleryUpdateForm = ({ galleryId }: GalleryDetailFormProps) => {
     isError: isPostError,
   } = usePostListQuery(galleryId)
 
-  const { mutate: updateGallery } = useUpdateGallery(galleryId)
-  const { mutate: updatePostList } = useUpdatePostList(galleryId)
+  /**
+   * Handle submit
+   * 1. Update gallery
+   * 2. Update post list
+   */
+  const { mutateAsync: updateGallery } = useUpdateGallery(galleryId)
+  const { mutateAsync: updatePostList } = useUpdatePostList(galleryId)
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     /*eslint-disable*/
     const formData = new FormData(e.currentTarget)
-    // FormData의 key 확인
 
     const name = formData.get('name') as string
     formData.delete('name')
@@ -43,17 +52,20 @@ const GalleryUpdateForm = ({ galleryId }: GalleryDetailFormProps) => {
     const placeId = formData.get('placeId') as string
     formData.delete('placeId')
 
-    console.log('formData형식')
-    for (let [key, value] of formData.entries()) {
-      console.log(key, value)
-    }
     updateGallery({
       name,
       content,
       placeId: parseInt(placeId),
     })
-
-    updatePostList(formData)
+      .then(() => {
+        updatePostList(formData)
+      })
+      .then(() => {
+        onSuccess && onSuccess()
+      })
+      .catch(() => {
+        onError && onError()
+      })
   }
 
   if (isGalleryError || isPlaceError || isPostError) return null
@@ -61,19 +73,20 @@ const GalleryUpdateForm = ({ galleryId }: GalleryDetailFormProps) => {
   if (isGalleryLoading || isPlaceLoading || isPostLoding) return <Loading />
 
   return (
-    <Form className="gallery-update-form" onSubmit={handleSubmit}>
-      <Text label="전시회 이름" name="name" initialValue={gallery.name} />
-      <Textarea label="소개글" name="content" initialValue={gallery.content} />
-      <PlacesRadio placeList={placeList} defaultChecked={gallery.place.placeId} />
-      <ol>
-        {postList.map((post, index) => (
-          <li key={post.postId}>
-            <PostForm post={post} index={index} />
-          </li>
-        ))}
-      </ol>
-      <Button type="submit" direction="center" ariaLabel="전시회 생성" text="수정하기" />
-    </Form>
+    <>
+      <Form className="gallery-update-form" onSubmit={handleSubmit}>
+        <Text label="전시회 이름" name="name" initialValue={gallery.name} />
+        <Textarea label="소개글" name="content" initialValue={gallery.content} />
+        <PlacesRadio placeList={placeList} defaultChecked={gallery.place.placeId} />
+        <PostListForm postList={postList} />
+        <Button type="submit" direction="center" ariaLabel="전시회 생성" text="수정하기" />
+      </Form>
+      {isGalleryLoading && (
+        <div className="gallery-update-form__loading">
+          <Loading />
+        </div>
+      )}
+    </>
   )
 }
 

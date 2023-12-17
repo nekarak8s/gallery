@@ -1,4 +1,4 @@
-import { PostData } from './types'
+import { PostData, PostItemData } from './types'
 
 export const postData: PostData = {
   postId: 1,
@@ -8,6 +8,7 @@ export const postData: PostData = {
   imageUrl: 'https://source.unsplash.com/500x500',
   createdDate: '2023-08-03T23:59:59',
   modifiedDate: '2023-08-04T00:59:59',
+  isActive: true,
   music: {
     musicId: 1,
     title: '비밀번호 486',
@@ -18,7 +19,26 @@ export const postData: PostData = {
   },
 }
 
-export const postListData: PostData[] = [
+export const postItemData: PostItemData = {
+  postId: 1,
+  order: 1,
+  title: '액자 제목',
+  content: '액자 설명',
+  imageUrl: 'https://source.unsplash.com/500x500',
+  createdDate: '2023-08-03T23:59:59',
+  modifiedDate: '2023-08-04T00:59:59',
+  isActive: true,
+  music: {
+    musicId: 1,
+    title: '비밀번호 486',
+    artist: '윤하',
+    releasedDate: '2023-08-03T23:59:59',
+    videoId: 'iEfIcJHEb70',
+    coverURL: 'https://source.unsplash.com/500x500',
+  },
+}
+
+export const postListData: PostItemData[] = [
   {
     postId: 1,
     order: 1,
@@ -27,6 +47,7 @@ export const postListData: PostData[] = [
     imageUrl: 'https://source.unsplash.com/500x500',
     createdDate: '2023-08-03T23:59:59',
     modifiedDate: '2023-08-04T00:59:59',
+    isActive: true,
     music: {
       musicId: 1,
       title: '비밀번호 486',
@@ -44,6 +65,7 @@ export const postListData: PostData[] = [
     imageUrl: 'https://source.unsplash.com/500x500',
     createdDate: '2023-08-03T23:59:59',
     modifiedDate: '2023-08-04T00:59:59',
+    isActive: true,
     music: {
       musicId: 1,
       title: '비밀번호 486',
@@ -61,6 +83,7 @@ export const postListData: PostData[] = [
     imageUrl: 'https://source.unsplash.com/500x500',
     createdDate: '2023-08-03T23:59:59',
     modifiedDate: '2023-08-04T00:59:59',
+    isActive: true,
     music: {
       musicId: 1,
       title: '비밀번호 486',
@@ -78,6 +101,7 @@ export const postListData: PostData[] = [
     imageUrl: 'https://source.unsplash.com/500x500',
     createdDate: '2023-08-03T23:59:59',
     modifiedDate: '2023-08-04T00:59:59',
+    isActive: true,
     music: {
       musicId: 1,
       title: '비밀번호 486',
@@ -95,6 +119,7 @@ export const postListData: PostData[] = [
     imageUrl: 'https://source.unsplash.com/500x500',
     createdDate: '2023-08-03T23:59:59',
     modifiedDate: '2023-08-04T00:59:59',
+    isActive: true,
     music: {
       musicId: 1,
       title: '비밀번호 486',
@@ -112,6 +137,7 @@ export const postListData: PostData[] = [
     imageUrl: 'https://source.unsplash.com/500x500',
     createdDate: '2023-08-03T23:59:59',
     modifiedDate: '2023-08-04T00:59:59',
+    isActive: true,
     music: {
       musicId: 1,
       title: '비밀번호 486',
@@ -129,6 +155,7 @@ export const postListData: PostData[] = [
     imageUrl: 'https://source.unsplash.com/500x500',
     createdDate: '2023-08-03T23:59:59',
     modifiedDate: '2023-08-04T00:59:59',
+    isActive: true,
     music: {
       musicId: 1,
       title: '비밀번호 486',
@@ -146,6 +173,7 @@ export const postListData: PostData[] = [
     imageUrl: 'https://source.unsplash.com/500x500',
     createdDate: '2023-08-03T23:59:59',
     modifiedDate: '2023-08-04T00:59:59',
+    isActive: true,
     music: {
       musicId: 1,
       title: '비밀번호 486',
@@ -163,6 +191,7 @@ export const postListData: PostData[] = [
     imageUrl: 'https://source.unsplash.com/500x500',
     createdDate: '2023-08-03T23:59:59',
     modifiedDate: '2023-08-04T00:59:59',
+    isActive: true,
     music: {
       musicId: 1,
       title: '비밀번호 486',
@@ -180,6 +209,7 @@ export const postListData: PostData[] = [
     imageUrl: 'https://source.unsplash.com/500x500',
     createdDate: '2023-08-03T23:59:59',
     modifiedDate: '2023-08-04T00:59:59',
+    isActive: true,
     music: {
       musicId: 1,
       title: '비밀번호 486',

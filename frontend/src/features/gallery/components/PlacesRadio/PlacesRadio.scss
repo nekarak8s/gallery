@@ -1,4 +1,5 @@
 @use '@/styles/_colors.scss' as c;
+@use '@/styles/_z-index.scss' as *;
 
 .places-radio {
   display: flex;
@@ -35,7 +36,7 @@
   display: flex;
   position: relative;
   overflow: hidden;
-  width: 70%;
+  width: min(60%, 200px);
 
   label {
     min-width: 100%;
@@ -46,4 +47,35 @@
     width: 100%;
     aspect-ratio: 1/1;
   }
+}
+
+.places-radio__image {
+  @include z-index(top);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  position: absolute;
+  top: 0;
+  right: 0;
+
+  svg {
+    width: 25px;
+    height: 25px;
+  }
+
+  img {
+    width: 0;
+    aspect-ratio: 1/1;
+    transition: width 200ms ease-in-out;
+  }
+}
+
+.places-radio__image:hover {
+  img {
+    width: min(60%, 200px);
+  }
+}
+
+.places-radio__image button:focus + img {
+  width: min(60%, 200px);
 }

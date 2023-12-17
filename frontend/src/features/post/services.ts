@@ -1,10 +1,10 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { PostData } from './types'
+import { PostItemData } from './types'
 import axiosInstance from '@/utils/axiosInstance'
 import toastManager from '@/utils/toastManager/toastManager'
 
 export function usePostListQuery(galleryId: number) {
-  return useQuery<MessageResponse<PostData[]>, ErrorResponse, PostData[]>(
+  return useQuery<MessageResponse<PostItemData[]>, ErrorResponse, PostItemData[]>(
     ['post', { galleryId }],
     () => axiosInstance.get(`/post/list/${galleryId}`),
     {

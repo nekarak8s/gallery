@@ -30,10 +30,22 @@ const GalleryItem = ({ gallery }: GalleryItemProps) => {
   }
 
   /**
-   * Copy the URL
+   * Share the url
    */
   const handleShareClick: MouseEventHandler<HTMLButtonElement> = (e) => {
     e.stopPropagation()
+
+    // 1. Use web share api
+    if (navigator.canShare()) {
+      navigator.share({
+        title: `${gallery.name}`,
+        text: `${gallery.name} 전시회에 초대합니다`,
+        url: `${window.location.protocol}://${window.location.hostname}:${window.location.port}${process.env.REACT_APP_BASE_URL}/gallery/${gallery.galleryId}`,
+      })
+      return
+    }
+
+    // 2. Use clipboard api
     navigator.clipboard
       .writeText(
         `${window.location.protocol}://${window.location.hostname}:${window.location.port}${process.env.REACT_APP_BASE_URL}/gallery/${gallery.galleryId}`
@@ -113,7 +125,7 @@ const GalleryItem = ({ gallery }: GalleryItemProps) => {
 
   return (
     <>
-      <div
+      <article
         tabIndex={0}
         className="gallery-item"
         ref={itemRef}
@@ -156,9 +168,9 @@ const GalleryItem = ({ gallery }: GalleryItemProps) => {
           <div />
           <div />
         </div>
-      </div>
+      </article>
       <Modal isOpen={isUpdateShow} onClose={() => setIsUpdateShow(false)}>
-        <GalleryUpdateForm galleryId={gallery.galleryId} />
+        <GalleryUpdateForm galleryId={gallery.galleryId} onSuccess={() => setIsUpdateShow(false)} />
       </Modal>
     </>
   )

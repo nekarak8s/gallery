@@ -7,7 +7,7 @@
   align-items: center;
   gap: 20px;
   padding: 3em 5em;
-  max-width: 28em;
+  max-width: min(400px, 80vw);
   font-size: 1rem;
 }
 
@@ -19,11 +19,13 @@
 @include tablet {
   .gallery-create-form {
     padding: 2em 4em;
+    max-width: min(400px, 80vw);
   }
 }
 
 @include mobile {
   .gallery-create-form {
     padding: 2em 2em;
+    max-width: min(380px, 80vw);
   }
 }

@@ -6,7 +6,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0.6em 1.3em;
   border: 2px solid black;
   border-radius: 0.1em;
   background-image: linear-gradient(0deg, rgb(0, 0, 0), rgb(0, 0, 0));
@@ -116,22 +115,25 @@
 // size
 .button {
   &.lg {
-    font-size: 1.8rem;
+    padding: 0.8em 1.5em;
+    font-size: 1.3rem;
   }
 
   &.md {
-    font-size: 1.2rem;
+    padding: 0.6em 1.2em;
+    font-size: 1.1rem;
   }
 
   &.sm {
-    font-size: 1.2rem;
+    padding: 0.4em 0.9em;
+    font-size: 1rem;
   }
 }
 
 @include tablet {
   .button {
     &.lg {
-      font-size: 1.6rem;
+      font-size: 1.2rem;
     }
 
     &.md {
@@ -139,21 +141,19 @@
     }
 
     &.sm {
-      font-size: 0.8rem;
+      font-size: 0.9rem;
     }
   }
 }
 
 @include mobile {
   .button {
-    padding: 0.4em 0.9em;
-
     &.lg {
       font-size: 1rem;
     }
 
     &.md {
-      font-size: 0.8rem;
+      font-size: 0.9rem;
     }
 
     &.sm {

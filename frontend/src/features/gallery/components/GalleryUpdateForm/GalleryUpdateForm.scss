@@ -1,4 +1,31 @@
+@use '@/styles/_responsive.scss' as *;
+
 .gallery-update-form {
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  padding: 3em 4em;
+  max-width: min(500px, 80vw);
   font-size: 1rem;
-  padding: 1em 3em;
+}
+
+.gallery-update-form__loading {
+  position: fixed;
+  inset: 0 0 0 0;
+}
+
+@include tablet {
+  .gallery-update-form {
+    padding: 2em 3em;
+    max-width: min(500px, 80vw);
+  }
+}
+
+@include mobile {
+  .gallery-update-form {
+    padding: 2em 1em;
+    max-width: min(400px, 85vw);
+  }
 }

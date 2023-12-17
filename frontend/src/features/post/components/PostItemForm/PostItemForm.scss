@@ -1,13 +1,37 @@
-.post-item-form__image {
-  width: 5em;
-  height: 5em;
+@use '@/styles/_responsive.scss' as *;
+
+.post-item-form__image-music {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+
+  > img {
+    width: 9em;
+    height: 9em;
+  }
+
+  > div {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+  }
 }
 
 .post-item-form__music {
   display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
+  width: 100%;
+}
 
-  img {
-    width: 3em;
-    height: 3em;
+@include mobile {
+  .post-item-form__image-music {
+    > img {
+      width: 7em;
+      height: 7em;
+    }
   }
 }
