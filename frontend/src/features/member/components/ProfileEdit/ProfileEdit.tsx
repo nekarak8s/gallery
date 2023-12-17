@@ -63,7 +63,7 @@ const ProfileEdit = () => {
 
   return (
     <div className="profile-edit" ref={containerRef}>
-      <Button3D ariaLabel="더보기" onFocus={() => setIsButtonsShow(true)}>
+      <Button3D ariaLabel="메뉴 더보기" onFocus={() => setIsButtonsShow(true)}>
         <div className="profile-edit__toggle">
           <KebabIcon />
         </div>

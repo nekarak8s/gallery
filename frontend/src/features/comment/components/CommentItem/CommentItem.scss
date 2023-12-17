@@ -1,7 +1,40 @@
+@use '@/styles/_colors.scss' as c;
+
 .comment-item {
-  p:nth-child(1) {
-    font-weight: bold;
+  position: relative;
+  padding: 1em 2em 0.3em 0.3em;
+  font-size: 0.9rem;
+  line-height: 140%;
+
+  > p:nth-child(2) {
+    opacity: 0.5;
+    font-size: 0.7em;
+    font-weight: 600;
   }
-  p:nth-child(2) {
+
+  > button {
+    position: absolute;
+    top: 1em;
+    right: 0;
+
+    svg {
+      color: var(--color-ft-subtle, c.$ft-gray);
+    }
   }
+
+  > button:hover {
+    svg {
+      color: var(--color-ft, c.$ft-black);
+    }
+  }
+}
+
+.comment-item__delete {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 2em;
+  font-size: 1rem;
+  padding: 2em 3em 1.5em;
 }

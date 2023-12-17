@@ -134,6 +134,8 @@ export class CannonKeypadControls {
    * Keydown event handler
    */
   onKeyDown(event: KeyboardEvent) {
+    if (!this.enabled) return
+
     event.preventDefault()
 
     switch (event.code) {

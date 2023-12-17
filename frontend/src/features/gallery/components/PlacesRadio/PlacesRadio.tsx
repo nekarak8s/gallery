@@ -86,6 +86,7 @@ const PlacesRadio = ({ placeList, defaultChecked }: PlaceRadioProps) => {
           type="button"
           onClick={onClickPrev}
           data-cursor-scale={CURSOR_SCALE}
+          aria-label="이전 갤러리 공간 타입 선택"
         >
           <LeftArrow />
         </button>
@@ -108,11 +109,12 @@ const PlacesRadio = ({ placeList, defaultChecked }: PlaceRadioProps) => {
           type="button"
           onClick={onClickNext}
           data-cursor-scale={CURSOR_SCALE}
+          aria-label="다음 갤러리 공간 타입 선택"
         >
           <RightArrow />
         </button>
         <div className="places-radio__image">
-          <button>
+          <button aria-label="갤러리 2D 이미지 열기">
             <ImageIcon />
           </button>
           <img src={placeList[index].twoDimensionImageUrl} />

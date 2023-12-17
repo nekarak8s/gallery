@@ -1,5 +1,4 @@
 import { useEffect, useRef } from 'react'
-import { routes } from '@/App'
 import labelImg from '@/assets/images/home-section-3/white-label.jpg?format=jpg'
 import labelWebp from '@/assets/images/home-section-3/white-label.jpg?format=webp'
 import wallImg from '@/assets/images/home-section-3/white-wall.jpg?format=jpg'
@@ -229,7 +228,7 @@ function HomeSection3() {
         </div>
 
         <div className="hs3-button" ref={buttonRef}>
-          <Button3D ariaLabel="3D 전시회 체험하기" to={routes['Gallery'].path} color="primary">
+          <Button3D ariaLabel="3D 전시회 체험하기" to={'/gallery/1'} color="primary">
             <p data-cursor-scale={CURSOR_SCALE}>체험하기</p>
           </Button3D>
         </div>
@@ -252,7 +251,7 @@ function HomeSection3() {
             <StaticImage imgSrc={labelImg} webpSrc={labelWebp} sizes="200px" alt="작품 라벨" />
             <div className="hs3-work__label--phrase">
               <p>작품명</p>
-              <p>마우스를 올려보세요</p>
+              <p>마우스를 올리세요</p>
             </div>
           </div>
         </div>

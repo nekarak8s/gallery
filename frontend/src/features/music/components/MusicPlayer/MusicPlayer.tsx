@@ -9,9 +9,9 @@ type MusicPlayerProps = {
 const MusicPlayer = ({ music }: MusicPlayerProps) => {
   return (
     <section className="music-player">
-      <img className="music-player__thumbnail" src={music.coverURL} />
+      <img className="music-player__cover" src={music.coverURL} />
       <YouTube
-        videoId="iEfIcJHEb70"
+        videoId={music.videoId}
         id="youtube"
         opts={{
           height: '1',
@@ -22,8 +22,12 @@ const MusicPlayer = ({ music }: MusicPlayerProps) => {
         }}
       />
       <div className="music-player__info">
-        <p>{music.title}</p>
-        <p>{music.artist}</p>
+        <p>
+          {music.title} - {music.artist}
+        </p>
+        <p>
+          {music.title} - {music.artist}
+        </p>
       </div>
     </section>
   )

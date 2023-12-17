@@ -160,7 +160,7 @@ const GalleryItem = ({ gallery }: GalleryItemProps) => {
           <p data-cursor-scale={CURSOR_SCALE}>{gallery.content}</p>
         </div>
         <time className="gallery-item__date" data-cursor-scale={CURSOR_SCALE}>
-          {date}
+          {new Date(gallery.createdDate).toLocaleDateString()}
         </time>
         <div className="gallery-item__borders">
           <div />

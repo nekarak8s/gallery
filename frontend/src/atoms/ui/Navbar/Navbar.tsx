@@ -88,6 +88,7 @@ function Navbar({ whitePathname, isLogin }: NavbarProps) {
           onClick={handleToggleClick}
           onFocus={showNavbar}
           data-cursor-scale={CURSOR_SCALE}
+          aria-label="메뉴바 토글"
         >
           <span data-cursor-scale={CURSOR_SCALE} />
           <span data-cursor-scale={CURSOR_SCALE} />
@@ -121,6 +122,7 @@ function Navbar({ whitePathname, isLogin }: NavbarProps) {
                   onClick={handleLoginClick}
                   onFocus={showNavbar}
                   data-cursor-scale={CURSOR_SCALE}
+                  aria-label="로그인"
                 >
                   Login
                 </button>

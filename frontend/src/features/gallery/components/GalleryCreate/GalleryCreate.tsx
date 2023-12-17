@@ -13,11 +13,11 @@ const GalleryCreate = () => {
     <>
       <button
         className="gallery-create"
-        aria-label="전시회 생성"
         data-cursor-scale={CURSOR_SCALE}
         onClick={() => {
           setIsOpen(true)
         }}
+        aria-label="전시회 생성"
       >
         <PlusIcon />
       </button>

@@ -99,7 +99,7 @@
   transform: translateY(-50%);
   width: 12em;
   height: 3.8em;
-  font-size: 4rem;
+  font-size: 3rem;
   font-weight: 800;
   line-height: 120%;
   transition: mix-blend-mode var(--transition-time-home) ease-in;
@@ -194,8 +194,8 @@ $FRAME_COLOR: rgb(44, 5, 5);
 
 .hs3-video {
   position: relative;
-  width: clamp(190px, 30vw, 310px);
-  height: clamp(253px, 40vw, 413px);
+  width: clamp(190px, 28vw, 280px);
+  height: clamp(253px, 37.3vw, 373px);
   transform-style: preserve-3d;
   perspective: 20000px;
   overflow: visible;
@@ -292,7 +292,7 @@ $FRAME_COLOR: rgb(44, 5, 5);
 
 @include laptop {
   .hs3-phrase {
-    font-size: 3.5rem;
+    font-size: 3rem;
   }
 
   .hs3-button {
@@ -314,7 +314,7 @@ $FRAME_COLOR: rgb(44, 5, 5);
   }
 
   .hs3-phrase {
-    font-size: 2.8rem;
+    font-size: 2.5rem;
     top: 30%;
   }
 
@@ -342,7 +342,7 @@ $FRAME_COLOR: rgb(44, 5, 5);
   }
 
   .hs3-phrase {
-    font-size: 7vw;
+    font-size: 6vw;
     top: 20%;
   }
 

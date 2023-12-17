@@ -96,7 +96,7 @@ const PostItemForm = ({ post, index }: PostItemFormProps) => {
           label="설명"
           name={`posts[${index}].content`}
           initialValue={post.content}
-          height="3em"
+          height="2.5em"
         />
         <Checkbox
           className="post-item-form__is-active"

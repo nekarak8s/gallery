@@ -31,6 +31,6 @@
   opacity: 0;
 }
 
-.gallery-navbar__notice:hover button + div {
+.gallery-navbar__notice button:hover + div {
   opacity: 1;
 }

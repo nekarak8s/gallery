@@ -11,12 +11,7 @@ interface Props {
   color?: 'black' | 'white'
 }
 
-const Music: React.FC<Props> = ({
-  src,
-  title,
-  id = 'audio',
-  color = 'black',
-}) => {
+const Music: React.FC<Props> = ({ src, title, id = 'audio', color = 'black' }) => {
   const audioRef = useRef<HTMLAudioElement>(null)
 
   /**
@@ -50,7 +45,11 @@ const Music: React.FC<Props> = ({
   }
 
   return (
-    <button className={`music ${color}`} onClick={handleClick}>
+    <button
+      className={`music ${color}`}
+      onClick={handleClick}
+      aria-label={isPlaying ? '음악 일시정지' : '음악 재생'}
+    >
       <MusicIcon />
       <span data-cursor-scale={CURSOR_SCALE}>{title}</span>
       <audio ref={audioRef} id={id} src={src} loop></audio>

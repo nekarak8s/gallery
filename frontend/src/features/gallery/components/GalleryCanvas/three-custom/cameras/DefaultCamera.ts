@@ -18,7 +18,7 @@ export class DefaultCamera extends PerspectiveCamera {
         ? info.canvas.offsetWidth / info.canvas.offsetHeight
         : window.innerWidth / window.innerHeight,
       info.near || 0.01,
-      info.far || 200
+      info.far || 150
     )
     this.canvas = info.canvas
   }

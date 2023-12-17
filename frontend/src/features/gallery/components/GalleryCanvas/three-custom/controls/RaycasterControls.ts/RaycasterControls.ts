@@ -46,10 +46,9 @@ export class RaycasterControls {
   onKeyDown(event: KeyboardEvent) {
     if (!this.enabled) return
 
-    event.preventDefault()
-
     switch (event.code) {
       case 'Space':
+        event.preventDefault()
         if (this.raycast) {
           this.#raycaster.setFromCamera(_canvasOrigin, this.camera)
           const intersects = this.#raycaster.intersectObjects(this.rayItems)
@@ -61,6 +60,7 @@ export class RaycasterControls {
         break
 
       case 'Escape':
+        event.preventDefault()
         this.onEsc && this.onEsc()
         break
     }

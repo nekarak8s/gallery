@@ -7,6 +7,8 @@ import GalleryCover from '@/features/gallery/components/GalleryCover'
 import { useGalleryQuery } from '@/features/gallery/services'
 import { usePostListQuery } from '@/features/post/services'
 import './Gallery.scss'
+import useMobile from '@/hooks/useMobile'
+import toastManager from '@/utils/toastManager'
 
 const Gallery = () => {
   /**
@@ -24,6 +26,21 @@ const Gallery = () => {
     isLoading: isPostLoading,
     isError: isPostError,
   } = usePostListQuery(parseInt(galleryId as string))
+
+  /**
+   * Rotate page if it's mobile
+   */
+  const isMobile = useMobile()
+
+  useEffect(() => {
+    // rotate page
+    if (isMobile) {
+      toastManager.addToast('info', '가로모드로 플레이하면 더욱 좋습니다', 6000)
+    }
+
+    // Reset
+    return () => {}
+  }, [isMobile])
 
   /**
    * Stat.js: check frame per second for deveopment

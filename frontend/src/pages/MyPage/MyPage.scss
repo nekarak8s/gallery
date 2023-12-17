@@ -51,7 +51,7 @@
   100% {
     opacity: 1;
     width: clamp(400px, 90%, 1200px);
-    height: clamp(300px, 50vh, 500px);
+    height: clamp(300px, 30vh, 500px);
     margin: 7em 0 0 0;
     transform: scale(1) translateY(0);
   }
@@ -96,6 +96,10 @@
 
 @include mobile {
   .my-page {
+    font-size: 0.5rem;
+  }
+
+  .my-page__profile {
     font-size: 0.5rem;
   }
 

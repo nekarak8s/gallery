@@ -10,9 +10,11 @@ const Post = ({ post }: PostProps) => {
   return (
     <section className="post">
       <img className="post__image" src={post.imageUrl} />
-      {post.music && <MusicPlayer music={post.music} />}
-      <h1 className="post__title">{post.title}</h1>
-      <p className="post__content">{post.content}</p>
+      <div className="post__description">
+        {post.music && <MusicPlayer music={post.music} />}
+        <h1>{post.title}</h1>
+        <p>{post.content}</p>
+      </div>
     </section>
   )
 }

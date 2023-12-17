@@ -1,18 +1,41 @@
+@use '@/styles/_animations.scss' as a;
+
 #youtube {
   visibility: hidden;
 }
 
 .music-player {
   display: flex;
+  align-items: center;
   gap: 0.5em;
   font-size: 1rem;
 }
 
-.music-player__thumbnail {
-  width: 3em;
-  height: 3em;
+.music-player__cover {
+  @include a.animation-rotate-clockwise('music-player', 7s, 1, linear);
+  width: 2.5em;
+  height: 2.5em;
+  object-fit: cover;
   border-radius: 50%;
 }
 
 .music-player__info {
+  display: flex;
+  width: 100%;
+  flex-wrap: nowrap;
+  overflow: hidden;
+
+  > p {
+    min-width: 100%;
+    animation: music-player-flow-left 7s linear infinite;
+  }
+}
+
+@keyframes music-player-flow-left {
+  0% {
+    transform: translate(0%);
+  }
+  100% {
+    transform: translate(-100%);
+  }
 }

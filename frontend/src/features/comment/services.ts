@@ -1,5 +1,4 @@
-import { useQueryClient } from 'react-query'
-import { useQuery, useMutation } from '@tanstack/react-query'
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { CommentCreateFormData, CommentItemData, CommentUpdateFormData } from './types'
 import axiosInstance from '@/utils/axiosInstance'
 import toastManager from '@/utils/toastManager'

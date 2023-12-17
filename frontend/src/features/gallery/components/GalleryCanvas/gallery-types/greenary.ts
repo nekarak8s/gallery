@@ -83,7 +83,7 @@ const FRAME_DATA = [
   {
     // 9
     x: 104,
-    y: -2,
+    y: -2.6,
     z: 104,
   },
   {
@@ -446,10 +446,12 @@ const greenary = (props: GalleryTypeProps) => {
   const oceanMaterial = new MeshLambertMaterial({
     color: 0x008cf1,
     side: DoubleSide,
+    opacity: 0.8,
+    transparent: true,
   })
   const ocean = new Mesh(oceanGeometry, oceanMaterial)
 
-  ocean.position.set(55, -3.5, 55)
+  ocean.position.set(55, -3.8, 55)
   props.scene.add(ocean)
   props.rayControls.rayItems.push(ocean)
 
@@ -508,6 +510,8 @@ const greenary = (props: GalleryTypeProps) => {
   const lakeMaterial = new MeshLambertMaterial({
     color: 0x0bd3ff,
     side: DoubleSide,
+    opacity: 0.7,
+    transparent: true,
   })
   const lake = new Mesh(lakeGeometry, lakeMaterial)
 
