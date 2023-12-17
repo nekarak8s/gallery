@@ -4,13 +4,15 @@ import Button from '@/atoms/ui/Button'
 import { CURSOR_SCALE } from '@/constants'
 
 type FileProps = {
+  id?: string | undefined
+  className?: string | undefined
   name: string
   accept: string
   onChange?: ChangeEventHandler<HTMLInputElement> | undefined
   onReset?: () => void | undefined
 }
 
-const File = ({ name, accept, onChange, onReset }: FileProps) => {
+const File = ({ id, className, name, accept, onChange, onReset }: FileProps) => {
   const inputRef = useRef<HTMLInputElement>(null)
 
   const handleClick: MouseEventHandler<HTMLButtonElement> = (e) => {
@@ -30,8 +32,9 @@ const File = ({ name, accept, onChange, onReset }: FileProps) => {
   }
 
   return (
-    <div className="file">
+    <div className={`file ${className}`}>
       <input
+        id={id}
         ref={inputRef}
         type="file"
         name={name}

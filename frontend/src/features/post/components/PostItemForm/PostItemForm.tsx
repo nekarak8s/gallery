@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { ChangeEventHandler, useMemo, useState } from 'react'
 import { PostData } from '../../types'
 import Checkbox from '@/atoms/form/Checkbox'
 import File from '@/atoms/form/File'
@@ -54,9 +54,19 @@ const PostItemForm = ({ post, index }: PostItemFormProps) => {
 
   const [music, setMusic] = useState(post.music)
 
+  /**
+   * Change background color by isActive value
+   */
+  const [isActive, setIsActive] = useState(post.isActive)
+
+  const handleIsActiveChange: ChangeEventHandler<HTMLInputElement> = (e) => {
+    setIsActive(e.target.checked)
+    console.log(e.target.checked)
+  }
+
   return (
     <>
-      <article className="post-item-form">
+      <article className={`post-item-form ${!isActive && 'inactive'}`}>
         <input readOnly type="hidden" name={`posts[${index}].id`} value={post.postId} />
         <input readOnly type="hidden" name={`posts[${index}].order`} value={index + 1} />
         <div className="post-item-form__image-music">
@@ -88,8 +98,12 @@ const PostItemForm = ({ post, index }: PostItemFormProps) => {
           initialValue={post.content}
           height="3em"
         />
-        <Checkbox name={`posts[${index}].isActive`} defaultChecked={post.isActive} />
-        <div className="post-item-form--inactive" />
+        <Checkbox
+          className="post-item-form__is-active"
+          name={`posts[${index}].isActive`}
+          defaultChecked={post.isActive}
+          onChange={handleIsActiveChange}
+        />
       </article>
       {/* Music Select Modal */}
       <Modal isOpen={isMusicOpen} onClose={() => setIsMusicOpen(false)}>

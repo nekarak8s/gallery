@@ -1,5 +1,14 @@
 @use '@/styles/_responsive.scss' as *;
 
+.post-item-form {
+  z-index: 1;
+  position: relative;
+
+  &.inactive {
+    background-color: rgba(0, 0, 0, 0.2);
+  }
+}
+
 .post-item-form__image-music {
   display: flex;
   align-items: center;
@@ -25,6 +34,12 @@
   align-items: flex-end;
   gap: 10px;
   width: 100%;
+}
+
+.post-item-form__is-active {
+  position: absolute;
+  top: 10px;
+  left: 8px;
 }
 
 @include mobile {

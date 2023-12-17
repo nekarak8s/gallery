@@ -1,8 +1,36 @@
 .gallery-navbar {
-  display: flex;
-  justify-content: space-between;
   width: 100%;
   padding: 1em;
   font-size: 1rem;
-  color: white;
+
+  > ul {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  > ul > li > button {
+    color: white;
+    font-weight: 600;
+    text-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
+  }
+}
+
+.gallery-navbar__notice {
+  position: relative;
+
+  > div {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    transform: translate(0, 110%);
+  }
+}
+
+.gallery-navbar__notice button + div {
+  opacity: 0;
+}
+
+.gallery-navbar__notice:hover button + div {
+  opacity: 1;
 }

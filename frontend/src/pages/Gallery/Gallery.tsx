@@ -1,9 +1,30 @@
 import { useEffect, useRef } from 'react'
+import { useParams } from 'react-router-dom'
 import GalleryNavbar from './GalleryNavbar'
+import Loading from '@/atoms/ui/Loading'
 import GalleryCanvas from '@/features/gallery/components/GalleryCanvas'
+import GalleryCover from '@/features/gallery/components/GalleryCover'
+import { useGalleryQuery } from '@/features/gallery/services'
+import { usePostListQuery } from '@/features/post/services'
 import './Gallery.scss'
 
 const Gallery = () => {
+  /**
+   * Get Data
+   */
+  const { galleryId } = useParams()
+
+  const {
+    data: gallery,
+    isLoading: isGalleryLoading,
+    isError: isGalleryError,
+  } = useGalleryQuery(parseInt(galleryId as string))
+  const {
+    data: postList,
+    isLoading: isPostLoading,
+    isError: isPostError,
+  } = usePostListQuery(parseInt(galleryId as string))
+
   /**
    * Stat.js: check frame per second for deveopment
    */
@@ -34,16 +55,20 @@ const Gallery = () => {
     /* eslint-enable */
   }, [])
 
+  if (isGalleryError || isPostError) return
+
+  if (isGalleryLoading || isPostLoading) return <Loading />
+
   return (
     <div className="gallery">
-      {/* <div className="gallery__cover">
-        <GalleryCover />
-      </div> */}
+      <div className="gallery__cover">
+        <GalleryCover gallery={gallery} />
+      </div>
       <div className="gallery__navbar">
         <GalleryNavbar />
       </div>
       <div className="gallery__canvas">
-        <GalleryCanvas />
+        <GalleryCanvas gallery={gallery} postList={postList} />
       </div>
     </div>
   )

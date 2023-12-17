@@ -2,7 +2,8 @@ import { PropsWithChildren } from 'react'
 import './Radio.scss'
 
 type RadioProps = {
-  id: string
+  id?: string | undefined
+  className?: string | undefined
   name: string
   value: string | number
   label?: string
@@ -12,6 +13,7 @@ type RadioProps = {
 
 const Radio = ({
   id,
+  className,
   name,
   value,
   label,
@@ -20,7 +22,7 @@ const Radio = ({
   children,
 }: PropsWithChildren<RadioProps>) => {
   return (
-    <label htmlFor={id} className="radio" style={{ flexDirection }}>
+    <label htmlFor={id} className={`radio ${className}`} style={{ flexDirection }}>
       <div className="radio__label">
         <input type="radio" id={id} name={name} value={value} defaultChecked={defaultChecked} />
         <span>{label}</span>

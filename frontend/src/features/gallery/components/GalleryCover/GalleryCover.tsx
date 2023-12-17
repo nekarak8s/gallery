@@ -1,30 +1,77 @@
-import React, { useState } from 'react'
-import { galleryItemData } from '../../data'
+import React, { useEffect, useRef, useState } from 'react'
+import { GalleryData } from '../../types'
 import Button from '@/atoms/ui/Button'
 import CSSTransition from '@/atoms/ui/CSSTransition'
+import toFrame from '@/utils/toFrame'
 import './GalleryCover.scss'
-import { CURSOR_SCALE } from '@/constants'
 
-const GalleryCover = () => {
-  // Get Data
-  const gallery = galleryItemData
+type GalleryCoverProps = {
+  gallery: GalleryData
+}
 
+const GalleryCover = ({ gallery }: GalleryCoverProps) => {
+  /**
+   * Delete cover when clicked
+   */
   const [isShow, setIsShow] = useState(true)
+
+  /**
+   * Handle Mousemove Event
+   * 1. Tilt content
+   * 2. Move content shadow
+   * 3. Move content light
+   */
+
+  const contentRef = useRef<HTMLDivElement>(null)
+  const contentLightRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const content = contentRef.current!
+    const contentLight = contentLightRef.current!
+
+    const handleMousemove = function tiltArtWork(e: MouseEvent) {
+      const { x, y, width, height } = content.getBoundingClientRect()
+      const left = e.clientX - x
+      const top = e.clientY - y
+      const centerX = left - width / 2
+      const centerY = top - height / 2
+      const d = Math.sqrt(centerX ** 2 + centerY ** 2)
+
+      // Tilt content
+      content.style.transform = `
+          rotate3d(
+            ${-centerY / 170},  ${centerX / 170}, 0, ${d / 17}deg
+          )
+        `
+      // Move content shadow
+      content.style.boxShadow = `
+          ${-centerX / 10}px  ${-centerY / 10}px 20px rgba(0, 0, 0, 0.3)
+        `
+      // Move content light
+      contentLight.style.backgroundImage = `
+          radial-gradient(
+            circle at ${left}px ${top}px, #00000010, #ffffff00, #ffffff70
+          )
+        `
+    }
+
+    const optimizedHandleMousemove = toFrame(handleMousemove)
+
+    content.addEventListener('mousemove', optimizedHandleMousemove)
+    return () => {
+      content.removeEventListener('mousemove', optimizedHandleMousemove)
+    }
+  }, [])
 
   return (
     <CSSTransition className="gallery-cover" isShow={isShow} duration={1300}>
-      <div className="gallery-cover__envelop" tabIndex={0} data-cursor-scale={CURSOR_SCALE}>
-        <div className="gallery-cover__envelop--back" data-cursor-scale={CURSOR_SCALE}></div>
-        <div className="gallery-cover__envelop--left" data-cursor-scale={CURSOR_SCALE}></div>
-        <div className="gallery-cover__envelop--right" data-cursor-scale={CURSOR_SCALE}></div>
-        <div className="gallery-cover__envelop--bottom" data-cursor-scale={CURSOR_SCALE}></div>
-        <div className="gallery-cover__envelop--top" data-cursor-scale={CURSOR_SCALE}></div>
-        <main className="gallery-cover__envelop--content">
-          <h1>{gallery.name}</h1>
-          <p>{gallery.content}</p>
-          <Button text="입장하기" onClick={() => setIsShow(false)} direction="center" />
-        </main>
-      </div>
+      <article className="gallery-cover__content" ref={contentRef}>
+        <h1>{gallery.name}</h1>
+        <p>{gallery.content}</p>
+        <Button text="입장하기" onClick={() => setIsShow(false)} direction="center" />
+        <div className="gallery-cover__content--light" ref={contentLightRef} />
+      </article>
+      <div className="gallery-cover__back" />
     </CSSTransition>
   )
 }

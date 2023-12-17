@@ -9,25 +9,27 @@ import { CannonKeypadControls } from './three-custom/controls/CannonKeypadContro
 import { RaycasterControls } from './three-custom/controls/RaycasterControls.ts'
 import { FrameMesh } from './three-custom/meshes/FrameMesh'
 import { DefaultRenderer } from './three-custom/renderers/DefaultRenderer'
-import { galleryItemData } from '../../data'
-import { GalleryTypeProps, GalleryTypeReturns } from '../../types'
+import { GalleryData, GalleryTypeProps, GalleryTypeReturns } from '../../types'
 import CSSTransition from '@/atoms/ui/CSSTransition'
 import Loading from '@/atoms/ui/Loading'
 import Modal from '@/atoms/ui/Modal'
 import PostDetail from '@/features/post/components/PostDetail'
-import { postListData } from '@/features/post/data'
+import { PostItemData } from '@/features/post/types'
 import toastManager from '@/utils/toastManager'
+
+type GalleryCanvasProps = {
+  gallery: GalleryData
+  postList: PostItemData[]
+}
 
 const CANVAS_TYPE: Record<number, (kwargs: GalleryTypeProps) => GalleryTypeReturns> = {
   1: greenary,
 }
 
-const GalleryCanvas = () => {
+const GalleryCanvas = ({ gallery, postList }: GalleryCanvasProps) => {
   /**
    * Get Data
    */
-  const gallery = galleryItemData
-  const postList = postListData
   /**
    * Render the Three.js canvas
    */

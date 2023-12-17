@@ -2,12 +2,14 @@ import { PropsWithChildren } from 'react'
 import './Select.scss'
 
 type SelectProps = {
+  id?: string | undefined
+  className?: string | undefined
   name: string
 }
 
-const Select = ({ name, children }: PropsWithChildren<SelectProps>) => {
+const Select = ({ id, className, name, children }: PropsWithChildren<SelectProps>) => {
   return (
-    <select className="select" name={name}>
+    <select id={id} className={`select ${className}`} name={name}>
       {children}
     </select>
   )

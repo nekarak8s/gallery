@@ -10,7 +10,8 @@
 }
 
 .gallery__navbar {
-  position: absolute;
+  @include z-index(navbar);
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
