@@ -26,7 +26,7 @@ const navbarRoutes: Record<string, RouteElement> = {
 const plainRoutes: Record<string, RouteElement> = {
   OAuth: { path: '/oauth/:type', element: <OAuth /> },
   Aquarium: { path: '/aquarium', element: <Aquarium /> },
-  Gallery: { path: '/gallery', element: <Gallery /> },
+  Gallery: { path: '/gallery/:galleryId', element: <Gallery /> },
 }
 
 export const routes = { ...navbarRoutes, ...plainRoutes }
@@ -37,7 +37,7 @@ function App() {
   return (
     <Suspense fallback={<Loading />}>
       <Routes>
-        <Route path="/" element={<NavbarLayout />}>
+        <Route path="" element={<NavbarLayout />}>
           {Object.values(navbarRoutes).map((route) => (
             <Route key={route.path} path={route.path} element={route.element} />
           ))}

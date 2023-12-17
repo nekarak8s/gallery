@@ -1,0 +1,29 @@
+@use '@/styles/_responsive.scss' as *;
+
+.gallery-create-form {
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  padding: 3em 5em;
+  max-width: 28em;
+  font-size: 1rem;
+}
+
+.gallery-create-form__loading {
+  position: fixed;
+  inset: 0 0 0 0;
+}
+
+@include tablet {
+  .gallery-create-form {
+    padding: 2em 4em;
+  }
+}
+
+@include mobile {
+  .gallery-create-form {
+    padding: 2em 2em;
+  }
+}

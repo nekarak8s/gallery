@@ -1,3 +1,4 @@
+import { FocusEventHandler, MouseEventHandler } from 'react'
 import { CURSOR_SCALE } from '@/constants'
 import './Button.scss'
 
@@ -8,9 +9,9 @@ interface ButtonProps {
   type?: 'button' | 'submit' | 'reset'
   size?: 'sm' | 'md' | 'lg'
   color?: 'primary' | 'black' | 'white'
-  onClick?: () => void
-  onFocus?: () => void
-  onBlur?: () => void
+  onClick?: MouseEventHandler<HTMLButtonElement>
+  onFocus?: FocusEventHandler<HTMLButtonElement>
+  onBlur?: FocusEventHandler<HTMLButtonElement>
 }
 
 const Button = ({

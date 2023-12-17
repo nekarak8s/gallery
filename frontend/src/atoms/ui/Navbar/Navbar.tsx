@@ -103,27 +103,32 @@ function Navbar({ whitePathname, isLogin }: NavbarProps) {
               Guide
             </NavLink>
           </li>
-          <li>
-            {isLogin ? (
-              <NavLink
-                to={routes['MyPage'].path}
-                onFocus={showNavbar}
-                data-cursor-scale={CURSOR_SCALE}
-              >
-                MyPage
-              </NavLink>
+
+          {process.env.REACT_APP_BASE_URL !== '/gallery' &&
+            (isLogin ? (
+              <li>
+                <NavLink
+                  to={routes['MyPage'].path}
+                  onFocus={showNavbar}
+                  data-cursor-scale={CURSOR_SCALE}
+                >
+                  MyPage
+                </NavLink>
+              </li>
             ) : (
-              <button
-                onClick={handleLoginClick}
-                onFocus={showNavbar}
-                data-cursor-scale={CURSOR_SCALE}
-              >
-                Login
-              </button>
-            )}
-          </li>
-          <li>
-            {process.env.NODE_ENV === 'development' && (
+              <li>
+                <button
+                  onClick={handleLoginClick}
+                  onFocus={showNavbar}
+                  data-cursor-scale={CURSOR_SCALE}
+                >
+                  Login
+                </button>
+              </li>
+            ))}
+
+          {process.env.REACT_APP_BASE_URL === '/gallery' && (
+            <li>
               <NavLink
                 to={routes['MyPage'].path}
                 onFocus={showNavbar}
@@ -131,8 +136,8 @@ function Navbar({ whitePathname, isLogin }: NavbarProps) {
               >
                 MyPage
               </NavLink>
-            )}
-          </li>
+            </li>
+          )}
         </ul>
       </nav>
       {/* Login Modal */}

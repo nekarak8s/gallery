@@ -2,7 +2,7 @@ import { HttpResponse, http } from 'msw'
 import { musicData } from './data'
 
 export const musicHandlers = [
-  http.get('*/post/music/list', ({ request }) => {
+  http.get('*/api/post/music/list', ({ request }) => {
     const url = new URL(request.url)
     const q = url.searchParams.get('q')
 
@@ -35,7 +35,7 @@ export const musicHandlers = [
       { status: 200 }
     )
   }),
-  http.post('*/post/music', () => {
+  http.post('*/api/post/music', () => {
     return HttpResponse.json({ data: musicData }, { status: 200 })
   }),
 ]

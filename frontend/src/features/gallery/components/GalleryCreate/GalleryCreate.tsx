@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import GalleryForm from '../GalleryForm'
+import GalleryCreateForm from '../GalleryCreateForm'
 import PlusIcon from '@/assets/svgs/plus.svg'
 import Modal from '@/atoms/ui/Modal'
 import { CURSOR_SCALE } from '@/constants'
@@ -22,7 +22,7 @@ const GalleryCreate = () => {
         <PlusIcon />
       </button>
       <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
-        <GalleryForm onSuccess={() => setIsOpen(false)} />
+        <GalleryCreateForm onSuccess={() => setIsOpen(false)} />
       </Modal>
     </>
   )

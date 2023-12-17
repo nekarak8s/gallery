@@ -146,7 +146,7 @@
 
 @include mobile {
   .button {
-    padding: 0.3em 0.8em;
+    padding: 0.4em 0.9em;
 
     &.lg {
       font-size: 1rem;
@@ -157,7 +157,7 @@
     }
 
     &.sm {
-      font-size: 0.6rem;
+      font-size: 0.7rem;
     }
   }
 }

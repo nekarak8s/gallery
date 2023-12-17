@@ -28,33 +28,6 @@
 .footer__license {
   font-size: 1rem;
   margin: 1em 2em 2em;
-
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    box-sizing: border-box;
-    text-align: left;
-  }
-
-  thead {
-    border-bottom: 3px solid var(--color-ft, c.$ft-black);
-
-    th {
-      padding: 0.75em 0.5em;
-      font-weight: 600;
-    }
-  }
-
-  tbody {
-    border-bottom: 3px solid var(--color-ft, c.$ft-black);
-    tr {
-      border-bottom: 2px solid #ddd;
-
-      td {
-        padding: 0.75em 0.5em;
-      }
-    }
-  }
 }
 
 @include mobile {

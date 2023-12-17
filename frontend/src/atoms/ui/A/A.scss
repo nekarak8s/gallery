@@ -1,0 +1,24 @@
+@use '@/styles/_colors.scss' as c;
+
+.a {
+  position: relative;
+  overflow: hidden;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background-color: var(--color-ft, c.$ft-black);
+    transform: translate(0px, 1px);
+    transition: width 200ms ease-in-out;
+  }
+}
+
+.a:hover {
+  &::after {
+    width: 100%;
+  }
+}

@@ -16,7 +16,7 @@ const queryClient = new QueryClient({
 })
 
 async function enableMocking() {
-  if (process.env.NODE_ENV !== 'development') {
+  if (process.env.REACT_APP_BASE_URL !== '/gallery') {
     return
   }
 
@@ -37,7 +37,7 @@ enableMocking().then(() => {
   createRoot(rootElement).render(
     <QueryClientProvider client={queryClient}>
       <BrowserRouter
-        basename={process.env.REACT_APP_BASE_URL ? process.env.REACT_APP_BASE_URL : ''}
+        basename={process.env.REACT_APP_BASE_URL ? process.env.REACT_APP_BASE_URL + '/' : '/'}
       >
         <App />
       </BrowserRouter>

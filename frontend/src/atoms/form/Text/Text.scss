@@ -1,8 +1,10 @@
 @use '@/styles/_colors.scss' as c;
+@use '@/styles/_responsive.scss' as *;
 
 .text {
   font-size: 1rem;
   min-width: 15em;
+  width: 100%;
   position: relative;
   background-color: var(--color-bg, c.$bg-white);
   transition: background-color 0.1s ease-in;
@@ -46,4 +48,10 @@
   font-size: 0.7em;
   font-weight: 600;
   transform: translate(0.1em, -0.7em);
+}
+
+@include mobile {
+  .text {
+    font-size: 0.8rem;
+  }
 }

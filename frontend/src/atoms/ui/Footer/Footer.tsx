@@ -1,5 +1,7 @@
 import { useState } from 'react'
+import A from '../A'
 import Modal from '../Modal'
+import Table from '../Table/Table'
 import FileIcon from '@/assets/svgs/file.svg'
 import GithubIcon from '@/assets/svgs/github.svg'
 import GmailIcon from '@/assets/svgs/gmail.svg'
@@ -13,58 +15,53 @@ const Footer = () => {
     <>
       <footer className="footer">
         <p>
-          더 갤러리: <del>인스타그램 3D 버전</del> 쿠버네티스 배포용 토이프로젝트
+          더 갤러리: <del>인스타그램 3D 버전</del> 쿠버네티스 배포용 프로젝트
         </p>
         <address>
           <ul>
             <li>
               이병호.&nbsp;&nbsp;
-              <a
+              <A
                 href="https://github.com/Byongho96"
                 title="이병호 깃헙"
                 target="_blank"
                 className="footer__icon-text"
                 data-cursor-scale={CURSOR_SCALE}
-                rel="noreferrer"
               >
                 <GithubIcon /> Byongho96
-              </a>
+              </A>
               &nbsp;&nbsp;
-              <a
+              <A
                 href="mailto:unlike96@gmail.com"
                 title="이병호 이메일"
                 target="_blank"
                 className="footer__icon-text"
                 data-cursor-scale={CURSOR_SCALE}
-                rel="noreferrer"
               >
                 <GmailIcon /> unlike96@gmail.com
-              </a>
+              </A>
             </li>
             <li>
               이찬희.&nbsp;&nbsp;
-              <a
+              <A
                 href="https://github.com/chancehee"
                 title="이찬희 깃헙"
                 target="_blank"
                 className="footer__icon-text"
                 data-cursor-scale={CURSOR_SCALE}
-                rel="noreferrer"
               >
-                <GithubIcon />
-                chancehee
-              </a>
+                <GithubIcon /> chancehee
+              </A>
               &nbsp;&nbsp;
-              <a
+              <A
                 href="mailto:dojsfffff@gmail.com"
                 title="이찬희 이메일"
                 target="_blank"
                 className="footer__icon-text"
                 data-cursor-scale={CURSOR_SCALE}
-                rel="noreferrer"
               >
                 <GmailIcon /> dojsfffff@gmail.com
-              </a>
+              </A>
             </li>
           </ul>
         </address>
@@ -85,54 +82,47 @@ const Footer = () => {
         }}
       >
         <div className="footer__license">
-          <table>
+          <Table caption={'저작물 링크와 라이선스 정보'}>
             <thead>
               <tr>
                 <th></th>
-                <th>저작물, 저작자</th>
-                <th>라이선스</th>
+                <th scope="row">저작물, 저작자</th>
+                <th scope="row">라이선스</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td>폰트</td>
+                <th scope="row">폰트</th>
                 <td>
-                  <a
+                  <A
                     href="https://www.youtube.com/watch?v=tFcJsB-pekY"
                     title="프리텐다드 글꼴"
                     target="_blank"
-                    rel="noreferrer"
                   >
-                    orioncactus, Pretendard
-                  </a>
+                    Pretendard, orioncactus
+                  </A>
                 </td>
                 <td>
-                  <a
-                    href="https://openfontlicense.org/"
-                    title="SIL 라이선스"
-                    target="_blank"
-                    rel="noreferrer"
-                  >
+                  <A href="https://openfontlicense.org/" title="SIL 라이선스" target="_blank">
                     SIL 오픈 폰트
-                  </a>
+                  </A>
                 </td>
               </tr>
               <tr>
-                <td>홈 BGM</td>
+                <th scope="row">홈 BGM</th>
                 <td>
-                  <a
+                  <A
                     href="https://www.youtube.com/watch?v=tFcJsB-pekY"
                     title="프리텐다드 글꼴"
                     target="_blank"
-                    rel="noreferrer"
                   >
                     Above the Treetops, Pair Piano
-                  </a>
+                  </A>
                 </td>
                 <td> </td>
               </tr>
             </tbody>
-          </table>
+          </Table>
         </div>
       </Modal>
     </>

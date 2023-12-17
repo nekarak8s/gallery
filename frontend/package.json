@@ -10,7 +10,7 @@
     "develop": "webpack-dev-server --config webpack.dev.js",
     "gh-build": "webpack --config webpack.gh.js",
     "build": "webpack --config webpack.prod.js",
-    "deploy": "cp dist/index.html dist/404.html && gh-pages -d dist",
+    "deploy": "gh-pages -d dist",
     "profile": "npm run build -- --stats && npx webpack-bundle-analyzer ./dist/bundle-stats.json",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"

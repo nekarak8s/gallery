@@ -1,0 +1,49 @@
+@use '@/styles/_colors.scss' as c;
+
+.places-radio {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+
+  svg {
+    width: 40px;
+    height: 40px;
+    color: var(--color-ft-subtle, c.$ft-gray);
+  }
+
+  svg:hover {
+    color: var(--color-ft, c.$ft-black);
+  }
+
+  &__left {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translate(0%, -20%);
+  }
+
+  &__right {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translate(0%, -20%);
+  }
+}
+
+.places-radio__container {
+  display: flex;
+  position: relative;
+  overflow: hidden;
+  width: 70%;
+
+  label {
+    min-width: 100%;
+    transition: transform 200ms ease-in-out;
+  }
+
+  img {
+    width: 100%;
+    aspect-ratio: 1/1;
+  }
+}

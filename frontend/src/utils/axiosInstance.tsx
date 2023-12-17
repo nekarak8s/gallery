@@ -1,9 +1,10 @@
 import axios, { AxiosError, AxiosResponse, AxiosInstance } from 'axios'
 
 // Base URL
-const BASE_API_URL = process.env.REACT_APP_API_BASE_URL
-  ? process.env.REACT_APP_API_BASE_URL
-  : `http://${window.location.hostname}:${window.location.port}`
+const BASE_API_URL =
+  process.env.REACT_APP_API_BASE_URL + '/'
+    ? process.env.REACT_APP_API_BASE_URL
+    : `${window.location.protocol}://${window.location.hostname}:${window.location.port}`
 
 // Axios Instance
 const axiosInstance: AxiosInstance = axios.create({

@@ -2,7 +2,7 @@ import { HttpResponse, http } from 'msw'
 import { userData } from './data'
 
 export const memberHandlers = [
-  http.post('*/member/login', ({ request }) => {
+  http.post('*/api/member/login', ({ request }) => {
     // get query parameters
     const url = new URL(request.url)
     const type = url.searchParams.get('type')
@@ -18,7 +18,7 @@ export const memberHandlers = [
       { status: 200 }
     )
   }),
-  http.post('*/member/callback', ({ request }) => {
+  http.post('*/api/member/callback', ({ request }) => {
     // get parameters
     const url = new URL(request.url)
     const type = url.searchParams.get('type')
@@ -38,16 +38,16 @@ export const memberHandlers = [
       { status: 200 }
     )
   }),
-  http.post('*/member/logout', () => {
-    return HttpResponse.json({ message: '[NSW] 로그아웃 되었습니다' }, { status: 200 })
+  http.post('*/api/member/logout', () => {
+    return HttpResponse.json({ message: '[MSW] 로그아웃 되었습니다' }, { status: 200 })
   }),
-  http.get('*/member', () => {
+  http.get('*/api/member', () => {
     return HttpResponse.json({ data: userData }, { status: 200 })
   }),
-  http.patch('*/member', () => {
-    return HttpResponse.json({ message: '[NSW] 회원정보가 수정되었습니다' }, { status: 200 })
+  http.patch('*/api/member', () => {
+    return HttpResponse.json({ message: '[MSW] 회원정보가 수정되었습니다' }, { status: 200 })
   }),
-  http.delete('*/member', () => {
-    return HttpResponse.json({ message: '[NSW] 회원 탈퇴되었습니다' }, { status: 200 })
+  http.delete('*/api/member', () => {
+    return HttpResponse.json({ message: '[MSW] 회원 탈퇴되었습니다' }, { status: 200 })
   }),
 ]

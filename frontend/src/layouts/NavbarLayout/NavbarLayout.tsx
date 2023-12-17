@@ -1,4 +1,3 @@
-import React from 'react'
 import { Outlet, useLocation } from 'react-router-dom'
 import Footer from '@/atoms/ui/Footer'
 import Navbar from '@/atoms/ui/Navbar/Navbar'

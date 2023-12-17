@@ -1,8 +1,10 @@
 @use '@/styles/_colors.scss' as c;
+@use '@/styles/_responsive.scss' as *;
 
 .textarea {
   position: relative;
   min-width: 15em;
+  width: 100%;
   background-color: var(--color-bg, c.$bg-white);
   font-size: 1rem;
   transition: background-color 0.1s ease-in;
@@ -62,4 +64,10 @@
 .textarea textarea:not(:placeholder-shown) ~ div {
   border: none;
   border-bottom: 2px solid var(--color-ft, c.$ft-black);
+}
+
+@include mobile {
+  .textarea {
+    font-size: 0.8rem;
+  }
 }

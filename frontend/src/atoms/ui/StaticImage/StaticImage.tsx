@@ -38,10 +38,9 @@ const StaticImage: React.FC<Props> = ({
       ref={picRef}
       className="static-image"
       style={{
-        backgroundImage:
-          'url("' +
-          (imgSrc.placeholder ? imgSrc.placeholder : DEV_BLUR_DATA) +
-          '")',
+        width,
+        height,
+        backgroundImage: 'url("' + (imgSrc.placeholder ? imgSrc.placeholder : DEV_BLUR_DATA) + '")',
       }}
     >
       <source srcSet={webpSrc.srcSet} type="image/webp" sizes={sizes} />
@@ -52,7 +51,6 @@ const StaticImage: React.FC<Props> = ({
         sizes={sizes}
         loading={loading}
         onLoad={handleLoad}
-        style={{ width, height }}
       />
     </picture>
   )
