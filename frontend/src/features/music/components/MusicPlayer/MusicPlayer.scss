@@ -1,4 +1,5 @@
 @use '@/styles/_animations.scss' as a;
+@use '@/styles/_responsive.scss' as *;
 
 #youtube {
   visibility: hidden;
@@ -8,6 +9,7 @@
   display: flex;
   align-items: center;
   gap: 0.5em;
+  width: 100%;
   font-size: 1rem;
 }
 
@@ -21,7 +23,7 @@
 
 .music-player__info {
   display: flex;
-  width: 100%;
+  flex: 1;
   flex-wrap: nowrap;
   overflow: hidden;
 
@@ -37,5 +39,11 @@
   }
   100% {
     transform: translate(-100%);
+  }
+}
+
+@include tablet {
+  .music-player {
+    font-size: 0.9rem;
   }
 }

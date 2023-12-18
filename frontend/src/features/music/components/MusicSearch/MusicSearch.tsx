@@ -49,8 +49,6 @@ const MusicSearch = ({ onSelect }: MusicSearchProps) => {
     })
   }
 
-  //   const data: MusicSearchData[] = []
-
   return (
     <div className="music-search">
       <Text
@@ -59,19 +57,22 @@ const MusicSearch = ({ onSelect }: MusicSearchProps) => {
         initialValue=""
         onChange={(e) => setQuery(e.target.value)}
       />
-      <Form onSubmit={handleSubmit}>
-        {data &&
-          data.map((music, index) => (
-            <Radio
-              id={`music-search-${index}`}
-              key={`${music.artist}-${music.title}-${music.releasedDate}`}
-              name="musicIndex"
-              label={`${music.title} - ${music.artist}`}
-              value={index}
-            >
-              <img src={music.coverURL} />
-            </Radio>
-          ))}
+      <Form className="music-search__form" onSubmit={handleSubmit}>
+        <ul className="music-search__list">
+          {data &&
+            data.map((music, index) => (
+              <li key={`${music.artist}-${music.title}-${music.releasedDate}`}>
+                <Radio id={`music-search-${index}`} name="musicIndex" value={index}>
+                  <div className="music-search__item">
+                    <img src={music.coverURL} />
+                    <p>
+                      {music.title} - {music.artist}
+                    </p>
+                  </div>
+                </Radio>
+              </li>
+            ))}
+        </ul>
         <Button type="submit" text="음악 선택" ariaLabel="음악 선택" />
       </Form>
     </div>

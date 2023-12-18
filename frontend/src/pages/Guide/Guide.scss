@@ -5,8 +5,9 @@
   justify-content: center;
   width: 100vw;
   min-height: 100vh;
-}
 
-.guide__media {
-  display: flex;
+  canvas {
+    width: 100% !important;
+    height: 100% !important;
+  }
 }

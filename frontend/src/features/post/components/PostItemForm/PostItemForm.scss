@@ -3,6 +3,10 @@
 .post-item-form {
   z-index: 1;
   position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr;
+  gap: 1em;
 
   &.inactive {
     background-color: rgba(0, 0, 0, 0.2);
@@ -28,6 +32,12 @@
   }
 }
 
+.post-item-form__title-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+}
+
 .post-item-form__music {
   display: flex;
   flex-direction: column;
@@ -42,7 +52,18 @@
   left: 8px;
 }
 
-@include mobile {
+@include tablet {
+  .post-item-form {
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(2, auto);
+    gap: 0;
+  }
+
+  .post-item-form__title-content {
+    gap: 0.5em;
+    flex: auto;
+  }
+
   .post-item-form__image-music {
     > img {
       width: 7em;

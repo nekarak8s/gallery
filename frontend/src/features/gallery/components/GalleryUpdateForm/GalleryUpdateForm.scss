@@ -6,8 +6,8 @@
   flex-direction: column;
   align-items: center;
   gap: 20px;
-  padding: 3em 4em;
-  max-width: min(500px, 80vw);
+  padding: 2em 3em;
+  max-width: min(800px, 80vw);
   font-size: 1rem;
 }
 
@@ -19,7 +19,7 @@
 @include tablet {
   .gallery-update-form {
     padding: 2em 3em;
-    max-width: min(500px, 80vw);
+    max-width: min(700px, 80vw);
   }
 }
 

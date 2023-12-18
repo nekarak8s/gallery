@@ -1,5 +1,7 @@
 import { Suspense, lazy } from 'react'
 import { Routes, Route } from 'react-router-dom'
+import Home from './pages/Home'
+import MyPage from './pages/MyPage'
 import Cursor from '@/atoms/ui/Cursor'
 import Loading from '@/atoms/ui/Loading'
 import useMobile from '@/hooks/useMobile'
@@ -8,13 +10,11 @@ import Login from '@/pages/Login'
 import OAuth from '@/pages/OAuth'
 import '@/styles/_reset.scss'
 import '@/styles/_global.scss'
+
 import './App.scss'
 
-const Home = lazy(() => import('@/pages/Home')) // 120kb
 const Guide = lazy(() => import('@/pages/Guide'))
-const MyPage = lazy(() => import('@/pages/MyPage'))
 const Gallery = lazy(() => import('@/pages/Gallery'))
-const Aquarium = lazy(() => import('./pages/Aquarium'))
 
 const navbarRoutes: Record<string, RouteElement> = {
   Home: { path: '/', element: <Home /> },
@@ -25,7 +25,6 @@ const navbarRoutes: Record<string, RouteElement> = {
 
 const plainRoutes: Record<string, RouteElement> = {
   OAuth: { path: '/oauth/:type', element: <OAuth /> },
-  Aquarium: { path: '/aquarium', element: <Aquarium /> },
   Gallery: { path: '/gallery/:galleryId', element: <Gallery /> },
 }
 

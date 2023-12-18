@@ -66,6 +66,12 @@
   border-bottom: 2px solid var(--color-ft, c.$ft-black);
 }
 
+@include tablet {
+  .textarea {
+    font-size: 0.9rem;
+  }
+}
+
 @include mobile {
   .textarea {
     font-size: 0.9rem;

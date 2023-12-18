@@ -91,13 +91,15 @@ const PostItemForm = ({ post, index }: PostItemFormProps) => {
             </div>
           </div>
         </div>
-        <Text label="제목" name={`posts[${index}].title`} initialValue={post.title} />
-        <Textarea
-          label="설명"
-          name={`posts[${index}].content`}
-          initialValue={post.content}
-          height="2.5em"
-        />
+        <div className="post-item-form__title-content">
+          <Text label="제목" name={`posts[${index}].title`} initialValue={post.title} />
+          <Textarea
+            label="설명"
+            name={`posts[${index}].content`}
+            initialValue={post.content}
+            height="3.5em"
+          />
+        </div>
         <Checkbox
           className="post-item-form__is-active"
           name={`posts[${index}].isActive`}

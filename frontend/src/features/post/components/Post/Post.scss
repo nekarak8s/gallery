@@ -1,3 +1,5 @@
+@use '@/styles/_responsive.scss' as *;
+
 .post {
   display: flex;
   flex-direction: column;
@@ -32,4 +34,10 @@
   width: 100%;
   aspect-ratio: 1/1;
   object-fit: cover;
+}
+
+@include tablet {
+  .post {
+    font-size: 0.9rem;
+  }
 }
