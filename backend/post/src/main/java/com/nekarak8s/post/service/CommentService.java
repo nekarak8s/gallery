@@ -18,7 +18,7 @@ public interface CommentService {
     List<CommentInfo> findCommentList(long postId, int page) throws CustomException;
 
     // 댓글 수정
-    void modifyComment(CommentModifyDTO requestDTO) throws CustomException;
+    void modifyComment(long commentId, CommentModifyDTO requestDTO) throws CustomException;
 
     // 댓글 삭제
     void deleteComment(long commentId) throws CustomException;

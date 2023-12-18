@@ -51,7 +51,7 @@ public class PostController {
     @PatchMapping("list/{galleryId}")
     public ResponseEntity<?> updatePosts(@ModelAttribute PostModifyRequest request,
                                          @PathVariable(value = "galleryId") Long galleryId) throws CustomException, IOException {
-        log.debug("게시물 목록 수정 요청옴 : {}개", request.getPosts().size());
+        log.debug("게시물 목록 수정 요청옴 : {}", request.getPosts());
         postService.modifyPosts(request.getPosts(), galleryId);
 
         ApiResponse apiResponse = ApiResponse.builder()
@@ -61,22 +61,11 @@ public class PostController {
     }
 
     /**
-     * Todo : Kafka 이벤트 수신 -> 게시물 생성으로 변경 예정
-     * 게시물 10개 더미 데이터 생성
+     * 게시물 더미 데이터 생성
      * @param galleryId
      */
     @PostMapping("/dummy")
     public void createPostByGallery(@RequestParam(name = "galleryId") Long galleryId) throws CustomException{
         postService.createPostByGallery(galleryId, 2);
-    }
-
-    /**
-     * Todo : Kafka 이벤트 수신 -> 게시물 삭제로 변경 예정
-     * 게시물 10개 삭제
-     * @Param galleryId
-     */
-    @DeleteMapping("/dummy")
-    public void deletePostByGallery(@RequestParam(name = "galleryId") Long galleryId) {
-        postService.deletePostByGallery(galleryId);
     }
 }

@@ -1,16 +1,15 @@
 package com.nekarak8s.post.data.entity;
 
+import com.nekarak8s.post.data.dto.request.MusicRequestDTO;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Table(name = "music")
 public class Music {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,4 +30,14 @@ public class Music {
 
     @Column(name = "released_date", nullable = false)
     private String releasedDate;
+
+    public static Music toEntityWithVideoId(MusicRequestDTO dto, String videoId) {
+        return Music.builder()
+                .artist(dto.getArtist())
+                .title(dto.getTitle())
+                .coverURL(dto.getCoverURL())
+                .videoId(videoId)
+                .releasedDate(dto.getReleasedDate())
+                .build();
+    }
 }
