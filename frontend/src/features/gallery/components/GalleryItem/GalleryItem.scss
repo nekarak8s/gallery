@@ -34,7 +34,7 @@
   grid-row: 1 / 2;
   justify-self: flex-end;
   display: flex;
-  gap: 0.8em;
+  gap: 1.5em;
 }
 
 .gallery-item__icons svg {
@@ -169,6 +169,6 @@
 
 @include mobile {
   .gallery-item {
-    font-size: 0.8rem;
+    font-size: 2.4vw;
   }
 }

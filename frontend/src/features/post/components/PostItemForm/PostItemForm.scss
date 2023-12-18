@@ -48,8 +48,8 @@
 
 .post-item-form__is-active {
   position: absolute;
-  top: 10px;
-  left: 8px;
+  top: 0.8em;
+  left: 0.5em;
 }
 
 @include tablet {
@@ -66,8 +66,8 @@
 
   .post-item-form__image-music {
     > img {
-      width: 7em;
-      height: 7em;
+      width: 8em;
+      height: 8em;
     }
   }
 }

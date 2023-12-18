@@ -1,7 +1,7 @@
 import { World } from 'cannon-es'
-import { CannonKeypadControls } from './components/GalleryCanvas/three-custom/controls/CannonKeypadControls'
-import { RaycasterControls } from './components/GalleryCanvas/three-custom/controls/RaycasterControls.ts'
 import { PostData } from '../post/types'
+import { CannonKeypadControls } from '@/libs/three-custom/controls/CannonKeypadControls'
+import { RaycasterControls } from '@/libs/three-custom/controls/RaycasterControls.ts'
 
 export type GalleryFormData = {
   name: string

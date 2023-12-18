@@ -2,6 +2,7 @@ import { MouseEventHandler, useEffect, useMemo, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { GalleryData } from '../../types'
 import GalleryUpdateForm from '../GalleryUpdateForm'
+import EditIcon from '@/assets/svgs/edit.svg'
 import EnterIcon from '@/assets/svgs/enter.svg'
 import ShareIcon from '@/assets/svgs/share.svg'
 import Modal from '@/atoms/ui/Modal'
@@ -103,8 +104,6 @@ const GalleryItem = ({ gallery }: GalleryItemProps) => {
 
     item.addEventListener('mouseenter', handleMouseEnter)
     item.addEventListener('mouseleave', handleMouseLeave)
-    item.addEventListener('focus', handleMouseEnter)
-    item.addEventListener('blur', handleMouseLeave)
     buttons.forEach((button) => {
       button.addEventListener('focus', handleMouseEnter)
       button.addEventListener('blur', handleMouseLeave)
@@ -113,8 +112,6 @@ const GalleryItem = ({ gallery }: GalleryItemProps) => {
     return () => {
       item.removeEventListener('mouseenter', handleMouseEnter)
       item.removeEventListener('mouseleave', handleMouseLeave)
-      item.addEventListener('focus', handleMouseEnter)
-      item.addEventListener('blur', handleMouseLeave)
       buttons.forEach((button) => {
         button.removeEventListener('focus', handleMouseEnter)
         button.removeEventListener('blur', handleMouseLeave)
@@ -125,13 +122,7 @@ const GalleryItem = ({ gallery }: GalleryItemProps) => {
 
   return (
     <>
-      <article
-        tabIndex={0}
-        className="gallery-item"
-        ref={itemRef}
-        data-cursor-scale={CURSOR_SCALE}
-        onClick={() => setIsUpdateShow(true)}
-      >
+      <article tabIndex={0} className="gallery-item" ref={itemRef}>
         <h2 className="gallery-item__title" data-cursor-scale={CURSOR_SCALE}>
           {gallery.name}
         </h2>
@@ -152,6 +143,15 @@ const GalleryItem = ({ gallery }: GalleryItemProps) => {
               onClick={handleShareClick}
             >
               <ShareIcon />
+            </button>
+          </li>
+          <li>
+            <button
+              data-cursor-scale={CURSOR_SCALE}
+              aria-label={`${gallery.name} 갤러리 수정`}
+              onClick={() => setIsUpdateShow(true)}
+            >
+              <EditIcon />
             </button>
           </li>
         </ul>

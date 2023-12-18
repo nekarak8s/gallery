@@ -1,14 +1,15 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import GalleryNavbar from './GalleryNavbar'
+import CSSTransition from '@/atoms/ui/CSSTransition'
 import Loading from '@/atoms/ui/Loading'
 import GalleryCanvas from '@/features/gallery/components/GalleryCanvas'
 import GalleryCover from '@/features/gallery/components/GalleryCover'
 import { useGalleryQuery } from '@/features/gallery/services'
 import { usePostListQuery } from '@/features/post/services'
-import './Gallery.scss'
 import useMobile from '@/hooks/useMobile'
 import toastManager from '@/utils/toastManager'
+import './Gallery.scss'
 
 const Gallery = () => {
   /**
@@ -28,7 +29,7 @@ const Gallery = () => {
   } = usePostListQuery(parseInt(galleryId as string))
 
   /**
-   * Rotate page if it's mobile
+   * Recommend page rotation
    */
   const isMobile = useMobile()
 
@@ -41,6 +42,11 @@ const Gallery = () => {
     // Reset
     return () => {}
   }, [isMobile])
+
+  /**
+   * Delete cover when clicked
+   */
+  const [isCoverShow, setIsCoverShow] = useState(true)
 
   /**
    * Stat.js: check frame per second for deveopment
@@ -78,9 +84,9 @@ const Gallery = () => {
 
   return (
     <div className="gallery">
-      <div className="gallery__cover">
-        <GalleryCover gallery={gallery} />
-      </div>
+      <CSSTransition className="gallery__cover" isShow={isCoverShow} duration={1300}>
+        <GalleryCover gallery={gallery} onEnter={() => setIsCoverShow(false)} />
+      </CSSTransition>
       <div className="gallery__navbar">
         <GalleryNavbar />
       </div>

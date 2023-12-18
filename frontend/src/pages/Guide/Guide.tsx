@@ -1,11 +1,10 @@
 import { useEffect, useRef, useState } from 'react'
-import { SAPBroadphase, World } from 'cannon-es'
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
-import { buildSky } from './utils/buildSky'
-import { buildWater } from './utils/buildWater'
-import { DefaultCamera } from '@/features/gallery/components/GalleryCanvas/three-custom/cameras/DefaultCamera'
-import { DefaultRenderer } from '@/features/gallery/components/GalleryCanvas/three-custom/renderers/DefaultRenderer'
+import { buildArchitect } from './buildArchitect'
+import { buildSky } from '@/libs/three-custom/utils/buildSky'
+import { buildSun } from '@/libs/three-custom/utils/buildSun'
+import { buildWater } from '@/libs/three-custom/utils/buildWater'
 import './Guide.scss'
 
 const Guide = () => {
@@ -30,48 +29,41 @@ const Guide = () => {
     }
 
     // Renderer
-    const renderer = new DefaultRenderer({ canvas, antialias: true })
+    const renderer = new THREE.WebGLRenderer({ canvas })
+    renderer.setPixelRatio(window.devicePixelRatio)
+    renderer.setSize(window.innerWidth, window.innerHeight)
+    // canvas.appendChild(renderer.domElement)
 
     // Scene
     const scene = new THREE.Scene()
 
     // Camera
-    const camera = new DefaultCamera({ canvas, near: 1, far: 20000 })
-    camera.position.set(20, 10, 30)
-    scene.add(camera)
-
-    console.log(camera.position)
-
-    // Cannon world
-    const world = new World()
-    world.broadphase = new SAPBroadphase(world)
+    const camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 1, 20000)
+    camera.position.set(30, 30, 100)
 
     // Main controls
-    const controls = new OrbitControls(camera, canvas)
+    const controls = new OrbitControls(camera, renderer.domElement)
+    controls.maxPolarAngle = Math.PI * 0.495
+    controls.target.set(0, 10, 0)
+    controls.minDistance = 40.0
+    controls.maxDistance = 200.0
+    controls.update()
 
     // build Meshes
     const water = buildWater(scene)
-    buildSky(scene)
+    const sky = buildSky(scene, renderer)
+    const sun = buildSun(renderer, sky, water, scene)
+    const architect = buildArchitect({ scene, loadingManager })
 
     // light
     const light = new THREE.AmbientLight(0x404040) // soft white light
     scene.add(light)
 
-    // box
-    // const geometry = new THREE.BoxGeometry(10, 10, 10)
-    // const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 })
-    // const cube = new THREE.Mesh(geometry, material)
-    // scene.add(cube)
-
     // Add Resize Listener
     const handleSize = function resizeCameraRenderer() {
-      // camera resize
-      camera.setDefaultAspect()
+      camera.aspect = window.innerWidth / window.innerHeight
       camera.updateProjectionMatrix()
-
-      // renderer resize
-      renderer.setDefaultSize()
-      renderer.render(scene, camera)
+      renderer.setSize(window.innerWidth, window.innerHeight)
     }
 
     window.addEventListener('resize', handleSize)
@@ -80,14 +72,12 @@ const Guide = () => {
     const clock = new THREE.Clock()
 
     const draw = function renderCanvas() {
-      const delta = clock.getDelta()
+      // Animates our water
+      water.material.uniforms['time'].value += 1.0 / 60.0
 
-      // Update renderer
+      // Finally, render our scene
       renderer.render(scene, camera)
       renderer.setAnimationLoop(draw)
-
-      // Update controls
-      controls.update(delta)
     }
 
     draw()

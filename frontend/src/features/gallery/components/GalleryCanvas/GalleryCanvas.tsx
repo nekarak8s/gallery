@@ -2,19 +2,21 @@ import { useEffect, useRef, useState } from 'react'
 import { SAPBroadphase, World } from 'cannon-es'
 import CannonDebugger from 'cannon-es-debugger'
 import * as THREE from 'three'
-import greenary from './gallery-types/greenary'
+import buildGreenary from './gallery-types/buildGreenary'
 import './GalleryCanvas.scss'
-import { DefaultCamera } from './three-custom/cameras/DefaultCamera'
-import { CannonKeypadControls } from './three-custom/controls/CannonKeypadControls'
-import { RaycasterControls } from './three-custom/controls/RaycasterControls.ts'
-import { FrameMesh } from './three-custom/meshes/FrameMesh'
-import { DefaultRenderer } from './three-custom/renderers/DefaultRenderer'
 import { GalleryData, GalleryTypeProps, GalleryTypeReturns } from '../../types'
 import CSSTransition from '@/atoms/ui/CSSTransition'
+import Joystick from '@/atoms/ui/Joystick'
 import Loading from '@/atoms/ui/Loading'
 import Modal from '@/atoms/ui/Modal'
 import PostDetail from '@/features/post/components/PostDetail'
 import { PostItemData } from '@/features/post/types'
+import useMobile from '@/hooks/useMobile'
+import { DefaultCamera } from '@/libs/three-custom/cameras/DefaultCamera'
+import { CannonKeypadControls } from '@/libs/three-custom/controls/CannonKeypadControls'
+import { RaycasterControls } from '@/libs/three-custom/controls/RaycasterControls.ts'
+import { FrameMesh } from '@/libs/three-custom/meshes/FrameMesh'
+import { DefaultRenderer } from '@/libs/three-custom/renderers/DefaultRenderer'
 import toastManager from '@/utils/toastManager'
 
 type GalleryCanvasProps = {
@@ -23,18 +25,16 @@ type GalleryCanvasProps = {
 }
 
 const CANVAS_TYPE: Record<number, (kwargs: GalleryTypeProps) => GalleryTypeReturns> = {
-  1: greenary,
+  1: buildGreenary,
 }
 
 const GalleryCanvas = ({ gallery, postList }: GalleryCanvasProps) => {
-  /**
-   * Get Data
-   */
   /**
    * Render the Three.js canvas
    */
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const controlsRef = useRef<CannonKeypadControls | null>(null)
+  const rayControlsRef = useRef<RaycasterControls | null>(null)
 
   const [requiredCount, setRequiredCount] = useState(0)
   const [loadedCount, setLoadedCount] = useState(0)
@@ -88,6 +88,7 @@ const GalleryCanvas = ({ gallery, postList }: GalleryCanvasProps) => {
       setSelectedPostIdx(null)
       controls.enabled = true
     }
+    rayControlsRef.current = rayControls
 
     // Cannon Helper : Development
     let cannonDebugger: { update: () => void } | null = null
@@ -161,6 +162,24 @@ const GalleryCanvas = ({ gallery, postList }: GalleryCanvasProps) => {
     }
   }, [gallery, postList])
 
+  /**
+   * Use Joystick if it's Mobile
+   */
+  const isMobile = useMobile()
+
+  const joystickShoot = () => {
+    if (!rayControlsRef.current) return
+
+    rayControlsRef.current.shoot()
+  }
+
+  const joystickControl = (x: number, y: number) => {
+    if (!controlsRef.current) return
+
+    controlsRef.current.lookSpeed = -x
+    controlsRef.current.movementSpeed = -y
+  }
+
   return (
     <div className="gallery-canvas">
       <canvas ref={canvasRef} />
@@ -183,6 +202,11 @@ const GalleryCanvas = ({ gallery, postList }: GalleryCanvasProps) => {
       >
         {selectedPostIdx !== null && <PostDetail post={postList[selectedPostIdx]} />}
       </Modal>
+      {isMobile && (
+        <div className="gallery-canvas__joystick">
+          <Joystick control={joystickControl} shoot={joystickShoot} />
+        </div>
+      )}
     </div>
   )
 }

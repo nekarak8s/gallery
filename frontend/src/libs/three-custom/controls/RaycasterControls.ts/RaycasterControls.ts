@@ -41,6 +41,20 @@ export class RaycasterControls {
   }
 
   /**
+   * Trigger raycast
+   */
+  shoot() {
+    if (this.raycast) {
+      this.#raycaster.setFromCamera(_canvasOrigin, this.camera)
+      const intersects = this.#raycaster.intersectObjects(this.rayItems)
+      for (const item of intersects) {
+        this.raycast(item)
+        break
+      }
+    }
+  }
+
+  /**
    * Keydown event handler
    */
   onKeyDown(event: KeyboardEvent) {
@@ -49,14 +63,7 @@ export class RaycasterControls {
     switch (event.code) {
       case 'Space':
         event.preventDefault()
-        if (this.raycast) {
-          this.#raycaster.setFromCamera(_canvasOrigin, this.camera)
-          const intersects = this.#raycaster.intersectObjects(this.rayItems)
-          for (const item of intersects) {
-            this.raycast(item)
-            break
-          }
-        }
+        this.shoot()
         break
 
       case 'Escape':

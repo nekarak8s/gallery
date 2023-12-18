@@ -1,3 +1,5 @@
+@use '@/styles/_responsive.scss' as *;
+
 .profile-edit {
   display: flex;
   flex-direction: row-reverse;
@@ -34,5 +36,17 @@
     gap: 0px;
     opacity: 0;
     transform: scale(0);
+  }
+}
+
+@include tablet {
+  .profile-edit {
+    font-size: 0.9rem;
+  }
+}
+
+@include mobile {
+  .profile-edit {
+    font-size: 0.8rem;
   }
 }

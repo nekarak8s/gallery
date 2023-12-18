@@ -6,6 +6,7 @@ type TextureProps = {
   textureLoader: THREE.TextureLoader
   baseImg: string
   normalImg?: string
+  dispImg?: string
   ambientImg?: string
   roughImg?: string
   repeatX?: number
@@ -50,6 +51,9 @@ export class Wall extends Stuff {
       if (info.texture.roughImg) {
         this.textures['roughTex'] = info.texture.textureLoader.load(info.texture.roughImg)
       }
+      if (info.texture.dispImg) {
+        this.textures['dispTex'] = info.texture.textureLoader.load(info.texture.dispImg)
+      }
       if (info.texture.ambientImg) {
         this.textures['ambientTex'] = info.texture.textureLoader.load(info.texture.ambientImg)
       }
@@ -72,9 +76,10 @@ export class Wall extends Stuff {
       color: info.color,
       transparent: info.transparent || false,
       opacity: info.opacity,
-      map: this.textures['baseTex'] || null,
-      normalMap: this.textures['normalTex'] || null,
-      aoMap: this.textures['ambientTex'] || null,
+      map: this.textures['baseTex'] || undefined,
+      normalMap: this.textures['normalTex'] || undefined,
+      aoMap: this.textures['ambientTex'] || undefined,
+      displacementMap: this.textures['dispTex'] || undefined,
     })
 
     // Mesh

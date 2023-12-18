@@ -100,6 +100,7 @@ function Navbar({ whitePathname, isLogin }: NavbarProps) {
               to={routes['Guide'].path}
               onFocus={showNavbar}
               data-cursor-scale={CURSOR_SCALE}
+              onClick={handleToggleClick}
             >
               Guide
             </NavLink>
@@ -112,6 +113,7 @@ function Navbar({ whitePathname, isLogin }: NavbarProps) {
                   to={routes['MyPage'].path}
                   onFocus={showNavbar}
                   data-cursor-scale={CURSOR_SCALE}
+                  onClick={handleToggleClick}
                 >
                   MyPage
                 </NavLink>
@@ -135,6 +137,7 @@ function Navbar({ whitePathname, isLogin }: NavbarProps) {
                 to={routes['MyPage'].path}
                 onFocus={showNavbar}
                 data-cursor-scale={CURSOR_SCALE}
+                onClick={handleToggleClick}
               >
                 MyPage
               </NavLink>

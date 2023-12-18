@@ -14,8 +14,6 @@ import {
 } from 'three'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import { degToRad } from 'three/src/math/MathUtils'
-import { Frame } from '../three-custom/items/Frame'
-import { Trees } from '../three-custom/items/Trees'
 import nx from '@/assets/cubemaps/clear_sky/nx.png'
 import ny from '@/assets/cubemaps/clear_sky/ny.png'
 import nz from '@/assets/cubemaps/clear_sky/nz.png'
@@ -24,6 +22,8 @@ import py from '@/assets/cubemaps/clear_sky/py.png'
 import pz from '@/assets/cubemaps/clear_sky/pz.png'
 import greenaryGlb from '@/assets/glbs/greenary.glb'
 import { GalleryTypeProps } from '@/features/gallery/types'
+import { Frame } from '@/libs/three-custom/items/Frame'
+import { Trees } from '@/libs/three-custom/items/Trees'
 
 const FRAME_INFO = {
   width: 2,
@@ -374,7 +374,7 @@ const PLAIN_TREE = [
 
 const TREE_DATA = [...FOREST_TREE, ...MOUNTAIN_TREE, ...BEACH_TREE, ...LAKE_TREE, ...PLAIN_TREE]
 
-const greenary = (props: GalleryTypeProps) => {
+const buildGreenary = (props: GalleryTypeProps) => {
   // Loaders
   const textureLoader = new TextureLoader(props.loadingManager)
   const cubeTextureLoader = new CubeTextureLoader(props.loadingManager)
@@ -580,7 +580,7 @@ const greenary = (props: GalleryTypeProps) => {
   return { update, dispose }
 }
 
-export default greenary
+export default buildGreenary
 
 // mesh?: THREE.Mesh
 // glb?: THREE.Object3D<THREE.Object3DEventMap>

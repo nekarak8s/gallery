@@ -1,20 +1,15 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { GalleryData } from '../../types'
 import Button from '@/atoms/ui/Button'
-import CSSTransition from '@/atoms/ui/CSSTransition'
 import toFrame from '@/utils/toFrame'
 import './GalleryCover.scss'
 
 type GalleryCoverProps = {
   gallery: GalleryData
+  onEnter: () => void
 }
 
-const GalleryCover = ({ gallery }: GalleryCoverProps) => {
-  /**
-   * Delete cover when clicked
-   */
-  const [isShow, setIsShow] = useState(true)
-
+const GalleryCover = ({ gallery, onEnter }: GalleryCoverProps) => {
   /**
    * Handle Mousemove Event
    * 1. Tilt content
@@ -64,15 +59,15 @@ const GalleryCover = ({ gallery }: GalleryCoverProps) => {
   }, [])
 
   return (
-    <CSSTransition className="gallery-cover" isShow={isShow} duration={1300}>
+    <div className="gallery-cover">
       <article className="gallery-cover__content" ref={contentRef}>
         <h1>{gallery.name}</h1>
         <p>{gallery.content}</p>
-        <Button text="입장하기" onClick={() => setIsShow(false)} direction="center" />
+        <Button text="입장하기" onClick={onEnter} direction="center" />
         <div className="gallery-cover__content--light" ref={contentLightRef} />
       </article>
       <div className="gallery-cover__back" />
-    </CSSTransition>
+    </div>
   )
 }
 

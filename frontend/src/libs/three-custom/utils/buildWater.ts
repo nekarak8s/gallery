@@ -1,12 +1,13 @@
 import * as THREE from 'three'
-import { Water } from './Water.js'
+import { Water } from 'three/examples/jsm/objects/Water.js'
+import waterNomals from '@/assets/textures/water/waternormals.jpg'
 
 export function buildWater(scene: THREE.Scene) {
   const waterGeometry = new THREE.PlaneGeometry(10000, 10000)
   const water = new Water(waterGeometry, {
     textureWidth: 512,
     textureHeight: 512,
-    waterNormals: new THREE.TextureLoader().load('', function (texture) {
+    waterNormals: new THREE.TextureLoader().load(waterNomals, function (texture) {
       texture.wrapS = texture.wrapT = THREE.RepeatWrapping
     }),
     alpha: 1.0,
@@ -19,6 +20,6 @@ export function buildWater(scene: THREE.Scene) {
   water.rotation.x = -Math.PI / 2
   scene.add(water)
 
-  //   const waterUniforms = water.material.uniforms
+  const waterUniforms = water.material.uniforms
   return water
 }
