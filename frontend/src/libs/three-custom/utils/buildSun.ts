@@ -3,12 +3,7 @@ import { Sky } from 'three/examples/jsm/objects/Sky.js'
 import { Water } from 'three/examples/jsm/objects/Water.js'
 
 /*eslint-disable */
-export function buildSun(
-  renderer: THREE.WebGLRenderer,
-  sky: Sky,
-  water: Water,
-  scene: THREE.Scene
-) {
+export function buildSun(renderer: THREE.WebGLRenderer, sky: Sky, water: Water) {
   const pmremGenerator = new THREE.PMREMGenerator(renderer)
   const sun = new THREE.Vector3()
 
@@ -21,7 +16,6 @@ export function buildSun(
 
   sky.material.uniforms['sunPosition'].value.copy(sun)
   water.material.uniforms['sunDirection'].value.copy(sun).normalize()
-  console.log(scene)
 
   return sun
 }

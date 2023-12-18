@@ -1,3 +1,7 @@
+@use '@/styles/_responsive.scss' as *;
+@use '@/styles/_z-index.scss' as *;
+@use '@/styles/_colors.scss' as c;
+
 .guide {
   display: flex;
   flex-direction: column;
@@ -5,9 +9,67 @@
   justify-content: center;
   width: 100vw;
   min-height: 100vh;
+  color: var(--ft-color-reverse, c.$ft-white);
+  font-size: 1rem;
+  text-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
 
-  canvas {
+  > canvas {
+    @include z-index(top-below);
+    position: sticky;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
+  }
+
+  > section {
+    @include z-index(top);
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    width: 100vw;
+    background-color: transparent;
+  }
+
+  &--accent {
+    font-size: 2em;
+    font-weight: 800;
+    line-height: 180%;
+  }
+}
+
+.guide__sections {
+  @include z-index(top);
+  position: relative;
+  background-color: transparent;
+
+  > section {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    height: 100vh;
+    width: 100vw;
+    background-color: transparent;
+
+    h1 {
+      font-size: 1.7em;
+      font-weight: 600;
+      line-height: 180%;
+    }
+
+    p {
+      font-size: 1.2em;
+      line-height: 150%;
+    }
+  }
+
+  > section:nth-child(odd) {
+    align-items: flex-end;
   }
 }

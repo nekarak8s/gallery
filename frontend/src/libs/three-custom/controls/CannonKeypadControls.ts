@@ -136,26 +136,28 @@ export class CannonKeypadControls {
   onKeyDown(event: KeyboardEvent) {
     if (!this.enabled) return
 
-    event.preventDefault()
-
     switch (event.code) {
       case 'ArrowUp':
       case 'KeyW':
+        event.preventDefault()
         this.#movementSpeed = 1
         break
 
       case 'ArrowLeft':
       case 'KeyA':
+        event.preventDefault()
         this.#lookSpeed = 1
         break
 
       case 'ArrowDown':
       case 'KeyS':
+        event.preventDefault()
         this.#movementSpeed = -1
         break
 
       case 'ArrowRight':
       case 'KeyD':
+        event.preventDefault()
         this.#lookSpeed = -1
         break
     }

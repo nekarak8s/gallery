@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { SAPBroadphase, World } from 'cannon-es'
 import CannonDebugger from 'cannon-es-debugger'
 import * as THREE from 'three'
@@ -77,7 +77,7 @@ const GalleryCanvas = ({ gallery, postList }: GalleryCanvasProps) => {
     const rayControls = new RaycasterControls(canvas, camera)
     rayControls.raycast = (item) => {
       if (item.object instanceof FrameMesh) {
-        if (item.distance > 10) toastManager.addToast('error', '너무 멂')
+        if (item.distance > 10) toastManager.addToast('error', '앨범이 너무 멀리 있습니다')
         else {
           setSelectedPostIdx(item.object.order)
           controls.enabled = false
@@ -167,18 +167,18 @@ const GalleryCanvas = ({ gallery, postList }: GalleryCanvasProps) => {
    */
   const isMobile = useMobile()
 
-  const joystickShoot = () => {
+  const joystickShoot = useCallback(() => {
     if (!rayControlsRef.current) return
 
     rayControlsRef.current.shoot()
-  }
+  }, [])
 
-  const joystickControl = (x: number, y: number) => {
+  const joystickControl = useCallback((x: number, y: number) => {
     if (!controlsRef.current) return
 
     controlsRef.current.lookSpeed = -x
     controlsRef.current.movementSpeed = -y
-  }
+  }, [])
 
   return (
     <div className="gallery-canvas">

@@ -48,6 +48,8 @@ const Joystick = ({ control, shoot }: JoystickProps) => {
     const handleTouchmove = function tracking(e: TouchEvent) {
       if (!isTracking.current) return
 
+      e.preventDefault()
+
       const lastTouch = e.changedTouches[e.changedTouches.length - 1]
       let touchoffsetX = lastTouch.clientX - origin.x
       let touchoffsetY = lastTouch.clientY - origin.y
