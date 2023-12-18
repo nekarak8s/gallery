@@ -64,10 +64,11 @@ public class CommentController {
      * @return
      * @throws CustomException
      */
-    @PatchMapping
-    public ResponseEntity<?> modifyComment(@Valid @RequestBody CommentModifyDTO requestDTO) throws CustomException{
-        log.debug("댓글 수정 : {}", requestDTO);
-        commentService.modifyComment(requestDTO);
+    @PatchMapping("/{commentId}")
+    public ResponseEntity<?> modifyComment(@PathVariable(value = "commentId") Long commentId,
+                                           @Valid @RequestBody CommentModifyDTO requestDTO) throws CustomException{
+        log.debug("댓글 수정 요청 : {}", requestDTO);
+        commentService.modifyComment(commentId, requestDTO);
 
         ApiResponse apiResponse = ApiResponse.builder()
                 .message("댓글이 수정되었습니다")

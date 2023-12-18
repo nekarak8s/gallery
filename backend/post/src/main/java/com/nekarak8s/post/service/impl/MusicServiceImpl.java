@@ -24,51 +24,25 @@ public class MusicServiceImpl implements MusicService {
     private final YoutubeService youtubeAPI;
     private final SpotifyService spotifyAPI;
     private final MusicRepo musicRepo;
-//    private static final String YOUTUBE_BASE_URL = "https://www.youtube.com/watch?v=";
 
     /**
      * 음악 단일 조회
-     * @param musicRequestDTO
+     * @param dto
      * @return
      */
     @Override
-    public MusicInfo getMusicInfo(MusicRequestDTO musicRequestDTO) {
-        String artist       = musicRequestDTO.getArtist();
-        String title        = musicRequestDTO.getTitle();
-        String coverURL     = musicRequestDTO.getCoverURL();
-        String releasedDate = musicRequestDTO.getReleasedDate();
+    public MusicInfo getMusicInfo(MusicRequestDTO dto) {
+        Music music = getMusicFromCache(dto);
 
-        String videoId;
-        MusicInfo musicInfo;
-
-        Music music = musicRepo.findByArtistAndAndTitle(artist, title); // DB 접근
-
-        if (music != null) {
-            log.debug("DB 접근 -> 캐싱 데이터 사용");
-            videoId = music.getVideoId();
+        if (music == null) {
+            log.debug("Cache miss -> Youtube API 호출");
+            music = fetchMusicFromYoutube(dto);
+            saveMusicToDatabase(music);
         } else {
-            log.debug("Youtub API 호출 -> DB 저장");
-            YoutubeResponse youtubeResponse = youtubeAPI.searchVideos(artist + " " + title).get(0); // Youtube API 호출
-            videoId = youtubeResponse.getId().getVideoId();
-            music = new Music();
-            music.setArtist(artist);
-            music.setTitle(title);
-            music.setCoverURL(coverURL);
-            music.setVideoId(videoId);
-            music.setReleasedDate(releasedDate);
-            musicRepo.save(music);
+            log.debug("Cache hit");
         }
 
-        musicInfo = MusicInfo.builder()
-                .musicId(music.getId())
-                .title(title)
-                .artist(artist)
-                .coverURL(coverURL)
-                .releasedDate(releasedDate)
-                .videoId(videoId) // 유튜브 동영상
-                .build();
-
-        return musicInfo;
+        return MusicInfo.toDTO(music);
     }
 
     /**
@@ -79,5 +53,20 @@ public class MusicServiceImpl implements MusicService {
     @Override
     public List<SpotifyTrackDTO> getTracks(String query) throws CustomException {
         return spotifyAPI.getSpotifyTracks(query);
+    }
+
+    private Music getMusicFromCache(MusicRequestDTO dto) {
+        return musicRepo.findByArtistAndAndTitle(dto.getArtist(), dto.getTitle());
+    }
+
+    private Music fetchMusicFromYoutube(MusicRequestDTO dto) {
+        log.debug("Fetching data from Youtube API");
+        YoutubeResponse response = youtubeAPI.searchVideos(dto.getArtist() + " " + dto.getTitle()).get(0);
+        return Music.toEntityWithVideoId(dto, response.getId().getVideoId());
+    }
+
+    private void saveMusicToDatabase(Music music) {
+        log.debug("Saving data to DB");
+        musicRepo.save(music);
     }
 }

@@ -75,22 +75,15 @@ public class CommentServiceImpl implements CommentService {
         List<CommentInfo> commentInfoList = new ArrayList<>();
 
         for (Comment comment : comments) {
-            String nickname = "";
-            // 회원 서버에서 닉네임 조회
+            String nickname;
             try {
-                log.info("회원 아이디 : {}", comment.getMemberId());
-                nickname = getMemberNickname(comment.getMemberId());
+                log.debug("회원 아이디 : {}", comment.getMemberId());
+                nickname = getMemberNickname(comment.getMemberId()); // 회원 서버에서 닉네임 조회
             } catch (Exception e) {
                 log.error("닉네임 조회 통신 실패 !!!");
-                throw new CustomException(HttpStatus.INTERNAL_SERVER_ERROR, "GP001", "서버 에러");
+                throw new CustomException(HttpStatus.INTERNAL_SERVER_ERROR, "GP001", "회원 서버 통신중 에러 발생");
             }
-
-            CommentInfo commentInfo = new CommentInfo();
-            commentInfo.setCommentId(comment.getId());
-            commentInfo.setNickanme(nickname);
-            commentInfo.setContent(comment.getContent());
-            commentInfo.setCreatedDate(comment.getCreatedDate());
-            commentInfoList.add(commentInfo);
+            commentInfoList.add(CommentInfo.toDTOWithNickname(comment, nickname)); // comment, nickname -> commentInfo
         }
 
         return commentInfoList;
@@ -103,8 +96,8 @@ public class CommentServiceImpl implements CommentService {
      */
     @Transactional
     @Override
-    public void modifyComment(CommentModifyDTO requestDTO) throws CustomException {
-        Comment comment = commentRepo.findById(requestDTO.getCommentId()).orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "GP007", "존재하지 않는 댓글입니다"));
+    public void modifyComment(long commentId, CommentModifyDTO requestDTO) throws CustomException {
+        Comment comment = commentRepo.findById(commentId).orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "GP007", "존재하지 않는 댓글입니다"));
         comment.setContent(requestDTO.getContent());
         commentRepo.save(comment);
     }
@@ -123,7 +116,7 @@ public class CommentServiceImpl implements CommentService {
     /**
      * 회원 서버에서 아이디 -> 닉네임 조회
      */
-    public String getMemberNickname(long memberId) {
+    private String getMemberNickname(long memberId) {
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<Object> entity = new HttpEntity<>(headers);
 
