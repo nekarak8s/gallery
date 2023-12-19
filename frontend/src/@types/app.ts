@@ -19,3 +19,8 @@ type RegexFail = {
 }
 
 type RegexResult<T = any> = RegexPass<T> | RegexFail
+
+type ThreeItem = {
+  dispose?: () => void
+  update?: ((delta: number) => void) | (() => void)
+}

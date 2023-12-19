@@ -106,7 +106,7 @@ function Navbar({ whitePathname, isLogin }: NavbarProps) {
             </NavLink>
           </li>
 
-          {process.env.REACT_APP_BASE_URL !== '/gallery' &&
+          {process.env.REACT_APP_BASE_URL === '/gallery' &&
             (isLogin ? (
               <li>
                 <NavLink
@@ -131,7 +131,7 @@ function Navbar({ whitePathname, isLogin }: NavbarProps) {
               </li>
             ))}
 
-          {process.env.REACT_APP_BASE_URL === '/gallery' && (
+          {process.env.REACT_APP_BASE_URL !== '/gallery' && (
             <li>
               <NavLink
                 to={routes['MyPage'].path}

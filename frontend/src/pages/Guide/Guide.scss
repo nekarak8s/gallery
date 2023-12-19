@@ -18,8 +18,8 @@
     position: sticky;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
+    width: 100vw !important;
+    height: 100vh !important;
   }
 
   > section {
@@ -36,10 +36,11 @@
     background-color: transparent;
   }
 
-  &--accent {
-    font-size: 2em;
+  &--intro {
+    font-size: 3em;
     font-weight: 800;
-    line-height: 180%;
+    text-align: center;
+    line-height: 150%;
   }
 }
 
@@ -55,21 +56,115 @@
     justify-content: center;
     height: 100vh;
     width: 100vw;
+    padding: 10%;
     background-color: transparent;
 
+    > div {
+      width: min(500px, 80%);
+    }
+
     h1 {
-      font-size: 1.7em;
+      font-size: 2em;
       font-weight: 600;
-      line-height: 180%;
+      line-height: 150%;
     }
 
     p {
-      font-size: 1.2em;
+      font-size: 1.5em;
+      margin-top: 0.5em;
       line-height: 150%;
     }
   }
 
   > section:nth-child(odd) {
     align-items: flex-end;
+  }
+
+  > section:last-child {
+    align-items: center;
+    text-align: center;
+
+    h1 {
+      font-size: 3rem;
+      font-weight: 800;
+    }
+  }
+}
+
+@include tablet {
+  .guide {
+    text-align: center;
+    font-size: 0.9rem;
+
+    &--intro {
+      font-size: 3em;
+    }
+  }
+
+  .guide__sections {
+    > section {
+      padding: 5vw;
+      align-items: center;
+
+      > div {
+        width: min(100%);
+      }
+
+      h1 {
+        font-size: 2em;
+      }
+
+      p {
+        font-size: 1.5em;
+        line-height: 150%;
+        margin-top: 0.5em;
+      }
+    }
+
+    > section:nth-child(odd) {
+      align-items: center;
+    }
+
+    > section:last-child {
+      h1 {
+        font-size: 3em;
+      }
+    }
+  }
+}
+
+@include mobile {
+  .guide {
+    font-size: 0.8rem;
+
+    &--intro {
+      font-size: 8vw;
+    }
+  }
+
+  .guide__sections {
+    > section {
+      padding: 5vw;
+
+      > div {
+        width: min(100%);
+      }
+
+      h1 {
+        font-size: 6vw;
+      }
+
+      p {
+        font-size: 5vw;
+        line-height: 150%;
+        margin-top: 0.5em;
+      }
+    }
+
+    > section:last-child {
+      h1 {
+        font-size: 8vw;
+      }
+    }
   }
 }

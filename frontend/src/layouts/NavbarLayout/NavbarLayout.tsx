@@ -8,6 +8,7 @@ const WHITE_PATHNAME = [
   process.env.REACT_APP_BASE_URL + '',
   process.env.REACT_APP_BASE_URL + '/',
   process.env.REACT_APP_BASE_URL + '/login',
+  process.env.REACT_APP_BASE_URL + '/guide',
 ]
 
 const NavbarLayout = () => {

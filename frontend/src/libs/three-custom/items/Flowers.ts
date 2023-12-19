@@ -9,7 +9,7 @@ type FlowerData = {
   y: number
   z: number
   rotation?: number
-  scale: number
+  scale?: number
 }
 
 export type FlowersProps = {
@@ -20,7 +20,7 @@ export type FlowersProps = {
 
 export class Flowers {
   type: string = 'flower'
-  meshes: THREE.Object3D[] = []
+  objects: THREE.Object3D[] = []
   dispose: () => void
 
   constructor(info: FlowersProps) {
@@ -34,29 +34,25 @@ export class Flowers {
         const object = new THREE.Object3D()
         object.copy(glb.scene.children[flower.type])
         object.name = this.type
-        object.scale.multiplyScalar(0.001 * flower.scale)
+
         object.children[0].castShadow = true
         object.children[0].receiveShadow = true
 
-        // Add to the mesh array
-        this.meshes.push(object)
-
-        // Set the mesh size
-        const box = new THREE.Box3().setFromObject(object)
-        const { x: width, y: height, z: depth } = box.getSize(new THREE.Vector3())
-
-        // Set position
+        object.scale.multiplyScalar(0.001 * (flower.scale || 1))
         object.position.set(flower.x, flower.y, flower.z)
         object.rotation.set(degToRad(-90), 0, flower.rotation || 0)
 
-        // Add to the container
+        this.objects.push(object)
         info.container.add(object)
       })
     })
 
-    // Set the dispose function
+    /**
+     *  Dispose function: release resources
+     */
     this.dispose = () => {
-      this.meshes.forEach((glb) => {
+      // Dispose objects
+      this.objects.forEach((glb) => {
         info.container.remove(glb)
       })
     }

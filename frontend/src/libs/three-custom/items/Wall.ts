@@ -6,7 +6,6 @@ type TextureProps = {
   textureLoader: THREE.TextureLoader
   baseImg: string
   normalImg?: string
-  dispImg?: string
   ambientImg?: string
   roughImg?: string
   repeatX?: number
@@ -15,18 +14,16 @@ type TextureProps = {
 
 type WallArgs = StuffArgs & {
   container: THREE.Scene | THREE.Mesh
-  world: World
-  cannonMaterial?: Material
-  color?: string
-  transparent?: boolean
-  opacity?: number
-  texture?: TextureProps
+  world?: World | undefined
+  cannonMaterial?: Material | undefined
+  color?: THREE.ColorRepresentation | undefined
+  opacity?: number | undefined
+  transparent?: boolean | undefined
+  texture?: TextureProps | undefined
 }
 
 export class Wall extends Stuff {
   type: string = 'wall'
-  geometry: THREE.BoxGeometry
-  material: THREE.Material
   mesh: THREE.Mesh
   textures: Record<string, THREE.Texture> = {}
   dispose: () => void
@@ -40,9 +37,9 @@ export class Wall extends Stuff {
     this.z += (this.width * Math.sin(this.rotationY)) / 2
 
     // Geometry
-    this.geometry = new THREE.BoxGeometry(this.width, this.height, this.depth)
+    const geometry = new THREE.BoxGeometry(this.width, this.height, this.depth)
 
-    // Texture
+    // Textures
     if (info.texture) {
       this.textures['baseTex'] = info.texture.textureLoader.load(info.texture.baseImg)
       if (info.texture.normalImg) {
@@ -51,13 +48,9 @@ export class Wall extends Stuff {
       if (info.texture.roughImg) {
         this.textures['roughTex'] = info.texture.textureLoader.load(info.texture.roughImg)
       }
-      if (info.texture.dispImg) {
-        this.textures['dispTex'] = info.texture.textureLoader.load(info.texture.dispImg)
-      }
       if (info.texture.ambientImg) {
         this.textures['ambientTex'] = info.texture.textureLoader.load(info.texture.ambientImg)
       }
-
       if (info.texture.repeatX || info.texture.repeatY) {
         for (const key in this.textures) {
           const texture = this.textures[key]
@@ -72,36 +65,66 @@ export class Wall extends Stuff {
     }
 
     // Material
-    this.material = new THREE.MeshLambertMaterial({
-      color: info.color,
-      transparent: info.transparent || false,
-      opacity: info.opacity,
-      map: this.textures['baseTex'] || undefined,
-      normalMap: this.textures['normalTex'] || undefined,
-      aoMap: this.textures['ambientTex'] || undefined,
-      displacementMap: this.textures['dispTex'] || undefined,
-    })
+    const material = info.texture?.roughImg
+      ? new THREE.MeshStandardMaterial({
+          color: info.color,
+          transparent: info.transparent || false,
+          opacity: info.opacity,
+          map: this.textures['baseTex'] || undefined,
+          normalMap: this.textures['normalTex'] || undefined,
+          aoMap: this.textures['ambientTex'] || undefined,
+          roughnessMap: this.textures['roughTex'] || undefined,
+        })
+      : new THREE.MeshLambertMaterial({
+          color: info.color,
+          transparent: info.transparent || false,
+          opacity: info.opacity,
+          map: this.textures['baseTex'] || undefined,
+          normalMap: this.textures['normalTex'] || undefined,
+          aoMap: this.textures['ambientTex'] || undefined,
+        })
 
     // Mesh
-    this.mesh = new THREE.Mesh(this.geometry, this.material)
+    this.mesh = new THREE.Mesh(geometry, material)
     this.mesh.position.set(this.x, this.y, this.z)
     this.mesh.rotation.set(this.rotationX, this.rotationY, this.rotationZ)
     this.mesh.castShadow = !info.transparent ? true : false
     this.mesh.receiveShadow = !info.transparent ? true : false
-    this.mesh.name = this.name
+    this.mesh.name = this.name || this.type
 
     // Add to the scene
     info.container.add(this.mesh)
 
     // Create cannon body
-    this.setBoxCannonBody(info.world, 0, info.cannonMaterial)
+    info.world && this.setBoxCannonBody(info.world, 0, info.cannonMaterial)
 
-    // Set the dispose function
+    /**
+     *  Dispose function: release resources
+     */
     this.dispose = () => {
-      this.mesh && info.container.remove(this.mesh)
-      this.geometry && this.geometry.dispose()
-      this.material && this.material.dispose()
-      this.cannonBody && info.world.removeBody(this.cannonBody)
+      // Dispose textures
+      for (const key in this.textures) {
+        const texture = this.textures[key]
+        texture.dispose()
+      }
+
+      // Dispose material
+      if (this.mesh.material instanceof Array) {
+        this.mesh.material.forEach((material) => {
+          material.dispose()
+        })
+      } else {
+        this.mesh.material.dispose()
+      }
+
+      // Dispose geometry
+      this.mesh.geometry.dispose()
+
+      // Dispose mesh
+      info.container.remove(this.mesh)
+
+      // Dispose cannonBody
+      info.world && info.world.removeBody(this.cannonBody!)
     }
   }
 }

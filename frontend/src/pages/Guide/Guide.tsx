@@ -4,20 +4,30 @@ import * as THREE from 'three'
 import { degToRad } from 'three/src/math/MathUtils'
 import { buildArchitect } from './buildArchitect'
 import ScrollDown from '@/atoms/ui/ScrollDown'
-import { buildSky } from '@/libs/three-custom/utils/buildSky'
-import { buildSun } from '@/libs/three-custom/utils/buildSun'
-import { buildWater } from '@/libs/three-custom/utils/buildWater'
+import { DefaultCamera } from '@/libs/three-custom/cameras/DefaultCamera'
+import { DefaultRenderer } from '@/libs/three-custom/renderers/DefaultRenderer'
 import toFrame from '@/utils/toFrame'
 import './Guide.scss'
 
 const CAMERA_ORDERS = [
-  { position: { x: 80, y: 50, z: 80 }, rotation: { x: degToRad(-20), y: degToRad(45) } },
-  { position: { x: -15, y: 5, z: 20 }, rotation: { x: degToRad(0), y: degToRad(0) } },
-  { position: { x: 15, y: 5, z: 15 }, rotation: { x: degToRad(0), y: degToRad(-90) } },
-  { position: { x: 15, y: 5, z: -15 }, rotation: { x: degToRad(0), y: degToRad(-90) } },
-  { position: { x: -15, y: 5, z: -20 }, rotation: { x: degToRad(0), y: degToRad(90) } },
-  { position: { x: -15, y: 3, z: -100 }, rotation: { x: degToRad(10), y: degToRad(0) } },
+  { position: { x: 60, y: 17, z: 110 }, rotation: { x: degToRad(0), y: degToRad(25) } },
+  { position: { x: 5, y: 6, z: 45 }, rotation: { x: degToRad(0), y: degToRad(0) } },
+  { position: { x: 10, y: 6, z: 35 }, rotation: { x: degToRad(0), y: degToRad(-90) } },
+  { position: { x: 10, y: 6, z: 5 }, rotation: { x: degToRad(0), y: degToRad(-90) } },
+  { position: { x: 10, y: 6, z: 5 }, rotation: { x: degToRad(0), y: degToRad(90) } },
+  { position: { x: 10, y: 10, z: -100 }, rotation: { x: degToRad(5), y: degToRad(0) } },
 ]
+
+const CAMERA_MOBILE_ORDERS = [
+  { position: { x: 60, y: 20, z: 120 }, rotation: { x: degToRad(0), y: degToRad(25) } },
+  { position: { x: 3, y: 5, z: 46 }, rotation: { x: degToRad(0), y: degToRad(0) } },
+  { position: { x: 8, y: 5, z: 37 }, rotation: { x: degToRad(0), y: degToRad(-90) } },
+  { position: { x: 8, y: 5, z: 3 }, rotation: { x: degToRad(0), y: degToRad(-90) } },
+  { position: { x: 12, y: 5, z: 3 }, rotation: { x: degToRad(0), y: degToRad(90) } },
+  { position: { x: 11, y: 10, z: -100 }, rotation: { x: degToRad(5), y: degToRad(0) } },
+]
+
+const MOBILE_WIDTH = 992
 
 const Guide = () => {
   /**
@@ -41,40 +51,43 @@ const Guide = () => {
     }
 
     // Renderer
-    const renderer = new THREE.WebGLRenderer({ canvas })
-    renderer.setPixelRatio(window.devicePixelRatio)
-    renderer.setSize(window.innerWidth, window.innerHeight)
-    // canvas.appendChild(renderer.domElement)
+    const renderer = new DefaultRenderer({ canvas, antialias: true })
 
     // Scene
     const scene = new THREE.Scene()
 
     // Camera
-    const camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 1, 20000)
+    const camera = new DefaultCamera({ canvas, fov: 30, near: 2, far: 20000 })
     camera.rotation.order = 'YXZ'
-    camera.position.set(
-      CAMERA_ORDERS[0].position.x,
-      CAMERA_ORDERS[0].position.y,
-      CAMERA_ORDERS[0].position.z
-    )
-    camera.rotation.set(CAMERA_ORDERS[0].rotation.x, CAMERA_ORDERS[0].rotation.y, 0)
+    if (window.innerWidth < MOBILE_WIDTH) {
+      camera.position.set(
+        CAMERA_MOBILE_ORDERS[0].position.x,
+        CAMERA_MOBILE_ORDERS[0].position.y,
+        CAMERA_MOBILE_ORDERS[0].position.z
+      )
+      camera.rotation.set(CAMERA_MOBILE_ORDERS[0].rotation.x, CAMERA_MOBILE_ORDERS[0].rotation.y, 0)
+    } else {
+      camera.position.set(
+        CAMERA_ORDERS[0].position.x,
+        CAMERA_ORDERS[0].position.y,
+        CAMERA_ORDERS[0].position.z
+      )
+      camera.rotation.set(CAMERA_ORDERS[0].rotation.x, CAMERA_ORDERS[0].rotation.y, 0)
+    }
     cameraRef.current = camera
 
-    // build Meshes
-    const water = buildWater(scene)
-    const sky = buildSky(scene, renderer)
-    const sun = buildSun(renderer, sky, water)
+    // Meshes
     const architect = buildArchitect({ scene, loadingManager })
-
-    // light
-    const light = new THREE.AmbientLight(0x404040) // soft white light
-    scene.add(light)
 
     // Add Resize Listener
     const handleSize = function resizeCameraRenderer() {
-      camera.aspect = window.innerWidth / window.innerHeight
+      // camera resize
+      camera.setDefaultAspect()
       camera.updateProjectionMatrix()
-      renderer.setSize(window.innerWidth, window.innerHeight)
+
+      // renderer resize
+      renderer.setDefaultSize()
+      renderer.render(scene, camera)
     }
 
     window.addEventListener('resize', handleSize)
@@ -83,10 +96,9 @@ const Guide = () => {
     const clock = new THREE.Clock()
 
     const draw = function renderCanvas() {
-      // Animates our water
-      water.material.uniforms['time'].value += 1.0 / 60.0
+      const delta = clock.getDelta()
+      architect.update && architect.update(delta)
 
-      // Finally, render our scene
       renderer.render(scene, camera)
       renderer.setAnimationLoop(draw)
     }
@@ -98,6 +110,8 @@ const Guide = () => {
       setRequiredCount(0)
       setLoadedCount(0)
 
+      architect.dispose && architect.dispose()
+
       scene.remove(camera)
       renderer.setAnimationLoop(null)
       renderer.dispose()
@@ -107,7 +121,7 @@ const Guide = () => {
   }, [])
 
   /**
-   * Handle Scroll
+   * Handle Scroll: Move camera position
    */
   const cameraRef = useRef<THREE.Camera | null>(null)
 
@@ -117,27 +131,45 @@ const Guide = () => {
     const handleScroll = function setSection() {
       if (!cameraRef.current) return
 
+      // Only when the section is changed
       const newSection = Math.round(window.scrollY / window.innerHeight)
       if (currentSection === newSection) return
 
       currentSection = newSection
 
-      gsap.to(cameraRef.current.position, {
-        duration: 1,
-        x: CAMERA_ORDERS[currentSection].position.x,
-        y: CAMERA_ORDERS[currentSection].position.y,
-        z: CAMERA_ORDERS[currentSection].position.z,
-      })
-      gsap.to(cameraRef.current.rotation, {
-        duration: 1,
-        x: CAMERA_ORDERS[currentSection].rotation.x,
-        y: CAMERA_ORDERS[currentSection].rotation.y,
-      })
+      // Move camera
+      if (window.innerWidth < MOBILE_WIDTH) {
+        gsap.to(cameraRef.current.position, {
+          duration: 1,
+          x: CAMERA_MOBILE_ORDERS[currentSection].position.x,
+          y: CAMERA_MOBILE_ORDERS[currentSection].position.y,
+          z: CAMERA_MOBILE_ORDERS[currentSection].position.z,
+        })
+        gsap.to(cameraRef.current.rotation, {
+          duration: 1,
+          x: CAMERA_MOBILE_ORDERS[currentSection].rotation.x,
+          y: CAMERA_MOBILE_ORDERS[currentSection].rotation.y,
+        })
+      } else {
+        gsap.to(cameraRef.current.position, {
+          duration: 1,
+          x: CAMERA_ORDERS[currentSection].position.x,
+          y: CAMERA_ORDERS[currentSection].position.y,
+          z: CAMERA_ORDERS[currentSection].position.z,
+        })
+        gsap.to(cameraRef.current.rotation, {
+          duration: 1,
+          x: CAMERA_ORDERS[currentSection].rotation.x,
+          y: CAMERA_ORDERS[currentSection].rotation.y,
+        })
+      }
     }
 
+    // Add event listener
     const optimizedHandleScroll = toFrame(handleScroll)
     window.addEventListener('scroll', optimizedHandleScroll)
 
+    // Remove event listener
     return () => {
       window.addEventListener('scroll', optimizedHandleScroll)
     }
@@ -147,42 +179,59 @@ const Guide = () => {
     <div className="guide">
       <canvas ref={canvasRef} />
       <section>
-        <h1 className="guide--accent">
-          더 갤러리 속성 강의에 오신
-          <br /> 여러분 환영합니다
-        </h1>
+        <div>
+          <h1 className="guide--intro">
+            더 갤러리 속성 강의에 오신
+            <br />
+            여러분 환영합니다
+          </h1>
+        </div>
       </section>
       <div className="guide__sections">
         <section>
-          <h1>먼저 로그인 해주세요</h1>
-          <p>
-            저희 더갤러리는 소셜로그인으로 본인 인증만 진행하고 어떠한 정보도 받아오지 않습니다.
-            저희 말고 IT 대기업을 신뢰하세요!
-          </p>
+          <div>
+            <h1>먼저 로그인 해주세요</h1>
+            <p>
+              더갤러리는 안전한 소셜로그인을 지원합니다. 그 과정에서 어떠한 권한도 요구하지
+              않습니다. 저희 말고 IT 대기업을 신뢰하세요!
+            </p>
+          </div>
         </section>
         <section>
-          <h1>마이페이지에서 전시회를 생성하세요</h1>
-          <p>
-            여러분이 열고자 하는 전시회의 제목과 설명글을 적은 후, 공간타입을 정해주세요. 어차피
-            지금은 한개밖에 없지만요!
-          </p>
+          <div>
+            <h1>전시회를 생성하세요</h1>
+            <p>
+              마이페이지에서 &apos;+&apos; 버튼을 눌러 갤러리를 생성합니다. 전시회의 이름과 소개를
+              적고 공간타입을 선택하세요.
+            </p>
+          </div>
         </section>
         <section>
-          <h1>생성한 전시회에 사진을 채워넣으세요</h1>
-          <p>
-            지금당장 은밀하고 소중한 사진첩을 열어 전시회 작품으로 선보일 만한 사진을 골라주세요.
-            그것이 바로 순기능입니다 SNS의!
-          </p>
+          <div>
+            <h1>사진을 등록하세요</h1>
+            <p>
+              여러분의 사진첩에서 선보이고 싶은 사진들을 골라 등록하세요. 각 사진마다 어울리는
+              음악을 검색해 등록할 수 있습니다.
+            </p>
+          </div>
         </section>
         <section>
-          <h1>전시회에 입장해 플레이해보세요</h1>
-          <p>
-            전시회에 입장해서 곳곳에 숨어있는 앨범을 찾아 감상문을 남기세요.앨범을 과녁해서 맞출
-            때의 타격감은 덤!
-          </p>
+          <div>
+            <h1>전시회에 입장하세요</h1>
+            <p>
+              입장 버튼을 통해 전시회를 관람할 수 있습니다. 전시회 곳곳을 돌아다니며 앨범에 방명록을
+              남겨보세요.
+            </p>
+          </div>
         </section>
         <section>
-          <h1 className="guide--accent">고양이 애용 부탁드립니다</h1>
+          <div>
+            <h1>
+              지금 바로 전시회를 열고
+              <br />
+              친구들을 초대하세요
+            </h1>
+          </div>
         </section>
       </div>
       <div className="guide__scroll">

@@ -9,19 +9,20 @@ type TreeData = {
   x: number
   y: number
   z: number
-  scale: number
+  rotation?: number
+  scale?: number
 }
 
 export type TreesProps = {
   container: THREE.Mesh | THREE.Scene
-  world: World
+  world?: World | undefined
   gltfLoader: GLTFLoader
   treesData: TreeData[]
 }
 
 export class Trees {
   type: string = 'tree'
-  meshes: THREE.Object3D[] = []
+  objects: THREE.Object3D[] = []
   cannonBodies: Body[] = []
   dispose: () => void
 
@@ -36,48 +37,48 @@ export class Trees {
         const object = new THREE.Object3D()
         object.copy(glb.scene.children[tree.type])
         object.name = this.type
-        object.scale.multiplyScalar(0.01 * tree.scale)
+
         object.children[0].castShadow = true
         object.children[0].receiveShadow = true
 
-        // Add to the mesh array
-        this.meshes.push(object)
-
-        // Set the mesh size
-        const box = new THREE.Box3().setFromObject(object)
-        const { x: width, y: height, z: depth } = box.getSize(new THREE.Vector3())
-
-        // Set position
+        object.scale.multiplyScalar(0.01 * (tree.scale || 1))
         object.position.set(tree.x, tree.y, tree.z)
-        object.rotation.set(degToRad(-90), 0, 0)
+        object.rotation.set(degToRad(-90), 0, tree.rotation || 0)
 
-        // Add to the container
+        this.objects.push(object)
         info.container.add(object)
 
-        // Create shape
-        const shape = new Cylinder(width / 6, width / 6, height)
-
         // Create cannon body
-        const cannonBody = new Body({
-          mass: 0,
-          position: new Vec3(tree.x, tree.y + height / 2, tree.z),
-          shape,
-        })
+        if (info.world) {
+          const box = new THREE.Box3().setFromObject(object)
+          const { x: width, y: height, z: depth } = box.getSize(new THREE.Vector3())
 
-        // Add to the mesh array
-        this.cannonBodies.push(cannonBody)
+          const cannonBody = new Body({
+            mass: 0,
+            position: new Vec3(tree.x, tree.y + height / 2, tree.z),
+            shape: new Cylinder(width / 6, width / 6, height),
+          })
 
-        // Add to the world
-        info.world.addBody(cannonBody)
+          this.cannonBodies.push(cannonBody)
+
+          info.world.addBody(cannonBody)
+        }
       })
     })
 
-    // Set the dispose function
+    /**
+     *  Dispose function: release resources
+     */
     this.dispose = () => {
-      this.cannonBodies.forEach((cannonBody) => {
-        info.world.removeBody(cannonBody)
-      })
-      this.meshes.forEach((glb) => {
+      // Dispose cannon bodies
+      if (info.world) {
+        this.cannonBodies.forEach((cannonBody) => {
+          info.world!.removeBody(cannonBody)
+        })
+      }
+
+      // Dispose objects
+      this.objects.forEach((glb) => {
         info.container.remove(glb)
       })
     }

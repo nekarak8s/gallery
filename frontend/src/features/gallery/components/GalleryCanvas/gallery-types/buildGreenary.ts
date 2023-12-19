@@ -375,12 +375,12 @@ const PLAIN_TREE = [
 const TREE_DATA = [...FOREST_TREE, ...MOUNTAIN_TREE, ...BEACH_TREE, ...LAKE_TREE, ...PLAIN_TREE]
 
 const buildGreenary = (props: GalleryTypeProps) => {
-  // Loaders
+  // Create Loaders
   const textureLoader = new TextureLoader(props.loadingManager)
   const cubeTextureLoader = new CubeTextureLoader(props.loadingManager)
   const gltfLoader = new GLTFLoader(props.loadingManager)
 
-  // set camera position & rotation
+  // Set camera position & rotation by controls
   props.controls.setPosition(25.1, 5, 25.1)
   props.controls.setQuaternion(0, degToRad(-135), 0)
 
@@ -398,30 +398,27 @@ const buildGreenary = (props: GalleryTypeProps) => {
   lights.push(ambientLight)
 
   // Direct Light
-  const directionalLight = new DirectionalLight('white', 1.8)
-  directionalLight.position.set(110, 220, 110)
-  directionalLight.shadow.camera.left = -60
-  directionalLight.shadow.camera.right = 60
-  directionalLight.shadow.camera.top = 60
-  directionalLight.shadow.camera.bottom = -100
-  directionalLight.castShadow = true
-  props.scene.add(directionalLight)
-  lights.push(directionalLight)
+  const directLight = new DirectionalLight('white', 1.8)
+  directLight.position.set(110, 220, 110)
+  directLight.shadow.camera.left = -60
+  directLight.shadow.camera.right = 60
+  directLight.shadow.camera.top = 60
+  directLight.shadow.camera.bottom = -100
+  directLight.castShadow = true
+  props.scene.add(directLight)
+  lights.push(directLight)
 
   // Light Helper : Development
   if (process.env.NODE_ENV !== 'production') {
     import('three').then(({ CameraHelper }) => {
-      props.scene.add(new CameraHelper(directionalLight.shadow.camera))
+      props.scene.add(new CameraHelper(directLight.shadow.camera))
     })
   }
 
   /**
    * Meshes
    */
-  const objects: {
-    dispose?: () => void
-    update?: (delta: number) => void
-  }[] = []
+  const items: ThreeItem[] = []
 
   // Greeneary floor
   gltfLoader.load(greenaryGlb, (glb) => {
@@ -435,13 +432,17 @@ const buildGreenary = (props: GalleryTypeProps) => {
     mesh.position.z += depth / 2
 
     props.scene.add(mesh)
-
-    objects.push({ dispose: () => props.scene.remove(mesh) })
     props.controls.floors.push(mesh)
     props.rayControls.rayItems.push(mesh)
+
+    items.push({
+      dispose: () => {
+        props.scene.remove(mesh)
+      },
+    })
   })
 
-  // Ocean mesh
+  // Ocean meshes
   const oceanGeometry = new BoxGeometry(530, 5, 530)
   const oceanMaterial = new MeshLambertMaterial({
     color: 0x008cf1,
@@ -455,7 +456,7 @@ const buildGreenary = (props: GalleryTypeProps) => {
   props.scene.add(ocean)
   props.rayControls.rayItems.push(ocean)
 
-  objects.push({
+  items.push({
     dispose: () => {
       oceanGeometry.dispose()
       oceanMaterial.dispose()
@@ -463,7 +464,7 @@ const buildGreenary = (props: GalleryTypeProps) => {
     },
   })
 
-  // Ocean cannon body
+  // Create ocean cannon bodies
   const oceanShape1 = new Box(new Vec3(55, 50, 1))
   const oceanBody1 = new Body({
     mass: 0,
@@ -494,9 +495,9 @@ const buildGreenary = (props: GalleryTypeProps) => {
     position: new Vec3(109, 0, 55),
     shape: oceanShape4,
   })
-
   props.world.addBody(oceanBody4)
-  objects.push({
+
+  items.push({
     dispose: () => {
       props.world.removeBody(oceanBody1)
       props.world.removeBody(oceanBody2)
@@ -505,7 +506,7 @@ const buildGreenary = (props: GalleryTypeProps) => {
     },
   })
 
-  // Lake Mesh
+  // Create lake
   const lakeGeometry = new CylinderGeometry(17, 17, 5)
   const lakeMaterial = new MeshLambertMaterial({
     color: 0x0bd3ff,
@@ -519,7 +520,7 @@ const buildGreenary = (props: GalleryTypeProps) => {
   props.scene.add(lake)
   props.rayControls.rayItems.push(lake)
 
-  objects.push({
+  items.push({
     dispose: () => {
       lakeGeometry.dispose()
       lakeMaterial.dispose()
@@ -527,17 +528,17 @@ const buildGreenary = (props: GalleryTypeProps) => {
     },
   })
 
-  // Trees mesh & cannon body
+  // Create Trees
   const trees = new Trees({
     container: props.scene,
     world: props.world,
     gltfLoader,
     treesData: TREE_DATA,
   })
-  objects.push(trees)
-  props.rayControls.rayItems = [...props.rayControls.rayItems, ...trees.meshes]
+  items.push(trees)
+  props.rayControls.rayItems = [...props.rayControls.rayItems, ...trees.objects]
 
-  // Frame Mesh
+  // Create Frames
   FRAME_DATA.forEach((frameData, idx) => {
     const frame = new Frame({
       order: idx,
@@ -548,10 +549,12 @@ const buildGreenary = (props: GalleryTypeProps) => {
       height: FRAME_INFO.height,
       depth: FRAME_INFO.depth,
       container: props.scene,
-      textureLoader,
-      baseImg: props.postList[idx].imageUrl,
+      texture: {
+        textureLoader,
+        baseImg: props.postList[idx].imageUrl,
+      },
     })
-    objects.push(frame)
+    items.push(frame)
     props.rayControls.rayItems.push(frame.mesh)
   })
 
@@ -559,7 +562,7 @@ const buildGreenary = (props: GalleryTypeProps) => {
    * Update function: Render canvas
    */
   const update = function renderCanvas(delta: number) {
-    objects.forEach((object) => {
+    items.forEach((object) => {
       object.update && object.update(delta)
     })
   }
@@ -572,7 +575,7 @@ const buildGreenary = (props: GalleryTypeProps) => {
       props.scene.remove(light)
       light.dispose()
     })
-    objects.forEach((object) => {
+    items.forEach((object) => {
       object.dispose && object.dispose()
     })
   }
@@ -581,25 +584,3 @@ const buildGreenary = (props: GalleryTypeProps) => {
 }
 
 export default buildGreenary
-
-// mesh?: THREE.Mesh
-// glb?: THREE.Object3D<THREE.Object3DEventMap>
-// material?: THREE.Material
-// geometry?: THREE.BufferGeometry
-// light?: THREE.Light
-// textures?: Record<string, THREE.Texture>
-// cannonBody?: Body
-
-//   object.mesh && scene.remove(object.mesh)
-//   object.glb && scene.remove(object.glb)
-//   object.light && scene.remove(object.light)
-//   object.light && object.light.dispose()
-//   object.geometry && object.geometry.dispose()
-//   object.material && object.material.dispose()
-//   if (object.textures) {
-//     for (const key in object.textures) {
-//       const texture = object.textures[key]
-//       texture.dispose()
-//     }
-//   }
-//   object.cannonBody && world.removeBody(object.cannonBody)
