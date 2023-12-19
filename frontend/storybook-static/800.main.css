@@ -1,0 +1,49 @@
+.scroll-down {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  opacity: 0.8;
+}
+.scroll-down > svg:nth-child(1) {
+  width: 48px;
+  height: 48px;
+}
+.scroll-down > svg:nth-child(2) {
+  animation: animation-scroll-down-arrow ease-in-out 5s infinite;
+  width: 35px;
+  height: 35px;
+}
+@keyframes animation-scroll-down-arrow {
+  0%,
+  10%,
+  30%,
+  50%,
+  70%,
+  90% {
+    transform: translateY(-20%);
+  }
+  20%,
+  40%,
+  60%,
+  80% {
+    transform: translateY(0%);
+  }
+  100% {
+    transform: translateY(-20%);
+  }
+}
+@media (max-width: 640px) {
+  .scroll-down > svg:nth-child(1) {
+    width: 37px;
+    height: 37px;
+  }
+  .scroll-down > svg:nth-child(2) {
+    animation: animation-scroll-down-arrow ease-in-out 5s infinite;
+    width: 30px;
+    height: 30px;
+  }
+}
+
+/*# sourceMappingURL=800.main.css.map*/

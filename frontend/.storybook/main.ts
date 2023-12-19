@@ -1,6 +1,7 @@
 import type { StorybookConfig } from '@storybook/react-webpack5'
 import develop from '../webpack.dev.js'
 import production from '../webpack.prod.js'
+import { getParsedCommandLineOfConfigFile } from 'typescript'
 
 const path = require('path')
 
@@ -59,7 +60,11 @@ const config: StorybookConfig = {
     if (configType === 'PRODUCTION') {
       config = {
         ...config,
-        module: { ...config.module, rules: [...config.module.rules, ...production.module.rules] },
+        module: {
+          ...config.module,
+          rules: [...config.module.rules, ...production.module.rules],
+        },
+        plugins: [...config.plugins, ...production.plugins],
       }
     }
 

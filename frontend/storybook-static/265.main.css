@@ -1,0 +1,18 @@
+.radio {
+  display: flex;
+  align-items: center;
+  gap: 1em;
+  font-size: 1rem;
+}
+.radio__label {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+}
+.radio input[type='radio'] {
+  accent-color: var(--color-ft, #111111);
+  margin: 0;
+  border: 0;
+}
+
+/*# sourceMappingURL=265.main.css.map*/
