@@ -32,27 +32,29 @@ import java.util.Map;
 public class MemberController {
     private final MemberService memberService;
     private final AuthService authService;
+    private final TokenService tokenService;
+
     private final ParamUtils paramUtils;
     private final CookieUtils cookieUtils;
     private final NicknameUtils nicknameUtils;
-    private final TokenService tokenService;
 
     @GetMapping("/health")
     public String health(){
-        log.info("헬스 체크 !!!");
-        return "Member서버 ok";
+        log.info("member 서버 ok");
+        return "member 서버 ok";
     }
 
-
+    /**
+     * OAuth 리다이렉트
+     * @param type
+     * @return
+     * @throws CustomException
+     */
     @PostMapping("/login")
     public ResponseEntity<?> redirect(@RequestParam(value = "type", required = false) String type) throws CustomException {
-        paramUtils.checkParam(type);
-
-        if (!type.equalsIgnoreCase("kakao")) {
-            throw new CustomException(HttpStatus.BAD_REQUEST, "GA005", "지원하지 않는 소셜 로그인입니다");
-        }
-
         log.debug("로그인 요청옴");
+        paramUtils.checkParam(type);
+        checkSupportedSocialLoginType(type);
 
         String authorizationUrl = authService.getAuthorizationUrl();
 
@@ -64,17 +66,23 @@ public class MemberController {
         return ResponseEntity.ok(apiResponse);
     }
 
+    /**
+     * OAuth 콜백
+     * @param response
+     * @param type
+     * @param code
+     * @return
+     * @throws CustomException
+     */
     @PostMapping("/callback")
     public ResponseEntity<?> getToken(HttpServletResponse response,
                                       @RequestParam(value = "type", required = false) String type,
                                       @RequestParam(value = "code") String code) throws CustomException{
+        log.debug("콜백 요청옴");
         paramUtils.checkParam(type);
         paramUtils.checkParam(code);
 
-        log.debug("콜백 요청옴");
-
         Pair<String, LoginResponse> pair = memberService.checkAndJoinMember(code); // accessToken, loginResponse return
-
         String accessToken = pair.getFirst();
         LoginResponse loginResponse = pair.getSecond();
 
@@ -84,84 +92,99 @@ public class MemberController {
                 .message("로그인 성공")
                 .data(loginResponse)
                 .build();
+
         return ResponseEntity.ok(apiResponse);
     }
 
+    /**
+     * 회원 정보 조회
+     * @param memberId
+     * @return
+     * @throws CustomException
+     */
     @GetMapping
     public ResponseEntity<?> getMemberInfo(@RequestHeader(value = "X-Member-ID", required = false) long memberId) throws CustomException{
+        log.debug("회원 조회 요청옴");
         paramUtils.checkParam(String.valueOf(memberId));
-        log.debug("게이트웨이에서 넘어온 member ID : {}", memberId);
         MemberDTO memberDTO = memberService.findMemberById(memberId);
 
         ApiResponse apiResponse = ApiResponse.builder()
                 .message("회원 정보 조회 성공")
                 .data(memberDTO)
                 .build();
+
         return ResponseEntity.ok(apiResponse);
     }
 
+    /**
+     * 닉네임 중복 검사
+     * @param nickname
+     * @return
+     * @throws CustomException
+     */
     @GetMapping("/check/nickname")
     public ResponseEntity<?> checkNickname(@RequestParam(value = "nickname", required = false) String nickname) throws CustomException {
-        log.debug("닉네임 중복 검사 요청옴, {}", nickname);
-
-        // 공백, null 검사
+        log.debug("닉네임 중복 검사 요청옴");
         paramUtils.checkParam(nickname);
 
         // 닉네임 형식 검사
-        if (!nicknameUtils.isValid(nickname)) {
-            throw new CustomException(HttpStatus.BAD_REQUEST, "GA005" ,"닉네임은 한글, 영어, 숫자 조합 2~10자로 입력해주세요");
-        }
+        if (!nicknameUtils.isValid(nickname)) throw new CustomException(HttpStatus.BAD_REQUEST, "GA005" ,"닉네임은 한글, 영어, 숫자 조합 2~10자로 입력해주세요");
+        // 닉네임 중복 검사
+        if (!memberService.isNicknameUnique(nickname)) throw new CustomException(HttpStatus.CONFLICT, "GA006", "이미 사용중인 닉네임입니다");
 
-        boolean isUnique = memberService.isNicknameUnique(nickname);
+        ApiResponse apiResponse = ApiResponse.builder()
+                .message("사용 가능한 닉네임 입니다")
+                .build();
 
-        if (isUnique) {
-            ApiResponse apiResponse = ApiResponse.builder()
-                    .message("사용 가능한 닉네임 입니다")
-                    .build();
-            return ResponseEntity.ok(apiResponse);
-        } else {
-            throw new CustomException(HttpStatus.CONFLICT, "GA006", "이미 사용중인 닉네임 입니다");
-        }
+        return ResponseEntity.ok(apiResponse);
     }
 
+    /**
+     * 회원 정보 수정
+     * @param memberId
+     * @param request
+     * @return
+     * @throws CustomException
+     */
     @PatchMapping()
     public ResponseEntity<?> modifyMemberInfo(@RequestHeader(value = "X-Member-ID", required = false) long memberId,
                                               @RequestBody @Valid final MemberModifyDTO request) throws CustomException{
         log.debug("회원 정보 수정 요청옴");
-        log.debug("게이트웨이에서 넘어온 member ID : {}", memberId);
 
         // 닉네임 형식 검사
-        if (!nicknameUtils.isValid(request.getNickname())) {
-            throw new CustomException(HttpStatus.BAD_REQUEST, "GA005" ,"닉네임은 한글, 영어, 숫자 조합 2~10자로 입력해주세요");
-        }
-
+        if (!nicknameUtils.isValid(request.getNickname())) throw new CustomException(HttpStatus.BAD_REQUEST, "GA005" ,"닉네임은 한글, 영어, 숫자 조합 2~10자로 입력해주세요");
         // 닉네임 중복 검사
-        if (!memberService.isNicknameUnique(request.getNickname())) {
-            throw new CustomException(HttpStatus.CONFLICT, "GA006", "이미 사용중인 닉네임입니다");
-        }
+        if (!memberService.isNicknameUnique(request.getNickname())) throw new CustomException(HttpStatus.CONFLICT, "GA006", "이미 사용중인 닉네임입니다");
 
         memberService.modifyMemberInfo(memberId, request);
 
         ApiResponse apiResponse = ApiResponse.builder()
                 .message("성공적으로 변경되었습니다")
                 .build();
+
         return ResponseEntity.ok(apiResponse);
     }
 
+    /**
+     * 회원 탈퇴
+     * @param memberId
+     * @return
+     * @throws CustomException
+     */
     @DeleteMapping
     public ResponseEntity<?> deleteMember(@RequestHeader(value = "X-Member-ID", required = false) long memberId) throws CustomException {
-        log.debug("회원 삭제 요청옴");
-        log.debug("게이트웨이에서 넘어온 member ID : {}", memberId);
+        log.debug("회원 탈퇴 요청옴");
 
         memberService.deleteMember(memberId);
 
         ApiResponse apiResponse = ApiResponse.builder()
                 .message("성공적으로 삭제되었습니다")
                 .build();
+
         return ResponseEntity.ok(apiResponse);
     }
 
-    @Transactional
+
     @PostMapping("/logout")
     public ResponseEntity<?> logout(@RequestHeader(value = "X-Access-Token", required = false) String token,
                                     @RequestHeader(value = "X-Access-Token-Exp", required = false) long expTime) {
@@ -171,22 +194,23 @@ public class MemberController {
          * 3. 이후 요청이 오면, API Gateway에서 블랙 리스트를 검사한다.
          */
         log.debug("로그아웃 요청옴");
-        log.debug("게이트웨이에서 넘어온 ACCESS Token : {}", token);
 
         Date now = new Date();
-        long ttl = (expTime - now.getTime()) / 1000; // 초 단위 ex) 120 -> 2분
-        log.debug("ttl : {}", ttl);
-
-        tokenService.save(token, ttl); // blacklist에 token 추가, 남아있는 토큰 시간 만큼 ttl 설정
+        long ttl = (expTime - now.getTime()) / 1000; // 초 단위
+        tokenService.save(token, ttl); // 블랙리스트에 token 추가, 남아있는 토큰 시간 만큼 ttl 설정
 
         ApiResponse apiResponse = ApiResponse.builder()
                 .message("로그아웃 되었습니다")
                 .build();
+
         return ResponseEntity.ok(apiResponse);
     }
 
     /**
      * 닉네임 조회
+     * @param memberId
+     * @return
+     * @throws CustomException
      */
     @GetMapping("/nickname")
     public ResponseEntity<?> getNickname(@RequestParam(value = "memberId", required = false) long memberId) throws CustomException {
@@ -204,11 +228,14 @@ public class MemberController {
     }
 
     /**
-     * 회원 아이디 조회
+     * 아이디 조회
+     * @param nickname
+     * @return
+     * @throws CustomException
      */
     @GetMapping("/memberId")
     public ResponseEntity<?> getMemberId(@RequestParam(value = "nickname") String nickname) throws CustomException {
-
+        log.debug("아이디 조회 요청옴");
         long memberId = memberService.getMemberId(nickname);
 
         ApiResponse apiResponse = ApiResponse.builder()
@@ -221,12 +248,14 @@ public class MemberController {
 
 
     /**
-     * Map<아이디, 닉네임> 반환
+     * 닉네임 리스트 조회
+     * @param memberIdList
+     * @return
+     * @throws CustomException
      */
     @PostMapping("/nickname/list")
     public ResponseEntity<?> getNicknameMap(@RequestBody List<Long> memberIdList) throws CustomException {
         log.debug("닉네임 리스트 조회 요청옴");
-
         Map<Long, String> map = memberService.getMemberMap(memberIdList);
 
         ApiResponse apiResponse = ApiResponse.builder()
@@ -235,5 +264,16 @@ public class MemberController {
                 .build();
 
         return ResponseEntity.ok(apiResponse);
+    }
+
+    /**
+     * 소셜 로그인 지원 여부 체크
+     * @param type
+     * @throws CustomException
+     */
+    private void checkSupportedSocialLoginType(String type) throws CustomException{
+        if (!type.equalsIgnoreCase("kakao")) {
+            throw new CustomException(HttpStatus.BAD_REQUEST, "GA005", "지원하지 않는 소셜 로그인입니다");
+        }
     }
 }

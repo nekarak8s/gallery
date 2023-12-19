@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
 @EnableTransactionManagement
-public class RedisConfiguration {
+public class RedisConfig {
 
     @Value("${spring.redis.host}")
     private String host;
