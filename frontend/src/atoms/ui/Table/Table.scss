@@ -14,22 +14,22 @@
 
   thead {
     border-bottom: 2px solid var(--color-ft, c.$ft-black);
-
-    th {
-      padding: 0.75em 0.6em;
-      font-weight: 600;
-    }
   }
 
   tbody {
     border-bottom: 2px solid var(--color-ft, c.$ft-black);
+  }
 
-    tr {
-      border-bottom: 2px solid #ddd;
+  th {
+    padding: 0.75em 0.6em;
+    font-weight: 600;
+  }
 
-      td {
-        padding: 0.75em 0.6em;
-      }
-    }
+  tr {
+    border-bottom: 1px solid #ddd;
+  }
+
+  td {
+    padding: 0.75em 0.6em;
   }
 }

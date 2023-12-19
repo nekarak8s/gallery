@@ -7,7 +7,7 @@ interface Button3DProps {
   ariaLabel: string
   to?: string
   type?: 'button' | 'submit' | 'reset'
-  color?: 'primary' | 'black' | 'white'
+  color?: 'blue' | 'black' | 'white'
   disabled?: boolean
   onClick?: () => void
   onFocus?: () => void

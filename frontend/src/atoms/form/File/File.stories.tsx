@@ -1,19 +1,23 @@
 import type { Meta, StoryObj } from '@storybook/react'
-import Loading from './Loading'
+import File from './File'
 
 const meta = {
-  title: 'UI/Loading',
-  component: Loading,
+  title: 'Form/File',
+  component: File,
   parameters: {
     layout: 'centered',
   },
   tags: ['autodocs'],
-} satisfies Meta<typeof Loading>
+} satisfies Meta<typeof File>
 
 export default meta
 type Story = StoryObj<typeof meta>
 
-// More on writing stories with args: https://storybook.js.org/docs/react/writing-stories/args
 export const Default: Story = {
-  args: {},
+  args: {
+    name: 'file',
+    accept: '*',
+    uploadBtnText: 'Upload',
+    resetBtnText: 'Reset',
+  },
 }

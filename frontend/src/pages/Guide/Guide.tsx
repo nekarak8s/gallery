@@ -3,6 +3,8 @@ import gsap from 'gsap'
 import * as THREE from 'three'
 import { degToRad } from 'three/src/math/MathUtils'
 import { buildArchitect } from './buildArchitect'
+import CSSTransition from '@/atoms/ui/CSSTransition'
+import Loading from '@/atoms/ui/Loading'
 import ScrollDown from '@/atoms/ui/ScrollDown'
 import { DefaultCamera } from '@/libs/three-custom/cameras/DefaultCamera'
 import { DefaultRenderer } from '@/libs/three-custom/renderers/DefaultRenderer'
@@ -29,7 +31,20 @@ const CAMERA_MOBILE_ORDERS = [
 
 const MOBILE_WIDTH = 992
 
+const DEFAULT_LOADING_TIME = 1000
+
 const Guide = () => {
+  /**
+   * Initial loading cover time
+   */
+  const [isDefaultTime, setIsDefaultTime] = useState(true)
+
+  useEffect(() => {
+    setTimeout(() => {
+      setIsDefaultTime(false)
+    }, DEFAULT_LOADING_TIME)
+  }, [])
+
   /**
    * Render the Three.js canvas
    */
@@ -180,11 +195,14 @@ const Guide = () => {
       <canvas ref={canvasRef} />
       <section>
         <div>
-          <h1 className="guide--intro">
+          <h1 className="guide__intro">
             더 갤러리 속성 강의에 오신
             <br />
             여러분 환영합니다
           </h1>
+          <div className="guide__scroll">
+            <ScrollDown />
+          </div>
         </div>
       </section>
       <div className="guide__sections">
@@ -234,17 +252,14 @@ const Guide = () => {
           </div>
         </section>
       </div>
-      <div className="guide__scroll">
-        <ScrollDown />
-      </div>
-      {/* <CSSTransition
+      <CSSTransition
         className="guide__loading"
-        isShow={requiredCount !== loadedCount}
+        isShow={isDefaultTime || requiredCount !== loadedCount}
         duration={1000}
         timingFunction="ease-in-out"
       >
         <Loading />
-      </CSSTransition> */}
+      </CSSTransition>
     </div>
   )
 }

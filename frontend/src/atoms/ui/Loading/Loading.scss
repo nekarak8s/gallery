@@ -13,43 +13,29 @@
   width: 100%;
   height: 100%;
   color: #aaaaaa;
+  font-size: 1rem;
 }
 
 .loading svg {
   @include a.animation-rotate-clockwise('loading', 2.5s, 2, ease-in-out);
-  width: 4rem;
-  height: 4rem;
+  width: 4em;
+  height: 4em;
 }
 
 @include laptop {
-  .loading svg {
-    width: 3.5rem;
-    height: 3.5rem;
-  }
-
-  .loading__phrase {
-    font-size: 1.2rem;
+  .loading {
+    font-size: 0.9rem;
   }
 }
 
 @include tablet {
-  .loading svg {
-    width: 3rem;
-    height: 3rem;
-  }
-
-  .loading__phrase {
-    font-size: 1rem;
+  .loading {
+    font-size: 0.8rem;
   }
 }
 
 @include mobile {
-  .loading svg {
-    width: 2.5rem;
-    height: 2.5rem;
-  }
-
-  .loading__phrase {
-    font-size: 0.8rem;
+  .loading {
+    font-size: 0.7rem;
   }
 }

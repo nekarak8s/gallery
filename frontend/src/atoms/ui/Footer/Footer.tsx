@@ -86,8 +86,8 @@ const Footer = () => {
             <thead>
               <tr>
                 <th></th>
-                <th scope="row">저작물, 저작자</th>
-                <th scope="row">라이선스</th>
+                <th scope="column">저작물, 저작자</th>
+                <th scope="column">라이선스</th>
               </tr>
             </thead>
             <tbody>

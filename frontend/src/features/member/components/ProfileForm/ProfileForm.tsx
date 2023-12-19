@@ -1,4 +1,3 @@
-import { useEffect } from 'react'
 import { useUpdateUser } from '../../services'
 import { validateProfileForm } from '../../validators'
 import Form from '@/atoms/form/Form'
@@ -14,32 +13,30 @@ type ProfileFormProps = {
 }
 
 const ProfileForm = ({ onSuccess, onError }: ProfileFormProps) => {
-  const { mutate: update, isSuccess, isError, isLoading } = useUpdateUser()
-
-  useEffect(() => {
-    if (isSuccess) {
-      onSuccess && onSuccess()
-    }
-
-    if (isError) {
-      onError && onError()
-    }
-
-    return () => {}
-  }, [isSuccess, isError])
+  const { mutateAsync: update, isLoading } = useUpdateUser()
 
   const handleSubmit = function (e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
+    e.stopPropagation()
 
     // validate data
-    const formData = new FormData(e.currentTarget)
+    const form = e.currentTarget
+    const formData = new FormData(form)
     const result = validateProfileForm(formData)
 
     if (!result.result) {
       toastManager.addToast('error', `${result.reason}`)
-    } else {
-      update(result.data)
+      return
     }
+
+    update(result.data)
+      .then(() => {
+        form.reset()
+        onSuccess && onSuccess()
+      })
+      .catch(() => {
+        onError && onError()
+      })
   }
 
   return (

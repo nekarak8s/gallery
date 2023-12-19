@@ -4,15 +4,26 @@ import Button from '@/atoms/ui/Button'
 import { CURSOR_SCALE } from '@/constants'
 
 type FileProps = {
-  id?: string | undefined
-  className?: string | undefined
+  id?: string
+  className?: string
   name: string
   accept: string
+  uploadBtnText?: string
+  resetBtnText?: string
   onChange?: ChangeEventHandler<HTMLInputElement> | undefined
   onReset?: () => void | undefined
 }
 
-const File = ({ id, className, name, accept, onChange, onReset }: FileProps) => {
+const File = ({
+  id,
+  className,
+  name,
+  accept,
+  uploadBtnText = '업로드',
+  resetBtnText = '취소',
+  onChange,
+  onReset,
+}: FileProps) => {
   const inputRef = useRef<HTMLInputElement>(null)
 
   const handleClick: MouseEventHandler<HTMLButtonElement> = (e) => {
@@ -43,8 +54,8 @@ const File = ({ id, className, name, accept, onChange, onReset }: FileProps) => 
         data-cursor-scale={CURSOR_SCALE}
       />
       <div className="file__buttons">
-        <Button text="파일 선택" onClick={handleClick} size="sm" />
-        <Button text="취소" onClick={handleResetClick} size="sm" />
+        <Button text={uploadBtnText} onClick={handleClick} size="sm" />
+        <Button text={resetBtnText} onClick={handleResetClick} size="sm" />
       </div>
     </div>
   )

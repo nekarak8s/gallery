@@ -7,9 +7,11 @@
   --color-bg: #{c.$bg-white};
   --color-bg-reverse: #{c.$bg-black};
   --color-bg-subtle: #{c.$bg-gray};
+  --color-bg-warning: #{c.$bg-red};
   --color-ft: #{c.$ft-black};
   --color-ft-reverse: #{c.$ft-white};
   --color-ft-subtle: #{c.$ft-gray};
+  --color-ft-warning: #{c.$ft-red};
 }
 
 body {

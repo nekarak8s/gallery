@@ -8,7 +8,7 @@ interface ButtonProps {
   direction?: 'left' | 'right' | 'top' | 'bottom' | 'center'
   type?: 'button' | 'submit' | 'reset'
   size?: 'sm' | 'md' | 'lg'
-  color?: 'primary' | 'black' | 'white'
+  color?: 'blue' | 'black' | 'red'
   onClick?: MouseEventHandler<HTMLButtonElement>
   onFocus?: FocusEventHandler<HTMLButtonElement>
   onBlur?: FocusEventHandler<HTMLButtonElement>

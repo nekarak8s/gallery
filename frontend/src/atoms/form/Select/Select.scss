@@ -1,4 +1,7 @@
+@use '@/styles/_colors.scss' as c;
+
 .select {
+  appearance: none;
   width: 100%;
   padding: 0.5em 0.5em;
   border: none;
@@ -6,4 +9,9 @@
   background-color: transparent;
   font: inherit;
   font-size: 0.8rem;
+  accent-color: var(--color-ft, c.$ft-black);
+
+  option {
+    padding: 0.5em 0.5em;
+  }
 }

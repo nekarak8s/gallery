@@ -21,7 +21,7 @@ const Checkbox = ({
 }: PropsWithChildren<CheckboxProps>) => {
   return (
     <label htmlFor={id} className={`checkbox ${className}`}>
-      <div>
+      <div className="checkbox__label">
         <input
           id={id}
           type="checkbox"

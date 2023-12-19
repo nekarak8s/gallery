@@ -26,8 +26,10 @@ const GalleryCreateForm = ({ onSuccess, onError }: GalleryFormProps) => {
     e.preventDefault()
     e.stopPropagation()
 
+    const form = e.currentTarget
+    const formData = new FormData(form)
+
     // validate data
-    const formData = new FormData(e.currentTarget)
     const result = validateGalleryForm(formData)
     if (!result.result) {
       toastManager.addToast('error', result.reason)
@@ -36,6 +38,7 @@ const GalleryCreateForm = ({ onSuccess, onError }: GalleryFormProps) => {
 
     create(result.data)
       .then(() => {
+        form.reset()
         onSuccess && onSuccess()
       })
       .catch(() => {

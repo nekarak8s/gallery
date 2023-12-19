@@ -23,7 +23,8 @@ const CommentForm = ({ postId, onSuccess, onError }: CommentFormProps) => {
     e.stopPropagation()
 
     // validate data
-    const formData = new FormData(e.currentTarget)
+    const form = e.currentTarget
+    const formData = new FormData(form)
     const result = validateCommentCreateForm(formData)
     if (!result.result) {
       toastManager.addToast('error', result.reason)
@@ -33,6 +34,7 @@ const CommentForm = ({ postId, onSuccess, onError }: CommentFormProps) => {
     // create the comment
     createComment(result.data)
       .then(() => {
+        form.reset()
         onSuccess && onSuccess()
       })
       .catch(() => {

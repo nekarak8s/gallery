@@ -1,5 +1,8 @@
 import type { StorybookConfig } from '@storybook/react-webpack5'
-const custom = require('../webpack.dev.js')
+import develop from '../webpack.dev.js'
+import production from '../webpack.prod.js'
+
+const path = require('path')
 
 const config: StorybookConfig = {
   stories: ['../src/**/*.mdx', '../src/**/*.stories.@(js|jsx|mjs|ts|tsx)'],
@@ -8,26 +11,65 @@ const config: StorybookConfig = {
     '@storybook/addon-essentials',
     '@storybook/addon-onboarding',
     '@storybook/addon-interactions',
-    'storybook-addon-react-router-v6',
+    '@storybook/addon-styling-webpack',
+    {
+      name: '@storybook/addon-styling-webpack',
+
+      options: {
+        rules: [
+          {
+            test: /\.css$/,
+            sideEffects: true,
+            use: [
+              require.resolve('style-loader'),
+              {
+                loader: require.resolve('css-loader'),
+                options: {},
+              },
+            ],
+          },
+        ],
+      },
+    },
   ],
   framework: {
     name: '@storybook/react-webpack5',
-    options: {},
+    options: {
+      builder: {
+        useSWC: true,
+      },
+    },
   },
   docs: {
     autodocs: 'tag',
   },
-  webpackFinal: (config) => {
-    return {
-      ...config,
-      module: {
-        rules: custom.module.rules,
-      },
-      resolve: {
-        ...config.resolve,
-        ...custom.resolve,
-      },
+  webpackFinal: async (config, { configType }) => {
+    // modify storybook's file-loader rule to avoid conflicts with your inline svg
+    const rules = config.module.rules
+
+    const fileLoaderRule = rules.find((rule) => rule.test.test('.svg'))
+    fileLoaderRule.exclude = /\.svg$/
+
+    if (configType === 'DEVELOPMENT') {
+      config = {
+        ...config,
+        module: { ...config.module, rules: [...config.module.rules, ...develop.module.rules] },
+      }
     }
+    if (configType === 'PRODUCTION') {
+      config = {
+        ...config,
+        module: { ...config.module, rules: [...config.module.rules, ...production.module.rules] },
+      }
+    }
+
+    // Modify alias
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      '@': path.resolve(__dirname, '../src'),
+    }
+
+    return config
   },
 }
 export default config

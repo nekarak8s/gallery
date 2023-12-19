@@ -5,6 +5,12 @@
   align-items: center;
   gap: 1em;
 
+  &__label {
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+  }
+
   input[type='checkbox'] {
     accent-color: var(--color-ft, c.$ft-black);
     margin: 0;

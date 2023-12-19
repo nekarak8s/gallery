@@ -106,7 +106,7 @@ function Navbar({ whitePathname, isLogin }: NavbarProps) {
             </NavLink>
           </li>
 
-          {process.env.REACT_APP_BASE_URL === '/gallery' &&
+          {process.env.REACT_APP_BASE_URL !== '/gallery' &&
             (isLogin ? (
               <li>
                 <NavLink
@@ -131,7 +131,7 @@ function Navbar({ whitePathname, isLogin }: NavbarProps) {
               </li>
             ))}
 
-          {process.env.REACT_APP_BASE_URL !== '/gallery' && (
+          {process.env.REACT_APP_BASE_URL === '/gallery' && (
             <li>
               <NavLink
                 to={routes['MyPage'].path}
@@ -144,6 +144,20 @@ function Navbar({ whitePathname, isLogin }: NavbarProps) {
             </li>
           )}
         </ul>
+        {/* <div className="navbar__search">
+          <Select name="type">
+            <option selected value="all">
+              전체
+            </option>
+            <option selected value="title">
+              제목
+            </option>
+            <option selected value="author">
+              작가
+            </option>
+          </Select>
+          <Text label="검색" name="query" initialValue="" />
+        </div> */}
       </nav>
       {/* Login Modal */}
       <Modal isOpen={isLoginOpen} onClose={() => setIsLoginOpen(false)}>

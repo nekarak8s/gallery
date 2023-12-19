@@ -14,7 +14,6 @@
   text-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
 
   > canvas {
-    @include z-index(top-below);
     position: sticky;
     top: 0;
     left: 0;
@@ -23,7 +22,7 @@
   }
 
   > section {
-    @include z-index(top);
+    @include z-index(top-below);
     position: absolute;
     top: 0;
     left: 0;
@@ -36,7 +35,8 @@
     background-color: transparent;
   }
 
-  &--intro {
+  &__intro {
+    position: relative;
     font-size: 3em;
     font-weight: 800;
     text-align: center;
@@ -44,8 +44,15 @@
   }
 }
 
+.guide__scroll {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translate(-50%, -10%);
+}
+
 .guide__sections {
-  @include z-index(top);
+  @include z-index(top-below);
   position: relative;
   background-color: transparent;
 
@@ -91,12 +98,27 @@
   }
 }
 
+.guide__loading {
+  @include z-index(top);
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: var(--color-bg, c.$bg-white);
+  opacity: 1;
+
+  &--leave {
+    opacity: 0;
+  }
+}
+
 @include tablet {
   .guide {
     text-align: center;
     font-size: 0.9rem;
 
-    &--intro {
+    &__intro {
       font-size: 3em;
     }
   }
@@ -137,7 +159,7 @@
   .guide {
     font-size: 0.8rem;
 
-    &--intro {
+    &__intro {
       font-size: 8vw;
     }
   }

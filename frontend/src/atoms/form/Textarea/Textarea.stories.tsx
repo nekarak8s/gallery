@@ -1,19 +1,22 @@
 import type { Meta, StoryObj } from '@storybook/react'
-import Loading from './Loading'
+import Textarea from './Textarea'
 
 const meta = {
-  title: 'UI/Loading',
-  component: Loading,
+  title: 'Form/Textarea',
+  component: Textarea,
   parameters: {
     layout: 'centered',
   },
   tags: ['autodocs'],
-} satisfies Meta<typeof Loading>
+} satisfies Meta<typeof Textarea>
 
 export default meta
 type Story = StoryObj<typeof meta>
 
-// More on writing stories with args: https://storybook.js.org/docs/react/writing-stories/args
 export const Default: Story = {
-  args: {},
+  args: {
+    label: 'Label',
+    name: 'value',
+    initialValue: '',
+  },
 }

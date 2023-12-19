@@ -1,19 +1,21 @@
 import type { Meta, StoryObj } from '@storybook/react'
-import Loading from './Loading'
+import Checkbox from './Checkbox'
 
 const meta = {
-  title: 'UI/Loading',
-  component: Loading,
+  title: 'Form/Checkbox',
+  component: Checkbox,
   parameters: {
     layout: 'centered',
   },
   tags: ['autodocs'],
-} satisfies Meta<typeof Loading>
+} satisfies Meta<typeof Checkbox>
 
 export default meta
 type Story = StoryObj<typeof meta>
 
-// More on writing stories with args: https://storybook.js.org/docs/react/writing-stories/args
 export const Default: Story = {
-  args: {},
+  args: {
+    name: 'checkbox',
+    label: 'Checkbox',
+  },
 }

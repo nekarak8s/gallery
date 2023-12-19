@@ -85,6 +85,7 @@ const ProfileEdit = () => {
           ariaLabel="회원탈퇴"
           text="회원탈퇴"
           direction="bottom"
+          color="red"
           onClick={() => setIsWithdrawlOpen(true)}
           onBlur={() => setIsButtonsShow(false)}
         />

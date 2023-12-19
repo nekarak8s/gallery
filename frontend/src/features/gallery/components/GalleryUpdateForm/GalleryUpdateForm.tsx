@@ -42,8 +42,11 @@ const GalleryUpdateForm = ({ galleryId, onSuccess, onError }: GalleryDetailFormP
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    e.stopPropagation()
+
     /*eslint-disable*/
-    const formData = new FormData(e.currentTarget)
+    const form = e.currentTarget
+    const formData = new FormData(form)
 
     const name = formData.get('name') as string
     formData.delete('name')
@@ -61,6 +64,7 @@ const GalleryUpdateForm = ({ galleryId, onSuccess, onError }: GalleryDetailFormP
         updatePostList(formData)
       })
       .then(() => {
+        form.reset()
         onSuccess && onSuccess()
       })
       .catch(() => {

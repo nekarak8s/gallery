@@ -10,10 +10,15 @@
     inset 0.17em 0.17em 0.17em rgba(0, 0, 0, 0.1),
     inset -0.17em -0.17em 0.17em rgba(195, 195, 195, 0.1);
   transition: box-shadow 200ms ease-in-out;
+  cursor: pointer;
 
   > * {
     transform: translate(0.01em, 0.05em);
     transition: transform 200ms ease-in-out;
+  }
+
+  * {
+    cursor: pointer;
   }
 }
 
@@ -49,7 +54,7 @@
   }
 }
 
-.button-3d.primary {
+.button-3d.blue {
   color: c.$ft-white;
   background-color: var(--color-primary, c.$primary);
 }

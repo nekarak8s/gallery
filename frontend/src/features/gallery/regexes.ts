@@ -10,5 +10,5 @@ export const content: RegexCondition = {
 
 export const placeId: RegexCondition = {
   regex: /^[1-9]\d*$/,
-  condition: '공간값(숫자)이 올바르지 않습니다',
+  condition: '공간 식별값(숫자)이 올바르지 않습니다',
 }
