@@ -36,7 +36,6 @@ public class WhitelistManager {
             if (uri.contains(whiteUri) && method.equals(whiteMethod)) {
                 return true;
             }
-
         }
         return false;
     }

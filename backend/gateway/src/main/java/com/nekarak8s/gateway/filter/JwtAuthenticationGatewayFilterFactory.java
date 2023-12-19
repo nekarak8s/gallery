@@ -1,5 +1,6 @@
 package com.nekarak8s.gateway.filter;
 
+import com.google.gson.Gson;
 import com.nekarak8s.gateway.service.JwtBlacklistService;
 import com.nekarak8s.gateway.util.jwt.JwtUtils;
 import com.nekarak8s.gateway.util.jwt.TokenMember;
@@ -25,6 +26,11 @@ public class JwtAuthenticationGatewayFilterFactory extends
 
     private static final String ROLE_KEY = "role";
     private static final String COOKIE_NAME = "gallery_cookie";
+    private static final String INVALID_TOKEN_MESSAGE = "invalid token";
+    private static final String BLACKLIST_TOKEN_MESSAGE = "invalid token(blacklist)";
+    private static final String MISSING_COOKIE_ERROR_CODE = "GATE004";
+    private static final String MISSING_TOKEN_ERROR_CODE = "GATE002";
+    private static final String INVALID_TOKEN_ERROR_CODE = "GATE003";
 
     private final JwtBlacklistService jwtBlacklistService;
     private final JwtUtils jwtUtils;
@@ -48,104 +54,88 @@ public class JwtAuthenticationGatewayFilterFactory extends
             ServerHttpRequest request = exchange.getRequest();
             ServerHttpResponse response = exchange.getResponse();
 
-
             String uri = request.getURI().toString();
             String method = request.getMethodValue();
-            int port = request.getURI().getPort();
-
-            log.info("uri : {}, method : {}, port : {}", uri, method, port);
+            log.info("uri : {}, method : {}", uri, method);
 
             String galleryPathVariable = whitelistManager.extractGalleryPathVariable(uri);
-            log.info("galleryPathVariable : {}", galleryPathVariable);
+            if (galleryPathVariable != null) log.info("galleryPathVariable : {}", galleryPathVariable);
 
-            if (whitelistManager.shouldValidateJwt(uri, method)) {
-                log.info("허용 URI 입니다.");
-                return chain.filter(exchange); // JWT 검사 없이 통과
-            } else if (uri.contains("/gallery") && method.equals("GET") && isNumeric(galleryPathVariable)) {
-                log.info("허용 URI 입니다.");
-                return chain.filter(exchange);
+            if (whitelistManager.shouldValidateJwt(uri, method) || (uri.contains("/gallery") && method.equals("GET") && isNumeric(galleryPathVariable))) {
+                log.info("허용 URI");
             } else {
-                log.info("토큰 검증 시작 ");
-                if (!containsCookie(request)) {
-                    return onError_v2(response, "missing cookie", HttpStatus.BAD_REQUEST, "GATE004");
+                log.info("토큰 검증");
+
+                if (!isExistCookie(request)) {
+                    return onError(response, "missing cookie", HttpStatus.BAD_REQUEST, MISSING_COOKIE_ERROR_CODE);
                 }
-                if (!containsToken(request)) {
-                    return onError_v2(response, "missing token", HttpStatus.UNAUTHORIZED, "GATE002");
+
+                HttpCookie cookie = request.getCookies().getFirst(COOKIE_NAME);
+                if (!isExistToken(cookie)) {
+                    return onError(response, "missing token", HttpStatus.UNAUTHORIZED, MISSING_TOKEN_ERROR_CODE);
                 }
 
                 String token = extractToken(request);
                 if (!jwtUtils.isValid(token)) {
-                    log.info("비정상적인 토큰");
-                    return onError_v2(response, "invalid token", HttpStatus.UNAUTHORIZED, "GATE003");
+                    log.info("비정상 토큰");
+                    return onError(response, INVALID_TOKEN_MESSAGE, HttpStatus.UNAUTHORIZED, INVALID_TOKEN_ERROR_CODE);
                 }
 
-                if (jwtBlacklistService.isTokenBlacklisted(token)) {
+                if (jwtBlacklistService.isBlacklist(token)) {
                     log.info("블랙리스트 토큰임");
-                    return onError_v2(response, "invalid token(blacklist)", HttpStatus.UNAUTHORIZED, "GATE003");
+                    return onError(response, BLACKLIST_TOKEN_MESSAGE, HttpStatus.UNAUTHORIZED, INVALID_TOKEN_ERROR_CODE);
                 }
 
+                TokenMember tokenMember = jwtUtils.decode(token);
                 if (uri.contains("/logout")) {
-                    TokenMember tokenMember = jwtUtils.decode(token);
                     long expTime = tokenMember.getExpTime();
-                    exchange.getRequest().mutate().header("X-Access-Token", token);
-                    exchange.getRequest().mutate().header("X-Access-Token-Exp", String.valueOf(expTime));
+                    exchange.getRequest().mutate()
+                            .header("X-Access-Token", token)
+                            .header("X-Access-Token-Exp", String.valueOf(expTime));
                 } else {
-                    TokenMember tokenMember = jwtUtils.decode(token);
                     exchange.getRequest().mutate().header("X-Member-ID", tokenMember.getId());
                 }
-                return chain.filter(exchange);
             }
-//            TokenMember tokenMember = jwtUtils.decode(token);
-//            if (!hasRole(tokenMember, config.role)) {
-//                return onError_v2(response, "invalid role", HttpStatus.FORBIDDEN);
-//            }
+            return chain.filter(exchange);
         };
     }
 
     // 쿠키 파라미터 체크
-    private boolean containsCookie(ServerHttpRequest request) {
+    private boolean isExistCookie(ServerHttpRequest request) {
         return request.getCookies().containsKey(COOKIE_NAME);
     }
 
     // 토크 파라미터 체크
-    private boolean containsToken(ServerHttpRequest request) {
-        HttpCookie cookie = request.getCookies().getFirst(COOKIE_NAME);
-        if (cookie != null) {
-            return !cookie.getValue().isEmpty();
-        }
-        return false;
+    private boolean isExistToken(HttpCookie cookie) {
+        return !cookie.getValue().isEmpty();
     }
 
     // 쿠키에서 토큰 꺼내기
     private String extractToken(ServerHttpRequest request) {
         HttpCookie cookie = request.getCookies().getFirst(COOKIE_NAME);
-
         assert cookie != null;
         return cookie.getValue();
     }
 
-    private boolean hasRole(TokenMember tokenMember, String role) {
-        return role.equals(tokenMember.getRole());
-    }
-
     // 예외 처리
-    private Mono<Void> onError_v2(ServerHttpResponse response, String message, HttpStatus status, String errorCode) {
+    private Mono<Void> onError(ServerHttpResponse response, String message, HttpStatus status, String errorCode) {
         response.setStatusCode(status);
         response.getHeaders().setContentType(MediaType.APPLICATION_JSON);
 
-        // status.value = HTTP Status Code (나중에 사용할 수도?)
-        String responseBody = "{\"errorCode\": \"" + errorCode + "\", \"errorType\": \"" + status.getReasonPhrase() + "\", \"message\": \"" + message + "\"}";
-        byte[] responseBytes = responseBody.getBytes(StandardCharsets.UTF_8);
+        Map<String, String> errorBody = Map.of(
+                "errorCode", errorCode,
+                "errorType", status.getReasonPhrase(),
+                "message", message
+        );
+
+        byte[] responseBytes = new Gson().toJson(errorBody).getBytes(StandardCharsets.UTF_8);
         DataBuffer buffer = response.bufferFactory().wrap(responseBytes);
 
         return response.writeWith(Mono.just(buffer));
     }
 
-    public static boolean isNumeric(String str) {
-        if (str == null || str.isEmpty()) {
-            return false;
-        }
-        return str.matches("\\d+");
+    private static boolean isNumeric(String str) {
+        return str != null && str.matches("\\d+");
     }
 
     @Setter

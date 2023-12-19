@@ -15,7 +15,7 @@ public class JwtBlacklistService {
     private final RedisTemplate<String, String> redisTemplate;
 
     // Redis 블랙리스트 토큰 체크
-    public boolean isTokenBlacklisted(String token) {
+    public boolean isBlacklist(String token) {
         String key = "blacklist:" + token;
         Map<Object, Object> data = redisTemplate.opsForHash().entries(key);
 
