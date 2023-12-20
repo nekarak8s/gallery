@@ -5,7 +5,7 @@ name: 'Chromatic Deployment'
 on:
   push:
     branches:
-      - frontend
+      - front
 
 # List of jobs
 jobs:

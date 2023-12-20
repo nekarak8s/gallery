@@ -1,0 +1,66 @@
+.story-button-3d {
+  padding: 0.1rem 1rem;
+  font-size: 1rem;
+  font-weight: 600;
+}
+.button-3d {
+  display: block;
+  overflow: hidden;
+  position: relative;
+  border-radius: 2em;
+  box-shadow:
+    inset 0.17em 0.17em 0.17em rgba(0, 0, 0, 0.1),
+    inset -0.17em -0.17em 0.17em rgba(195, 195, 195, 0.1);
+  transition: box-shadow 200ms ease-in-out;
+  cursor: pointer;
+}
+.button-3d > * {
+  transform: translate(0.01em, 0.05em);
+  transition: transform 200ms ease-in-out;
+}
+.button-3d * {
+  cursor: pointer;
+}
+.button-3d:disabled::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(62, 62, 62, 0.114);
+}
+.button-3d:hover,
+.button-3d:focus {
+  box-shadow:
+    inset -0.17em -0.17em 0.17em rgba(0, 0, 0, 0.1),
+    inset 0.17em 0.17em 0.17em rgba(195, 195, 195, 0.1);
+}
+.button-3d:hover > *,
+.button-3d:focus > * {
+  transform: translate(-0.01em, -0.05em);
+}
+.button-3d:disabled:hover,
+.button-3d:disabled:focus {
+  box-shadow:
+    inset 0.17em 0.17em 0.17em rgba(0, 0, 0, 0.1),
+    inset -0.17em -0.17em 0.17em rgba(195, 195, 195, 0.1);
+}
+.button-3d:disabled:hover > *,
+.button-3d:disabled:focus > * {
+  transform: translate(0.01em, 0.05em);
+}
+.button-3d.blue {
+  color: #fff;
+  background-color: var(--color-primary, #176beb);
+}
+.button-3d.black {
+  color: #fff;
+  background-color: #333;
+}
+.button-3d.white {
+  color: #111;
+  background-color: #fff;
+}
+
+/*# sourceMappingURL=atoms-ui-Button3D-Button3D-stories.css.map*/

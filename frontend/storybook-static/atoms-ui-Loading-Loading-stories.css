@@ -1,0 +1,50 @@
+.loading {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 2px;
+  width: 100%;
+  height: 100%;
+  color: #aaa;
+  font-size: 1rem;
+}
+.loading svg {
+  animation-delay: 0s;
+  animation-duration: 2.5s;
+  animation-name: animation-rotate-clockwise-loading;
+  animation-timing-function: ease-in-out;
+  animation-direction: normal;
+  animation-fill-mode: none;
+  animation-iteration-count: infinite;
+  width: 4em;
+  height: 4em;
+}
+@keyframes animation-rotate-clockwise-loading {
+  0% {
+    transform: rotate(0);
+  }
+  100% {
+    transform: rotate(2turn);
+  }
+}
+@media (max-width: 1280px) {
+  .loading {
+    font-size: 0.9rem;
+  }
+}
+@media (max-width: 992px) {
+  .loading {
+    font-size: 0.8rem;
+  }
+}
+@media (max-width: 640px) {
+  .loading {
+    font-size: 0.7rem;
+  }
+}
+
+/*# sourceMappingURL=atoms-ui-Loading-Loading-stories.css.map*/

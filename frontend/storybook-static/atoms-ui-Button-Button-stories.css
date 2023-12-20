@@ -1,0 +1,123 @@
+.button {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #000;
+  border-radius: 0.1em;
+  background-image: linear-gradient(0deg, rgb(0, 0, 0), rgb(0, 0, 0));
+  background-repeat: no-repeat;
+  background-position: 0% 0%;
+  background-size: 0% 0%;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    background-size 0.15s linear 0.1s,
+    color 0.15s linear 0.1s;
+}
+.button::after {
+  z-index: -1;
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--color-bg, #ffffff);
+}
+.button.left {
+  background-position: 0% 0%;
+  background-size: 0% 100%;
+}
+.button.right {
+  background-position: 100% 0%;
+  background-size: 0% 100%;
+}
+.button.top {
+  background-position: 0% 0%;
+  background-size: 100% 0%;
+}
+.button.bottom {
+  background-position: 0% 100%;
+  background-size: 100% 0%;
+}
+.button.center {
+  background-position: 50% 50%;
+  background-size: 0% 0%;
+}
+.button:hover,
+.button:focus {
+  background-size: 100% 100%;
+}
+.button.blue {
+  color: var(--color-primary, #176beb);
+  border: 2px solid var(--color-primary, #176beb);
+  background-image: linear-gradient(
+    0deg,
+    var(--color-primary, #176beb),
+    var(--color-primary, #176beb)
+  );
+}
+.button.blue:hover,
+.button.blue:focus {
+  color: var(--color-ft-reverse, #ffffff);
+}
+.button.black {
+  color: var(--color-ft, #111111);
+  border: 2px solid var(--color-ft, #111111);
+  background-image: linear-gradient(0deg, var(--color-ft, #111111), var(--color-ft, #111111));
+}
+.button.black:hover,
+.button.black:focus {
+  color: var(--color-ft-reverse, #ffffff);
+}
+.button.red {
+  color: var(--color-ft-warning, #ff0000);
+  border: 2px solid var(--color-ft-warning, #ff0000);
+  background-image: linear-gradient(
+    0deg,
+    var(--color-ft-warning, #ff0000),
+    var(--color-ft-warning, #ff0000)
+  );
+}
+.button.red:hover,
+.button.red:focus {
+  color: var(--color-ft-reverse, #ffffff);
+}
+.button.lg {
+  padding: 0.8em 1.5em;
+  font-size: 1.3rem;
+}
+.button.md {
+  padding: 0.6em 1.2em;
+  font-size: 1.1rem;
+}
+.button.sm {
+  padding: 0.4em 0.9em;
+  font-size: 0.9rem;
+}
+@media (max-width: 992px) {
+  .button.lg {
+    font-size: 1.2rem;
+  }
+  .button.md {
+    font-size: 1rem;
+  }
+  .button.sm {
+    font-size: 0.8rem;
+  }
+}
+@media (max-width: 640px) {
+  .button.lg {
+    font-size: 1rem;
+  }
+  .button.md {
+    font-size: 0.8rem;
+  }
+  .button.sm {
+    font-size: 0.7rem;
+  }
+}
+
+/*# sourceMappingURL=atoms-ui-Button-Button-stories.css.map*/
