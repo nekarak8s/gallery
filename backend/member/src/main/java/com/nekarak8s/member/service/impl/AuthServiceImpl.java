@@ -20,6 +20,7 @@ public class AuthServiceImpl implements AuthService {
     private String clientId;
     @Value("${kakao.redirect-uri}")
     private String redirectUri;
+
     private static final String KAKAO_USER_INFO_URL = "https://kapi.kakao.com/v2/user/me";
 
     @Override

@@ -1,5 +1,6 @@
 package com.nekarak8s.member.service.impl;
 
+import com.nekarak8s.member.common.GAError;
 import com.nekarak8s.member.common.Role;
 import com.nekarak8s.member.exception.CustomException;
 import com.nekarak8s.member.data.dto.request.MemberModifyDTO;
@@ -19,7 +20,6 @@ import com.nekarak8s.member.util.nickname.NicknameUtils;
 import com.nekarak8s.member.util.pair.Pair;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
@@ -45,6 +45,10 @@ public class MemberServiceImpl implements MemberService{
     private final NicknameService nicknameService;
     private final KafkaProducer producer;
     private final static String MEMBER_TOPIC = "member";
+
+    private static final GAError INTERNAL_SERVER_ERROR = GAError.INTERNAL_SERVER_ERROR;
+    private static final GAError RESOURCE_NOT_FOUND = GAError.RESOURCE_NOT_FOUND;
+    private static final GAError RESOURCE_CONFLICT = GAError.RESOURCE_CONFLICT;
 
     /**
      * 로그인
@@ -116,7 +120,7 @@ public class MemberServiceImpl implements MemberService{
      */
     @Override
     public MemberDTO findMemberById(long memberId) throws CustomException {
-        Member member = memberRepository.findByMemberIdAndIsDeletedFalse(memberId).orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "GA007", "사용자 정보가 없습니다"));
+        Member member = memberRepository.findByMemberIdAndIsDeletedFalse(memberId).orElseThrow(() -> new CustomException(RESOURCE_NOT_FOUND.getHttpStatus(), RESOURCE_NOT_FOUND.getCode(), "사용자 정보가 없습니다"));
 
         // Redis에서 nickname 조회
         String nickname = nicknameService.getNicknameInRedisByMemberId(memberId);
@@ -161,7 +165,7 @@ public class MemberServiceImpl implements MemberService{
     @Transactional
     @Override
     public void modifyMemberInfo(long memberId, MemberModifyDTO request) throws CustomException {
-        Member member = memberRepository.findByMemberIdAndIsDeletedFalse(memberId).orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "GA007", "사용자 정보가 없습니다"));
+        Member member = memberRepository.findByMemberIdAndIsDeletedFalse(memberId).orElseThrow(() -> new CustomException(RESOURCE_NOT_FOUND.getHttpStatus(), RESOURCE_NOT_FOUND.getCode(), "사용자 정보가 없습니다"));
 
         String nickname = nicknameService.getNicknameInRedisByMemberId(memberId);
 
@@ -178,7 +182,7 @@ public class MemberServiceImpl implements MemberService{
     @Transactional
     @Override
     public void deleteMember(long memberId) throws CustomException {
-        Member member = memberRepository.findById(memberId).orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "GA007", "삭제하려는 회원 정보가 존재하지 않습니다"));
+        Member member = memberRepository.findById(memberId).orElseThrow(() -> new CustomException(RESOURCE_NOT_FOUND.getHttpStatus(), RESOURCE_NOT_FOUND.getCode(), "삭제하려는 회원 정보가 존재하지 않습니다"));
 
         // 삭제된 회원인지 체크 : 삭제된 상태 -> Custom Exception
         checkDeletedMember(member);
@@ -198,7 +202,7 @@ public class MemberServiceImpl implements MemberService{
             if (producer.isExist(MEMBER_TOPIC)) producer.sendMessage(MEMBER_TOPIC, memberEvent);
         } catch (Exception e) {
             log.error("kafka error occurred");
-            throw new CustomException(HttpStatus.INTERNAL_SERVER_ERROR, "GA001", "kafka 통신 예외 발생");
+            throw new CustomException(INTERNAL_SERVER_ERROR.getHttpStatus(), INTERNAL_SERVER_ERROR.getCode(), INTERNAL_SERVER_ERROR.getDescription());
         }
 
         try {
@@ -208,7 +212,7 @@ public class MemberServiceImpl implements MemberService{
             nicknameService.deleteNicknameInRedis(nickname);
         } catch (Exception e) {
             log.error("redis error occurred");
-            throw new CustomException(HttpStatus.INTERNAL_SERVER_ERROR, "GA001", "redis 예외 발생");
+            throw new CustomException(INTERNAL_SERVER_ERROR.getHttpStatus(), INTERNAL_SERVER_ERROR.getCode(), INTERNAL_SERVER_ERROR.getDescription());
         }
     }
 
@@ -217,7 +221,7 @@ public class MemberServiceImpl implements MemberService{
      */
     @Override
     public long getMemberId(String nickname) throws CustomException {
-        Member member = memberRepository.findMemberIdByNickname(nickname).orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "GA007", "사용자 정보가 없습니다"));
+        Member member = memberRepository.findMemberIdByNickname(nickname).orElseThrow(() -> new CustomException(RESOURCE_NOT_FOUND.getHttpStatus(), RESOURCE_NOT_FOUND.getCode(), "사용자 정보가 없습니다"));
 
         return member.getMemberId();
     }
@@ -227,9 +231,7 @@ public class MemberServiceImpl implements MemberService{
      */
     @Override
     public String getMemberNickname(long memberId) throws CustomException {
-        Member member = memberRepository.findById(memberId).orElseThrow(() ->
-            new CustomException(HttpStatus.NOT_FOUND, "GA007", "사용자 정보가 없습니다")
-        );
+        Member member = memberRepository.findById(memberId).orElseThrow(() -> new CustomException(RESOURCE_NOT_FOUND.getHttpStatus(), RESOURCE_NOT_FOUND.getCode(), "사용자 정보가 없습니다"));
 
         return member.getNickname();
     }
@@ -257,7 +259,7 @@ public class MemberServiceImpl implements MemberService{
                 return nickname;
             }
         }
-        throw new CustomException(HttpStatus.CONFLICT, "GA006", "닉네임 생성 도중 서버 에러 발생");
+        throw new CustomException(RESOURCE_CONFLICT.getHttpStatus(), RESOURCE_CONFLICT.getCode(), "닉네임 생성 실패");
     }
 
     /**
@@ -267,7 +269,7 @@ public class MemberServiceImpl implements MemberService{
         boolean isDeleted = member.getIsDeleted();
 
         if (isDeleted) {
-            throw new CustomException(HttpStatus.NOT_FOUND, "GA007", "사용자 정보가 없습니다");
+            throw new CustomException(RESOURCE_NOT_FOUND.getHttpStatus(), RESOURCE_NOT_FOUND.getCode(), "사용자 정보가 없습니다");
         }
     }
 

@@ -1,5 +1,6 @@
 package com.nekarak8s.member.controller;
 
+import com.nekarak8s.member.common.GAError;
 import com.nekarak8s.member.exception.CustomException;
 import com.nekarak8s.member.data.dto.request.MemberModifyDTO;
 import com.nekarak8s.member.data.dto.response.ApiResponse;
@@ -36,6 +37,12 @@ public class MemberController {
     private final ParamUtils paramUtils;
     private final CookieUtils cookieUtils;
     private final NicknameUtils nicknameUtils;
+
+    private static final GAError INVALID_PARAMETER = GAError.INVALID_PARAMETER;
+    private static final GAError RESOURCE_CONFLICT = GAError.RESOURCE_CONFLICT;
+    private static final String INVALID_SOCIAL_LOGIN_TYPE_MESSAGE = "지원하지 않는 소셜 로그인입니다";
+    private static final String INVALID_NICKNAME_MESSAGE = "닉네임은 한글, 영어, 숫자 조합 2~10자로 입력해주세요";
+    private static final String ALREADY_EXIST_NICKNAME_MESSAGE = "이미 사용중인 닉네임입니다";
 
     @GetMapping("/health")
     public String health(){
@@ -127,9 +134,9 @@ public class MemberController {
         paramUtils.checkParam(nickname);
 
         // 닉네임 형식 검사
-        if (!nicknameUtils.isValid(nickname)) throw new CustomException(HttpStatus.BAD_REQUEST, "GA005" ,"닉네임은 한글, 영어, 숫자 조합 2~10자로 입력해주세요");
+        if (!nicknameUtils.isValid(nickname)) throw new CustomException(INVALID_PARAMETER.getHttpStatus(), INVALID_PARAMETER.getCode(), INVALID_NICKNAME_MESSAGE);
         // 닉네임 중복 검사
-        if (!memberService.isNicknameUnique(nickname)) throw new CustomException(HttpStatus.CONFLICT, "GA006", "이미 사용중인 닉네임입니다");
+        if (!memberService.isNicknameUnique(nickname)) throw new CustomException(RESOURCE_CONFLICT.getHttpStatus(), RESOURCE_CONFLICT.getCode(), ALREADY_EXIST_NICKNAME_MESSAGE);
 
         ApiResponse apiResponse = ApiResponse.builder()
                 .message("사용 가능한 닉네임 입니다")
@@ -151,9 +158,9 @@ public class MemberController {
         log.debug("회원 정보 수정 요청옴");
 
         // 닉네임 형식 검사
-        if (!nicknameUtils.isValid(request.getNickname())) throw new CustomException(HttpStatus.BAD_REQUEST, "GA005" ,"닉네임은 한글, 영어, 숫자 조합 2~10자로 입력해주세요");
+        if (!nicknameUtils.isValid(request.getNickname())) throw new CustomException(INVALID_PARAMETER.getHttpStatus(), INVALID_PARAMETER.getCode(), INVALID_NICKNAME_MESSAGE);
         // 닉네임 중복 검사
-        if (!memberService.isNicknameUnique(request.getNickname())) throw new CustomException(HttpStatus.CONFLICT, "GA006", "이미 사용중인 닉네임입니다");
+        if (!memberService.isNicknameUnique(request.getNickname())) throw new CustomException(RESOURCE_CONFLICT.getHttpStatus(), RESOURCE_CONFLICT.getCode(), ALREADY_EXIST_NICKNAME_MESSAGE);
 
         memberService.modifyMemberInfo(memberId, request);
 
@@ -272,7 +279,7 @@ public class MemberController {
      */
     private void checkSupportedSocialLoginType(String type) throws CustomException{
         if (!type.equalsIgnoreCase("kakao")) {
-            throw new CustomException(HttpStatus.BAD_REQUEST, "GA005", "지원하지 않는 소셜 로그인입니다");
+            throw new CustomException(INVALID_PARAMETER.getHttpStatus(), INVALID_PARAMETER.getCode(), INVALID_SOCIAL_LOGIN_TYPE_MESSAGE);
         }
     }
 }
