@@ -1,4 +1,4 @@
-package com.nekarak8s.member.common.exception;
+package com.nekarak8s.member.exception;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;

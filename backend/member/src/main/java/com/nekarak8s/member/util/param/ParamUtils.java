@@ -1,6 +1,6 @@
 package com.nekarak8s.member.util.param;
 
-import com.nekarak8s.member.common.exception.CustomException;
+import com.nekarak8s.member.exception.CustomException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;

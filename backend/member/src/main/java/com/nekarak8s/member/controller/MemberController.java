@@ -1,6 +1,6 @@
 package com.nekarak8s.member.controller;
 
-import com.nekarak8s.member.common.exception.CustomException;
+import com.nekarak8s.member.exception.CustomException;
 import com.nekarak8s.member.data.dto.request.MemberModifyDTO;
 import com.nekarak8s.member.data.dto.response.ApiResponse;
 import com.nekarak8s.member.data.dto.response.LoginResponse;
@@ -16,7 +16,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -191,7 +190,7 @@ public class MemberController {
         /**
          * 1. 토큰을 넘겨 받는다.
          * 2. 토큰을 블랙 리스트에 담는다. (redis)
-         * 3. 이후 요청이 오면, API Gateway에서 블랙 리스트를 검사한다.
+         * 3. 이후 요청이 오면, API Gateway 에서 블랙 리스트 검사
          */
         log.debug("로그아웃 요청옴");
 

@@ -1,6 +1,6 @@
 package com.nekarak8s.member.service.impl;
 
-import com.nekarak8s.member.common.exception.CustomException;
+import com.nekarak8s.member.exception.CustomException;
 import com.nekarak8s.member.service.AuthService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,12 +16,11 @@ import java.util.Map;
 @Slf4j
 @Service
 public class AuthServiceImpl implements AuthService {
-
     @Value("${kakao.client-id}")
     private String clientId;
     @Value("${kakao.redirect-uri}")
     private String redirectUri;
-    private static final String KAKAO_USER_INFO_URI = "https://kapi.kakao.com/v2/user/me";
+    private static final String KAKAO_USER_INFO_URL = "https://kapi.kakao.com/v2/user/me";
 
     @Override
     public String getAuthorizationUrl() {
@@ -76,7 +75,7 @@ public class AuthServiceImpl implements AuthService {
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 
         RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<Map> userInfoResponse = restTemplate.exchange(KAKAO_USER_INFO_URI, HttpMethod.GET, new HttpEntity<>(headers), Map.class);
+        ResponseEntity<Map> userInfoResponse = restTemplate.exchange(KAKAO_USER_INFO_URL, HttpMethod.GET, new HttpEntity<>(headers), Map.class);
 
         if (userInfoResponse.getStatusCode().is2xxSuccessful()) {
             return userInfoResponse.getBody();

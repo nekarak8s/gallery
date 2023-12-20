@@ -1,4 +1,4 @@
-package com.nekarak8s.member.common.config;
+package com.nekarak8s.member.config;
 
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.springframework.beans.factory.annotation.Value;
@@ -13,8 +13,6 @@ import java.util.Map;
 
 @Configuration
 public class KafkaProducerConfig {
-
-    // 카프카 브로커 서버
     @Value("${kafka.bootstrap-servers}")
     private String bootstrapServers;
 
