@@ -1,15 +1,12 @@
 import { useEffect, useState } from 'react'
 import './Profile.scss'
-import { useUserQuery } from '../../services'
-import Loading from '@/atoms/ui/Loading'
+import { UserData } from '../../types'
 
 interface ProfileProps {
-  onLoaded?: () => void
+  user: UserData
 }
 
-const Profile = ({ onLoaded }: ProfileProps) => {
-  const { data: user, isLoading, isError } = useUserQuery()
-
+const Profile = ({ user }: ProfileProps) => {
   /**
    * Handle loaded data
    * 1. Set duration: minutes from the created date
@@ -29,21 +26,10 @@ const Profile = ({ onLoaded }: ProfileProps) => {
       setDuration((duration) => duration + 1)
     }, 60 * 1000)
 
-    // Run onLoaded function
-    onLoaded && onLoaded()
-
     return () => {
       intervalId && clearInterval(intervalId)
     }
   }, [user])
-
-  if (isLoading) {
-    return <Loading />
-  }
-
-  if (isError) {
-    return <div />
-  }
 
   return (
     <div className="profile">

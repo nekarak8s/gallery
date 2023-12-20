@@ -2,12 +2,14 @@
 
 .profile-form {
   position: relative;
-  font-size: 2.5rem;
+  font-size: 1rem;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.8em;
-  padding: 1.8em 1.5em 1em;
+  gap: 2em;
+  padding: 3em 3em 2em;
+  width: 20em;
+  height: 13em;
 }
 
 .profile-form svg {

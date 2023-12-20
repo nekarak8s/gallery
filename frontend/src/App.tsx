@@ -1,9 +1,9 @@
 import { Suspense, lazy } from 'react'
 import { Routes, Route } from 'react-router-dom'
+import Fallback from './atoms/ui/Fallback'
 import Home from './pages/Home'
 import MyPage from './pages/MyPage'
 import Cursor from '@/atoms/ui/Cursor'
-import Loading from '@/atoms/ui/Loading'
 import useMobile from '@/hooks/useMobile'
 import NavbarLayout from '@/layouts/NavbarLayout'
 import Login from '@/pages/Login'
@@ -21,6 +21,7 @@ const navbarRoutes: Record<string, RouteElement> = {
   Guide: { path: '/guide', element: <Guide /> },
   MyPage: { path: '/mypage', element: <MyPage /> },
   Login: { path: '/login', element: <Login /> },
+  Default: { path: '*', element: <Home /> },
 }
 
 const plainRoutes: Record<string, RouteElement> = {
@@ -28,13 +29,13 @@ const plainRoutes: Record<string, RouteElement> = {
   Gallery: { path: '/gallery/:galleryId', element: <Gallery /> },
 }
 
-export const routes = { ...navbarRoutes, ...plainRoutes }
+export const routes = { ...plainRoutes, ...navbarRoutes }
 
 function App() {
   const isMobile = useMobile()
 
   return (
-    <Suspense fallback={<Loading />}>
+    <Suspense fallback={<Fallback />}>
       <Routes>
         <Route path="" element={<NavbarLayout />}>
           {Object.values(navbarRoutes).map((route) => (

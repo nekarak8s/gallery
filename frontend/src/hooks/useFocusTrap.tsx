@@ -67,7 +67,9 @@ function useFocusTrap(enabled: boolean = true, escape: () => void) {
     }
 
     // Auto focus
-    firstEle.focus()
+    setTimeout(() => {
+      firstEle.focus()
+    }, 0)
 
     // Add event listener
     document.addEventListener('keydown', handleKeyDown)

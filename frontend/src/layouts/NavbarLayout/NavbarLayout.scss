@@ -5,7 +5,7 @@
 .navbar-layout {
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: auto minmax(0, 1fr);
+  grid-template-rows: auto minmax(0, 1fr) auto;
   background-color: var(--color-bg, c.$bg-white);
   height: 100%;
   min-height: 100vh;

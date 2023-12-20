@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import GalleryNavbar from './GalleryNavbar'
 import CSSTransition from '@/atoms/ui/CSSTransition'
-import Loading from '@/atoms/ui/Loading'
+import Fallback from '@/atoms/ui/Fallback'
 import GalleryCanvas from '@/features/gallery/components/GalleryCanvas'
 import GalleryCover from '@/features/gallery/components/GalleryCover'
 import { useGalleryQuery } from '@/features/gallery/services'
@@ -80,7 +80,7 @@ const Gallery = () => {
 
   if (isGalleryError || isPostError) return
 
-  if (isGalleryLoading || isPostLoading) return <Loading />
+  if (isGalleryLoading || isPostLoading) return <Fallback />
 
   return (
     <div className="gallery">
