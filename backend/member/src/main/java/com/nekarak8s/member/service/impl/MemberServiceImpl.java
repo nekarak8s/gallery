@@ -59,60 +59,80 @@ public class MemberServiceImpl implements MemberService{
         String  kakaoAccessToken    = authService.getAccessToken(code);
         long    kakaoId             = authService.getOAuthId(kakaoAccessToken);
         String  kakaoNickname       = authService.getOAuthNickname(kakaoAccessToken);
-        boolean isOriginalMember    = false;
 
-        if (!isMemberByKakaoId(kakaoId)) { // 신규 회원
-            log.debug("신규 회원");
-            String nickname = retryGenerateNickname(kakaoNickname);
-            log.debug("유니크 닉네임 생성 완료 : {}", nickname);
+        handleMemberRegistration(kakaoId, kakaoNickname); // 회원 가입 (신규 | 기존 | 삭제)
 
-            Member member = Member.builder()
-                    .kakaoId(kakaoId)
-                    .role(Role.ROLE_USER)
-                    .nickname(nickname)
-                    .isDeleted(false)
-                    .isDormant(false)
-                    .lastDate(LocalDateTime.now())
-                    .build();
+        Member member = memberRepository.findByKakaoId(kakaoId)
+                .orElseThrow(() -> new CustomException(RESOURCE_NOT_FOUND.getHttpStatus(), RESOURCE_NOT_FOUND.getCode(), "존재하지 않는 회원입니다"));
 
-            memberRepository.save(member);
-        } else { // 기존 회원 (삭제 상태 체크)
-            Member member = memberRepository.findByKakaoId(kakaoId).get();
-            if (member.getIsDeleted()) { // 삭제 상태
-                log.debug("삭제 상태 회원");
-                String nickname = retryGenerateNickname(kakaoNickname);
-                member.setNickname(nickname);
-                member.setIsDeleted(false);
-                member.setDeletedDate(null);
-                memberRepository.save(member);
-            } else {
-                log.debug("기존 회원");
-                isOriginalMember = true;
-            }
-        }
-
-        Member member = memberRepository.findByKakaoId(kakaoId).get();
-
-        if (!isOriginalMember) {
-            // Redis에 nickname 저장
-            nicknameService.saveNicknameInRedis(member.getNickname(), member.getMemberId());
-        }
-
-        TokenMember tokenMember = new TokenMember(String.valueOf(member.getMemberId()), String.valueOf(member.getRole()));
-        String accessToken = jwtUtils.generate(tokenMember); // 갤러리 서비스 토큰 발급
-
-        Date now = new Date();
-        Date expiresAt = new Date(now.getTime() + jwtProperties.getExpiration() * 60 * 1000);
+        String accessToken = generateAccessToken(member);
+        Date expirationDate = calculateExpirationDate();
 
         LoginResponse loginResponse = LoginResponse.builder()
-                .expirationDate(expiresAt)
+                .expirationDate(expirationDate)
                 .build();
 
-        Pair<String, LoginResponse> pair = Pair.<String, LoginResponse>builder()
+        return Pair.<String, LoginResponse>builder()
                 .first(accessToken)
                 .second(loginResponse)
                 .build();
-        return pair;
+    }
+
+    private void handleMemberRegistration(long kakaoId, String kakaoNickname) throws CustomException {
+        if (isMemberByKakaoId(kakaoId)) {
+            handelExistingMember(kakaoId, kakaoNickname);
+        } else {
+            handleNewMember(kakaoId, kakaoNickname);
+        }
+    }
+
+    private void handleNewMember(long kakaoId, String kakaoNickname) throws CustomException {
+        log.debug("신규 회원");
+        String nickname = retryGenerateNickname(kakaoNickname);
+
+        Member member = Member.builder()
+                .kakaoId(kakaoId)
+                .role(Role.ROLE_USER)
+                .nickname(nickname)
+                .isDeleted(false)
+                .isDormant(false)
+                .lastDate(LocalDateTime.now())
+                .build();
+        memberRepository.save(member);
+
+        nicknameService.saveNicknameInRedis(nickname, member.getMemberId());
+    }
+
+    private void handelExistingMember(long kakaoId, String kakaoNickname) throws CustomException {
+        Member member = memberRepository.findByKakaoId(kakaoId)
+                .orElseThrow(() -> new CustomException(RESOURCE_NOT_FOUND.getHttpStatus(), RESOURCE_NOT_FOUND.getCode(), "존재하지 않는 회원"));
+
+        if (!member.getIsDeleted()) {
+            log.debug("기존 회원");
+        } else {
+            handleDeletedMember(member, kakaoNickname);
+        }
+    }
+
+    private void handleDeletedMember(Member member, String kakaoNickname) throws CustomException {
+        log.debug("삭제 상태 회원");
+        String nickname = retryGenerateNickname(kakaoNickname);
+        member.setNickname(nickname);
+        member.setIsDeleted(false);
+        member.setDeletedDate(null);
+        memberRepository.save(member);
+
+        nicknameService.saveNicknameInRedis(nickname, member.getMemberId());
+    }
+
+    private String generateAccessToken(Member member) {
+        TokenMember tokenMember = new TokenMember(String.valueOf(member.getMemberId()), String.valueOf(member.getRole()));
+        return jwtUtils.generate(tokenMember); // 갤러리 서비스 토큰 발급
+    }
+
+    private Date calculateExpirationDate() {
+        Date now = new Date();
+        return new Date(now.getTime() + jwtProperties.getExpiration() * 60 * 1000);
     }
 
     /**
