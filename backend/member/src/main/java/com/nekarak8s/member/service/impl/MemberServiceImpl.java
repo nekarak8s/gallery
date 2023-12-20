@@ -51,7 +51,7 @@ public class MemberServiceImpl implements MemberService{
     private static final GAError RESOURCE_CONFLICT = GAError.RESOURCE_CONFLICT;
 
     /**
-     * 로그인
+     * 소셜 로그인
      */
     @Transactional
     @Override
@@ -84,6 +84,12 @@ public class MemberServiceImpl implements MemberService{
         } else {
             handleNewMember(kakaoId, kakaoNickname);
         }
+    }
+
+    private boolean isMemberByKakaoId(long kakaoId) {
+        Optional<Member> optionalMember = memberRepository.findByKakaoId(kakaoId);
+
+        return optionalMember.isPresent();
     }
 
     private void handleNewMember(long kakaoId, String kakaoNickname) throws CustomException {
@@ -136,32 +142,17 @@ public class MemberServiceImpl implements MemberService{
     }
 
     /**
-     * 아이디로 회원 조회
+     * 회원 조회
+     * @param memberId
+     * @return
+     * @throws CustomException
      */
     @Override
     public MemberDTO findMemberById(long memberId) throws CustomException {
-        Member member = memberRepository.findByMemberIdAndIsDeletedFalse(memberId).orElseThrow(() -> new CustomException(RESOURCE_NOT_FOUND.getHttpStatus(), RESOURCE_NOT_FOUND.getCode(), "사용자 정보가 없습니다"));
+        Member member = memberRepository.findByMemberIdAndIsDeletedFalse(memberId)
+                .orElseThrow(() -> new CustomException(RESOURCE_NOT_FOUND.getHttpStatus(), RESOURCE_NOT_FOUND.getCode(), "사용자 정보가 없습니다"));
 
-        // Redis에서 nickname 조회
-        String nickname = nicknameService.getNicknameInRedisByMemberId(memberId);
-
-        MemberDTO memberDTO = MemberDTO.builder()
-                .nickname(nickname)
-                .role(member.getRole())
-                .createdDate(member.getCreatedDate())
-                .build();
-
-        return memberDTO;
-    }
-
-    /**
-     * 카카오 아이디로 회원 조회
-     */
-    @Override
-    public boolean isMemberByKakaoId(long kakaoId) {
-        Optional<Member> optionalMember = memberRepository.findByKakaoId(kakaoId);
-
-        return optionalMember.isPresent();
+        return MemberDTO.toDTO(member);
     }
 
     /**
