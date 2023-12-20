@@ -54,5 +54,4 @@ public class Member {
 
     @Column(name = "deletedDate")
     private LocalDateTime deletedDate;
-
 }
