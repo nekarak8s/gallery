@@ -1,6 +1,6 @@
 package com.nekarak8s.member.redis.service;
 
-import com.nekarak8s.member.common.exception.CustomException;
+import com.nekarak8s.member.exception.CustomException;
 import com.nekarak8s.member.redis.entity.Nickname;
 import com.nekarak8s.member.redis.repository.NicknameRepository;
 import lombok.RequiredArgsConstructor;

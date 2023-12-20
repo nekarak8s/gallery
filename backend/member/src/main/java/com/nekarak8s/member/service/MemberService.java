@@ -1,7 +1,7 @@
 package com.nekarak8s.member.service;
 
 
-import com.nekarak8s.member.common.exception.CustomException;
+import com.nekarak8s.member.exception.CustomException;
 import com.nekarak8s.member.data.dto.request.MemberModifyDTO;
 import com.nekarak8s.member.data.dto.response.LoginResponse;
 import com.nekarak8s.member.data.dto.response.MemberDTO;

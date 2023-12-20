@@ -9,8 +9,6 @@ import lombok.*;
 @AllArgsConstructor
 @EqualsAndHashCode
 public class TokenMember {
-
     private String id;
     private String role;
-
 }

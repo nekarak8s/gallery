@@ -1,4 +1,4 @@
-package com.nekarak8s.member.common.config;
+package com.nekarak8s.member.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @Configuration
 @EnableTransactionManagement
 public class RedisConfig {
-
     @Value("${spring.redis.host}")
     private String host;
 

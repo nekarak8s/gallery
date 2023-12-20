@@ -1,4 +1,4 @@
-package com.nekarak8s.member.common.exception;
+package com.nekarak8s.member.exception;
 
 import org.springframework.http.HttpStatus;
 

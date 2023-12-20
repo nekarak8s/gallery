@@ -1,7 +1,7 @@
 package com.nekarak8s.member.service.impl;
 
 import com.nekarak8s.member.common.Role;
-import com.nekarak8s.member.common.exception.CustomException;
+import com.nekarak8s.member.exception.CustomException;
 import com.nekarak8s.member.data.dto.request.MemberModifyDTO;
 import com.nekarak8s.member.data.dto.response.LoginResponse;
 import com.nekarak8s.member.data.dto.response.MemberDTO;
@@ -152,7 +152,6 @@ public class MemberServiceImpl implements MemberService{
                 isUnique = true;
             }
         }
-
         return isUnique;
     }
 

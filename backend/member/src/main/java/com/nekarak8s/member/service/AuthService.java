@@ -1,6 +1,6 @@
 package com.nekarak8s.member.service;
 
-import com.nekarak8s.member.common.exception.CustomException;
+import com.nekarak8s.member.exception.CustomException;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
