@@ -18,8 +18,6 @@ public interface MemberService {
 
     MemberDTO findMemberById(long memberId) throws CustomException;
 
-    boolean isMemberByKakaoId(long kakaoId);
-
     // 닉네임 중복 체크
     boolean isNicknameUnique(String nickname) throws CustomException;
 
