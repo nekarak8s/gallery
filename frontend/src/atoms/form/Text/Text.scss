@@ -2,7 +2,6 @@
 @use '@/styles/_responsive.scss' as *;
 
 .text {
-  font-size: 1rem;
   min-width: 10em;
   width: 100%;
   position: relative;
@@ -12,7 +11,7 @@
 
 .text input {
   width: 100%;
-  padding: 1.7em 0.4em 0.5em;
+  padding: 1.65em 0.4em 0.6em;
   outline: none;
   border: none;
   border-bottom: 2px solid rgba(100, 100, 100, 0.3);
@@ -35,7 +34,7 @@
   position: absolute;
   top: 0;
   left: 0;
-  margin: 1.2em 0.4em 0.8em;
+  margin: 1.45em 0.4em 0.55em;
   color: var(--color-ft-subtle, c.$ft-gray);
   font-size: 1em;
   font-weight: 600;
@@ -50,14 +49,8 @@
   transform: translate(0.1em, -0.7em);
 }
 
-@include tablet {
-  .text {
-    font-size: 0.9rem;
-  }
-}
-
 @include mobile {
   .text {
-    font-size: 0.9rem;
+    font-size: 0.9em;
   }
 }

@@ -109,15 +109,15 @@ const Joystick = ({ control, shoot }: JoystickProps) => {
 
     const optimizedHandleTouchmove = toFrame(handleTouchmove)
 
-    joystick.addEventListener('touchstart', optimizedHandleTouchmove)
-    core.addEventListener('touchstart', optimizedHandleTouchmove)
+    joystick.addEventListener('touchstart', handleTouchStart)
+    core.addEventListener('touchstart', handleTouchStart)
     document.addEventListener('touchmove', optimizedHandleTouchmove)
     document.addEventListener('touchend', handleTouchEnd)
 
     return () => {
       window.removeEventListener('resize', handleResize)
-      joystick.removeEventListener('touchstart', optimizedHandleTouchmove)
-      core.removeEventListener('touchstart', optimizedHandleTouchmove)
+      joystick.removeEventListener('touchstart', handleTouchStart)
+      core.removeEventListener('touchstart', handleTouchStart)
       document.removeEventListener('touchmove', optimizedHandleTouchmove)
       document.removeEventListener('touchend', handleTouchEnd)
     }

@@ -68,7 +68,7 @@ const MagneticButton: React.FC<Props> = ({
     <NavLink
       className={`magnetic-button ${size} ${color}`}
       to={to}
-      aria-label={ariaLabel}
+      title={ariaLabel}
       ref={buttonRef}
     >
       <span className="magnetic-button__text" ref={buttonTextRef}>

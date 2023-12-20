@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react'
 import { NavLink } from 'react-router-dom'
 import { routes } from '@/App'
+import SearchIcon from '@/assets/svgs/magnify.svg'
 import Modal from '@/atoms/ui/Modal'
 import { CURSOR_SCALE } from '@/constants'
 import GallerySearch from '@/features/gallery/components/GallerySearch'
@@ -57,12 +58,23 @@ function Navbar({ whitePathname, isLogin }: NavbarProps) {
   }, [])
 
   /**
+   * Toggle Search
+   */
+  const [isSearchShow, setIsSearchShow] = useState(false)
+
+  const handleSearchClick = useCallback(() => {
+    setIsSearchShow(true)
+    handleToggleClick()
+  }, [])
+
+  /**
    * Toggle login modal
    */
   const [isLoginOpen, setIsLoginOpen] = useState(false)
 
   const handleLoginClick = useCallback(() => {
     setIsLoginOpen(true)
+    handleToggleClick()
   }, [])
 
   /**
@@ -80,24 +92,19 @@ function Navbar({ whitePathname, isLogin }: NavbarProps) {
         className={`navbar ${whitePathname.includes(location.pathname) ? 'white' : ''}`}
         ref={navbarRef}
       >
-        <NavLink to={routes['Home'].path} onFocus={showNavbar} data-cursor-scale={CURSOR_SCALE}>
-          The Gallery
-        </NavLink>
-        <button
-          className="navbar__toggle"
-          ref={toggleRef}
-          onClick={handleToggleClick}
+        <NavLink
+          to={routes['Home'].path}
           onFocus={showNavbar}
           data-cursor-scale={CURSOR_SCALE}
-          aria-label="메뉴바 토글"
+          title={'홈 페이지'}
         >
-          <span data-cursor-scale={CURSOR_SCALE} />
-          <span data-cursor-scale={CURSOR_SCALE} />
-          <span data-cursor-scale={CURSOR_SCALE} />
-        </button>
+          The Gallery
+        </NavLink>
         <ul className="navbar__menu" ref={menuRef}>
           <li>
-            <GallerySearch />
+            <button onClick={handleSearchClick} data-cursor-scale={CURSOR_SCALE}>
+              <SearchIcon />
+            </button>
           </li>
           <li>
             <NavLink
@@ -105,6 +112,7 @@ function Navbar({ whitePathname, isLogin }: NavbarProps) {
               onFocus={showNavbar}
               data-cursor-scale={CURSOR_SCALE}
               onClick={handleToggleClick}
+              title="가이드 페이지"
             >
               Guide
             </NavLink>
@@ -117,6 +125,7 @@ function Navbar({ whitePathname, isLogin }: NavbarProps) {
                   onFocus={showNavbar}
                   data-cursor-scale={CURSOR_SCALE}
                   onClick={handleToggleClick}
+                  title="마이페이지"
                 >
                   MyPage
                 </NavLink>
@@ -141,13 +150,28 @@ function Navbar({ whitePathname, isLogin }: NavbarProps) {
                 onFocus={showNavbar}
                 data-cursor-scale={CURSOR_SCALE}
                 onClick={handleToggleClick}
+                title="마이페이지"
               >
                 MyPage
               </NavLink>
             </li>
           )}
         </ul>
+        <button
+          className="navbar__toggle"
+          ref={toggleRef}
+          onClick={handleToggleClick}
+          onFocus={showNavbar}
+          data-cursor-scale={CURSOR_SCALE}
+          aria-label="메뉴바 토글"
+        >
+          <span data-cursor-scale={CURSOR_SCALE} />
+          <span data-cursor-scale={CURSOR_SCALE} />
+          <span data-cursor-scale={CURSOR_SCALE} />
+        </button>
       </nav>
+      {/* Search Modal */}
+      <GallerySearch isShow={isSearchShow} onClose={() => setIsSearchShow(false)} />
       {/* Login Modal */}
       <Modal isOpen={isLoginOpen} onClose={() => setIsLoginOpen(false)}>
         <LoginForm />

@@ -16,19 +16,32 @@ function useFocusTrap(enabled: boolean = true, escape: () => void) {
     if (!container) return
 
     // Get focusable elements
-    const focusEles = container.querySelectorAll(
+    let focusEles = container.querySelectorAll(
       'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
     ) as NodeListOf<HTMLElement>
 
     // Filter invalid condition
-    const N = focusEles.length
+    let N = focusEles.length
     if (N === 0) return
 
     // Get the edge elments
-    const firstEle = focusEles[0]
-    const lastEle = focusEles[N - 1]
+    let firstEle = focusEles[0]
+    let lastEle = focusEles[N - 1]
 
     const handleKeyDown = (e: KeyboardEvent) => {
+      // Get focusable elements
+      focusEles = container.querySelectorAll(
+        'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+      ) as NodeListOf<HTMLElement>
+
+      // Filter invalid condition
+      N = focusEles.length
+      if (N === 0) return
+
+      // Get the edge elments
+      firstEle = focusEles[0]
+      lastEle = focusEles[N - 1]
+
       // Run escape function
       if (e.key === 'Escape') {
         escape()

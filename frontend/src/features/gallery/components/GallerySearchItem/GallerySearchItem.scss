@@ -1,8 +1,52 @@
+@use '@/styles/_responsive.scss' as *;
+
 .gallery-search-item {
-  font-size: 1rem;
+  width: 30em;
   padding: 1em;
+  border-radius: 0.5em;
+  font-size: 1.2rem;
+
+  > a {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+  }
 }
 
 .gallery-search-item:hover {
-  background-color: rgba(105, 105, 105, 0.314);
+  background-color: rgba(105, 105, 105, 0.134);
+}
+
+.gallery-search-item__info {
+  display: flex;
+  gap: 1em;
+  font-size: 1.1em;
+
+  h1 {
+    font-weight: 600;
+  }
+}
+
+.gallery-search-item__content {
+  height: 3.5em;
+  line-height: 120%;
+  overflow: hidden;
+}
+
+@include laptop {
+  .gallery-search-item {
+    font-size: 1.1rem;
+  }
+}
+
+@include tablet {
+  .gallery-search-item {
+    font-size: 1.1rem;
+  }
+}
+
+@include mobile {
+  .gallery-search-item {
+    font-size: 3vw;
+  }
 }

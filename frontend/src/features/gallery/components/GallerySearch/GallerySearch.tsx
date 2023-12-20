@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react'
 import { useSearchGalleryQuery } from '../../services'
 import GallerySearchItem from '../GallerySearchItem'
 import CircleIcon from '@/assets/svgs/circle.svg'
-import SearchIcon from '@/assets/svgs/magnify.svg'
 import XIcon from '@/assets/svgs/x.svg'
 import Select from '@/atoms/form/Select'
 import Text from '@/atoms/form/Text'
@@ -12,14 +11,17 @@ import useDebounce from '@/hooks/useDebounce'
 import useFocusTrap from '@/hooks/useFocusTrap'
 import './GallerySearch.scss'
 
-const GallerySearch = () => {
+type GallerySearchProps = {
+  isShow: boolean
+  onClose: () => void
+}
+
+const GallerySearch = ({ isShow, onClose }: GallerySearchProps) => {
   /**
    * Toggle Search
    */
-  const [isSearchShow, setIsSearchShow] = useState(false)
-
-  const focusRef = useFocusTrap(isSearchShow, () => {
-    setIsSearchShow(false)
+  const focusRef = useFocusTrap(isShow, () => {
+    onClose()
   })
 
   /**
@@ -29,7 +31,6 @@ const GallerySearch = () => {
   const [query, setQuery] = useState('')
   const { data: galleryList, refetch } = useSearchGalleryQuery(type, query)
 
-  console.log(galleryList)
   const debouncedQuery = useDebounce(query, 300)
 
   useEffect(() => {
@@ -37,24 +38,15 @@ const GallerySearch = () => {
   }, [debouncedQuery])
 
   return (
-    <div className="gallery-search">
-      <button
-        data-cursor-scale={CURSOR_SCALE}
-        onClick={() => {
-          setIsSearchShow(true)
-        }}
-      >
-        <SearchIcon />
-      </button>
-      <CSSTransition className="gallery-search__background" isShow={isSearchShow} duration={1000}>
+    <CSSTransition className="gallery-search" isShow={isShow} duration={500}>
+      <div className="gallery-search__back">
         <CircleIcon />
-      </CSSTransition>
-      {isSearchShow && (
+      </div>
+      {isShow && (
         <div className="gallery-search__search" ref={focusRef}>
-          <div className="gallery-search__searchbar">
+          <div className="gallery-search__search-bar">
             <Text
-              label=" "
-              placeholder="검색"
+              label="갤러리 검색"
               name="query"
               initialValue=""
               onChange={(e) => setQuery(e.target.value)}
@@ -70,9 +62,7 @@ const GallerySearch = () => {
           <button
             className="gallery-search__close"
             data-cursor-scale={CURSOR_SCALE}
-            onClick={() => {
-              setIsSearchShow(false)
-            }}
+            onClick={onClose}
           >
             <XIcon />
           </button>
@@ -83,7 +73,7 @@ const GallerySearch = () => {
           </div>
         </div>
       )}
-    </div>
+    </CSSTransition>
   )
 }
 

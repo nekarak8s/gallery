@@ -1,72 +1,114 @@
 @use '@/styles/_colors.scss' as c;
 @use '@/styles/_animations.scss' as a;
+@use '@/styles/_responsive.scss' as *;
 
 .gallery-search {
-  font-size: 1rem;
-}
+  z-index: 100;
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  font-size: 1.5rem;
+  overflow: hidden;
 
-.gallery-search__background {
-  svg {
-    position: fixed;
-    top: 0;
-    right: 0;
-    width: 0;
-    height: 0;
-    transform: translate(50%, -50%);
-    transition: all 500ms ease-out;
-    fill: c.$secondary;
+  .gallery-search__back {
+    svg {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 0;
+      height: 0;
+      transform: translate(50%, -50%);
+      transition: all 500ms ease-out;
+      fill: rgb(232, 232, 232);
+    }
   }
 
   &--enter {
-    svg {
-      width: 300vmax;
-      height: 300vmax;
+    .gallery-search__back {
+      svg {
+        width: 300vmax;
+        height: 300vmax;
+      }
     }
   }
 
   &--leave {
-    svg {
-      width: 0;
-      height: 0;
+    .gallery-search__back {
+      svg {
+        width: 0;
+        height: 0;
+      }
     }
   }
 }
 
 .gallery-search__search {
-  width: 100%;
-  position: fixed;
-  top: 5em;
-  left: 50%;
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 2em;
+  position: fixed;
+  top: 2em;
+  left: 50%;
+  width: 100%;
   transform: translate(-50%);
 }
 
-.gallery-search__searchbar {
+.gallery-search__search-bar {
   display: flex;
   flex-direction: row-reverse;
   align-items: flex-end;
-  width: 15em;
+  width: 18em;
 
   select {
-    width: 4em;
+    width: 5em;
   }
 }
 
 .gallery-search__close {
   position: fixed;
   top: 0.6em;
-  right: 1em;
+  right: 10%;
 
   svg {
     width: 1.7em;
     height: 1.7em;
+  }
+  path {
+    fill: var(--color-ft, c.$ft-black);
   }
 }
 
 .gallery-search__list {
   display: flex;
   flex-direction: column;
-  gap: 1em;
+  gap: 0.5em;
+}
+
+@include laptop {
+  .gallery-search {
+    font-size: 1.4rem;
+  }
+}
+
+@include tablet {
+  .gallery-search__close {
+    right: 3em;
+  }
+
+  .gallery-search {
+    font-size: 1.3em;
+  }
+}
+
+@include mobile {
+  .gallery-search__close {
+    right: 1em;
+  }
+
+  .gallery-search {
+    font-size: 3.8vw;
+  }
 }
