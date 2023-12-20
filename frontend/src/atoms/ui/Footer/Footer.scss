@@ -31,6 +31,9 @@
 }
 
 @include mobile {
+  .footer {
+    font-size: 3.2vw;
+  }
   .footer__license {
     font-size: 3vw;
   }

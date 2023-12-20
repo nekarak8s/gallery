@@ -160,7 +160,7 @@ export function buildArchitect(props: buildArchitectProps): ThreeItem {
   const sun = new THREE.Vector3()
 
   const theta = Math.PI * (0.58 - 0.5)
-  const phi = 2 * Math.PI * (0.75 - 0.5)
+  const phi = 2 * Math.PI * (0.7 - 0.5)
   sun.x = Math.cos(phi)
   sun.y = Math.sin(phi) * Math.sin(theta)
   sun.z = Math.sin(phi) * Math.cos(theta)

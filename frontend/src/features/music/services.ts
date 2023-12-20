@@ -5,7 +5,7 @@ import toastManager from '@/utils/toastManager'
 
 export function useMusicListQuery(query: string) {
   return useQuery<MessageResponse<MusicSearchData[]>, ErrorResponse, MusicSearchData[]>(
-    ['music'],
+    ['music', { query }],
     () =>
       axiosInstance.get(`/post/music/list`, {
         params: {

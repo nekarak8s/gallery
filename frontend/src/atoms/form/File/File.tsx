@@ -43,7 +43,7 @@ const File = ({
   }
 
   return (
-    <div className={`file ${className}`}>
+    <div className={`file ${className ? className : ''}`}>
       <input
         id={id}
         ref={inputRef}

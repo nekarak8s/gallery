@@ -39,6 +39,14 @@ export type GalleryItemData = {
   }
 }
 
+export type GallerySearchItemData = {
+  galleryId: number
+  title: string
+  content: string
+  nickname: string
+  createdDate: string
+}
+
 export type PlaceData = {
   placeId: number
   name: string

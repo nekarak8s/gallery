@@ -8,17 +8,26 @@ interface InputProps {
   label: string
   name: string
   initialValue: string
+  placeholder?: string
   onChange?: ChangeEventHandler<HTMLInputElement>
 }
 
-const Text = ({ id, className, label, name, initialValue, onChange }: InputProps) => {
+const Text = ({
+  id,
+  className,
+  label,
+  name,
+  initialValue,
+  placeholder = ' ',
+  onChange,
+}: InputProps) => {
   return (
-    <div className={`text ${className}`}>
+    <div className={`text ${className ? className : ''}`}>
       <input
         id={id}
         name={name}
         type="text"
-        placeholder=""
+        placeholder={placeholder}
         defaultValue={initialValue}
         onChange={onChange}
       />

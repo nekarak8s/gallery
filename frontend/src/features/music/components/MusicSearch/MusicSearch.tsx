@@ -15,13 +15,13 @@ type MusicSearchProps = {
 
 const MusicSearch = ({ onSelect }: MusicSearchProps) => {
   const [query, setQuery] = useState('')
-  const { data, isLoading, isError, refetch } = useMusicListQuery(query)
+  const { data, refetch } = useMusicListQuery(query)
 
-  const debouncedValue = useDebounce(query, 300)
+  const debouncedQuery = useDebounce(query, 300)
 
   useEffect(() => {
-    debouncedValue && refetch()
-  }, [debouncedValue])
+    debouncedQuery && refetch()
+  }, [debouncedQuery])
 
   const { mutateAsync: createMusic, isLoading: isCreateLoading } = useCreateMusic()
 

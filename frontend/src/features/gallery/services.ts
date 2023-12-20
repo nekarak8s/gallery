@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { GalleryData, GalleryFormData, PlaceData } from './types'
+import { GalleryData, GalleryFormData, GallerySearchItemData, PlaceData } from './types'
 import axiosInstance from '@/utils/axiosInstance'
 import toastManager from '@/utils/toastManager/toastManager'
 
@@ -66,6 +66,29 @@ export function useUpdateGallery(galleryId: number) {
       onError: (err) => {
         toastManager.addToast('error', err.message)
       },
+    }
+  )
+}
+
+export function useSearchGalleryQuery(type: string, query: string) {
+  return useQuery<MessageResponse<GallerySearchItemData[]>, ErrorResponse, GallerySearchItemData[]>(
+    ['gallery', { type, query }],
+    () =>
+      axiosInstance.get(`/gallery/search`, {
+        params: {
+          type,
+          query,
+        },
+      }),
+    {
+      onSuccess: () => {},
+      onError: (err) => {
+        toastManager.addToast('error', err.message)
+      },
+      select: (res) => {
+        return res.data
+      },
+      enabled: false,
     }
   )
 }

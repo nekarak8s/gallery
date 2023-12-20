@@ -3,6 +3,7 @@ import { NavLink } from 'react-router-dom'
 import { routes } from '@/App'
 import Modal from '@/atoms/ui/Modal'
 import { CURSOR_SCALE } from '@/constants'
+import GallerySearch from '@/features/gallery/components/GallerySearch'
 import LoginForm from '@/features/member/components/LoginForm'
 import throttle from '@/utils/throttle'
 import './Navbar.scss'
@@ -96,6 +97,9 @@ function Navbar({ whitePathname, isLogin }: NavbarProps) {
         </button>
         <ul className="navbar__menu" ref={menuRef}>
           <li>
+            <GallerySearch />
+          </li>
+          <li>
             <NavLink
               to={routes['Guide'].path}
               onFocus={showNavbar}
@@ -105,7 +109,6 @@ function Navbar({ whitePathname, isLogin }: NavbarProps) {
               Guide
             </NavLink>
           </li>
-
           {process.env.REACT_APP_BASE_URL !== '/gallery' &&
             (isLogin ? (
               <li>
@@ -144,20 +147,6 @@ function Navbar({ whitePathname, isLogin }: NavbarProps) {
             </li>
           )}
         </ul>
-        {/* <div className="navbar__search">
-          <Select name="type">
-            <option selected value="all">
-              전체
-            </option>
-            <option selected value="title">
-              제목
-            </option>
-            <option selected value="author">
-              작가
-            </option>
-          </Select>
-          <Text label="검색" name="query" initialValue="" />
-        </div> */}
       </nav>
       {/* Login Modal */}
       <Modal isOpen={isLoginOpen} onClose={() => setIsLoginOpen(false)}>

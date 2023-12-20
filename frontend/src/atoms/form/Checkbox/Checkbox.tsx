@@ -20,7 +20,7 @@ const Checkbox = ({
   children,
 }: PropsWithChildren<CheckboxProps>) => {
   return (
-    <label htmlFor={id} className={`checkbox ${className}`}>
+    <label htmlFor={id} className={`checkbox ${className ? className : ''}`}>
       <div className="checkbox__label">
         <input
           id={id}

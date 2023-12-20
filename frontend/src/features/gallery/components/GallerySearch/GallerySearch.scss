@@ -1,0 +1,72 @@
+@use '@/styles/_colors.scss' as c;
+@use '@/styles/_animations.scss' as a;
+
+.gallery-search {
+  font-size: 1rem;
+}
+
+.gallery-search__background {
+  svg {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 0;
+    height: 0;
+    transform: translate(50%, -50%);
+    transition: all 500ms ease-out;
+    fill: c.$secondary;
+  }
+
+  &--enter {
+    svg {
+      width: 300vmax;
+      height: 300vmax;
+    }
+  }
+
+  &--leave {
+    svg {
+      width: 0;
+      height: 0;
+    }
+  }
+}
+
+.gallery-search__search {
+  width: 100%;
+  position: fixed;
+  top: 5em;
+  left: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transform: translate(-50%);
+}
+
+.gallery-search__searchbar {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: flex-end;
+  width: 15em;
+
+  select {
+    width: 4em;
+  }
+}
+
+.gallery-search__close {
+  position: fixed;
+  top: 0.6em;
+  right: 1em;
+
+  svg {
+    width: 1.7em;
+    height: 1.7em;
+  }
+}
+
+.gallery-search__list {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+}

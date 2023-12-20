@@ -2,14 +2,20 @@ import { PropsWithChildren } from 'react'
 import './Select.scss'
 
 type SelectProps = {
-  id?: string | undefined
-  className?: string | undefined
+  id?: string
+  className?: string
   name: string
+  onChange?: React.ChangeEventHandler<HTMLSelectElement> | undefined
 }
 
-const Select = ({ id, className, name, children }: PropsWithChildren<SelectProps>) => {
+const Select = ({ id, className, name, onChange, children }: PropsWithChildren<SelectProps>) => {
   return (
-    <select id={id} className={`select ${className}`} name={name}>
+    <select
+      id={id}
+      className={`select ${className ? className : ''}`}
+      name={name}
+      onChange={onChange}
+    >
       {children}
     </select>
   )

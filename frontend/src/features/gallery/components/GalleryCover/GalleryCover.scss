@@ -23,6 +23,7 @@
   gap: 3em;
   width: clamp(800px, 64vw, 960px);
   height: clamp(400px, 36vw, 540px);
+  max-height: 90vh;
   padding: 1em 2em;
   background-color: var(--color-bg, c.$bg-white);
   box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.3);

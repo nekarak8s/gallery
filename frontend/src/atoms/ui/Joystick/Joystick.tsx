@@ -12,55 +12,91 @@ const Joystick = ({ control, shoot }: JoystickProps) => {
   /**
    * Joystick control
    */
-  const areaRef = useRef<HTMLDivElement>(null)
+  const joystickRef = useRef<HTMLDivElement>(null)
   const coreRef = useRef<HTMLDivElement>(null)
+  const shootRef = useRef<HTMLDivElement>(null)
+
+  const isTracking = useRef(false)
 
   useEffect(() => {
-    const area = areaRef.current!
+    const joystick = joystickRef.current!
     const core = coreRef.current!
+    const shoot = shootRef.current!
 
     /**
-     * Set the controller origin
+     * Set the controller origin & shoot top, bottom, left, right
      */
-    const origin = {
+    const contrlOrigin = {
       x: 0,
       y: 0,
       radius: 0,
     }
-    const handleResize = function seOrigin() {
-      const rect = area.getBoundingClientRect()
 
-      origin.x = rect.x + area.offsetWidth / 2
-      origin.y = rect.y + area.offsetHeight / 2
-      origin.radius = area.offsetWidth / 2
+    const shootInfo = {
+      top: 0,
+      bottom: 0,
+      left: 0,
+      right: 0,
+    }
+
+    const handleResize = function seOrigin() {
+      let rect = joystick.getBoundingClientRect()
+      contrlOrigin.x = rect.x + joystick.offsetWidth / 2
+      contrlOrigin.y = rect.y + joystick.offsetHeight / 2
+      contrlOrigin.radius = joystick.offsetWidth / 2
+
+      rect = shoot.getBoundingClientRect()
+      shootInfo.top = rect.y
+      shootInfo.bottom = rect.y + shoot.offsetHeight
+      shootInfo.left = rect.x
+      shootInfo.right = rect.x + shoot.offsetWidth
+    }
+
+    /**
+     * Handle touch end
+     */
+    const handleTouchStart = function enaleTracking() {
+      isTracking.current = true
     }
 
     /**
      * Handle touch move
      */
     const handleTouchmove = function tracking(e: TouchEvent) {
+      if (!isTracking.current) return
+
       const lastTouch = e.changedTouches[e.changedTouches.length - 1]
-      let touchoffsetX = lastTouch.clientX - origin.x
-      let touchoffsetY = lastTouch.clientY - origin.y
+      let touchoffsetX = lastTouch.clientX - contrlOrigin.x
+      let touchoffsetY = lastTouch.clientY - contrlOrigin.y
 
       const distance = (touchoffsetX ** 2 + touchoffsetY ** 2) ** 0.5
 
-      if (distance > origin.radius) {
-        touchoffsetX /= distance / origin.radius
-        touchoffsetY /= distance / origin.radius
+      if (distance > contrlOrigin.radius) {
+        touchoffsetX /= distance / contrlOrigin.radius
+        touchoffsetY /= distance / contrlOrigin.radius
       }
 
       core.style.transform = `
       translate(${touchoffsetX * 0.9}px, ${touchoffsetY * 0.9}px)
       `
 
-      control && control(touchoffsetX / origin.radius, touchoffsetY / origin.radius)
+      control && control(touchoffsetX / contrlOrigin.radius, touchoffsetY / contrlOrigin.radius)
     }
 
     /**
      * Handle touch end
      */
-    const handleTouchEnd = function disableTracking() {
+    const handleTouchEnd = function disableTracking(e: TouchEvent) {
+      const lastTouch = e.changedTouches[e.changedTouches.length - 1]
+
+      if (
+        lastTouch.clientX > shootInfo.left &&
+        lastTouch.clientX < shootInfo.right &&
+        lastTouch.clientY > shootInfo.top &&
+        lastTouch.clientY < shootInfo.bottom
+      )
+        return
+
       core.style.transform = `
         translate(${0}px, ${0}px)
         `
@@ -73,30 +109,26 @@ const Joystick = ({ control, shoot }: JoystickProps) => {
 
     const optimizedHandleTouchmove = toFrame(handleTouchmove)
 
-    area.addEventListener('touchstart', optimizedHandleTouchmove)
+    joystick.addEventListener('touchstart', optimizedHandleTouchmove)
     core.addEventListener('touchstart', optimizedHandleTouchmove)
-    area.addEventListener('touchmove', optimizedHandleTouchmove)
-    core.addEventListener('touchmove', optimizedHandleTouchmove)
-    area.addEventListener('touchend', handleTouchEnd)
-    core.addEventListener('touchend', handleTouchEnd)
+    document.addEventListener('touchmove', optimizedHandleTouchmove)
+    document.addEventListener('touchend', handleTouchEnd)
 
     return () => {
       window.removeEventListener('resize', handleResize)
-      area.removeEventListener('touchstart', optimizedHandleTouchmove)
+      joystick.removeEventListener('touchstart', optimizedHandleTouchmove)
       core.removeEventListener('touchstart', optimizedHandleTouchmove)
-      area.removeEventListener('touchmove', optimizedHandleTouchmove)
-      core.removeEventListener('touchmove', optimizedHandleTouchmove)
-      area.removeEventListener('touchend', handleTouchEnd)
-      core.removeEventListener('touchend', handleTouchEnd)
+      document.removeEventListener('touchmove', optimizedHandleTouchmove)
+      document.removeEventListener('touchend', handleTouchEnd)
     }
   }, [])
 
   return (
     <div className="joystick">
-      <div className="joystick__controller" ref={areaRef}>
+      <div className="joystick__controller" ref={joystickRef}>
         <div className="joystick__controller--core" ref={coreRef}></div>
       </div>
-      <div className="joystick__shoot" onClick={shoot}>
+      <div className="joystick__shoot" onClick={shoot} ref={shootRef}>
         <BowIcon />
       </div>
     </div>

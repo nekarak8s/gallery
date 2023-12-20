@@ -127,9 +127,10 @@
     > section {
       padding: 5vw;
       align-items: center;
+      justify-content: flex-end;
 
       > div {
-        width: min(100%);
+        width: min(680px, 80%);
       }
 
       h1 {
@@ -148,6 +149,7 @@
     }
 
     > section:last-child {
+      justify-content: center;
       h1 {
         font-size: 3em;
       }
@@ -169,7 +171,7 @@
       padding: 5vw;
 
       > div {
-        width: min(100%);
+        width: 90%;
       }
 
       h1 {
