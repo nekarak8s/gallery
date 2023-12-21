@@ -64,11 +64,7 @@ public class MemberController {
 
         String authorizationUrl = authService.getAuthorizationUrl();
 
-        ApiResponse apiResponse = ApiResponse.builder()
-                .message("리다이렉트 URL 발급 성공")
-                .data(authorizationUrl)
-                .build();
-
+        ApiResponse apiResponse = createSuccessResponseWithData("리다이렉트 URL 발급 성공", authorizationUrl);
         return ResponseEntity.ok(apiResponse);
     }
 
@@ -94,11 +90,7 @@ public class MemberController {
 
         cookieUtils.addCookie(response, accessToken);
 
-        ApiResponse apiResponse = ApiResponse.builder()
-                .message("로그인 성공")
-                .data(loginResponse)
-                .build();
-
+        ApiResponse apiResponse = createSuccessResponseWithData("로그인 성공", loginResponse);
         return ResponseEntity.ok(apiResponse);
     }
 
@@ -114,11 +106,7 @@ public class MemberController {
         paramUtils.checkParam(String.valueOf(memberId));
         MemberDTO memberDTO = memberService.findMemberById(memberId);
 
-        ApiResponse apiResponse = ApiResponse.builder()
-                .message("회원 정보 조회 성공")
-                .data(memberDTO)
-                .build();
-
+        ApiResponse apiResponse = createSuccessResponseWithData("회원 정보 조회 성공", memberDTO);
         return ResponseEntity.ok(apiResponse);
     }
 
@@ -133,10 +121,7 @@ public class MemberController {
         log.debug("닉네임 중복 검사 요청옴");
         validateNickname(nickname);
 
-        ApiResponse apiResponse = ApiResponse.builder()
-                .message("사용 가능한 닉네임 입니다")
-                .build();
-
+        ApiResponse apiResponse = createSuccessResponse("사용 가능한 닉네임 입니다");
         return ResponseEntity.ok(apiResponse);
     }
 
@@ -165,18 +150,11 @@ public class MemberController {
     public ResponseEntity<?> modifyMemberInfo(@RequestHeader(value = "X-Member-ID", required = false) long memberId,
                                               @RequestBody @Valid final MemberModifyDTO request) throws CustomException{
         log.debug("회원 정보 수정 요청옴");
-
-        // 닉네임 형식 검사
-        if (!nicknameUtils.isValid(request.getNickname())) throw new CustomException(INVALID_PARAMETER.getHttpStatus(), INVALID_PARAMETER.getCode(), INVALID_NICKNAME_MESSAGE);
-        // 닉네임 중복 검사
-        if (!memberService.isNicknameUnique(request.getNickname())) throw new CustomException(RESOURCE_CONFLICT.getHttpStatus(), RESOURCE_CONFLICT.getCode(), ALREADY_EXIST_NICKNAME_MESSAGE);
+        validateNickname(request.getNickname());
 
         memberService.modifyMemberInfo(memberId, request);
 
-        ApiResponse apiResponse = ApiResponse.builder()
-                .message("성공적으로 변경되었습니다")
-                .build();
-
+        ApiResponse apiResponse = createSuccessResponse("성공적으로 변경되었습니다");
         return ResponseEntity.ok(apiResponse);
     }
 
@@ -192,10 +170,7 @@ public class MemberController {
 
         memberService.deleteMember(memberId);
 
-        ApiResponse apiResponse = ApiResponse.builder()
-                .message("성공적으로 삭제되었습니다")
-                .build();
-
+        ApiResponse apiResponse = createSuccessResponse("성공적으로 삭제되었습니다");
         return ResponseEntity.ok(apiResponse);
     }
 
@@ -214,10 +189,7 @@ public class MemberController {
         long ttl = (expTime - now.getTime()) / 1000; // 초 단위
         tokenService.save(token, ttl); // 블랙리스트에 token 추가, 남아있는 토큰 시간 만큼 ttl 설정
 
-        ApiResponse apiResponse = ApiResponse.builder()
-                .message("로그아웃 되었습니다")
-                .build();
-
+        ApiResponse apiResponse = createSuccessResponse("로그아웃 되었습니다");
         return ResponseEntity.ok(apiResponse);
     }
 
@@ -234,11 +206,7 @@ public class MemberController {
 
         String nickname = memberService.getMemberNickname(memberId);
 
-        ApiResponse apiResponse = ApiResponse.builder()
-                .message("닉네임 조회 성공")
-                .data(nickname)
-                .build();
-
+        ApiResponse apiResponse = createSuccessResponseWithData("닉네임 조회 성공", nickname);
         return ResponseEntity.ok(apiResponse);
     }
 
@@ -253,11 +221,7 @@ public class MemberController {
         log.debug("아이디 조회 요청옴");
         long memberId = memberService.getMemberId(nickname);
 
-        ApiResponse apiResponse = ApiResponse.builder()
-                .message("닉네임 조회 성공")
-                .data(memberId)
-                .build();
-
+        ApiResponse apiResponse = createSuccessResponseWithData("닉네임 조회 성공", memberId);
         return ResponseEntity.ok(apiResponse);
     }
 
@@ -273,11 +237,7 @@ public class MemberController {
         log.debug("닉네임 리스트 조회 요청옴");
         Map<Long, String> map = memberService.getMemberMap(memberIdList);
 
-        ApiResponse apiResponse = ApiResponse.builder()
-                .message("닉네임 조회 성공")
-                .data(map)
-                .build();
-
+        ApiResponse apiResponse = createSuccessResponseWithData("닉네임 조회 성공", map);
         return ResponseEntity.ok(apiResponse);
     }
 
@@ -290,5 +250,20 @@ public class MemberController {
         if (!type.equalsIgnoreCase("kakao")) {
             throw new CustomException(INVALID_PARAMETER.getHttpStatus(), INVALID_PARAMETER.getCode(), INVALID_SOCIAL_LOGIN_TYPE_MESSAGE);
         }
+    }
+
+    private ApiResponse createSuccessResponse(String message) {
+        return createApiResponse(message, null);
+    }
+
+    private ApiResponse createSuccessResponseWithData(String message, Object data) {
+        return createApiResponse(message, data);
+    }
+
+    private ApiResponse createApiResponse(String message, Object data) {
+        return ApiResponse.builder()
+                .message(message)
+                .data(data)
+                .build();
     }
 }

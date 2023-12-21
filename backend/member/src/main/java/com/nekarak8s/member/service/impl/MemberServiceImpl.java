@@ -174,24 +174,35 @@ public class MemberServiceImpl implements MemberService{
 
     /**
      * 회원 정보 수정
+     * @param memberId
+     * @param request
+     * @throws CustomException
      */
     @Transactional
     @Override
     public void modifyMemberInfo(long memberId, MemberModifyDTO request) throws CustomException {
-        Member member = memberRepository.findByMemberIdAndIsDeletedFalse(memberId).orElseThrow(() -> new CustomException(RESOURCE_NOT_FOUND.getHttpStatus(), RESOURCE_NOT_FOUND.getCode(), "사용자 정보가 없습니다"));
+        Member member = findMemberByIdAndValidate(memberId);
+        updateRedisAndDatabase(member, request.getNickname());
+    }
 
-        String nickname = nicknameService.getNicknameInRedisByMemberId(memberId);
+    private Member findMemberByIdAndValidate(long memberId) throws CustomException {
+        return memberRepository.findByMemberIdAndIsDeletedFalse(memberId)
+                .orElseThrow(() -> new CustomException(RESOURCE_NOT_FOUND.getHttpStatus(), RESOURCE_NOT_FOUND.getCode(), "사용자 정보가 없습니다"));
+    }
 
-        nicknameService.deleteNicknameInRedis(nickname);
-        nicknameService.saveNicknameInRedis(request.getNickname(), member.getMemberId());
-        member.setNickname(request.getNickname());
+    private void updateRedisAndDatabase(Member member, String newNickname) throws CustomException{
+        String oldNickname = nicknameService.getNicknameInRedisByMemberId(member.getMemberId());
+
+        nicknameService.deleteNicknameInRedis(oldNickname);
+        nicknameService.saveNicknameInRedis(newNickname, member.getMemberId());
+
+        member.setNickname(newNickname);
         memberRepository.save(member);
     }
 
     /**
      * 회원 삭제
      */
-    private final TransactionTemplate transactionTemplate;
     @Transactional
     @Override
     public void deleteMember(long memberId) throws CustomException {
