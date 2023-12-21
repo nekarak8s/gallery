@@ -19,7 +19,7 @@ public interface MemberService {
     MemberDTO findMemberById(long memberId) throws CustomException;
 
     // 닉네임 중복 체크
-    boolean isNicknameUnique(String nickname) throws CustomException;
+    boolean isNicknameUnique(String nickname);
 
     void modifyMemberInfo(long memberId, MemberModifyDTO request) throws CustomException;
 

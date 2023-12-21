@@ -131,18 +131,27 @@ public class MemberController {
     @GetMapping("/check/nickname")
     public ResponseEntity<?> checkNickname(@RequestParam(value = "nickname", required = false) String nickname) throws CustomException {
         log.debug("닉네임 중복 검사 요청옴");
-        paramUtils.checkParam(nickname);
-
-        // 닉네임 형식 검사
-        if (!nicknameUtils.isValid(nickname)) throw new CustomException(INVALID_PARAMETER.getHttpStatus(), INVALID_PARAMETER.getCode(), INVALID_NICKNAME_MESSAGE);
-        // 닉네임 중복 검사
-        if (!memberService.isNicknameUnique(nickname)) throw new CustomException(RESOURCE_CONFLICT.getHttpStatus(), RESOURCE_CONFLICT.getCode(), ALREADY_EXIST_NICKNAME_MESSAGE);
+        validateNickname(nickname);
 
         ApiResponse apiResponse = ApiResponse.builder()
                 .message("사용 가능한 닉네임 입니다")
                 .build();
 
         return ResponseEntity.ok(apiResponse);
+    }
+
+    private void validateNickname(String nickname) throws CustomException {
+        paramUtils.checkParam(nickname); // null | 공백 체크
+
+        // 정규표현식 검사
+        if (!nicknameUtils.isValid(nickname)) {
+            throw new CustomException(INVALID_PARAMETER.getHttpStatus(), INVALID_PARAMETER.getCode(), INVALID_NICKNAME_MESSAGE);
+        }
+
+        // 중복 검사
+        if (!memberService.isNicknameUnique(nickname)) {
+            throw new CustomException(RESOURCE_CONFLICT.getHttpStatus(), RESOURCE_CONFLICT.getCode(), ALREADY_EXIST_NICKNAME_MESSAGE);
+        }
     }
 
     /**

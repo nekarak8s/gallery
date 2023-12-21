@@ -157,17 +157,19 @@ public class MemberServiceImpl implements MemberService{
 
     /**
      * 닉네임 중복 검사
+     * @param nickname
+     * @return
      */
     @Override
-    public boolean isNicknameUnique(String nickname) throws CustomException {
-        boolean isUnique = nicknameService.isNicknameUniqueInRedis(nickname);
+    public boolean isNicknameUnique(String nickname) {
+        return isNicknameUniqueInRedis(nickname) || isNicknameUniqueInDatabase(nickname);
+    }
 
-        if (!isUnique) { // Redis에 닉네임 없는 경우
-            if (memberRepository.findByNicknameAndIsDeletedFalse(nickname).isEmpty()) { // RDBMS 검색
-                isUnique = true;
-            }
-        }
-        return isUnique;
+    private boolean isNicknameUniqueInRedis(String nickname) {
+        return nicknameService.isNicknameUniqueInRedis(nickname);
+    }
+    private boolean isNicknameUniqueInDatabase(String nickname) {
+        return memberRepository.findByNicknameAndIsDeletedFalse(nickname).isEmpty();
     }
 
     /**
