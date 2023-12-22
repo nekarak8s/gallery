@@ -1,11 +1,11 @@
 package com.nekarak8s.member.controller;
 
 import com.nekarak8s.member.common.GAError;
-import com.nekarak8s.member.exception.CustomException;
 import com.nekarak8s.member.data.dto.request.MemberModifyDTO;
 import com.nekarak8s.member.data.dto.response.ApiResponse;
 import com.nekarak8s.member.data.dto.response.LoginResponse;
 import com.nekarak8s.member.data.dto.response.MemberDTO;
+import com.nekarak8s.member.exception.CustomException;
 import com.nekarak8s.member.redis.service.TokenService;
 import com.nekarak8s.member.service.AuthService;
 import com.nekarak8s.member.service.MemberService;
@@ -15,7 +15,6 @@ import com.nekarak8s.member.util.pair.Pair;
 import com.nekarak8s.member.util.param.ParamUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,7 +27,7 @@ import java.util.Map;
 @Slf4j
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/member")
+@RequestMapping("api/member")
 public class MemberController {
     private final MemberService memberService;
     private final AuthService authService;

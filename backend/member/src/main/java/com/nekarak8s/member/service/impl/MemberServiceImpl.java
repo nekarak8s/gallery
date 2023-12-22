@@ -2,12 +2,12 @@ package com.nekarak8s.member.service.impl;
 
 import com.nekarak8s.member.common.GAError;
 import com.nekarak8s.member.common.Role;
-import com.nekarak8s.member.exception.CustomException;
 import com.nekarak8s.member.data.dto.request.MemberModifyDTO;
 import com.nekarak8s.member.data.dto.response.LoginResponse;
 import com.nekarak8s.member.data.dto.response.MemberDTO;
 import com.nekarak8s.member.data.entity.Member;
 import com.nekarak8s.member.data.repository.MemberRepository;
+import com.nekarak8s.member.exception.CustomException;
 import com.nekarak8s.member.kafka.dto.MemberEvent;
 import com.nekarak8s.member.kafka.producer.KafkaProducer;
 import com.nekarak8s.member.redis.service.NicknameService;
@@ -23,7 +23,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.support.TransactionTemplate;
 
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -45,6 +44,7 @@ public class MemberServiceImpl implements MemberService{
     private final NicknameService nicknameService;
     private final KafkaProducer producer;
     private final static String MEMBER_TOPIC = "member";
+    private final static String DELETE_TYPE = "delete";
 
     private static final GAError INTERNAL_SERVER_ERROR = GAError.INTERNAL_SERVER_ERROR;
     private static final GAError RESOURCE_NOT_FOUND = GAError.RESOURCE_NOT_FOUND;
@@ -202,40 +202,53 @@ public class MemberServiceImpl implements MemberService{
 
     /**
      * 회원 삭제
+     * @param memberId
+     * @throws CustomException
      */
     @Transactional
     @Override
     public void deleteMember(long memberId) throws CustomException {
-        Member member = memberRepository.findById(memberId).orElseThrow(() -> new CustomException(RESOURCE_NOT_FOUND.getHttpStatus(), RESOURCE_NOT_FOUND.getCode(), "삭제하려는 회원 정보가 존재하지 않습니다"));
+        Member member = memberRepository.findByMemberIdAndIsDeletedFalse(memberId)
+                .orElseThrow(() -> new CustomException(RESOURCE_NOT_FOUND.getHttpStatus(), RESOURCE_NOT_FOUND.getCode(), "삭제하려는 회원 정보가 존재하지 않습니다"));
 
-        // 삭제된 회원인지 체크 : 삭제된 상태 -> Custom Exception
-        checkDeletedMember(member);
+        // update database
+        markMemberAsDeleted(member);
 
-        // update RDBMS (MySQL)
-        log.info("mysql delete");
+        // send event to kafka
+        sendMemberEvent(memberId, DELETE_TYPE);
+
+        // update cache
+        updateCache(memberId);
+    }
+
+    private void markMemberAsDeleted(Member member) {
         member.setIsDeleted(true); // Todo : Spring Batch -> 일괄 삭제
         member.setDeletedDate(LocalDateTime.now());
         memberRepository.save(member);
+    }
 
+    private void sendMemberEvent(long memberId, String type) throws CustomException {
         try {
-            // produce event (to Kafka)
             MemberEvent memberEvent = new MemberEvent();
             memberEvent.setMemberId(memberId);
-            memberEvent.setType("delete");
+            memberEvent.setType(type);
             // 토픽 존재 여부 체크
-            if (producer.isExist(MEMBER_TOPIC)) producer.sendMessage(MEMBER_TOPIC, memberEvent);
+            if (producer.isExist(MEMBER_TOPIC)) {
+                // produce event (to Kafka)
+                producer.sendMessage(MEMBER_TOPIC, memberEvent);
+            }
         } catch (Exception e) {
-            log.error("kafka error occurred");
+            log.error("카프카 에러");
             throw new CustomException(INTERNAL_SERVER_ERROR.getHttpStatus(), INTERNAL_SERVER_ERROR.getCode(), INTERNAL_SERVER_ERROR.getDescription());
         }
+    }
 
+    private void updateCache(long memberId) throws CustomException {
         try {
-            // update Redis cache
-            log.info("redis delete");
             String nickname = nicknameService.getNicknameInRedisByMemberId(memberId);
-            nicknameService.deleteNicknameInRedis(nickname);
+            nicknameService.deleteNicknameInRedis(nickname); // update redis cache
         } catch (Exception e) {
-            log.error("redis error occurred");
+            log.error("레디스 에러");
             throw new CustomException(INTERNAL_SERVER_ERROR.getHttpStatus(), INTERNAL_SERVER_ERROR.getCode(), INTERNAL_SERVER_ERROR.getDescription());
         }
     }
@@ -289,12 +302,12 @@ public class MemberServiceImpl implements MemberService{
     /**
      * 회원 삭제 상태 체크
      */
-    private void checkDeletedMember(Member member) throws CustomException {
-        boolean isDeleted = member.getIsDeleted();
-
-        if (isDeleted) {
-            throw new CustomException(RESOURCE_NOT_FOUND.getHttpStatus(), RESOURCE_NOT_FOUND.getCode(), "사용자 정보가 없습니다");
-        }
-    }
+//    private void checkDeletedMember(Member member) throws CustomException {
+//        boolean isDeleted = member.getIsDeleted();
+//
+//        if (isDeleted) {
+//            throw new CustomException(RESOURCE_NOT_FOUND.getHttpStatus(), RESOURCE_NOT_FOUND.getCode(), "사용자 정보가 없습니다");
+//        }
+//    }
 
 }
