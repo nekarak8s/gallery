@@ -56,22 +56,23 @@ public class JwtAuthenticationGatewayFilterFactory extends
 
             String uri = request.getURI().toString();
             String method = request.getMethodValue();
-            log.info("uri : {}, method : {}", uri, method);
+            //log.info("uri : {}, method : {}", uri, method);
 
             String galleryPathVariable = whitelistManager.extractGalleryPathVariable(uri);
             if (galleryPathVariable != null) log.info("galleryPathVariable : {}", galleryPathVariable);
 
             if (whitelistManager.shouldValidateJwt(uri, method) || (uri.contains("/gallery") && method.equals("GET") && isNumeric(galleryPathVariable))) {
-                log.info("허용 URI");
+                log.info("허용 URI : {}", uri);
             } else {
-                log.info("토큰 검증");
-
+                log.info("검증 시작 : {}", uri);
                 if (!isExistCookie(request)) {
+                    log.info("쿠키 없음");
                     return onError(response, "missing cookie", HttpStatus.BAD_REQUEST, MISSING_COOKIE_ERROR_CODE);
                 }
 
                 HttpCookie cookie = request.getCookies().getFirst(COOKIE_NAME);
                 if (!isExistToken(cookie)) {
+                    log.info("토큰 없음");
                     return onError(response, "missing token", HttpStatus.UNAUTHORIZED, MISSING_TOKEN_ERROR_CODE);
                 }
 
@@ -82,12 +83,13 @@ public class JwtAuthenticationGatewayFilterFactory extends
                 }
 
                 if (jwtBlacklistService.isBlacklist(token)) {
-                    log.info("블랙리스트 토큰임");
+                    log.info("블랙리스트 토큰");
                     return onError(response, BLACKLIST_TOKEN_MESSAGE, HttpStatus.UNAUTHORIZED, INVALID_TOKEN_ERROR_CODE);
                 }
 
                 TokenMember tokenMember = jwtUtils.decode(token);
                 if (uri.contains("/logout")) {
+                    log.info("로그아웃 요청옴");
                     long expTime = tokenMember.getExpTime();
                     exchange.getRequest().mutate()
                             .header("X-Access-Token", token)
