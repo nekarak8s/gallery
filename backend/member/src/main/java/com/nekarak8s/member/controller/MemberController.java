@@ -23,6 +23,8 @@ import javax.validation.Valid;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -128,7 +130,7 @@ public class MemberController {
         paramUtils.checkParam(nickname); // null | 공백 체크
 
         // 정규표현식 검사
-        if (!nicknameUtils.isValid(nickname)) {
+        if (!checkNicknameRegex(nickname)) {
             throw new CustomException(INVALID_PARAMETER.getHttpStatus(), INVALID_PARAMETER.getCode(), INVALID_NICKNAME_MESSAGE);
         }
 
@@ -136,6 +138,13 @@ public class MemberController {
         if (!memberService.isNicknameUnique(nickname)) {
             throw new CustomException(RESOURCE_CONFLICT.getHttpStatus(), RESOURCE_CONFLICT.getCode(), ALREADY_EXIST_NICKNAME_MESSAGE);
         }
+    }
+
+    private boolean checkNicknameRegex(String nickname) {
+        String regex = "^[A-Za-z\\dㄱ-ㅎㅏ-ㅣ가-힣]{2,10}$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(nickname);
+        return matcher.matches();
     }
 
     /**
