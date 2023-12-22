@@ -32,6 +32,6 @@ public interface MemberService {
     String getMemberNickname(long memberId) throws CustomException;
 
     // Map<아이디, 닉네임> 반환
-    Map<Long, String> getMemberMap(List<Long> memberIdList) throws CustomException;
+    Map<Long, String> getMemberMap(List<Long> memberIdList);
 
 }

@@ -35,17 +35,26 @@ import java.util.Optional;
 @Transactional(readOnly = true, isolation = Isolation.DEFAULT)
 @RequiredArgsConstructor
 public class MemberServiceImpl implements MemberService{
-
+    // service
     private final AuthService authService;
-    private final MemberRepository memberRepository;
-    private final JwtUtils jwtUtils;
-    private final JwtProperties jwtProperties;
-    private final NicknameUtils nicknameUtils;
     private final NicknameService nicknameService;
+
+    // util
+    private final JwtUtils jwtUtils;
+    private final NicknameUtils nicknameUtils;
+
+    // repo
+    private final MemberRepository memberRepository;
+
+    // jwt property
+    private final JwtProperties jwtProperties;
+
+    // kafka
     private final KafkaProducer producer;
     private final static String MEMBER_TOPIC = "member";
     private final static String DELETE_TYPE = "delete";
 
+    // custom exception
     private static final GAError INTERNAL_SERVER_ERROR = GAError.INTERNAL_SERVER_ERROR;
     private static final GAError RESOURCE_NOT_FOUND = GAError.RESOURCE_NOT_FOUND;
     private static final GAError RESOURCE_CONFLICT = GAError.RESOURCE_CONFLICT;
@@ -88,13 +97,12 @@ public class MemberServiceImpl implements MemberService{
 
     private boolean isMemberByKakaoId(long kakaoId) {
         Optional<Member> optionalMember = memberRepository.findByKakaoId(kakaoId);
-
         return optionalMember.isPresent();
     }
 
     private void handleNewMember(long kakaoId, String kakaoNickname) throws CustomException {
         log.debug("신규 회원");
-        String nickname = retryGenerateNickname(kakaoNickname);
+        String nickname = retryGenerateNewNickname(kakaoNickname);
 
         Member member = Member.builder()
                 .kakaoId(kakaoId)
@@ -122,7 +130,7 @@ public class MemberServiceImpl implements MemberService{
 
     private void handleDeletedMember(Member member, String kakaoNickname) throws CustomException {
         log.debug("삭제 상태 회원");
-        String nickname = retryGenerateNickname(kakaoNickname);
+        String nickname = retryGenerateNewNickname(kakaoNickname);
         member.setNickname(nickname);
         member.setIsDeleted(false);
         member.setDeletedDate(null);
@@ -151,7 +159,6 @@ public class MemberServiceImpl implements MemberService{
     public MemberDTO findMemberById(long memberId) throws CustomException {
         Member member = memberRepository.findByMemberIdAndIsDeletedFalse(memberId)
                 .orElseThrow(() -> new CustomException(RESOURCE_NOT_FOUND.getHttpStatus(), RESOURCE_NOT_FOUND.getCode(), "사용자 정보가 없습니다"));
-
         return MemberDTO.toDTO(member);
     }
 
@@ -254,22 +261,28 @@ public class MemberServiceImpl implements MemberService{
     }
 
     /**
-     * 회원 아이디 조회 (by nickname)
+     * 회원 아이디 조회
+     * @param nickname
+     * @return
+     * @throws CustomException
      */
     @Override
     public long getMemberId(String nickname) throws CustomException {
-        Member member = memberRepository.findMemberIdByNickname(nickname).orElseThrow(() -> new CustomException(RESOURCE_NOT_FOUND.getHttpStatus(), RESOURCE_NOT_FOUND.getCode(), "사용자 정보가 없습니다"));
-
+        Member member = memberRepository.findMemberIdByNickname(nickname)
+                .orElseThrow(() -> new CustomException(RESOURCE_NOT_FOUND.getHttpStatus(), RESOURCE_NOT_FOUND.getCode(), "사용자 정보가 없습니다"));
         return member.getMemberId();
     }
 
     /**
-     * 닉네임 조회
+     * 회원 닉네임 조회
+     * @param memberId
+     * @return
+     * @throws CustomException
      */
     @Override
     public String getMemberNickname(long memberId) throws CustomException {
-        Member member = memberRepository.findById(memberId).orElseThrow(() -> new CustomException(RESOURCE_NOT_FOUND.getHttpStatus(), RESOURCE_NOT_FOUND.getCode(), "사용자 정보가 없습니다"));
-
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new CustomException(RESOURCE_NOT_FOUND.getHttpStatus(), RESOURCE_NOT_FOUND.getCode(), "사용자 정보가 없습니다"));
         return member.getNickname();
     }
 
@@ -277,37 +290,23 @@ public class MemberServiceImpl implements MemberService{
      * Map<아이디, 닉네임> 반환
      */
     @Override
-    public Map<Long, String> getMemberMap(List<Long> memberIdList) throws CustomException {
-        Map<Long, String> map = memberRepository.findNicknamesMapByMemberIds(memberIdList);
-        return map;
+    public Map<Long, String> getMemberMap(List<Long> memberIdList) {
+        return memberRepository.findNicknamesMapByMemberIds(memberIdList);
     }
 
 
     /**
-     * 유니크 닉네임 생성
+     * 닉네임 생성 (재시도 4회)
      */
-    private String retryGenerateNickname(String kakaoNickname) throws CustomException {
-        String nickname = "";
+    private String retryGenerateNewNickname(String kakaoNickname) throws CustomException {
+        String newNickname;
 
         for (int digit=4; digit<=7; digit++) {
-            nickname = nicknameUtils.generate(kakaoNickname, digit);
-
-            if (isNicknameUnique(nickname)) {
-                return nickname;
+            newNickname = nicknameService.generateNewNickname(kakaoNickname, digit);
+            if (isNicknameUnique(newNickname)) {
+                return newNickname;
             }
         }
         throw new CustomException(RESOURCE_CONFLICT.getHttpStatus(), RESOURCE_CONFLICT.getCode(), "닉네임 생성 실패");
     }
-
-    /**
-     * 회원 삭제 상태 체크
-     */
-//    private void checkDeletedMember(Member member) throws CustomException {
-//        boolean isDeleted = member.getIsDeleted();
-//
-//        if (isDeleted) {
-//            throw new CustomException(RESOURCE_NOT_FOUND.getHttpStatus(), RESOURCE_NOT_FOUND.getCode(), "사용자 정보가 없습니다");
-//        }
-//    }
-
 }
