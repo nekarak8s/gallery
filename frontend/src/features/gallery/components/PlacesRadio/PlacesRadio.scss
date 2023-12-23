@@ -6,6 +6,8 @@
   align-items: center;
   justify-content: center;
   position: relative;
+  width: 100%;
+  aspect-ratio: 10/7;
 
   svg {
     width: 40px;
@@ -36,7 +38,7 @@
   display: flex;
   position: relative;
   overflow: hidden;
-  width: min(60%, 200px);
+  width: min(70%, 300px);
 
   label {
     min-width: 100%;
@@ -45,15 +47,16 @@
 
   img {
     width: 100%;
-    aspect-ratio: 1/1;
+    aspect-ratio: 4/3;
+    object-fit: cover;
   }
 }
 
 .places-radio__image {
   @include z-index(top);
   display: flex;
-  flex-direction: column;
-  align-items: flex-end;
+  flex-direction: row-reverse;
+  align-items: flex-start;
   position: absolute;
   top: 0;
   right: 0;
@@ -70,12 +73,8 @@
   }
 }
 
-.places-radio__image:hover {
-  img {
-    width: min(60%, 200px);
-  }
-}
-
-.places-radio__image button:focus + img {
-  width: min(60%, 200px);
+.places-radio__image:hover img,
+.places-radio__image button:focus + img,
+.places-radio__image button:hover + img {
+  width: min(80%, 500px);
 }

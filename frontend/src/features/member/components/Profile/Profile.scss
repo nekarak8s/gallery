@@ -26,12 +26,12 @@
 
 @include tablet {
   .profile {
-    font-size: 4rem;
+    font-size: 3.8rem;
   }
 }
 
 @include mobile {
   .profile {
-    font-size: 9vw;
+    font-size: 8vw;
   }
 }

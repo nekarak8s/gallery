@@ -40,7 +40,7 @@ export class WaterItem extends Stuff {
       alpha: 1,
       sunDirection: new THREE.Vector3(),
       sunColor: 0xffffff,
-      waterColor: info.color || 0x001e4f,
+      waterColor: info.color || 0x000f0f,
       distortionScale: info.distortionScale || 3.7,
       fog: info.isFog || false,
     })

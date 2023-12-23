@@ -5,6 +5,7 @@ type CheckboxProps = {
   id?: string | undefined
   className?: string | undefined
   name: string
+  value?: string
   label?: string
   onChange?: ChangeEventHandler
   defaultChecked?: boolean
@@ -15,6 +16,7 @@ const Checkbox = ({
   className,
   name,
   label,
+  value,
   onChange,
   defaultChecked = false,
   children,
@@ -26,6 +28,7 @@ const Checkbox = ({
           id={id}
           type="checkbox"
           name={name}
+          value={value}
           defaultChecked={defaultChecked}
           onChange={onChange}
         />

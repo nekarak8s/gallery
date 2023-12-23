@@ -1,5 +1,4 @@
 import KubernetesLogo from '../../../assets/svgs/kubernetes.svg'
-
 import './Loading.scss'
 
 function Loading() {

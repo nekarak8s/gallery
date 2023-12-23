@@ -13,6 +13,7 @@ import floorBaseImg from '@/assets/textures/granite/Granite_001_COLOR.jpg'
 import floorNormImg from '@/assets/textures/granite/Granite_001_NORM.jpg'
 import floorAmbientImg from '@/assets/textures/granite/Granite_001_OCC.jpg'
 import floorRoughImg from '@/assets/textures/granite/Granite_001_ROUGH.jpg'
+import { getSunColor, getSunIntensity, getSunPosition } from '@/libs/sun'
 import { Frame } from '@/libs/three-custom/items/Frame'
 import { SkyItem } from '@/libs/three-custom/items/Sky'
 import { Wall } from '@/libs/three-custom/items/Wall'
@@ -108,34 +109,6 @@ export function buildArchitect(props: buildArchitectProps): ThreeItem {
   const textureLoader = new THREE.TextureLoader(props.loadingManager)
 
   /**
-   * Light
-   */
-  const lights: THREE.Light[] = []
-
-  // Ambient light
-  const ambientLight = new THREE.AmbientLight(0xdedede)
-  props.scene.add(ambientLight)
-  lights.push(ambientLight)
-
-  // Direct Light
-  const directLight = new THREE.DirectionalLight('white', 1)
-  directLight.position.set(-40, 110, 110)
-  directLight.shadow.camera.left = -60
-  directLight.shadow.camera.right = 60
-  directLight.shadow.camera.top = 60
-  directLight.shadow.camera.bottom = -100
-  directLight.castShadow = true
-  props.scene.add(directLight)
-  lights.push(directLight)
-
-  // Light Helper : Development
-  if (process.env.NODE_ENV !== 'production') {
-    import('three').then(({ CameraHelper }) => {
-      props.scene.add(new CameraHelper(directLight.shadow.camera))
-    })
-  }
-
-  /**
    * Meshes
    */
   const items: ThreeItem[] = []
@@ -155,18 +128,6 @@ export function buildArchitect(props: buildArchitectProps): ThreeItem {
     depth: 10000,
   })
   items.push(water)
-
-  // Create sun
-  const sun = new THREE.Vector3()
-
-  const theta = Math.PI * (0.58 - 0.5)
-  const phi = 2 * Math.PI * (0.7 - 0.5)
-  sun.x = Math.cos(phi)
-  sun.y = Math.sin(phi) * Math.sin(theta)
-  sun.z = Math.sin(phi) * Math.cos(theta)
-
-  sky.setSunPosition(sun)
-  water.setSunDirection(sun)
 
   // Create Floor
   const floor = new Wall({
@@ -237,6 +198,76 @@ export function buildArchitect(props: buildArchitectProps): ThreeItem {
   })
 
   /**
+   * Light
+   */
+  const date = new Date('1995-12-25T20:58:30')
+
+  // Create sun
+  const sun = new THREE.Vector3()
+
+  // Get sun position
+  const { elevation, azimuth } = getSunPosition(date)
+  const phi = THREE.MathUtils.degToRad(90 - elevation)
+  const phiEle = THREE.MathUtils.degToRad(elevation * 3)
+  const theta = THREE.MathUtils.degToRad(azimuth)
+
+  // Set on the sky & water
+  sun.setFromSphericalCoords(1, phi, theta)
+  sky.setSunPosition(sun)
+  water.setSunDirection(sun)
+
+  const lights: THREE.Light[] = []
+
+  const lightIntensity = getSunIntensity(date)
+  const lightColor = new THREE.Color(getSunColor(date))
+
+  // Ambient light
+  const ambientLight = new THREE.AmbientLight(0xffffff, lightIntensity)
+  props.scene.add(ambientLight)
+  lights.push(ambientLight)
+
+  // Direct Light
+  const directLight = new THREE.DirectionalLight(lightColor, lightIntensity)
+  directLight.position.set(-Math.sin(theta) * 100, Math.sin(phiEle) * 500, Math.cos(theta) * 100)
+  directLight.shadow.camera.left = -60
+  directLight.shadow.camera.right = 60
+  directLight.shadow.camera.top = 60
+  directLight.shadow.camera.bottom = -100
+  directLight.castShadow = true
+  props.scene.add(directLight)
+  lights.push(directLight)
+
+  const lightInterval = setInterval(() => {
+    const date = new Date()
+
+    // Update sun position
+    const { elevation, azimuth } = getSunPosition(date)
+    const phi = THREE.MathUtils.degToRad(90 - elevation)
+    const phiEle = THREE.MathUtils.degToRad(elevation + 50)
+    const theta = THREE.MathUtils.degToRad(azimuth)
+
+    sun.setFromSphericalCoords(1, phi, theta)
+    sky.setSunPosition(sun)
+    water.setSunDirection(sun)
+
+    const lightIntensity = getSunIntensity(date)
+    const lightColor = new THREE.Color(getSunColor(date))
+
+    ambientLight.intensity = lightIntensity
+
+    directLight.color = lightColor
+    directLight.intensity = lightIntensity
+    directLight.position.set(-Math.sin(theta) * 100, Math.sin(phiEle) * 500, Math.cos(theta) * 100)
+  }, 60 * 1000)
+
+  // Light Helper : Development
+  if (process.env.NODE_ENV !== 'production') {
+    import('three').then(({ CameraHelper }) => {
+      props.scene.add(new CameraHelper(directLight.shadow.camera))
+    })
+  }
+
+  /**
    * Update function: Flow water
    */
   const update = () => {
@@ -247,6 +278,7 @@ export function buildArchitect(props: buildArchitectProps): ThreeItem {
    * Dispose function: Release all the resources
    */
   const dispose = () => {
+    lightInterval && clearInterval(lightInterval)
     lights.forEach((light) => {
       props.scene.remove(light)
       light.dispose()

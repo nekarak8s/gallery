@@ -1,5 +1,10 @@
-import React from 'react'
-import { useGalleryQuery, usePlaceListQuery, useUpdateGallery } from '../../services'
+import React, { MouseEventHandler } from 'react'
+import {
+  useDeleteGallery,
+  useGalleryQuery,
+  usePlaceListQuery,
+  useUpdateGallery,
+} from '../../services'
 import PlacesRadio from '../PlacesRadio'
 import Form from '@/atoms/form/Form'
 import Text from '@/atoms/form/Text'
@@ -48,6 +53,10 @@ const GalleryUpdateForm = ({ galleryId, onSuccess, onError }: GalleryDetailFormP
     const form = e.currentTarget
     const formData = new FormData(form)
 
+    for (let key of formData.keys()) {
+      console.log(key, ':', formData.get(key))
+    }
+
     const name = formData.get('name') as string
     formData.delete('name')
     const content = formData.get('content') as string
@@ -72,6 +81,23 @@ const GalleryUpdateForm = ({ galleryId, onSuccess, onError }: GalleryDetailFormP
       })
   }
 
+  /**
+   * Handle delete
+   */
+  const { mutateAsync: deleteGallery } = useDeleteGallery(galleryId)
+
+  const handleDelteClick: MouseEventHandler<HTMLButtonElement> = (e) => {
+    e.stopPropagation()
+
+    deleteGallery()
+      .then(() => {
+        onSuccess && onSuccess()
+      })
+      .catch(() => {
+        onError && onError()
+      })
+  }
+
   if (isGalleryError || isPlaceError || isPostError) return null
 
   if (isGalleryLoading || isPlaceLoading || isPostLoding) return <Loading />
@@ -83,7 +109,10 @@ const GalleryUpdateForm = ({ galleryId, onSuccess, onError }: GalleryDetailFormP
         <Textarea label="소개글" name="content" initialValue={gallery.content} />
         <PlacesRadio placeList={placeList} defaultChecked={gallery.place.placeId} />
         <PostListForm postList={postList} />
-        <Button type="submit" direction="center" ariaLabel="전시회 생성" text="수정하기" />
+        <div className="gallery-update-form__buttons">
+          <Button type="submit" direction="center" ariaLabel="전시회 생성" text="수정하기" />
+          <Button color="red" ariaLabel="전시회 삭제" text="삭제하기" onClick={handleDelteClick} />
+        </div>
       </Form>
       {isGalleryLoading && (
         <div className="gallery-update-form__loading">

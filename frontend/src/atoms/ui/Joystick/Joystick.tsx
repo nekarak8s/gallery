@@ -66,6 +66,16 @@ const Joystick = ({ control, shoot }: JoystickProps) => {
       if (!isTracking.current) return
 
       const lastTouch = e.changedTouches[e.changedTouches.length - 1]
+
+      // if shoot is clicked, return
+      if (
+        lastTouch.clientX > shootInfo.left &&
+        lastTouch.clientX < shootInfo.right &&
+        lastTouch.clientY > shootInfo.top &&
+        lastTouch.clientY < shootInfo.bottom
+      )
+        return
+
       let touchoffsetX = lastTouch.clientX - contrlOrigin.x
       let touchoffsetY = lastTouch.clientY - contrlOrigin.y
 
@@ -89,6 +99,7 @@ const Joystick = ({ control, shoot }: JoystickProps) => {
     const handleTouchEnd = function disableTracking(e: TouchEvent) {
       const lastTouch = e.changedTouches[e.changedTouches.length - 1]
 
+      // if shoot is clicked, return
       if (
         lastTouch.clientX > shootInfo.left &&
         lastTouch.clientX < shootInfo.right &&

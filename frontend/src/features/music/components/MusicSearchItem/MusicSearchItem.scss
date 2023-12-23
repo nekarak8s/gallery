@@ -1,0 +1,36 @@
+.music-search-item {
+  display: grid;
+  width: 20em;
+  grid-template-columns: auto minmax(0, 1fr);
+  grid-template-rows: 1fr;
+  align-items: center;
+  gap: 1em;
+
+  img {
+    width: 3em;
+    height: 3em;
+  }
+}
+
+.music-search-item__text {
+  display: flex;
+  overflow: hidden;
+  flex-wrap: nowrap;
+  //   white-space: nowrap;
+
+  p {
+    white-space: nowrap;
+    width: max-content;
+    animation: music-search-item-flow-left 7s linear infinite;
+    min-width: 100%;
+  }
+}
+
+@keyframes music-search-item-flow-left {
+  0% {
+    transform: translate(0%);
+  }
+  100% {
+    transform: translate(-100%);
+  }
+}

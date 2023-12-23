@@ -22,6 +22,8 @@
   > img {
     width: 9em;
     height: 9em;
+    aspect-ratio: 1/1;
+    object-fit: cover;
   }
 
   > div {

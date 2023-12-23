@@ -8,6 +8,7 @@ type TextureProps = {
   normalImg?: string
   ambientImg?: string
   roughImg?: string
+  roughness?: number
   repeatX?: number
   repeatY?: number
 }
@@ -74,6 +75,7 @@ export class Wall extends Stuff {
           normalMap: this.textures['normalTex'] || undefined,
           aoMap: this.textures['ambientTex'] || undefined,
           roughnessMap: this.textures['roughTex'] || undefined,
+          roughness: info.texture.roughness || 1,
         })
       : new THREE.MeshLambertMaterial({
           color: info.color,

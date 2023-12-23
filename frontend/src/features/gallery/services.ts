@@ -70,6 +70,23 @@ export function useUpdateGallery(galleryId: number) {
   )
 }
 
+export function useDeleteGallery(galleryId: number) {
+  const queryClient = useQueryClient()
+  return useMutation<MessageResponse, ErrorResponse>(
+    () => axiosInstance.delete(`/gallery/${galleryId}`),
+    {
+      onSuccess: (res) => {
+        queryClient.invalidateQueries(['gallery-list'])
+        queryClient.invalidateQueries(['gallery', { galleryId }])
+        toastManager.addToast('success', res.message)
+      },
+      onError: (err) => {
+        toastManager.addToast('error', err.message)
+      },
+    }
+  )
+}
+
 export function useSearchGalleryQuery(type: string, query: string) {
   return useQuery<MessageResponse<GallerySearchItemData[]>, ErrorResponse, GallerySearchItemData[]>(
     ['gallery', { type, query }],

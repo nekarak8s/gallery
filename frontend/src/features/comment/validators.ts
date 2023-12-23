@@ -3,7 +3,7 @@ import { CommentCreateFormData } from './types'
 
 export function validateCommentCreateForm(formData: FormData): RegexResult<CommentCreateFormData> {
   // validate content
-  const content = formData.get('name') as string
+  const content = formData.get('content') as string
   if (!regexes.content.regex.test(content)) {
     return { result: false, reason: regexes.content.condition }
   }

@@ -111,6 +111,10 @@ export const galleryHandlers = [
     await delay()
     return HttpResponse.json({ message: '[MSW] 갤러리가 수정되었습니다' }, { status: 200 })
   }),
+  http.delete('*/api/gallery/:galleryId', async () => {
+    await delay()
+    return HttpResponse.json({ message: '[MSW] 갤러리가 삭제되었습니다' }, { status: 203 })
+  }),
   http.get('*/api/gallery/place/list', async () => {
     await delay()
     return HttpResponse.json({ data: placeListData }, { status: 200 })

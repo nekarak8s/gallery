@@ -100,7 +100,7 @@ const PlacesRadio = ({ placeList, defaultChecked }: PlaceRadioProps) => {
               value={place.placeId}
               flexDirection="column"
             >
-              <img src={place.threeDimensionImageUrl} alt={`${place.name} 공간`} />
+              <img src={place.threeDimensionImageUri} alt={`${place.name} 공간`} />
             </Radio>
           ))}
         </div>
@@ -117,7 +117,7 @@ const PlacesRadio = ({ placeList, defaultChecked }: PlaceRadioProps) => {
           <button aria-label="갤러리 2D 이미지 열기">
             <ImageIcon />
           </button>
-          <img src={placeList[index].twoDimensionImageUrl} />
+          <img src={placeList[index].twoDimensionImageUri} />
         </div>
       </div>
     </>

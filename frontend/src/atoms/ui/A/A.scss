@@ -16,7 +16,8 @@
   }
 }
 
-.a:hover {
+.a:hover,
+a:focus {
   &::after {
     width: 100%;
   }

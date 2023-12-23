@@ -7,7 +7,7 @@ export type PostData = {
   content: string
   createdDate: string
   modifiedDate: string
-  imageUrl: string
+  imageURL: string
   isActive: boolean
   music?: MusicData | undefined
 }
@@ -19,13 +19,13 @@ export type PostItemData = {
   content: string
   createdDate: string
   modifiedDate: string
-  imageUrl: string
+  imageURL: string
   isActive: boolean
   music?: MusicData | undefined
 }
 
 export type PostFormData = {
-  id: number
+  postId: number
   order: number
   title: string
   content: string

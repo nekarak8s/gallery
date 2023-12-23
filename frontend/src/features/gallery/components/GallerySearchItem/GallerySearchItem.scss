@@ -13,7 +13,8 @@
   }
 }
 
-.gallery-search-item:hover {
+.gallery-search-item:hover,
+.gallery-search-item:focus {
   background-color: rgba(105, 105, 105, 0.134);
 }
 

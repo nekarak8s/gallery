@@ -9,7 +9,7 @@ type PostProps = {
 const Post = ({ post }: PostProps) => {
   return (
     <section className="post">
-      <img className="post__image" src={post.imageUrl} />
+      <img className="post__image" src={post.imageURL} />
       <div className="post__description">
         {post.music && <MusicPlayer music={post.music} />}
         <h1>{post.title}</h1>

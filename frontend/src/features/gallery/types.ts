@@ -19,8 +19,8 @@ export type GalleryData = {
     placeId: number
     name: string
     maximumFrameNumber: number
-    threeDimensionImageUrl: string
-    twoDimensionImageUrl: string
+    threeDimensionImageUri: string
+    twoDimensionImageUri: string
   }
 }
 
@@ -34,8 +34,8 @@ export type GalleryItemData = {
     placeId: number
     name: string
     maximumFrameNumber: number
-    threeDimensionImageUrl: string
-    twoDimensionImageUrl: string
+    threeDimensionImageUri: string
+    twoDimensionImageUri: string
   }
 }
 
@@ -51,8 +51,8 @@ export type PlaceData = {
   placeId: number
   name: string
   maximumFrameNumber: number
-  twoDimensionImageUrl: string
-  threeDimensionImageUrl: string
+  twoDimensionImageUri: string
+  threeDimensionImageUri: string
 }
 
 export type GalleryTypeProps = {

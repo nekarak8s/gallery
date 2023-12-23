@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useCreateMusic, useMusicListQuery } from '../../services'
 import { MusicData } from '../../types'
+import MusicSearchItem from '../MusicSearchItem'
 import Form from '@/atoms/form/Form'
 import Radio from '@/atoms/form/Radio'
 import Text from '@/atoms/form/Text'
@@ -15,7 +16,7 @@ type MusicSearchProps = {
 
 const MusicSearch = ({ onSelect }: MusicSearchProps) => {
   const [query, setQuery] = useState('')
-  const { data, refetch } = useMusicListQuery(query)
+  const { data: musicList, isFetching: isMusicFetching, refetch } = useMusicListQuery(query)
 
   const debouncedQuery = useDebounce(query, 300)
 
@@ -29,13 +30,13 @@ const MusicSearch = ({ onSelect }: MusicSearchProps) => {
     e.preventDefault()
     e.stopPropagation()
 
-    if (!data) return
+    if (!musicList) return
 
     const form = e.currentTarget
     const formData = new FormData(form)
     const musicIndex = Number(formData.get('musicIndex'))
 
-    createMusic(data[musicIndex]).then((res) => {
+    createMusic(musicList[musicIndex]).then((res) => {
       form.reset()
       onSelect(res.data)
     })
@@ -52,16 +53,13 @@ const MusicSearch = ({ onSelect }: MusicSearchProps) => {
         />
         <Form className="music-search__form" onSubmit={handleSubmit}>
           <ul className="music-search__list">
-            {data &&
-              data.map((music, index) => (
+            {isMusicFetching && <Loading />}
+            {!isMusicFetching &&
+              musicList &&
+              musicList.map((music, index) => (
                 <li key={`${music.artist}-${music.title}-${music.releasedDate}`}>
                   <Radio id={`music-search-${index}`} name="musicIndex" value={index}>
-                    <div className="music-search__item">
-                      <img src={music.coverURL} />
-                      <p>
-                        {music.title} - {music.artist}
-                      </p>
-                    </div>
+                    <MusicSearchItem music={music} />
                   </Radio>
                 </li>
               ))}

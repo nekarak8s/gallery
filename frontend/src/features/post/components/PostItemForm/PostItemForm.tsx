@@ -19,7 +19,7 @@ const PostItemForm = ({ post, index }: PostItemFormProps) => {
   /**
    * Set the preview image
    */
-  const [imageUrl, setImageUrl] = useState<string | undefined>(post.imageUrl)
+  const [imageURL, setImageUrl] = useState<string | undefined>(post.imageURL)
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (!event.target.files || !event.target.files.length) return
@@ -40,7 +40,7 @@ const PostItemForm = ({ post, index }: PostItemFormProps) => {
    * Reset the preview image
    */
   const originalImageUrl = useMemo(() => {
-    return post.imageUrl
+    return post.imageURL
   }, [])
 
   const handleFileReset = () => {
@@ -61,16 +61,15 @@ const PostItemForm = ({ post, index }: PostItemFormProps) => {
 
   const handleIsActiveChange: ChangeEventHandler<HTMLInputElement> = (e) => {
     setIsActive(e.target.checked)
-    console.log(e.target.checked)
   }
 
   return (
     <>
       <article className={`post-item-form ${!isActive && 'inactive'}`}>
-        <input readOnly type="hidden" name={`posts[${index}].id`} value={post.postId} />
+        <input readOnly type="hidden" name={`posts[${index}].postId`} value={post.postId} />
         <input readOnly type="hidden" name={`posts[${index}].order`} value={index + 1} />
         <div className="post-item-form__image-music">
-          <img src={imageUrl} />
+          <img src={imageURL} />
           <div>
             <File
               name={`posts[${index}].image`}
@@ -85,7 +84,7 @@ const PostItemForm = ({ post, index }: PostItemFormProps) => {
                     {music.title} - {music.artist}
                   </option>
                 )}
-                <option value={undefined}>노래 없음</option>
+                <option value="">노래 없음</option>
               </Select>
               <Button text="음악 선택" size="sm" onClick={() => setIsMusicOpen(true)} />
             </div>
@@ -100,9 +99,12 @@ const PostItemForm = ({ post, index }: PostItemFormProps) => {
             height="3.5em"
           />
         </div>
+        {/* Incase unchecked */}
+        {!isActive && <input type="hidden" name={`posts[${index}].isActive`} value="false" />}
         <Checkbox
           className="post-item-form__is-active"
           name={`posts[${index}].isActive`}
+          value="true"
           defaultChecked={post.isActive}
           onChange={handleIsActiveChange}
         />

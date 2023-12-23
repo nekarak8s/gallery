@@ -13,8 +13,8 @@ export const galleryData: GalleryData = {
     placeId: 1,
     name: 'Gallery A',
     maximumFrameNumber: 10,
-    threeDimensionImageUrl: threeDimImage,
-    twoDimensionImageUrl: twoDimImage,
+    threeDimensionImageUri: threeDimImage,
+    twoDimensionImageUri: twoDimImage,
   },
 }
 
@@ -29,8 +29,8 @@ export const galleryItemData: GalleryItemData = {
     placeId: 1,
     name: 'Gallery A',
     maximumFrameNumber: 10,
-    threeDimensionImageUrl: threeDimImage,
-    twoDimensionImageUrl: twoDimImage,
+    threeDimensionImageUri: threeDimImage,
+    twoDimensionImageUri: twoDimImage,
   },
 }
 
@@ -46,8 +46,8 @@ export const galleryListData: GalleryItemData[] = [
       placeId: 1,
       name: 'Gallery A',
       maximumFrameNumber: 10,
-      threeDimensionImageUrl: threeDimImage,
-      twoDimensionImageUrl: twoDimImage,
+      threeDimensionImageUri: threeDimImage,
+      twoDimensionImageUri: twoDimImage,
     },
   },
   {
@@ -61,8 +61,8 @@ export const galleryListData: GalleryItemData[] = [
       placeId: 1,
       name: 'Gallery A',
       maximumFrameNumber: 10,
-      threeDimensionImageUrl: threeDimImage,
-      twoDimensionImageUrl: twoDimImage,
+      threeDimensionImageUri: threeDimImage,
+      twoDimensionImageUri: twoDimImage,
     },
   },
   {
@@ -76,8 +76,8 @@ export const galleryListData: GalleryItemData[] = [
       placeId: 1,
       name: 'Gallery A',
       maximumFrameNumber: 10,
-      threeDimensionImageUrl: threeDimImage,
-      twoDimensionImageUrl: twoDimImage,
+      threeDimensionImageUri: threeDimImage,
+      twoDimensionImageUri: twoDimImage,
     },
   },
   {
@@ -91,8 +91,8 @@ export const galleryListData: GalleryItemData[] = [
       placeId: 1,
       name: 'Gallery A',
       maximumFrameNumber: 10,
-      threeDimensionImageUrl: threeDimImage,
-      twoDimensionImageUrl: twoDimImage,
+      threeDimensionImageUri: threeDimImage,
+      twoDimensionImageUri: twoDimImage,
     },
   },
   {
@@ -106,8 +106,8 @@ export const galleryListData: GalleryItemData[] = [
       placeId: 1,
       name: 'Gallery A',
       maximumFrameNumber: 10,
-      threeDimensionImageUrl: threeDimImage,
-      twoDimensionImageUrl: twoDimImage,
+      threeDimensionImageUri: threeDimImage,
+      twoDimensionImageUri: twoDimImage,
     },
   },
 ]
@@ -116,8 +116,8 @@ export const placeItemData: PlaceData = {
   placeId: 1,
   name: '공간1',
   maximumFrameNumber: 10,
-  twoDimensionImageUrl: 'https://source.unsplash.com/random/300×300',
-  threeDimensionImageUrl: 'https://source.unsplash.com/random/300×300',
+  twoDimensionImageUri: 'https://source.unsplash.com/random/300×300',
+  threeDimensionImageUri: 'https://source.unsplash.com/random/300×300',
 }
 
 export const placeListData: PlaceData[] = [
@@ -125,21 +125,21 @@ export const placeListData: PlaceData[] = [
     placeId: 1,
     name: '공간1',
     maximumFrameNumber: 10,
-    twoDimensionImageUrl: 'https://source.unsplash.com/random/300×300',
-    threeDimensionImageUrl: 'https://source.unsplash.com/random/300×300',
+    twoDimensionImageUri: 'https://source.unsplash.com/random/300×300',
+    threeDimensionImageUri: 'https://source.unsplash.com/random/300×300',
   },
   {
     placeId: 2,
     name: '공간2',
     maximumFrameNumber: 10,
-    twoDimensionImageUrl: 'https://source.unsplash.com/random/300×300',
-    threeDimensionImageUrl: 'https://source.unsplash.com/random/300×300',
+    twoDimensionImageUri: 'https://source.unsplash.com/random/300×300',
+    threeDimensionImageUri: 'https://source.unsplash.com/random/300×300',
   },
   {
     placeId: 3,
     name: '공간3',
     maximumFrameNumber: 10,
-    twoDimensionImageUrl: 'https://source.unsplash.com/random/300×300',
-    threeDimensionImageUrl: 'https://source.unsplash.com/random/300×300',
+    twoDimensionImageUri: 'https://source.unsplash.com/random/300×300',
+    threeDimensionImageUri: 'https://source.unsplash.com/random/300×300',
   },
 ]

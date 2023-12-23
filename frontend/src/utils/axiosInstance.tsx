@@ -2,9 +2,9 @@ import axios, { AxiosError, AxiosResponse, AxiosInstance } from 'axios'
 
 // Base URL
 const BASE_API_URL =
-  process.env.REACT_APP_API_BASE_URL + '/'
+  (process.env.REACT_APP_API_BASE_URL
     ? process.env.REACT_APP_API_BASE_URL
-    : `${window.location.protocol}://${window.location.hostname}:${window.location.port}`
+    : `${window.location.protocol}://${window.location.hostname}:${window.location.port}`) + '/api'
 
 // Axios Instance
 const axiosInstance: AxiosInstance = axios.create({
@@ -28,9 +28,11 @@ axiosInstance.interceptors.response.use(
       err.response?.data.errorCode === 'GATE003' ||
       err.response?.data.errorCode === 'GATE004'
     ) {
-      // 401 오류 (토큰 만료)에 대한 처리
-      // 예를 들어, 로그인 페이지로 리다이렉트
-      // window.location.href = '/login' // 로그인 페이지 경로로 변경
+      // Token Error: Redirect to login page
+      ;(process.env.REACT_APP_API_BASE_URL
+        ? process.env.REACT_APP_API_BASE_URL
+        : `${window.location.protocol}://${window.location.hostname}:${window.location.port}`) +
+        '/login'
     }
     return Promise.reject(err.response?.data)
   }

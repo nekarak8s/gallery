@@ -54,6 +54,10 @@ const GalleryCanvas = ({ gallery, postList }: GalleryCanvasProps) => {
     loadingManager.onLoad = function decreaseLoadCount() {
       setLoadedCount((cnt) => cnt + 1)
     }
+    loadingManager.onError = function toastLoadingErrorMesage(url) {
+      console.log(url)
+      toastManager.addToast('error', '필요한 자원을 로드하지 못했습니다')
+    }
 
     // Renderer
     const renderer = new DefaultRenderer({ canvas, antialias: true })
@@ -64,6 +68,21 @@ const GalleryCanvas = ({ gallery, postList }: GalleryCanvasProps) => {
     // Camera
     const camera = new DefaultCamera({ canvas })
     scene.add(camera)
+
+    // Capture camera
+    // const camera2 = new THREE.OrthographicCamera(
+    //   canvas.offsetWidth / -2,
+    //   canvas.offsetWidth / 2,
+    //   canvas.offsetHeight / 2,
+    //   canvas.offsetHeight / -2,
+    //   3,
+    //   1000
+    // )
+    // camera2.position.set(-40, 90, -40)
+    // camera2.lookAt(54, 0, 54)
+    // camera2.zoom = 5
+    // camera2.updateProjectionMatrix()
+    // scene.add(camera2)
 
     // Cannon world
     const world = new World()

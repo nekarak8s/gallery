@@ -7,7 +7,7 @@
   align-items: center;
   gap: 20px;
   padding: 2em 3em;
-  max-width: min(800px, 80vw);
+  width: min(800px, 80vw);
   font-size: 1rem;
 }
 
@@ -16,16 +16,27 @@
   inset: 0 0 0 0;
 }
 
+.gallery-update-form__buttons {
+  display: flex;
+  justify-content: center;
+  position: relative;
+  width: 100%;
+
+  button:nth-child(2) {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+  }
+}
+
 @include tablet {
   .gallery-update-form {
     padding: 2em 3em;
-    max-width: min(700px, 80vw);
   }
 }
 
 @include mobile {
   .gallery-update-form {
     padding: 2em 1em;
-    max-width: min(400px, 85vw);
   }
 }

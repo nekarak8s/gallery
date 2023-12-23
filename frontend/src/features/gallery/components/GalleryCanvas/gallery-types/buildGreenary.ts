@@ -443,7 +443,7 @@ const buildGreenary = (props: GalleryTypeProps) => {
   })
 
   // Ocean meshes
-  const oceanGeometry = new BoxGeometry(530, 5, 530)
+  const oceanGeometry = new BoxGeometry(110, 5, 110)
   const oceanMaterial = new MeshLambertMaterial({
     color: 0x008cf1,
     side: DoubleSide,
@@ -540,22 +540,25 @@ const buildGreenary = (props: GalleryTypeProps) => {
 
   // Create Frames
   FRAME_DATA.forEach((frameData, idx) => {
-    const frame = new Frame({
-      order: idx,
-      x: frameData.x,
-      y: frameData.y,
-      z: frameData.z,
-      width: FRAME_INFO.width,
-      height: FRAME_INFO.height,
-      depth: FRAME_INFO.depth,
-      container: props.scene,
-      texture: {
-        textureLoader,
-        baseImg: props.postList[idx].imageUrl,
-      },
-    })
-    items.push(frame)
-    props.rayControls.rayItems.push(frame.mesh)
+    // Only if the post isActive
+    if (props.postList[idx].isActive) {
+      const frame = new Frame({
+        order: idx,
+        x: frameData.x,
+        y: frameData.y,
+        z: frameData.z,
+        width: FRAME_INFO.width,
+        height: FRAME_INFO.height,
+        depth: FRAME_INFO.depth,
+        container: props.scene,
+        texture: {
+          textureLoader,
+          baseImg: props.postList[idx].imageURL,
+        },
+      })
+      items.push(frame)
+      props.rayControls.rayItems.push(frame.mesh)
+    }
   })
 
   /**
