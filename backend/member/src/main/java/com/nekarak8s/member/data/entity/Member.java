@@ -54,4 +54,16 @@ public class Member {
 
     @Column(name = "deletedDate")
     private LocalDateTime deletedDate;
+
+    public static Member createNewMember(long kakaoId, String newNickname) {
+        return Member.builder()
+                .kakaoId(kakaoId)
+                .role(Role.ROLE_USER)
+                .nickname(newNickname)
+                .isDeleted(false)
+                .isDormant(false)
+                .deletedDate(null)
+                .lastDate(LocalDateTime.now())
+                .build();
+    }
 }
