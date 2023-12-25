@@ -1,7 +1,6 @@
 package com.nekarak8s.member.service.impl;
 
 import com.nekarak8s.member.common.GAError;
-import com.nekarak8s.member.common.Role;
 import com.nekarak8s.member.data.dto.request.MemberModifyDTO;
 import com.nekarak8s.member.data.dto.response.LoginResponse;
 import com.nekarak8s.member.data.dto.response.MemberDTO;
@@ -16,7 +15,6 @@ import com.nekarak8s.member.service.MemberService;
 import com.nekarak8s.member.util.jwt.JwtProperties;
 import com.nekarak8s.member.util.jwt.JwtUtils;
 import com.nekarak8s.member.util.jwt.TokenMember;
-import com.nekarak8s.member.util.nickname.NicknameUtils;
 import com.nekarak8s.member.util.pair.Pair;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -41,7 +39,6 @@ public class MemberServiceImpl implements MemberService{
 
     // util
     private final JwtUtils jwtUtils;
-    private final NicknameUtils nicknameUtils;
 
     // repo
     private final MemberRepository memberRepository;
@@ -61,6 +58,10 @@ public class MemberServiceImpl implements MemberService{
 
     /**
      * 소셜 로그인
+     * - 카카오
+     * @param code
+     * @return
+     * @throws CustomException
      */
     @Transactional
     @Override
@@ -89,9 +90,9 @@ public class MemberServiceImpl implements MemberService{
 
     private void handleMemberRegistration(long kakaoId, String kakaoNickname) throws CustomException {
         if (isMemberByKakaoId(kakaoId)) {
-            handelExistingMember(kakaoId, kakaoNickname);
+            handelExistingMember(kakaoId, kakaoNickname); // 기존 회원
         } else {
-            handleNewMember(kakaoId, kakaoNickname);
+            handleNewMember(kakaoId, kakaoNickname); // 신규 회원
         }
     }
 
@@ -102,19 +103,11 @@ public class MemberServiceImpl implements MemberService{
 
     private void handleNewMember(long kakaoId, String kakaoNickname) throws CustomException {
         log.debug("신규 회원");
-        String nickname = retryGenerateNewNickname(kakaoNickname);
+        String newNickname = retryGenerateNewNickname(kakaoNickname);
 
-        Member member = Member.builder()
-                .kakaoId(kakaoId)
-                .role(Role.ROLE_USER)
-                .nickname(nickname)
-                .isDeleted(false)
-                .isDormant(false)
-                .lastDate(LocalDateTime.now())
-                .build();
+        Member member = Member.createNewMember(kakaoId, newNickname);
         memberRepository.save(member);
-
-        nicknameService.saveNicknameInRedis(nickname, member.getMemberId());
+        nicknameService.saveNicknameInRedis(newNickname, member.getMemberId());
     }
 
     private void handelExistingMember(long kakaoId, String kakaoNickname) throws CustomException {
@@ -124,24 +117,21 @@ public class MemberServiceImpl implements MemberService{
         if (!member.getIsDeleted()) {
             log.debug("기존 회원");
         } else {
-            handleDeletedMember(member, kakaoNickname);
+            log.debug("신규 회원");
+            handleDeletedMember(member, kakaoId, kakaoNickname);
         }
     }
 
-    private void handleDeletedMember(Member member, String kakaoNickname) throws CustomException {
-        log.debug("삭제 상태 회원");
-        String nickname = retryGenerateNewNickname(kakaoNickname);
-        member.setNickname(nickname);
-        member.setIsDeleted(false);
-        member.setDeletedDate(null);
+    private void handleDeletedMember(Member member, long kakaoId, String kakaoNickname) throws CustomException {
+        String newNickname = retryGenerateNewNickname(kakaoNickname);
+        Member.createNewMember(kakaoId, newNickname);
         memberRepository.save(member);
-
-        nicknameService.saveNicknameInRedis(nickname, member.getMemberId());
+        nicknameService.saveNicknameInRedis(newNickname, member.getMemberId());
     }
 
     private String generateAccessToken(Member member) {
         TokenMember tokenMember = new TokenMember(String.valueOf(member.getMemberId()), String.valueOf(member.getRole()));
-        return jwtUtils.generate(tokenMember); // 갤러리 서비스 토큰 발급
+        return jwtUtils.generate(tokenMember); // The Gallery 토큰 발급
     }
 
     private Date calculateExpirationDate() {
@@ -218,14 +208,9 @@ public class MemberServiceImpl implements MemberService{
         Member member = memberRepository.findByMemberIdAndIsDeletedFalse(memberId)
                 .orElseThrow(() -> new CustomException(RESOURCE_NOT_FOUND.getHttpStatus(), RESOURCE_NOT_FOUND.getCode(), "삭제하려는 회원 정보가 존재하지 않습니다"));
 
-        // update database
-        markMemberAsDeleted(member);
-
-        // send event to kafka
-        sendMemberEvent(memberId, DELETE_TYPE);
-
-        // update cache
-        updateCache(memberId);
+        markMemberAsDeleted(member); // update database
+        sendMemberEvent(memberId, DELETE_TYPE); // send event to kafka
+        updateCache(memberId); // update cache
     }
 
     private void markMemberAsDeleted(Member member) {
@@ -236,14 +221,8 @@ public class MemberServiceImpl implements MemberService{
 
     private void sendMemberEvent(long memberId, String type) throws CustomException {
         try {
-            MemberEvent memberEvent = new MemberEvent();
-            memberEvent.setMemberId(memberId);
-            memberEvent.setType(type);
-            // 토픽 존재 여부 체크
-            if (producer.isExist(MEMBER_TOPIC)) {
-                // produce event (to Kafka)
-                producer.sendMessage(MEMBER_TOPIC, memberEvent);
-            }
+            MemberEvent memberEvent = MemberEvent.createMemberEvent(memberId, type);
+            if (producer.isExist(MEMBER_TOPIC)) producer.sendMessage(MEMBER_TOPIC, memberEvent); // produce event (to Kafka)
         } catch (Exception e) {
             log.error("카프카 에러");
             throw new CustomException(INTERNAL_SERVER_ERROR.getHttpStatus(), INTERNAL_SERVER_ERROR.getCode(), INTERNAL_SERVER_ERROR.getDescription());
@@ -287,7 +266,9 @@ public class MemberServiceImpl implements MemberService{
     }
 
     /**
-     * Map<아이디, 닉네임> 반환
+     * Map<아이디, 닉네임> 조회
+     * @param memberIdList
+     * @return
      */
     @Override
     public Map<Long, String> getMemberMap(List<Long> memberIdList) {
@@ -299,13 +280,9 @@ public class MemberServiceImpl implements MemberService{
      * 닉네임 생성 (재시도 4회)
      */
     private String retryGenerateNewNickname(String kakaoNickname) throws CustomException {
-        String newNickname;
-
-        for (int digit=4; digit<=7; digit++) {
-            newNickname = nicknameService.generateNewNickname(kakaoNickname, digit);
-            if (isNicknameUnique(newNickname)) {
-                return newNickname;
-            }
+        for (int digit=4; digit<=7; digit++) { // 4자리 ~ 7자리 랜덤숫자 생성
+            String newNickname = nicknameService.generateNewNickname(kakaoNickname, digit);
+            if (isNicknameUnique(newNickname)) return newNickname;
         }
         throw new CustomException(RESOURCE_CONFLICT.getHttpStatus(), RESOURCE_CONFLICT.getCode(), "닉네임 생성 실패");
     }

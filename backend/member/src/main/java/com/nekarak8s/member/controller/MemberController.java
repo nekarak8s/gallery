@@ -10,7 +10,6 @@ import com.nekarak8s.member.redis.service.TokenService;
 import com.nekarak8s.member.service.AuthService;
 import com.nekarak8s.member.service.MemberService;
 import com.nekarak8s.member.util.cookie.CookieUtils;
-import com.nekarak8s.member.util.nickname.NicknameUtils;
 import com.nekarak8s.member.util.pair.Pair;
 import com.nekarak8s.member.util.param.ParamUtils;
 import lombok.RequiredArgsConstructor;
@@ -37,7 +36,6 @@ public class MemberController {
 
     private final ParamUtils paramUtils;
     private final CookieUtils cookieUtils;
-    private final NicknameUtils nicknameUtils;
 
     private static final GAError INVALID_PARAMETER = GAError.INVALID_PARAMETER;
     private static final GAError RESOURCE_CONFLICT = GAError.RESOURCE_CONFLICT;
