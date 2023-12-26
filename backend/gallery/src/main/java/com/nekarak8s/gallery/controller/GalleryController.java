@@ -70,17 +70,15 @@ public class GalleryController {
     /**
      * 보유 갤러리 목록 조회
      * @param memberId
-     * @param page
      * @return
      * @throws CustomException
      */
     @GetMapping("/list")
     public ResponseEntity<ApiResponse> getGalleryListByMemberId(
-            @RequestHeader(value = "X-Member-ID", required = false) long memberId,
-            @RequestParam(value = "page", defaultValue = "0") int page) throws CustomException {
+            @RequestHeader(value = "X-Member-ID", required = false) long memberId) throws CustomException {
         log.debug("회원 보유 갤러리 목록 조회 요청");
 
-        List<GalleryInfoResponseDTO> list = galleryService.findGalleryListByMemberId(memberId, page).getContent();
+        List<GalleryInfoResponseDTO> list = galleryService.findGalleryListByMemberId(memberId);
 
         ApiResponse apiResponse = createSuccessResponseWithData("갤러리 목록 조회를 성공했습니다", list);
         return ResponseEntity.ok(apiResponse);
@@ -164,17 +162,15 @@ public class GalleryController {
      *
      * @param type
      * @param query
-     * @param page
      * @return
      * @throws CustomException
      */
     @GetMapping("/search")
     public ResponseEntity<ApiResponse> searchGalleryListByCondition(
                                                             @RequestParam(value = "type") String type,
-                                                            @RequestParam(value = "query") String query,
-                                                            @RequestParam(value = "page", defaultValue = "0") int page) throws CustomException {
+                                                            @RequestParam(value = "query") String query) throws CustomException {
         log.debug("갤러리 조건부 검색 요청");
-        List<GallerySearchDTO> list = galleryService.search(type, query, page).getContent();
+        List<GallerySearchDTO> list = galleryService.searchGalleryList(type, query);
 
         ApiResponse apiResponse = createSuccessResponseWithData("갤러리 검색을 성공했습니다", list);
         return ResponseEntity.ok(apiResponse);

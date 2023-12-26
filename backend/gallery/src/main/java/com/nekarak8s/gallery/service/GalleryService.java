@@ -21,7 +21,7 @@ public interface GalleryService {
     boolean isGalleryNameUnique(String name, long memberId);
 
     // 보유한 갤러리 목록 조회
-    Page<GalleryInfoResponseDTO> findGalleryListByMemberId(long memberId, int page);
+    List<GalleryInfoResponseDTO> findGalleryListByMemberId(long memberId);
 
     // 공간 목록 조회
     List<Place> selectPlaceList();
@@ -36,8 +36,8 @@ public interface GalleryService {
     void deleteGallery(long memberId, long galleryId) throws CustomException;
 
     // 회원탈퇴 -> 모든 갤러리 삭제
-    void deleteAllGallery(long memberId) throws CustomException;
+    void deleteAllGallery(long memberId);
 
     // 갤러리 검색 (by Query)
-    Page<GallerySearchDTO> search(String type, String query, int page) throws CustomException;
+    List<GallerySearchDTO> searchGalleryList(String type, String query) throws CustomException;
 }
