@@ -31,57 +31,76 @@ import java.util.*;
 @Transactional(readOnly = true)
 public class GalleryServiceImpl implements GalleryService {
 
-    private final GalleryRepository galleryRepository;
-    private final PlaceUtil placeUtil;
+    // repo
     private final PlaceRepository placeRepository;
-    private final RestTemplate restTemplate;
-    private final KafkaProducer producer;
+    private final GalleryRepository galleryRepository;
 
-    // 회원 서버 URI
+    // util
+    private final PlaceUtil placeUtil;
+    private final RestTemplate restTemplate;
+
+    // kafka
+    private final KafkaProducer producer;
+    private final static String GALLERY_TOPIC   = "member";
+    private final static String CREATE_TYPE     = "create";
+    private final static String DELETE_TYPE     = "delete";
+
+    // 회원 서비스 URI
     @Value("${spring.member-service.uri}")
     private String memberServiceUri;
 
     /**
      * 갤러리 생성
+     * @param memberId
+     * @param requestDTO
+     * @return
+     * @throws CustomException
      */
     @Transactional
     @Override
     public long createGallery(long memberId, GalleryCreateRequestDTO requestDTO) throws CustomException {
-        boolean isUnique = isGalleryNameUnique(requestDTO.getName(), memberId);
+        validatePlaceExistence(requestDTO.getPlaceId()); // 공간 아이디 유효성 검사
+        validateGalleryNameUniqueness(requestDTO.getName(), memberId); // 갤러리 이름 중복 검사
 
-        if (!placeUtil.isExist(requestDTO.getPlaceId())) {
-            log.info("존재하지 않는 공간 아이디 입니다 !!!");
-            throw new CustomException(HttpStatus.NOT_FOUND, "GG007", "존재하지 않는 공간입니다");
-        }
-
-        if (!isUnique) {
-            log.info("이미 사용중인 갤러리 이름 !!!");
-            throw new CustomException(HttpStatus.CONFLICT, "GG006", "이미 사용중인 갤러리 이름입니다");
-        }
-
-        Gallery gallery = Gallery.builder()
-                .memberId(memberId)
-                .placeId(requestDTO.getPlaceId())
-                .name(requestDTO.getName())
-                .content(requestDTO.getContent())
-                .build();
-
+        Gallery gallery = createNewGallery(memberId, requestDTO);
         galleryRepository.save(gallery);
 
-        try {
-            // produce event (to kafka)
-            GalleryEvent galleryEvent = new GalleryEvent();
-            log.info("갤러리 아이디 : {}", gallery.getGalleryId());
-            galleryEvent.setGalleryId(gallery.getGalleryId());
-            galleryEvent.setType("create");
-            // 토픽 존재 여부 체크
-            if (producer.isExist("gallery")) producer.sendMessage("gallery", galleryEvent);
-        } catch (Exception e) {
-            log.error("kafka error occured");
-            throw new CustomException(HttpStatus.INTERNAL_SERVER_ERROR, "GG001", "Kafka 통신 예외 발생");
-        }
+        sendGalleryEvent(gallery.getGalleryId(), CREATE_TYPE); // send create event to kafka
 
         return gallery.getGalleryId();
+    }
+
+    private void validatePlaceExistence(long placeId) throws CustomException {
+        if (!placeUtil.isExist(placeId)) {
+            log.error("존재하지 않는 공간");
+            throw new CustomException(HttpStatus.NOT_FOUND, "GG007", "존재하지 않는 공간입니다");
+        }
+    }
+
+    private void validateGalleryNameUniqueness(String galleryName, long memberId) throws CustomException {
+        if (!isGalleryNameUnique(galleryName, memberId)) {
+            log.error("이미 사용중인 갤러리 이름");
+            throw new CustomException(HttpStatus.CONFLICT, "GG006", "이미 사용중인 갤러리 이름입니다");
+        }
+    }
+
+    private Gallery createNewGallery(long memberId, GalleryCreateRequestDTO dto) {
+        return Gallery.builder()
+                .memberId(memberId)
+                .placeId(dto.getPlaceId())
+                .name(dto.getName())
+                .content(dto.getContent())
+                .build();
+    }
+
+    private void sendGalleryEvent(long galleryId, String type) throws CustomException {
+        try {
+            GalleryEvent galleryEvent = GalleryEvent.createGalleryEvent(galleryId, type);
+            if (producer.isExist(GALLERY_TOPIC)) producer.sendMessage(GALLERY_TOPIC, galleryEvent);
+        } catch (Exception e) {
+            log.error("카프카 에러");
+            throw new CustomException(HttpStatus.INTERNAL_SERVER_ERROR, "GG001", "Kafka 통신 예외 발생");
+        }
     }
 
     /**
