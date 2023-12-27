@@ -60,7 +60,7 @@ export type GalleryTypeProps = {
   loadingManager: THREE.LoadingManager
   renderer: THREE.WebGLRenderer
   scene: THREE.Scene
-  camera: THREE.Camera
+  camera: THREE.PerspectiveCamera
   world: World
   controls: CannonKeypadControls
   rayControls: RaycasterControls

@@ -21,7 +21,7 @@ const CAMERA_ORDERS = [
 ]
 
 const CAMERA_MOBILE_ORDERS = [
-  { position: { x: 50, y: 17, z: 110 }, rotation: { x: degToRad(0), y: degToRad(20) } },
+  { position: { x: 45, y: 23, z: 170 }, rotation: { x: degToRad(0), y: degToRad(15) } },
   { position: { x: 3, y: 5, z: 46 }, rotation: { x: degToRad(0), y: degToRad(0) } },
   { position: { x: 8, y: 5, z: 37 }, rotation: { x: degToRad(0), y: degToRad(-90) } },
   { position: { x: 8, y: 5, z: 3 }, rotation: { x: degToRad(0), y: degToRad(-90) } },

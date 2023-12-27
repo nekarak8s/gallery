@@ -13,7 +13,7 @@ type TextureProps = {
   repeatY?: number
 }
 
-type WallArgs = StuffArgs & {
+type CeilingArgs = StuffArgs & {
   container: THREE.Scene | THREE.Mesh
   world?: World | undefined
   cannonMaterial?: Material | undefined
@@ -21,24 +21,39 @@ type WallArgs = StuffArgs & {
   opacity?: number | undefined
   transparent?: boolean | undefined
   texture?: TextureProps | undefined
+  isPlane?: boolean
 }
 
-export class Wall extends Stuff {
-  type: string = 'wall'
+export class Ceiling extends Stuff {
+  type: string = 'ceiling'
   mesh: THREE.Mesh
   textures: Record<string, THREE.Texture> = {}
   dispose: () => void
+  isPlane = false
 
-  constructor(info: WallArgs) {
+  constructor(info: CeilingArgs) {
     super(info)
 
     // Adjust position
     this.x += (this.width * Math.cos(this.rotationY)) / 2
-    this.y += this.height / 2
+    this.x += (this.depth * Math.sin(this.rotationY)) / 2
     this.z -= (this.width * Math.sin(this.rotationY)) / 2
+    this.z += (this.depth * Math.cos(this.rotationY)) / 2
 
-    // Geometry
-    const geometry = new THREE.BoxGeometry(this.width, this.height, this.depth)
+    let geometry: THREE.BufferGeometry
+    if (info.isPlane === true) {
+      // Box geometry
+      this.isPlane = true
+      this.rotationX += Math.PI / 2
+
+      geometry = new THREE.PlaneGeometry(this.width, this.depth)
+    } else {
+      // Plane geometry
+      this.isPlane = false
+      this.y += this.height / 2
+
+      geometry = new THREE.BoxGeometry(this.width, this.height, this.depth)
+    }
 
     // Textures
     if (info.texture) {

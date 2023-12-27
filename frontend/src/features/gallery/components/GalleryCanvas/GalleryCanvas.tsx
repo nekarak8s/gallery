@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { SAPBroadphase, World } from 'cannon-es'
 import CannonDebugger from 'cannon-es-debugger'
 import * as THREE from 'three'
+import buildGallery from './gallery-types/buildGallery'
 import buildGreenary from './gallery-types/buildGreenary'
 import './GalleryCanvas.scss'
 import { GalleryData, GalleryTypeProps, GalleryTypeReturns } from '../../types'
@@ -26,6 +27,7 @@ type GalleryCanvasProps = {
 
 const CANVAS_TYPE: Record<number, (kwargs: GalleryTypeProps) => GalleryTypeReturns> = {
   1: buildGreenary,
+  2: buildGallery,
 }
 
 const GalleryCanvas = ({ gallery, postList }: GalleryCanvasProps) => {

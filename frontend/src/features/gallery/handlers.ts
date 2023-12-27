@@ -103,9 +103,15 @@ export const galleryHandlers = [
       { status: 200 }
     )
   }),
-  http.get('*/api/gallery/:galleryId', async () => {
+  http.get('*/api/gallery/:galleryId', async (request) => {
     await delay()
-    return HttpResponse.json({ data: galleryData }, { status: 200 })
+
+    const data = galleryData
+    if (request.params.galleryId === '2') {
+      data.place.placeId = 2
+    }
+
+    return HttpResponse.json({ data: data }, { status: 200 })
   }),
   http.patch('*/api/gallery/:galleryId', async () => {
     await delay()

@@ -10,12 +10,12 @@ import wallAmbientImg from '@/assets/textures/concrete/Concrete_011_OCC.jpg'
 import wallRoughImg from '@/assets/textures/concrete/Concrete_011_ROUGH.jpg'
 import frameAmbientImg from '@/assets/textures/fabric/Fabric_polyester_001_ambientOcclusion.jpg'
 import frameNormImg from '@/assets/textures/fabric/Fabric_polyester_001_normal.jpg'
-import frameRoughImg from '@/assets/textures/fabric/Fabric_polyester_001_roughness.jpg'
 import floorBaseImg from '@/assets/textures/granite/Granite_001_COLOR.jpg'
 import floorNormImg from '@/assets/textures/granite/Granite_001_NORM.jpg'
 import floorAmbientImg from '@/assets/textures/granite/Granite_001_OCC.jpg'
 import floorRoughImg from '@/assets/textures/granite/Granite_001_ROUGH.jpg'
 import { getSunColor, getSunIntensity, getSunPosition } from '@/libs/sun'
+import { Floor } from '@/libs/three-custom/items/Floor'
 import { Frame } from '@/libs/three-custom/items/Frame'
 import { SkyItem } from '@/libs/three-custom/items/Sky'
 import { Wall } from '@/libs/three-custom/items/Wall'
@@ -23,8 +23,8 @@ import { WaterItem } from '@/libs/three-custom/items/Water'
 
 const FLOOR_DATA = {
   x: 0,
-  y: -38,
-  z: 20,
+  y: 2,
+  z: 0,
   width: 20,
   height: 40,
   depth: 40,
@@ -46,7 +46,7 @@ const WALLS_DATA = [
     width: 38,
     height: 8,
     depth: 0.3,
-    rotationY: degToRad(90),
+    rotationY: degToRad(-90),
   },
   {
     x: 1,
@@ -55,7 +55,7 @@ const WALLS_DATA = [
     width: 15,
     height: 8,
     depth: 0.3,
-    rotationY: degToRad(90),
+    rotationY: degToRad(-90),
   },
 ]
 
@@ -140,7 +140,7 @@ export function buildArchitect(props: buildArchitectProps): ThreeItem {
   items.push(water)
 
   // Create Floor
-  const floor = new Wall({
+  const floor = new Floor({
     container: props.scene,
     color: 0x686868,
     x: FLOOR_DATA.x,
@@ -203,7 +203,6 @@ export function buildArchitect(props: buildArchitectProps): ThreeItem {
         baseImg: frame_data.baseImg,
         ambientImg: frameAmbientImg,
         normalImg: frameNormImg,
-        roughImg: frameRoughImg,
         repeatX: frame_data.width * 1.5,
         repeatY: frame_data.height * 1.5,
       },
@@ -252,7 +251,7 @@ export function buildArchitect(props: buildArchitectProps): ThreeItem {
     // Update sun position
     const { elevation, azimuth } = getSunPosition(date)
     const phi = THREE.MathUtils.degToRad(90 - elevation)
-    const phiEle = THREE.MathUtils.degToRad(elevation + 50)
+    const phiEle = THREE.MathUtils.degToRad(elevation * 3)
     const theta = THREE.MathUtils.degToRad(azimuth)
 
     sun.setFromSphericalCoords(1, phi, theta)
@@ -266,7 +265,14 @@ export function buildArchitect(props: buildArchitectProps): ThreeItem {
 
     directLight.color = sunLightColor
     directLight.intensity = sunLightIntensity
-    directLight.position.set(-Math.sin(theta) * 100, Math.sin(phiEle) * 500, Math.cos(theta) * 100)
+    directLight.position.set(Math.sin(theta) * 100, Math.sin(phiEle) * 500, Math.cos(theta) * 100)
+
+    // update light of frame
+    items.forEach((item) => {
+      if (item instanceof Frame && item.spotLight) {
+        item.spotLight.intensity = 3 * (1 - sunLightIntensity) + 5
+      }
+    })
   }, 60 * 1000)
 
   // Light Helper : Development
