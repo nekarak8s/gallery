@@ -8,7 +8,7 @@
   gap: 0.6em;
   padding: 3em 1em 2em;
   background-color: c.$tertiary;
-  font-size: 0.9rem;
+  font-size: 1rem;
   font-weight: 400;
   line-height: 150%;
   color: transparentize(c.$ft-white, 0.3);
@@ -27,14 +27,23 @@
 
 .footer__license {
   font-size: 1rem;
-  margin: 1em 2em 2em;
+  width: 500px;
+  padding: 1em 2em 2em;
+
+  table {
+    font-size: 1em;
+    width: 100%;
+  }
 }
 
 @include mobile {
   .footer {
-    font-size: 3.2vw;
-  }
-  .footer__license {
     font-size: 3vw;
+  }
+
+  .footer__license {
+    font-size: 3.5vw;
+    width: 90vw;
+    padding: 0.5em 1em 1em;
   }
 }

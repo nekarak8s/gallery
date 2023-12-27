@@ -3,74 +3,53 @@
 @use '@/styles/_colors.scss' as c;
 
 .guide {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
   width: 100vw;
-  min-height: 100vh;
+  height: 600vh;
   color: var(--ft-color-reverse, c.$ft-white);
   font-size: 1rem;
   text-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
+}
+
+.guide__main {
+  position: sticky;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
 
   > canvas {
-    position: sticky;
-    top: 0;
-    left: 0;
     width: 100vw !important;
     height: 100vh !important;
   }
-
-  > section {
-    @include z-index(top-below);
-    position: absolute;
-    top: 0;
-    left: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    width: 100vw;
-    background-color: transparent;
-  }
-
-  &__intro {
-    position: relative;
-    font-size: 3em;
-    font-weight: 800;
-    text-align: center;
-    line-height: 150%;
-  }
-}
-
-.guide__scroll {
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  transform: translate(-50%, -10%);
 }
 
 .guide__sections {
-  @include z-index(top-below);
-  position: relative;
-  background-color: transparent;
+  position: absolute;
+  top: 0;
+  left: 0;
+  transition: transform 800ms ease-in-out;
 
   > section {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     justify-content: center;
+    position: relative;
     height: 100vh;
     width: 100vw;
     padding: 10%;
     background-color: transparent;
-
-    > div {
-      width: min(500px, 80%);
-    }
+    text-align: start;
 
     h1 {
+      position: relative;
+      font-size: 3em;
+      font-weight: 800;
+      text-align: center;
+      line-height: 150%;
+    }
+
+    h2 {
       font-size: 2em;
       font-weight: 600;
       line-height: 150%;
@@ -80,22 +59,25 @@
       font-size: 1.5em;
       margin-top: 0.5em;
       line-height: 150%;
+      width: min(500px, 80%);
     }
   }
 
-  > section:nth-child(odd) {
-    align-items: flex-end;
+  > section:nth-child(even) {
+    align-items: end;
   }
 
+  > section:first-child,
   > section:last-child {
     align-items: center;
-    text-align: center;
-
-    h1 {
-      font-size: 3rem;
-      font-weight: 800;
-    }
   }
+}
+
+.guide__scroll {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translate(-50%, -10%);
 }
 
 .guide__loading {
@@ -114,80 +96,43 @@
 }
 
 @include tablet {
-  .guide {
-    text-align: center;
+  .guide__sections {
     font-size: 0.9rem;
 
-    &__intro {
-      font-size: 3em;
-    }
-  }
-
-  .guide__sections {
     > section {
-      padding: 5vw;
+      padding: 15vh 5vw;
       align-items: center;
       justify-content: flex-end;
 
-      > div {
-        width: min(680px, 80%);
-      }
-
-      h1 {
-        font-size: 2em;
-      }
-
       p {
+        width: min(680px, 80%);
+        margin-top: 0.5em;
         font-size: 1.5em;
         line-height: 150%;
-        margin-top: 0.5em;
+        text-align: center;
       }
     }
 
-    > section:nth-child(odd) {
+    > section:nth-child(even) {
       align-items: center;
     }
 
+    > section:first-child,
     > section:last-child {
       justify-content: center;
-      h1 {
-        font-size: 3em;
-      }
     }
   }
 }
 
 @include mobile {
   .guide {
-    font-size: 0.8rem;
-
-    &__intro {
-      font-size: 8vw;
-    }
+    font-size: 4vw;
   }
 
   .guide__sections {
     > section {
-      padding: 5vw;
-
-      > div {
-        width: 90%;
-      }
-
-      h1 {
-        font-size: 6vw;
-      }
-
       p {
-        font-size: 5vw;
-        line-height: 150%;
-        margin-top: 0.5em;
-      }
-    }
-
-    > section:last-child {
-      h1 {
-        font-size: 8vw;
+        width: 90%;
       }
     }
   }

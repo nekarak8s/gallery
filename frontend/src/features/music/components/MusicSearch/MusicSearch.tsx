@@ -53,16 +53,17 @@ const MusicSearch = ({ onSelect }: MusicSearchProps) => {
         />
         <Form className="music-search__form" onSubmit={handleSubmit}>
           <ul className="music-search__list">
-            {isMusicFetching && <Loading />}
-            {!isMusicFetching &&
-              musicList &&
-              musicList.map((music, index) => (
+            {isMusicFetching ? (
+              <Loading />
+            ) : (
+              musicList?.map((music, index) => (
                 <li key={`${music.artist}-${music.title}-${music.releasedDate}`}>
                   <Radio id={`music-search-${index}`} name="musicIndex" value={index}>
                     <MusicSearchItem music={music} />
                   </Radio>
                 </li>
-              ))}
+              ))
+            )}
           </ul>
           <Button type="submit" text="음악 선택" ariaLabel="음악 선택" />
         </Form>

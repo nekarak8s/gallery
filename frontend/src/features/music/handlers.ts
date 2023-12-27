@@ -12,19 +12,19 @@ export const musicHandlers = [
       {
         data: [
           {
-            title: `${q} 123`,
+            title: `${q} lorem 123`,
             artist: '홍길동',
             releasedDate: '2023-08-03T23:59:59',
             coverURL: 'https://source.unsplash.com/500x500',
           },
           {
-            title: `${q} 456`,
+            title: `${q} ipsum 456`,
             artist: '김이박',
             releasedDate: '2023-08-03T23:59:59',
             coverURL: 'https://source.unsplash.com/500x500',
           },
           {
-            title: `${q} 789 sdaffffffffffffffffffffffffffffffffffffffffff`,
+            title: `${q} abcdfef 789`,
             artist: '철수영희',
             releasedDate: '2023-08-03T23:59:59',
             coverURL: 'https://source.unsplash.com/500x500',

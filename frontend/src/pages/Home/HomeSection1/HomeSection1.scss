@@ -46,7 +46,7 @@
 }
 
 .hs1-scroll {
-  @include z-index(top);
+  @include z-index(top-below);
   position: absolute;
   left: 50%;
   bottom: 6%;

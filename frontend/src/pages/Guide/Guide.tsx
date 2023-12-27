@@ -12,8 +12,8 @@ import toFrame from '@/utils/toFrame'
 import './Guide.scss'
 
 const CAMERA_ORDERS = [
-  { position: { x: 60, y: 17, z: 110 }, rotation: { x: degToRad(0), y: degToRad(25) } },
-  { position: { x: 5, y: 6, z: 45 }, rotation: { x: degToRad(0), y: degToRad(0) } },
+  { position: { x: 50, y: 17, z: 110 }, rotation: { x: degToRad(0), y: degToRad(20) } },
+  { position: { x: 5, y: 6, z: 44 }, rotation: { x: degToRad(0), y: degToRad(0) } },
   { position: { x: 10, y: 6, z: 35 }, rotation: { x: degToRad(0), y: degToRad(-90) } },
   { position: { x: 10, y: 6, z: 5 }, rotation: { x: degToRad(0), y: degToRad(-90) } },
   { position: { x: 10, y: 6, z: 5 }, rotation: { x: degToRad(0), y: degToRad(90) } },
@@ -21,7 +21,7 @@ const CAMERA_ORDERS = [
 ]
 
 const CAMERA_MOBILE_ORDERS = [
-  { position: { x: 60, y: 20, z: 120 }, rotation: { x: degToRad(0), y: degToRad(25) } },
+  { position: { x: 50, y: 17, z: 110 }, rotation: { x: degToRad(0), y: degToRad(20) } },
   { position: { x: 3, y: 5, z: 46 }, rotation: { x: degToRad(0), y: degToRad(0) } },
   { position: { x: 8, y: 5, z: 37 }, rotation: { x: degToRad(0), y: degToRad(-90) } },
   { position: { x: 8, y: 5, z: 3 }, rotation: { x: degToRad(0), y: degToRad(-90) } },
@@ -139,8 +139,11 @@ const Guide = () => {
    * Handle Scroll: Move camera position
    */
   const cameraRef = useRef<THREE.Camera | null>(null)
+  const sectionsRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
+    const sections = sectionsRef.current!
+
     let currentSection = 0
 
     const handleScroll = function setSection() {
@@ -151,6 +154,8 @@ const Guide = () => {
       if (currentSection === newSection) return
 
       currentSection = newSection
+
+      sections.style.transform = `translate(0, -${newSection * 100}vh)`
 
       // Move camera
       if (window.innerWidth < MOBILE_WIDTH) {
@@ -192,65 +197,55 @@ const Guide = () => {
 
   return (
     <div className="guide">
-      <canvas ref={canvasRef} />
-      <section>
-        <div>
-          <h1 className="guide__intro">
-            더 갤러리 속성 강의에 오신
-            <br />
-            여러분 환영합니다
-          </h1>
-          <div className="guide__scroll">
-            <ScrollDown />
-          </div>
-        </div>
-      </section>
-      <div className="guide__sections">
-        <section>
-          <div>
-            <h1>먼저 로그인 해주세요</h1>
+      <div className="guide__main">
+        <canvas ref={canvasRef} />
+        <div className="guide__sections" ref={sectionsRef}>
+          <section>
+            <h1>
+              더 갤러리 속성 강의에 오신
+              <br />
+              여러분 환영합니다
+            </h1>
+            <div className="guide__scroll">
+              <ScrollDown />
+            </div>
+          </section>
+          <section>
+            <h2>로그인 해주세요</h2>
             <p>
               더갤러리는 안전한 소셜로그인을 지원합니다. 그 과정에서 어떠한 권한도 요구하지
               않습니다. 저희 말고 IT 대기업을 신뢰하세요!
             </p>
-          </div>
-        </section>
-        <section>
-          <div>
-            <h1>전시회를 생성하세요</h1>
+          </section>
+          <section>
+            <h2>전시회를 생성하세요</h2>
             <p>
               마이페이지에서 &apos;+&apos; 버튼을 눌러 갤러리를 생성합니다. 전시회의 이름과 소개를
               적고 공간타입을 선택하세요.
             </p>
-          </div>
-        </section>
-        <section>
-          <div>
-            <h1>사진을 등록하세요</h1>
+          </section>
+          <section>
+            <h2>사진을 등록하세요</h2>
             <p>
               여러분의 사진첩에서 선보이고 싶은 사진들을 골라 등록하세요. 각 사진마다 어울리는
               음악을 검색해 등록할 수 있습니다.
             </p>
-          </div>
-        </section>
-        <section>
-          <div>
-            <h1>전시회에 입장하세요</h1>
+          </section>
+          <section>
+            <h2>전시회에 입장하세요</h2>
             <p>
               입장 버튼을 통해 전시회를 관람할 수 있습니다. 전시회 곳곳을 돌아다니며 앨범에 방명록을
               남겨보세요.
             </p>
-          </div>
-        </section>
-        <section>
-          <div>
+          </section>
+          <section>
             <h1>
               지금 바로 전시회를 열고
               <br />
               친구들을 초대하세요
             </h1>
-          </div>
-        </section>
+          </section>
+        </div>
       </div>
       <CSSTransition
         className="guide__loading"

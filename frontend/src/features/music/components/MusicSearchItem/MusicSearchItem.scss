@@ -16,13 +16,10 @@
   display: flex;
   overflow: hidden;
   flex-wrap: nowrap;
-  //   white-space: nowrap;
+  white-space: nowrap;
 
   p {
-    white-space: nowrap;
-    width: max-content;
-    animation: music-search-item-flow-left 7s linear infinite;
-    min-width: 100%;
+    animation: music-search-item-flow-left 40s linear infinite;
   }
 }
 
@@ -31,6 +28,6 @@
     transform: translate(0%);
   }
   100% {
-    transform: translate(-100%);
+    transform: translate(-50%);
   }
 }

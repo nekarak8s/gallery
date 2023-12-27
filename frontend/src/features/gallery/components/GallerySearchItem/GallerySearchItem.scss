@@ -1,6 +1,8 @@
 @use '@/styles/_responsive.scss' as *;
+@use '@/styles/_colors.scss' as c;
 
 .gallery-search-item {
+  position: relative;
   width: 30em;
   padding: 1em;
   border-radius: 0.5em;
@@ -11,11 +13,6 @@
     flex-direction: column;
     gap: 1em;
   }
-}
-
-.gallery-search-item:hover,
-.gallery-search-item:focus {
-  background-color: rgba(105, 105, 105, 0.134);
 }
 
 .gallery-search-item__info {
@@ -32,6 +29,62 @@
   height: 3.5em;
   line-height: 120%;
   overflow: hidden;
+}
+
+.gallery-search-item__borders {
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 2px;
+  overflow: hidden;
+
+  div {
+    position: absolute;
+    background-color: var(--color-ft, c.$ft-black);
+    transition: transform 400ms ease-in-out;
+  }
+
+  div:nth-child(1) {
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    transform: translate(-102%, 0);
+  }
+
+  div:nth-child(2) {
+    top: 0;
+    right: 0;
+    width: 2px;
+    height: 100%;
+    transform: translate(0, -102%);
+  }
+
+  div:nth-child(3) {
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    height: 2px;
+    transform: translate(102%, 0);
+  }
+
+  div:nth-child(4) {
+    bottom: 0;
+    left: 0;
+    width: 2px;
+    height: 100%;
+    transform: translate(0, 102%);
+  }
+}
+
+.gallery-search-item:hover > .gallery-search-item__borders,
+.gallery-search-item__link:focus + .gallery-search-item__borders {
+  div {
+    transform: translate(0, 0) !important;
+  }
 }
 
 @include laptop {

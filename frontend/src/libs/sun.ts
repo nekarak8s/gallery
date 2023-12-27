@@ -38,14 +38,14 @@ export function getSunPosition(date: Date): { azimuth: number; elevation: number
     MAX_ELEVATION - (MAX_ELEVATION * Math.abs(noon - time)) / ((sunset - sunrise) / 2)
 
   // Calculate azimuth
-  const azimuth = (180 * (time - sunrise)) / (sunset - sunrise) + 10
+  const azimuth = (180 * (time - sunrise)) / (sunset - sunrise)
 
   return { azimuth, elevation }
 }
 
 /**
  * Simplified function for getting rough sun intensity
- * @param date Datetime to know the sun intensity
+ * @param date Datetime to know the sun intensity (0 ~ 1)
  * @returns
  */
 export function getSunIntensity(date: Date): number {
@@ -67,7 +67,7 @@ export function getSunIntensity(date: Date): number {
 
 /**
  * Simplified function for getting rough sun color
- * @param date Datetime to know the sun color
+ * @param date Datetime to know the sun color (rgba(255, 242, 126) ~ rgba(255, 255, 255))
  * @returns
  */
 export function getSunColor(date: Date) {

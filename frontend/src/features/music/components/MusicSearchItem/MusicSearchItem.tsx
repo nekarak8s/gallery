@@ -12,10 +12,12 @@ function MusicSearchItem({ music }: MusicSearchItemProps) {
       <img src={music.coverURL} />
       <div className="music-search-item__text">
         <p>
-          {music.title} - {music.artist}
-        </p>
-        <p>
-          {music.title} - {music.artist}
+          {(
+            music.title +
+            '\u00a0-\u00a0' +
+            music.artist +
+            '\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0'
+          ).repeat(10)}
         </p>
       </div>
     </div>

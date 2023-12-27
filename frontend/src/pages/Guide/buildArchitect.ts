@@ -9,6 +9,8 @@ import wallNormImg from '@/assets/textures/concrete/Concrete_011_NORM.jpg'
 import wallAmbientImg from '@/assets/textures/concrete/Concrete_011_OCC.jpg'
 import wallRoughImg from '@/assets/textures/concrete/Concrete_011_ROUGH.jpg'
 import frameAmbientImg from '@/assets/textures/fabric/Fabric_polyester_001_ambientOcclusion.jpg'
+import frameNormImg from '@/assets/textures/fabric/Fabric_polyester_001_normal.jpg'
+import frameRoughImg from '@/assets/textures/fabric/Fabric_polyester_001_roughness.jpg'
 import floorBaseImg from '@/assets/textures/granite/Granite_001_COLOR.jpg'
 import floorNormImg from '@/assets/textures/granite/Granite_001_NORM.jpg'
 import floorAmbientImg from '@/assets/textures/granite/Granite_001_OCC.jpg'
@@ -74,7 +76,7 @@ const FRAMES_DATA = [
     width: 2,
     height: 2,
     depth: 0.2,
-    rotationY: degToRad(90),
+    rotationY: degToRad(-90),
     baseImg: createGalleryImg,
   },
   {
@@ -84,7 +86,7 @@ const FRAMES_DATA = [
     width: 2,
     height: 2,
     depth: 0.2,
-    rotationY: degToRad(90),
+    rotationY: degToRad(-90),
     baseImg: updateGalleryImg,
   },
   {
@@ -108,11 +110,19 @@ export function buildArchitect(props: buildArchitectProps): ThreeItem {
   // Loaders
   const textureLoader = new THREE.TextureLoader(props.loadingManager)
 
+  // Array for managing resources in dispose function
+  const lights: THREE.Light[] = []
+  const items: ThreeItem[] = []
+
+  // Sun information
+  const date = new Date()
+  const { elevation, azimuth } = getSunPosition(date)
+  const sunLightIntensity = getSunIntensity(date)
+  const sunLightColor = new THREE.Color(getSunColor(date))
+
   /**
    * Meshes
    */
-  const items: ThreeItem[] = []
-
   // Create sky
   const sky = new SkyItem({
     scene: props.scene,
@@ -187,11 +197,18 @@ export function buildArchitect(props: buildArchitectProps): ThreeItem {
       height: frame_data.height,
       depth: frame_data.depth,
       rotationY: frame_data.rotationY,
-      isBasicMaterial: true,
+      isUpdate: false,
       texture: {
         textureLoader,
         baseImg: frame_data.baseImg,
         ambientImg: frameAmbientImg,
+        normalImg: frameNormImg,
+        roughImg: frameRoughImg,
+        repeatX: frame_data.width * 1.5,
+        repeatY: frame_data.height * 1.5,
+      },
+      spotLight: {
+        intensity: 4 * (1 - sunLightIntensity) + 4,
       },
     })
     items.push(frame)
@@ -200,13 +217,10 @@ export function buildArchitect(props: buildArchitectProps): ThreeItem {
   /**
    * Light
    */
-  const date = new Date('1995-12-25T20:58:30')
-
   // Create sun
   const sun = new THREE.Vector3()
 
   // Get sun position
-  const { elevation, azimuth } = getSunPosition(date)
   const phi = THREE.MathUtils.degToRad(90 - elevation)
   const phiEle = THREE.MathUtils.degToRad(elevation * 3)
   const theta = THREE.MathUtils.degToRad(azimuth)
@@ -216,18 +230,13 @@ export function buildArchitect(props: buildArchitectProps): ThreeItem {
   sky.setSunPosition(sun)
   water.setSunDirection(sun)
 
-  const lights: THREE.Light[] = []
-
-  const lightIntensity = getSunIntensity(date)
-  const lightColor = new THREE.Color(getSunColor(date))
-
   // Ambient light
-  const ambientLight = new THREE.AmbientLight(0xffffff, lightIntensity)
+  const ambientLight = new THREE.AmbientLight(0xffffff, sunLightIntensity)
   props.scene.add(ambientLight)
   lights.push(ambientLight)
 
   // Direct Light
-  const directLight = new THREE.DirectionalLight(lightColor, lightIntensity)
+  const directLight = new THREE.DirectionalLight(sunLightColor, sunLightIntensity)
   directLight.position.set(-Math.sin(theta) * 100, Math.sin(phiEle) * 500, Math.cos(theta) * 100)
   directLight.shadow.camera.left = -60
   directLight.shadow.camera.right = 60
@@ -250,13 +259,13 @@ export function buildArchitect(props: buildArchitectProps): ThreeItem {
     sky.setSunPosition(sun)
     water.setSunDirection(sun)
 
-    const lightIntensity = getSunIntensity(date)
-    const lightColor = new THREE.Color(getSunColor(date))
+    const sunLightIntensity = getSunIntensity(date)
+    const sunLightColor = new THREE.Color(getSunColor(date))
 
-    ambientLight.intensity = lightIntensity
+    ambientLight.intensity = sunLightIntensity
 
-    directLight.color = lightColor
-    directLight.intensity = lightIntensity
+    directLight.color = sunLightColor
+    directLight.intensity = sunLightIntensity
     directLight.position.set(-Math.sin(theta) * 100, Math.sin(phiEle) * 500, Math.cos(theta) * 100)
   }, 60 * 1000)
 
@@ -270,8 +279,11 @@ export function buildArchitect(props: buildArchitectProps): ThreeItem {
   /**
    * Update function: Flow water
    */
-  const update = () => {
-    water.update()
+
+  const update = (delta: number) => {
+    items.forEach((item) => {
+      item.update && item.update(delta)
+    })
   }
 
   /**
@@ -283,8 +295,8 @@ export function buildArchitect(props: buildArchitectProps): ThreeItem {
       props.scene.remove(light)
       light.dispose()
     })
-    items.forEach((object) => {
-      object.dispose && object.dispose()
+    items.forEach((item) => {
+      item.dispose && item.dispose()
     })
   }
 

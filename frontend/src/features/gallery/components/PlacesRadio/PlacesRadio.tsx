@@ -65,8 +65,14 @@ const PlacesRadio = ({ placeList, defaultChecked }: PlaceRadioProps) => {
    * Animation according to the index
    */
   const containerRef = useRef<HTMLDivElement>(null)
+  const isFirstLoad = useRef(true)
 
   useEffect(() => {
+    if (isFirstLoad.current) {
+      isFirstLoad.current = true
+      return
+    }
+
     const labels = containerRef.current!.querySelectorAll('label')
 
     labels.forEach((label) => {
@@ -91,7 +97,7 @@ const PlacesRadio = ({ placeList, defaultChecked }: PlaceRadioProps) => {
           <LeftArrow />
         </button>
         <div className="places-radio__container" ref={containerRef}>
-          {placeList.map((place) => (
+          {placeList.map((place, index) => (
             <Radio
               key={place.placeId}
               id={`place-${place.placeId}`}
@@ -99,6 +105,7 @@ const PlacesRadio = ({ placeList, defaultChecked }: PlaceRadioProps) => {
               label={place.name}
               value={place.placeId}
               flexDirection="column"
+              defaultChecked={defaultChecked ? defaultChecked === place.placeId : index === 0}
             >
               <img src={place.threeDimensionImageUri} alt={`${place.name} 공간`} />
             </Radio>
