@@ -46,7 +46,9 @@ export class Frame extends Stuff {
     super(info)
 
     // Whether enable update function
-    this.isUpdate = info.isUpdate ? true : false
+    if (typeof info.isUpdate === 'boolean') {
+      this.isUpdate = info.isUpdate
+    }
 
     // Geometry
     const geometry = new THREE.BoxGeometry(this.width, this.height, this.depth)
@@ -105,7 +107,7 @@ export class Frame extends Stuff {
     // Light
     if (info.spotLight) {
       this.spotLight = new THREE.SpotLight(
-        info.spotLight.color || 0xfeffdb,
+        info.spotLight.color || 0xffffe6,
         info.spotLight.intensity || 8,
         info.spotLight.distance || 5,
         info.spotLight.angle || Math.PI / 5,

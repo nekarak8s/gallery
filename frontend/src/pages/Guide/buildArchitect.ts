@@ -208,7 +208,7 @@ export function buildArchitect(props: buildArchitectProps): ThreeItem {
         repeatY: frame_data.height * 1.5,
       },
       spotLight: {
-        intensity: 4 * (1 - sunLightIntensity) + 4,
+        intensity: 3 * (1 - sunLightIntensity) + 5,
       },
     })
     items.push(frame)
@@ -237,7 +237,7 @@ export function buildArchitect(props: buildArchitectProps): ThreeItem {
 
   // Direct Light
   const directLight = new THREE.DirectionalLight(sunLightColor, sunLightIntensity)
-  directLight.position.set(-Math.sin(theta) * 100, Math.sin(phiEle) * 500, Math.cos(theta) * 100)
+  directLight.position.set(Math.sin(theta) * 100, Math.sin(phiEle) * 500, Math.cos(theta) * 100)
   directLight.shadow.camera.left = -60
   directLight.shadow.camera.right = 60
   directLight.shadow.camera.top = 60

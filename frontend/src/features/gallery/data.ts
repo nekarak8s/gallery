@@ -1,6 +1,6 @@
 import { GalleryData, GalleryItemData, PlaceData } from './types'
-import twoDimImage from '@/assets/images/gallery/2d.png'
-import threeDimImage from '@/assets/images/gallery/3d.png'
+import twoDimImage from '@/assets/images/gallery/greenary-2d.png'
+import threeDimImage from '@/assets/images/gallery/greenary-3d.png'
 
 export const galleryData: GalleryData = {
   galleryId: 1,
