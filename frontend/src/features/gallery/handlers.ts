@@ -103,11 +103,11 @@ export const galleryHandlers = [
       { status: 200 }
     )
   }),
-  http.get('*/api/gallery/:galleryId', async (request) => {
+  http.get('*/api/gallery/:galleryId', async () => {
     await delay()
 
     const data = galleryData
-    if (request.params.galleryId === '2') {
+    if (Math.random() < 0.5) {
       data.place.placeId = 2
     }
 

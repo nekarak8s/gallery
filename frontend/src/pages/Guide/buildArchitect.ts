@@ -116,7 +116,6 @@ export function buildArchitect(props: buildArchitectProps): ThreeItem {
 
   // Sun information
   const date = new Date()
-  const { elevation, azimuth } = getSunPosition(date)
   const sunLightIntensity = getSunIntensity(date)
   const sunLightColor = new THREE.Color(getSunColor(date))
 
@@ -220,8 +219,10 @@ export function buildArchitect(props: buildArchitectProps): ThreeItem {
   const sun = new THREE.Vector3()
 
   // Get sun position
+  const { elevation, azimuth } = getSunPosition(date)
+
   const phi = THREE.MathUtils.degToRad(90 - elevation)
-  const phiEle = THREE.MathUtils.degToRad(elevation * 3)
+  const phiEle = THREE.MathUtils.degToRad(elevation * 3 + 1)
   const theta = THREE.MathUtils.degToRad(azimuth)
 
   // Set on the sky & water
@@ -251,7 +252,7 @@ export function buildArchitect(props: buildArchitectProps): ThreeItem {
     // Update sun position
     const { elevation, azimuth } = getSunPosition(date)
     const phi = THREE.MathUtils.degToRad(90 - elevation)
-    const phiEle = THREE.MathUtils.degToRad(elevation * 3)
+    const phiEle = THREE.MathUtils.degToRad(elevation * 3 + 1)
     const theta = THREE.MathUtils.degToRad(azimuth)
 
     sun.setFromSphericalCoords(1, phi, theta)

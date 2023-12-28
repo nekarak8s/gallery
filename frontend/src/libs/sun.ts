@@ -38,7 +38,7 @@ export function getSunPosition(date: Date): { azimuth: number; elevation: number
     MAX_ELEVATION - (MAX_ELEVATION * Math.abs(noon - time)) / ((sunset - sunrise) / 2)
 
   // Calculate azimuth
-  const azimuth = (180 * (time - sunrise)) / (sunset - sunrise)
+  const azimuth = 180 * ((time - sunrise) / (sunset - sunrise))
 
   return { azimuth, elevation }
 }
@@ -53,12 +53,12 @@ export function getSunIntensity(date: Date): number {
 
   // Sun on the sky
   if (elevation > 0) {
-    return (elevation / MAX_ELEVATION) * 0.5 + 0.5
+    return (elevation / MAX_ELEVATION) * 0.6 + 0.4
   }
 
   // Sunset but light scattering
   if (elevation > -2.5) {
-    return ((2.5 + elevation) / 2.5) * 0.4 + 0.1
+    return ((2.5 + elevation) / 2.5) * 0.3 + 0.1
   }
 
   // Darkness

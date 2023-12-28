@@ -34,11 +34,15 @@ export class Floor extends Stuff {
   constructor(info: FloorArgs) {
     super(info)
 
-    // Adjust position
+    // Adjust position (pivot : left top)
+    this.z -= (this.depth * (1 - Math.cos(this.rotationX))) / 2
+    this.y += (this.depth * Math.sin(this.rotationX)) / 2
+
     this.x += (this.width * Math.cos(this.rotationY)) / 2
-    this.x += (this.depth * Math.sin(this.rotationY)) / 2
-    this.z -= (this.width * Math.sin(this.rotationY)) / 2
     this.z += (this.depth * Math.cos(this.rotationY)) / 2
+
+    this.x -= (this.width * (1 - Math.cos(this.rotationZ))) / 2
+    this.y += (this.width * Math.sin(this.rotationZ)) / 2
 
     let geometry: THREE.BufferGeometry
     if (info.isPlane === true) {

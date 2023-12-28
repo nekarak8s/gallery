@@ -105,19 +105,19 @@ export class Frame extends Stuff {
     info.container.add(this.mesh)
 
     // Light
-    if (info.spotLight) {
+    if (info.spotLight && info.width) {
       this.spotLight = new THREE.SpotLight(
         info.spotLight.color || 0xffffe6,
-        info.spotLight.intensity || 8,
-        info.spotLight.distance || 5,
-        info.spotLight.angle || Math.PI / 5,
+        info.spotLight.intensity || info.width * 4,
+        info.spotLight.distance || info.width * 2,
+        info.spotLight.angle || Math.PI / 5.2,
         info.spotLight.penumbra,
         info.spotLight.decay || 2
       )
       this.spotLight.position.set(
         info.spotLight.lightOffsetX || 0,
-        info.spotLight.lightOffsetY || 1.5,
-        info.spotLight.lightOffsetZ || 2.5
+        info.spotLight.lightOffsetY || info.width,
+        info.spotLight.lightOffsetZ || info.width
       )
       this.spotLight.target = this.mesh
       this.spotLight.castShadow = true

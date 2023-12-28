@@ -37,14 +37,16 @@ const FLOORS_DATA = [
   },
 ]
 
-const GLASS_FLOOR = {
-  x: 50.4,
-  y: 2,
-  z: 6.09,
-  width: 10,
-  height: 0.5,
-  depth: 35.4,
-}
+const GLASS_FLOORS_DATA = [
+  {
+    x: 50.4,
+    y: 2,
+    z: 6.09,
+    width: 10,
+    height: 0.5,
+    depth: 35.4,
+  },
+]
 
 const WALL_INFO = {
   depth: 0.3,
@@ -55,31 +57,39 @@ const WALLS_DATA = [
   {
     x: 20.55,
     y: 2,
-    z: 7.22,
-    width: 8,
-    height: 10,
+    z: 9.17,
+    width: 6,
+    height: 12,
     depth: WALL_INFO.depth,
     rotationY: degToRad(-90),
   },
   {
     x: 20.55,
     y: 2,
-    z: 16.73,
-    width: 5,
-    height: 5,
+    z: 16.18,
+    width: 4,
+    height: 8,
     depth: WALL_INFO.depth,
     rotationY: degToRad(-90),
   },
   {
     x: 20.55,
-    y: 8,
-    z: 15.22,
-    width: 6.5,
-    height: 4,
+    y: 11,
+    z: 15.17,
+    width: 5.01,
+    height: 3,
     depth: WALL_INFO.depth,
     rotationY: degToRad(-90),
   },
   // right top
+  {
+    x: 55.4,
+    y: -1,
+    z: 4.69,
+    width: 5,
+    height: 11,
+    depth: WALL_INFO.depth,
+  },
   {
     x: 36.85,
     y: 2,
@@ -127,27 +137,17 @@ const WALLS_DATA = [
   },
   // Middle
   {
-    x: 32.56,
+    x: 27.9,
     y: 2,
-    z: 29.97,
+    z: 33.17,
     width: 15,
-    height: 5,
+    height: 3,
     depth: WALL_INFO.depth,
-    rotationY: degToRad(-90),
   },
   {
-    x: 38.36,
+    x: 32.4,
     y: 2,
-    z: 29.97,
-    width: 15,
-    height: 5,
-    depth: WALL_INFO.depth,
-    rotationY: degToRad(-90),
-  },
-  {
-    x: 32.41,
-    y: 2,
-    z: 45.12,
+    z: 43.88,
     width: 6,
     height: 5,
     depth: WALL_INFO.depth,
@@ -157,20 +157,28 @@ const WALLS_DATA = [
   {
     x: 18.06,
     y: -1,
-    z: 33.15,
+    z: 36.15,
     width: 7,
-    height: 15,
+    height: 10,
     depth: WALL_INFO.depth,
     rotationY: degToRad(-90),
   },
   {
     x: 62.98,
     y: -1,
-    z: 29.39,
-    width: 10,
-    height: 11,
+    z: 27.4,
+    width: 15.9,
+    height: 9,
     depth: WALL_INFO.depth,
     rotationY: degToRad(-90),
+  },
+  {
+    x: 54.83,
+    y: -1,
+    z: 43.15,
+    width: 8,
+    height: 9,
+    depth: WALL_INFO.depth,
   },
   // Entrance
   {
@@ -191,13 +199,23 @@ const WALLS_DATA = [
   },
 ]
 
+const GLASS_WALL = {
+  x: 36.85,
+  y: 2,
+  z: 13.67,
+  width: 14.8312,
+  height: 7.5,
+  depth: 0.2,
+  rotationY: degToRad(-25),
+}
+
 const CEILING_DATA = {
-  x: 32.41,
+  x: 32.4,
   y: 7,
-  z: 29.97,
-  width: 6.04,
-  height: WALL_INFO.depth,
-  depth: 15.3,
+  z: 33.03,
+  width: 6,
+  height: 0.2,
+  depth: 11,
 }
 
 const FRAME_INFO = {
@@ -208,17 +226,17 @@ const FRAMES_DATA = [
   {
     // 1
     x: 35.4,
-    y: 5,
-    z: 45.3,
-    width: 3,
-    height: 3,
+    y: 4.5,
+    z: 43.98,
+    width: 2,
+    height: 2,
     depth: FRAME_INFO.depth,
   },
   {
     // 2
     x: 18.16,
     y: 5,
-    z: 36.64,
+    z: 39.64,
     width: 3,
     height: 3,
     depth: FRAME_INFO.depth,
@@ -227,82 +245,82 @@ const FRAMES_DATA = [
   {
     // 3
     x: 20.65,
-    y: 4.5,
-    z: 19.06,
-    width: 2.5,
-    height: 2.5,
+    y: 4,
+    z: 18.18,
+    width: 1.8,
+    height: 1.8,
     depth: FRAME_INFO.depth,
     rotationY: degToRad(90),
   },
   {
     // 4
     x: 20.65,
-    y: 4,
-    z: 11.21,
-    width: 2,
-    height: 2,
-    depth: FRAME_INFO.depth,
-    rotationY: degToRad(90),
-  },
-  {
-    // 5
-    x: 46.64,
-    y: 4,
-    z: 18.31,
-    width: 2,
-    height: 2,
-    depth: FRAME_INFO.depth,
-    rotationY: degToRad(-25),
-  },
-  {
-    // 6
-    x: 62.88,
-    y: 5,
-    z: 36.52,
-    width: 3,
-    height: 3,
-    depth: FRAME_INFO.depth,
-    rotationY: degToRad(90),
-  },
-  {
-    // 7
-    x: 50.35,
-    y: 4.5,
-    z: 23.78,
+    y: 4.25,
+    z: 12.16,
     width: 2.5,
     height: 2.5,
     depth: FRAME_INFO.depth,
     rotationY: degToRad(90),
   },
   {
-    // 8
-    x: 46.71,
-    y: 4,
-    z: 18.15,
-    width: 2,
-    height: 2,
-    depth: FRAME_INFO.depth,
-    rotationY: degToRad(155),
-  },
-  {
-    // 9
-    x: 39.5,
-    y: 4,
-    z: 14.79,
-    width: 2,
-    height: 2,
-    depth: FRAME_INFO.depth,
-    rotationY: degToRad(155),
-  },
-  {
-    // 10
-    x: 35.4,
+    // 5
+    x: 50.15,
     y: 5,
-    z: 45,
+    z: 23.78,
+    width: 4,
+    height: 4,
+    depth: FRAME_INFO.depth,
+    rotationY: degToRad(-90),
+  },
+  {
+    // 6
+    x: 31.02,
+    y: 3.6,
+    z: 33.07,
+    width: 1.5,
+    height: 1.5,
+    depth: FRAME_INFO.depth,
+    rotationY: degToRad(180),
+  },
+  {
+    // 7
+    x: 39.78,
+    y: 3.6,
+    z: 33.07,
+    width: 1.5,
+    height: 1.5,
+    depth: FRAME_INFO.depth,
+    rotationY: degToRad(180),
+  },
+  {
+    // 8
+    x: 35.4,
+    y: 4.5,
+    z: 43.78,
     width: 3,
     height: 3,
     depth: FRAME_INFO.depth,
     rotationY: degToRad(180),
+  },
+  {
+    // 9
+    x: 62.88,
+    y: 5,
+    z: 36.52,
+    width: 3,
+    height: 3,
+    depth: FRAME_INFO.depth,
+    rotationY: degToRad(-90),
+  },
+
+  {
+    // 10
+    x: 57.9,
+    y: 4,
+    z: 4.79,
+    width: 2,
+    height: 2,
+    depth: FRAME_INFO.depth,
   },
 ]
 
@@ -386,7 +404,6 @@ const buildGallery = (props: GalleryTypeProps) => {
 
   // Sun information
   const date = new Date()
-  const { elevation, azimuth } = getSunPosition(date)
   const sunLightIntensity = getSunIntensity(date)
   const sunLightColor = new THREE.Color(getSunColor(date))
 
@@ -433,19 +450,22 @@ const buildGallery = (props: GalleryTypeProps) => {
     props.controls.floors.push(floor.mesh)
   })
 
-  const glassFloor = new Floor({
-    container: props.scene,
-    color: 0xffffff,
-    x: GLASS_FLOOR.x,
-    y: GLASS_FLOOR.y,
-    z: GLASS_FLOOR.z,
-    width: GLASS_FLOOR.width,
-    height: GLASS_FLOOR.height,
-    depth: GLASS_FLOOR.depth,
-    transparent: true,
-    opacity: 0.4,
+  GLASS_FLOORS_DATA.forEach((glassFloorData) => {
+    const glassFloor = new Floor({
+      container: props.scene,
+      color: 0xffffff,
+      x: glassFloorData.x,
+      y: glassFloorData.y,
+      z: glassFloorData.z,
+      width: glassFloorData.width,
+      height: glassFloorData.height,
+      depth: glassFloorData.depth,
+      transparent: true,
+      opacity: 0.4,
+    })
+    items.push(glassFloor)
+    props.controls.floors.push(glassFloor.mesh)
   })
-  items.push(glassFloor)
 
   // Create ceiling
   const ceiling = new Ceiling({
@@ -492,6 +512,22 @@ const buildGallery = (props: GalleryTypeProps) => {
     items.push(wall)
   })
 
+  const glasWAll = new Wall({
+    world: props.world,
+    container: props.scene,
+    color: 0xffffff,
+    x: GLASS_WALL.x,
+    y: GLASS_WALL.y,
+    z: GLASS_WALL.z,
+    width: GLASS_WALL.width,
+    height: GLASS_WALL.height,
+    depth: GLASS_WALL.depth,
+    rotationY: GLASS_WALL.rotationY,
+    transparent: true,
+    opacity: 0.2,
+  })
+  items.push(glasWAll)
+
   // Create Frames
   FRAMES_DATA.forEach((frameData, idx) => {
     // Only if the post isActive
@@ -531,9 +567,11 @@ const buildGallery = (props: GalleryTypeProps) => {
   const sun = new THREE.Vector3()
 
   // Get sun position
+  const { elevation, azimuth } = getSunPosition(date)
+
   const phi = THREE.MathUtils.degToRad(90 - elevation)
   const phiEle = THREE.MathUtils.degToRad(elevation * 3)
-  const theta = THREE.MathUtils.degToRad(azimuth)
+  const theta = THREE.MathUtils.degToRad(azimuth - 25)
 
   // Set on the sky & water
   sun.setFromSphericalCoords(1, phi, theta)
@@ -541,12 +579,12 @@ const buildGallery = (props: GalleryTypeProps) => {
   water.setSunDirection(sun)
 
   // Ambient light
-  const ambientLight = new THREE.AmbientLight(0xffffff, sunLightIntensity)
+  const ambientLight = new THREE.AmbientLight(0xffffff, sunLightIntensity * 0.4)
   props.scene.add(ambientLight)
   lights.push(ambientLight)
 
   // Direct Light
-  const directLight = new THREE.DirectionalLight(sunLightColor, sunLightIntensity)
+  const directLight = new THREE.DirectionalLight(sunLightColor, sunLightIntensity * 1.3)
   directLight.position.set(Math.sin(theta) * 100, Math.sin(phiEle) * 500, Math.cos(theta) * 100)
   directLight.shadow.camera.left = -60
   directLight.shadow.camera.right = 60
@@ -561,9 +599,10 @@ const buildGallery = (props: GalleryTypeProps) => {
 
     // Update sun position
     const { elevation, azimuth } = getSunPosition(date)
+
     const phi = THREE.MathUtils.degToRad(90 - elevation)
     const phiEle = THREE.MathUtils.degToRad(elevation * 3)
-    const theta = THREE.MathUtils.degToRad(azimuth)
+    const theta = THREE.MathUtils.degToRad(azimuth - 25)
 
     sun.setFromSphericalCoords(1, phi, theta)
     sky.setSunPosition(sun)
@@ -572,10 +611,10 @@ const buildGallery = (props: GalleryTypeProps) => {
     const sunLightIntensity = getSunIntensity(date)
     const sunLightColor = new THREE.Color(getSunColor(date))
 
-    ambientLight.intensity = sunLightIntensity
+    ambientLight.intensity = sunLightIntensity * 0.4
 
     directLight.color = sunLightColor
-    directLight.intensity = sunLightIntensity
+    directLight.intensity = sunLightIntensity * 1.3
     directLight.position.set(Math.sin(theta) * 100, Math.sin(phiEle) * 500, Math.cos(theta) * 100)
 
     // update light of frame

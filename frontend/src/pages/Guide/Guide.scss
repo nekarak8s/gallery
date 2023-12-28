@@ -97,8 +97,6 @@
 
 @include tablet {
   .guide__sections {
-    font-size: 0.9rem;
-
     > section {
       padding: 15vh 5vw;
       align-items: center;
@@ -125,7 +123,7 @@
 
 @include mobile {
   .guide {
-    font-size: 4vw;
+    font-size: 3vw;
   }
 
   .guide__sections {

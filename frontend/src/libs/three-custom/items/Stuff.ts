@@ -2,15 +2,15 @@ import { Box, Vec3, Body, Material, World, Quaternion, Cylinder } from 'cannon-e
 
 export type StuffArgs = {
   name?: string
-  x?: number
-  y?: number
-  z?: number
-  rotationX?: number
-  rotationY?: number
-  rotationZ?: number
-  width?: number
-  height?: number
-  depth?: number
+  x?: number | undefined
+  y?: number | undefined
+  z?: number | undefined
+  rotationX?: number | undefined
+  rotationY?: number | undefined
+  rotationZ?: number | undefined
+  width?: number | undefined
+  height?: number | undefined
+  depth?: number | undefined
 }
 
 export class Stuff {
