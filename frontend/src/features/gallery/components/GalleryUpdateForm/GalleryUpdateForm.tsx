@@ -5,6 +5,7 @@ import {
   usePlaceListQuery,
   useUpdateGallery,
 } from '../../services'
+import { validateUpdateGalleryForm } from '../../validators'
 import PlacesRadio from '../PlacesRadio'
 import Form from '@/atoms/form/Form'
 import Text from '@/atoms/form/Text'
@@ -14,6 +15,8 @@ import Loading from '@/atoms/ui/Loading'
 import PostListForm from '@/features/post/components/PostListForm/PostListForm'
 import { usePostListQuery, useUpdatePostList } from '@/features/post/services'
 import './GalleryUpdateForm.scss'
+import { validatePostListForm } from '@/features/post/validators'
+import toastManager from '@/utils/toastManager'
 
 type GalleryDetailFormProps = {
   galleryId: number
@@ -42,10 +45,12 @@ const GalleryUpdateForm = ({ galleryId, onSuccess, onError }: GalleryDetailFormP
    * 1. Update gallery
    * 2. Update post list
    */
-  const { mutateAsync: updateGallery } = useUpdateGallery(galleryId)
-  const { mutateAsync: updatePostList } = useUpdatePostList(galleryId)
+  const { mutateAsync: updateGallery, isLoading: isUpdateGalleryLoading } =
+    useUpdateGallery(galleryId)
+  const { mutateAsync: updatePostList, isLoading: isUpdatePostLoading } =
+    useUpdatePostList(galleryId)
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     e.stopPropagation()
 
@@ -53,24 +58,29 @@ const GalleryUpdateForm = ({ galleryId, onSuccess, onError }: GalleryDetailFormP
     const form = e.currentTarget
     const formData = new FormData(form)
 
-    for (let key of formData.keys()) {
-      console.log(key, ':', formData.get(key))
+    // for (let key of formData.keys()) {
+    //   console.log(key, ':', formData.get(key))
+    // }
+
+    // validate gallery data
+    const galleryResult = validateUpdateGalleryForm(formData)
+    if (!galleryResult.result) {
+      toastManager.addToast('error', galleryResult.reason)
+      return
     }
 
-    const name = formData.get('name') as string
-    formData.delete('name')
-    const content = formData.get('content') as string
-    formData.delete('content')
-    const placeId = formData.get('placeId') as string
-    formData.delete('placeId')
+    // validate post data
+    const postResult = await validatePostListForm(formData)
+    if (!postResult.result) {
+      toastManager.addToast('error', postResult.reason)
+      return
+    }
 
-    updateGallery({
-      name,
-      content,
-      placeId: parseInt(placeId),
-    })
+    console.log('data', postResult.data)
+
+    updateGallery(galleryResult.data)
       .then(() => {
-        updatePostList(formData)
+        updatePostList(postResult.data)
       })
       .then(() => {
         form.reset()
@@ -114,7 +124,7 @@ const GalleryUpdateForm = ({ galleryId, onSuccess, onError }: GalleryDetailFormP
           <Button color="red" ariaLabel="전시회 삭제" text="삭제하기" onClick={handleDelteClick} />
         </div>
       </Form>
-      {isGalleryLoading && (
+      {(isUpdateGalleryLoading || isUpdatePostLoading) && (
         <div className="gallery-update-form__loading">
           <Loading />
         </div>

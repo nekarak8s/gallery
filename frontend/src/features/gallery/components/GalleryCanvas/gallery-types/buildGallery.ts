@@ -3,12 +3,9 @@ import * as THREE from 'three'
 import { degToRad } from 'three/src/math/MathUtils'
 import wallBaseImg from '@/assets/textures/concrete/Concrete_011_COLOR.jpg'
 import wallNormImg from '@/assets/textures/concrete/Concrete_011_NORM.jpg'
-import wallAmbientImg from '@/assets/textures/concrete/Concrete_011_OCC.jpg'
-import frameAmbientImg from '@/assets/textures/fabric/Fabric_polyester_001_ambientOcclusion.jpg'
 import frameNormImg from '@/assets/textures/fabric/Fabric_polyester_001_normal.jpg'
 import floorBaseImg from '@/assets/textures/granite/Granite_001_COLOR.jpg'
 import floorNormImg from '@/assets/textures/granite/Granite_001_NORM.jpg'
-import floorAmbientImg from '@/assets/textures/granite/Granite_001_OCC.jpg'
 import { GalleryTypeProps } from '@/features/gallery/types'
 import { getSunColor, getSunIntensity, getSunPosition } from '@/libs/sun'
 import { Ceiling } from '@/libs/three-custom/items/Ceiling'
@@ -440,7 +437,7 @@ const buildGallery = (props: GalleryTypeProps) => {
       texture: {
         textureLoader,
         baseImg: floorBaseImg,
-        ambientImg: floorAmbientImg,
+        // ambientImg: floorAmbientImg,
         normalImg: floorNormImg,
         repeatX: floorData.width / 3,
         repeatY: floorData.height / 3,
@@ -480,7 +477,7 @@ const buildGallery = (props: GalleryTypeProps) => {
     texture: {
       textureLoader,
       baseImg: wallBaseImg,
-      ambientImg: wallAmbientImg,
+      // ambientImg: wallAmbientImg,
       normalImg: wallNormImg,
       repeatX: CEILING_DATA.width / 8,
       repeatY: CEILING_DATA.depth / 8,
@@ -503,10 +500,10 @@ const buildGallery = (props: GalleryTypeProps) => {
       texture: {
         textureLoader,
         baseImg: wallBaseImg,
-        ambientImg: wallAmbientImg,
+        // ambientImg: wallAmbientImg,
         normalImg: wallNormImg,
-        repeatX: wallData.width / 8,
-        repeatY: wallData.height / 8,
+        repeatX: wallData.width / 6,
+        repeatY: wallData.height / 6,
       },
     })
     items.push(wall)
@@ -546,7 +543,7 @@ const buildGallery = (props: GalleryTypeProps) => {
         texture: {
           textureLoader,
           baseImg: props.postList[idx].imageURL,
-          ambientImg: frameAmbientImg,
+          // ambientImg: frameAmbientImg,
           normalImg: frameNormImg,
           repeatX: frameData.width * 1.5,
           repeatY: frameData.height * 1.5,

@@ -29,8 +29,11 @@ export type PostFormData = {
   order: number
   title: string
   content: string
-  musicId: number
+  musicId: number | null
   image: File | null
   isActive: boolean
-  music?: MusicData | undefined
+}
+
+export type PostListFormData = {
+  posts: PostFormData[]
 }

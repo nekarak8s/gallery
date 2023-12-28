@@ -11,7 +11,7 @@ const PostListForm = ({ postList }: PostListFormProps) => {
   return (
     <ol className="post-list-form">
       {postList.map((post, index) => (
-        <li key={`${post.postId}-${post.isActive}`}>
+        <li key={`${post.postId}`}>
           <PostItemForm post={post} index={index} />
         </li>
       ))}

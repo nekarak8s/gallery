@@ -1,4 +1,4 @@
-import { ChangeEventHandler, useMemo, useState } from 'react'
+import { ChangeEventHandler, useEffect, useMemo, useState } from 'react'
 import { PostData } from '../../types'
 import Checkbox from '@/atoms/form/Checkbox'
 import File from '@/atoms/form/File'
@@ -9,6 +9,7 @@ import Button from '@/atoms/ui/Button'
 import Modal from '@/atoms/ui/Modal'
 import MusicSearch from '@/features/music/components/MusicSearch'
 import './PostItemForm.scss'
+import { MusicData } from '@/features/music/types'
 
 type PostItemFormProps = {
   post: PostData
@@ -19,7 +20,7 @@ const PostItemForm = ({ post, index }: PostItemFormProps) => {
   /**
    * Set the preview image
    */
-  const [imageURL, setImageUrl] = useState<string | undefined>(post.imageURL)
+  const [imageURL, setImageUrl] = useState<string | undefined>(undefined)
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (!event.target.files || !event.target.files.length) return
@@ -52,7 +53,7 @@ const PostItemForm = ({ post, index }: PostItemFormProps) => {
    */
   const [isMusicOpen, setIsMusicOpen] = useState(false)
 
-  const [music, setMusic] = useState(post.music)
+  const [music, setMusic] = useState<MusicData | undefined>(undefined)
 
   /**
    * Change background color by isActive value
@@ -62,6 +63,11 @@ const PostItemForm = ({ post, index }: PostItemFormProps) => {
   const handleIsActiveChange: ChangeEventHandler<HTMLInputElement> = (e) => {
     setIsActive(e.target.checked)
   }
+
+  useEffect(() => {
+    setImageUrl(post.imageURL)
+    setMusic(post.music)
+  }, [])
 
   return (
     <>

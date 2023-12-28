@@ -25,7 +25,7 @@ export class CannonKeypadControls {
   #maxMovementSpeed: number = 1.6
 
   #lookSpeed: number = 0
-  #maxLookSpeed: number = 0.6
+  #maxLookSpeed: number = 0.8
 
   // API
   enabled: boolean = true

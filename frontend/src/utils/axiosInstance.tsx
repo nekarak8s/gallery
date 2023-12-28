@@ -23,6 +23,12 @@ axiosInstance.interceptors.response.use(
   },
   (err: AxiosError<ErrorResponse>) => {
     console.log(err)
+
+    /*eslint-disable*/
+    for (const key of err.config!.data!.keys()) {
+      console.log(key, ':', err.config?.data.get(key))
+    }
+
     if (
       err.response?.data.errorCode === 'GATE002' ||
       err.response?.data.errorCode === 'GATE003' ||
