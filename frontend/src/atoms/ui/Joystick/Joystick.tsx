@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react'
 import BowIcon from '@/assets/svgs/bow.svg'
 import './Joystick.scss'
-import throttle from '@/utils/throttle'
+import toFrame from '@/utils/toFrame'
 
 type JoystickProps = {
   control?: (x: number, y: number) => void | undefined
@@ -118,18 +118,18 @@ const Joystick = ({ control, shoot }: JoystickProps) => {
     handleResize()
     window.addEventListener('resize', handleResize)
 
-    const throttledHandleTouchmove = throttle(handleTouchmove, 16)
+    const optimizedHandleTouchmove = toFrame(handleTouchmove)
 
     joystick.addEventListener('touchstart', handleTouchStart)
     core.addEventListener('touchstart', handleTouchStart)
-    document.addEventListener('touchmove', throttledHandleTouchmove)
+    document.addEventListener('touchmove', optimizedHandleTouchmove)
     document.addEventListener('touchend', handleTouchEnd)
 
     return () => {
       window.removeEventListener('resize', handleResize)
       joystick.removeEventListener('touchstart', handleTouchStart)
       core.removeEventListener('touchstart', handleTouchStart)
-      document.removeEventListener('touchmove', throttledHandleTouchmove)
+      document.removeEventListener('touchmove', optimizedHandleTouchmove)
       document.removeEventListener('touchend', handleTouchEnd)
     }
   }, [])

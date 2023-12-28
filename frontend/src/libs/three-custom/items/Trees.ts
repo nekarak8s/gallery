@@ -21,7 +21,7 @@ export type TreesProps = {
 }
 
 export class Trees {
-  type: string = 'tree'
+  type: string = 'trees'
   objects: THREE.Object3D[] = []
   cannonBodies: Body[] = []
   dispose: () => void

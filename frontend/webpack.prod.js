@@ -6,11 +6,7 @@ const common = require('./webpack.common.js')
 const TerserPlugin = require('terser-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
-const ImageMinimizerPlugin = require('image-minimizer-webpack-plugin')
 const Dotenv = require('dotenv-webpack')
-
-const BundleAnalyzerPlugin =
-  require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 
 module.exports = merge(common, {
   mode: 'production',
@@ -100,7 +96,7 @@ module.exports = merge(common, {
       new TerserPlugin({
         terserOptions: {
           compress: {
-            drop_console: true,
+            // drop_console: true,
           },
         },
       }),
@@ -135,6 +131,5 @@ module.exports = merge(common, {
       path: '.env.production',
     }),
     new MiniCssExtractPlugin({ filename: 'main.css' }),
-    new BundleAnalyzerPlugin(),
   ],
 })

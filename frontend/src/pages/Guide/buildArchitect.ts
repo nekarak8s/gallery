@@ -18,7 +18,7 @@ import { getSunColor, getSunIntensity, getSunPosition } from '@/libs/sun'
 import { Floor } from '@/libs/three-custom/items/Floor'
 import { Frame } from '@/libs/three-custom/items/Frame'
 import { SkyItem } from '@/libs/three-custom/items/Sky'
-import { Wall } from '@/libs/three-custom/items/Wall'
+import { Walls } from '@/libs/three-custom/items/Walls'
 import { WaterItem } from '@/libs/three-custom/items/Water'
 
 const FLOOR_DATA = {
@@ -161,28 +161,19 @@ export function buildArchitect(props: buildArchitectProps): ThreeItem {
   items.push(floor)
 
   // Create Walls
-  WALLS_DATA.forEach((wall_data) => {
-    const wall = new Wall({
-      container: props.scene,
-      x: wall_data.x,
-      y: wall_data.y,
-      z: wall_data.z,
-      width: wall_data.width,
-      height: wall_data.height,
-      depth: wall_data.depth,
-      rotationY: wall_data.rotationY,
-      texture: {
-        textureLoader,
-        baseImg: wallBaseImg,
-        ambientImg: wallAmbientImg,
-        normalImg: wallNormImg,
-        roughImg: wallRoughImg,
-        repeatX: wall_data.width / 8,
-        repeatY: wall_data.height / 8,
-      },
-    })
-    items.push(wall)
+  const walls = new Walls({
+    container: props.scene,
+    wallsData: WALLS_DATA,
+    repeatFactor: 1 / 8,
+    texture: {
+      textureLoader,
+      baseImg: wallBaseImg,
+      ambientImg: wallAmbientImg,
+      normalImg: wallNormImg,
+      roughImg: wallRoughImg,
+    },
   })
+  items.push(walls)
 
   // Create Frames
   FRAMES_DATA.forEach((frame_data, index) => {
@@ -287,10 +278,8 @@ export function buildArchitect(props: buildArchitectProps): ThreeItem {
    * Update function: Flow water
    */
 
-  const update = (delta: number) => {
-    items.forEach((item) => {
-      item.update && item.update(delta)
-    })
+  const update = () => {
+    water.update()
   }
 
   /**

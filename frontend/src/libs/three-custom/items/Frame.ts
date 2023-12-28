@@ -27,9 +27,9 @@ type SpotLightProps = {
 type FrameArgs = StuffArgs & {
   container: THREE.Scene | THREE.Mesh
   order: number
-  texture?: TextureProps | undefined
+  texture?: TextureProps
   color?: THREE.ColorRepresentation
-  spotLight?: SpotLightProps | undefined
+  spotLight?: SpotLightProps
   isUpdate?: boolean
 }
 
@@ -122,7 +122,6 @@ export class Frame extends Stuff {
       this.spotLight.target = this.mesh
       this.spotLight.castShadow = true
 
-      console.log(this.spotLight)
       this.mesh.add(this.spotLight)
     }
 

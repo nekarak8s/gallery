@@ -3,16 +3,24 @@ import * as THREE from 'three'
 import { degToRad } from 'three/src/math/MathUtils'
 import wallBaseImg from '@/assets/textures/concrete/Concrete_011_COLOR.jpg'
 import wallNormImg from '@/assets/textures/concrete/Concrete_011_NORM.jpg'
+import wallAmbientImg from '@/assets/textures/concrete/Concrete_011_OCC.jpg'
+import wallRoughImg from '@/assets/textures/concrete/Concrete_011_ROUGH.jpg'
+import frameAmbientImg from '@/assets/textures/fabric/Fabric_polyester_001_ambientOcclusion.jpg'
 import frameNormImg from '@/assets/textures/fabric/Fabric_polyester_001_normal.jpg'
 import floorBaseImg from '@/assets/textures/granite/Granite_001_COLOR.jpg'
 import floorNormImg from '@/assets/textures/granite/Granite_001_NORM.jpg'
+import floorAmbientImg from '@/assets/textures/granite/Granite_001_OCC.jpg'
+import floorRoughImg from '@/assets/textures/granite/Granite_001_ROUGH.jpg'
 import { GalleryTypeProps } from '@/features/gallery/types'
 import { getSunColor, getSunIntensity, getSunPosition } from '@/libs/sun'
 import { Ceiling } from '@/libs/three-custom/items/Ceiling'
 import { Floor } from '@/libs/three-custom/items/Floor'
+import { Floors } from '@/libs/three-custom/items/Floors'
 import { Frame } from '@/libs/three-custom/items/Frame'
+import { Frames } from '@/libs/three-custom/items/Frames'
 import { SkyItem } from '@/libs/three-custom/items/Sky'
 import { Wall } from '@/libs/three-custom/items/Wall'
+import { Walls } from '@/libs/three-custom/items/Walls'
 import { WaterItem } from '@/libs/three-custom/items/Water'
 
 const FLOORS_DATA = [
@@ -424,27 +432,22 @@ const buildGallery = (props: GalleryTypeProps) => {
   items.push(water)
 
   // Create Floors
-  FLOORS_DATA.forEach((floorData) => {
-    const floor = new Floor({
-      container: props.scene,
-      color: 0x686868,
-      x: floorData.x,
-      y: floorData.y,
-      z: floorData.z,
-      width: floorData.width,
-      height: floorData.height,
-      depth: floorData.depth,
-      texture: {
-        textureLoader,
-        baseImg: floorBaseImg,
-        // ambientImg: floorAmbientImg,
-        normalImg: floorNormImg,
-        repeatX: floorData.width / 3,
-        repeatY: floorData.height / 3,
-      },
-    })
-    items.push(floor)
-    props.controls.floors.push(floor.mesh)
+  const floors = new Floors({
+    world: props.world,
+    container: props.scene,
+    floorsData: FLOORS_DATA,
+    repeatFactor: 1 / 3,
+    texture: {
+      textureLoader,
+      baseImg: floorBaseImg,
+      ambientImg: floorAmbientImg,
+      normalImg: floorNormImg,
+      roughImg: floorRoughImg,
+    },
+  })
+  items.push(floors)
+  floors.meshes.forEach((mesh) => {
+    props.controls.floors.push(mesh)
   })
 
   GLASS_FLOORS_DATA.forEach((glassFloorData) => {
@@ -477,39 +480,35 @@ const buildGallery = (props: GalleryTypeProps) => {
     texture: {
       textureLoader,
       baseImg: wallBaseImg,
-      // ambientImg: wallAmbientImg,
+      ambientImg: wallAmbientImg,
       normalImg: wallNormImg,
       repeatX: CEILING_DATA.width / 8,
       repeatY: CEILING_DATA.depth / 8,
     },
   })
   items.push(ceiling)
+  props.rayControls.rayItems.push(ceiling.mesh)
 
   // Create walls
-  WALLS_DATA.forEach((wallData) => {
-    const wall = new Wall({
-      world: props.world,
-      container: props.scene,
-      x: wallData.x,
-      y: wallData.y,
-      z: wallData.z,
-      width: wallData.width,
-      height: wallData.height,
-      depth: wallData.depth,
-      rotationY: wallData.rotationY,
-      texture: {
-        textureLoader,
-        baseImg: wallBaseImg,
-        // ambientImg: wallAmbientImg,
-        normalImg: wallNormImg,
-        repeatX: wallData.width / 6,
-        repeatY: wallData.height / 6,
-      },
-    })
-    items.push(wall)
+  const walls = new Walls({
+    world: props.world,
+    container: props.scene,
+    wallsData: WALLS_DATA,
+    repeatFactor: 1 / 8,
+    texture: {
+      textureLoader,
+      baseImg: wallBaseImg,
+      ambientImg: wallAmbientImg,
+      normalImg: wallNormImg,
+      roughImg: wallRoughImg,
+    },
+  })
+  items.push(walls)
+  walls.meshes.forEach((mesh) => {
+    props.rayControls.rayItems.push(mesh)
   })
 
-  const glasWAll = new Wall({
+  const glassWall = new Wall({
     world: props.world,
     container: props.scene,
     color: 0xffffff,
@@ -523,38 +522,25 @@ const buildGallery = (props: GalleryTypeProps) => {
     transparent: true,
     opacity: 0.2,
   })
-  items.push(glasWAll)
+  items.push(glassWall)
+  props.rayControls.rayItems.push(glassWall.mesh)
 
   // Create Frames
-  FRAMES_DATA.forEach((frameData, idx) => {
-    // Only if the post isActive
-    if (props.postList[idx].isActive) {
-      const frame = new Frame({
-        order: idx,
-        container: props.scene,
-        x: frameData.x,
-        y: frameData.y,
-        z: frameData.z,
-        width: frameData.width,
-        height: frameData.height,
-        depth: frameData.depth,
-        rotationY: frameData.rotationY,
-        isUpdate: false,
-        texture: {
-          textureLoader,
-          baseImg: props.postList[idx].imageURL,
-          // ambientImg: frameAmbientImg,
-          normalImg: frameNormImg,
-          repeatX: frameData.width * 1.5,
-          repeatY: frameData.height * 1.5,
-        },
-        spotLight: {
-          intensity: 3 * (1 - sunLightIntensity) + 5,
-        },
-      })
-      items.push(frame)
-      props.rayControls.rayItems.push(frame.mesh)
-    }
+  const frames = new Frames({
+    container: props.scene,
+    textureLoader,
+    postList: props.postList,
+    normalImg: frameNormImg,
+    ambientImg: frameAmbientImg,
+    framesData: FRAMES_DATA,
+    repeatFactor: 1,
+    spotLight: {
+      intensity: 3 * (1 - sunLightIntensity) + 5,
+    },
+  })
+  items.push(frames)
+  frames.meshes.forEach((mesh) => {
+    props.rayControls.rayItems.push(mesh)
   })
 
   /**
@@ -651,10 +637,8 @@ const buildGallery = (props: GalleryTypeProps) => {
   /**
    * Update function: Render canvas
    */
-  const update = function renderCanvas(delta: number) {
-    items.forEach((object) => {
-      object.update && object.update(delta)
-    })
+  const update = function renderCanvas() {
+    water.update()
   }
 
   /**

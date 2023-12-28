@@ -46,13 +46,13 @@ export class Floor extends Stuff {
 
     let geometry: THREE.BufferGeometry
     if (info.isPlane === true) {
-      // Box geometry
+      // Plane geometry
       this.isPlane = true
       this.rotationX -= Math.PI / 2
 
       geometry = new THREE.PlaneGeometry(this.width, this.depth)
     } else {
-      // Plane geometry
+      // Box geometry
       this.isPlane = false
       this.y -= this.height / 2
 
