@@ -1,4 +1,5 @@
 import * as THREE from 'three'
+import { FrameMesh } from '../meshes/FrameMesh'
 import { PostData } from '@/features/post/types'
 
 type SpotLightProps = {
@@ -100,7 +101,7 @@ export class Frames {
       const rotationY = frameData.rotationY || 0
       const rotationZ = frameData.rotationZ || 0
 
-      const mesh = new THREE.Mesh(geometry, material)
+      const mesh = new FrameMesh(geometry, material, info.postList[idx].order)
       mesh.position.set(frameData.x, frameData.y, frameData.z)
       mesh.rotation.set(rotationX, rotationY, rotationZ)
       mesh.castShadow = true

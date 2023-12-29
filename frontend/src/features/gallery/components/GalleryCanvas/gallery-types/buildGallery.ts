@@ -3,14 +3,10 @@ import * as THREE from 'three'
 import { degToRad } from 'three/src/math/MathUtils'
 import wallBaseImg from '@/assets/textures/concrete/Concrete_011_COLOR.jpg'
 import wallNormImg from '@/assets/textures/concrete/Concrete_011_NORM.jpg'
-import wallAmbientImg from '@/assets/textures/concrete/Concrete_011_OCC.jpg'
-import wallRoughImg from '@/assets/textures/concrete/Concrete_011_ROUGH.jpg'
 import frameAmbientImg from '@/assets/textures/fabric/Fabric_polyester_001_ambientOcclusion.jpg'
 import frameNormImg from '@/assets/textures/fabric/Fabric_polyester_001_normal.jpg'
 import floorBaseImg from '@/assets/textures/granite/Granite_001_COLOR.jpg'
 import floorNormImg from '@/assets/textures/granite/Granite_001_NORM.jpg'
-import floorAmbientImg from '@/assets/textures/granite/Granite_001_OCC.jpg'
-import floorRoughImg from '@/assets/textures/granite/Granite_001_ROUGH.jpg'
 import { GalleryTypeProps } from '@/features/gallery/types'
 import { getSunColor, getSunIntensity, getSunPosition } from '@/libs/sun'
 import { Ceiling } from '@/libs/three-custom/items/Ceiling'
@@ -434,15 +430,16 @@ const buildGallery = (props: GalleryTypeProps) => {
   // Create Floors
   const floors = new Floors({
     world: props.world,
+    color: 0x686868,
     container: props.scene,
     floorsData: FLOORS_DATA,
     repeatFactor: 1 / 3,
     texture: {
       textureLoader,
       baseImg: floorBaseImg,
-      ambientImg: floorAmbientImg,
+      // ambientImg: floorAmbientImg,
       normalImg: floorNormImg,
-      roughImg: floorRoughImg,
+      // roughImg: floorRoughImg,
     },
   })
   items.push(floors)
@@ -480,10 +477,10 @@ const buildGallery = (props: GalleryTypeProps) => {
     texture: {
       textureLoader,
       baseImg: wallBaseImg,
-      ambientImg: wallAmbientImg,
+      // ambientImg: wallAmbientImg,
       normalImg: wallNormImg,
-      repeatX: CEILING_DATA.width / 8,
-      repeatY: CEILING_DATA.depth / 8,
+      repeatX: CEILING_DATA.width / 6,
+      repeatY: CEILING_DATA.depth / 6,
     },
   })
   items.push(ceiling)
@@ -494,13 +491,13 @@ const buildGallery = (props: GalleryTypeProps) => {
     world: props.world,
     container: props.scene,
     wallsData: WALLS_DATA,
-    repeatFactor: 1 / 8,
+    repeatFactor: 1 / 6,
     texture: {
       textureLoader,
       baseImg: wallBaseImg,
-      ambientImg: wallAmbientImg,
+      // ambientImg: wallAmbientImg,
       normalImg: wallNormImg,
-      roughImg: wallRoughImg,
+      // roughImg: wallRoughImg,
     },
   })
   items.push(walls)
