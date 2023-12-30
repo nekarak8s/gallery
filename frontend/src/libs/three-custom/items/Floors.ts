@@ -36,7 +36,6 @@ export class Floors {
   type: string = 'floors'
   meshes: THREE.Mesh[] = []
   textureSource: Record<string, THREE.Texture> = {}
-  textures: THREE.Texture[] = []
 
   dispose: () => void
 
@@ -68,9 +67,6 @@ export class Floors {
 
         this.textureSource[key].repeat.x = floorData.width * (info.repeatFactor || 1)
         this.textureSource[key].repeat.y = floorData.depth * (info.repeatFactor || 1)
-
-        textures[key] = this.textureSource[key].clone()
-        this.textures.push(textures[key])
       }
 
       // Material
@@ -79,18 +75,18 @@ export class Floors {
             color: info.color,
             transparent: info.transparent || false,
             opacity: info.opacity,
-            map: textures['baseTex'] || undefined,
-            normalMap: textures['normalTex'] || undefined,
-            aoMap: textures['ambientTex'] || undefined,
-            roughnessMap: textures['roughTex'] || undefined,
+            map: this.textureSource['baseTex'] || undefined,
+            normalMap: this.textureSource['normalTex'] || undefined,
+            aoMap: this.textureSource['ambientTex'] || undefined,
+            roughnessMap: this.textureSource['roughTex'] || undefined,
           })
         : new THREE.MeshLambertMaterial({
             color: info.color,
             transparent: info.transparent || false,
             opacity: info.opacity,
-            map: textures['baseTex'] || undefined,
-            normalMap: textures['normalTex'] || undefined,
-            aoMap: textures['ambientTex'] || undefined,
+            map: this.textureSource['baseTex'] || undefined,
+            normalMap: this.textureSource['normalTex'] || undefined,
+            aoMap: this.textureSource['ambientTex'] || undefined,
           })
 
       // Adjust position (pivot : left top)
@@ -147,10 +143,6 @@ export class Floors {
         const texture = this.textureSource[key]
         texture.dispose()
       }
-
-      this.textures.forEach((texture) => {
-        texture.dispose()
-      })
     }
   }
 }

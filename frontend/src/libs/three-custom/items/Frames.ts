@@ -43,7 +43,6 @@ export class Frames {
   type: string = 'floors'
   meshes: THREE.Mesh[] = []
   textureSource: Record<string, THREE.Texture> = {}
-  textures: THREE.Texture[] = []
   spotLights: THREE.SpotLight[] = []
 
   dispose: () => void
@@ -75,25 +74,22 @@ export class Frames {
 
         this.textureSource[key].repeat.x = frameData.width * (info.repeatFactor || 1)
         this.textureSource[key].repeat.y = frameData.height * (info.repeatFactor || 1)
-
-        textures[key] = this.textureSource[key].clone()
-        this.textures.push(textures[key])
       }
 
       // Material
       const material = info.roughImg
         ? new THREE.MeshStandardMaterial({
             color: info.color,
-            map: textures['baseTex'] || undefined,
-            normalMap: textures['normalTex'] || undefined,
-            aoMap: textures['ambientTex'] || undefined,
-            roughnessMap: textures['roughTex'] || undefined,
+            map: this.textureSource['baseTex'] || undefined,
+            normalMap: this.textureSource['normalTex'] || undefined,
+            aoMap: this.textureSource['ambientTex'] || undefined,
+            roughnessMap: this.textureSource['roughTex'] || undefined,
           })
         : new THREE.MeshLambertMaterial({
             color: info.color,
-            map: textures['baseTex'] || undefined,
-            normalMap: textures['normalTex'] || undefined,
-            aoMap: textures['ambientTex'] || undefined,
+            map: this.textureSource['baseTex'] || undefined,
+            normalMap: this.textureSource['normalTex'] || undefined,
+            aoMap: this.textureSource['ambientTex'] || undefined,
           })
 
       // Adjust position (pivot : left top)
@@ -164,10 +160,6 @@ export class Frames {
         const texture = this.textureSource[key]
         texture.dispose()
       }
-
-      this.textures.forEach((texture) => {
-        texture.dispose()
-      })
     }
 
     /**

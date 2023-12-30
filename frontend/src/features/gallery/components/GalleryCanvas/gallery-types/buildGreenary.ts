@@ -443,7 +443,7 @@ const buildGreenary = (props: GalleryTypeProps) => {
   })
 
   // Ocean meshes
-  const oceanGeometry = new BoxGeometry(110, 5, 110)
+  const oceanGeometry = new BoxGeometry(1000, 5, 1000)
   const oceanMaterial = new MeshLambertMaterial({
     color: 0x008cf1,
     side: DoubleSide,

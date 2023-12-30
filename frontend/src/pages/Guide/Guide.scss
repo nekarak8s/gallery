@@ -34,6 +34,7 @@
     flex-direction: column;
     align-items: flex-start;
     justify-content: center;
+    gap: 1em;
     position: relative;
     height: 100vh;
     width: 100vw;
@@ -57,7 +58,6 @@
 
     p {
       font-size: 1.5em;
-      margin-top: 0.5em;
       line-height: 150%;
       width: min(500px, 80%);
     }

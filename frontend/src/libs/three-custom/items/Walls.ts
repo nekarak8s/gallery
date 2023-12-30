@@ -37,7 +37,6 @@ export class Walls {
   meshes: THREE.Mesh[] = []
   cannonBodies: Body[] = []
   textureSource: Record<string, THREE.Texture> = {}
-  textures: THREE.Texture[] = []
 
   dispose: () => void
 
@@ -60,19 +59,16 @@ export class Walls {
       // Geometry
       const geometry = new THREE.BoxGeometry(wallData.width, wallData.height, wallData.depth)
 
-      // Texture
-      const textures: Record<string, THREE.Texture> = {}
-
       for (const key in this.textureSource) {
         this.textureSource[key].wrapS = THREE.RepeatWrapping
         this.textureSource[key].wrapT = THREE.RepeatWrapping
 
         this.textureSource[key].repeat.x = wallData.width * (info.repeatFactor || 1)
         this.textureSource[key].repeat.y = wallData.height * (info.repeatFactor || 1)
-
-        textures[key] = this.textureSource[key].clone()
-        this.textures.push(textures[key])
       }
+
+      // Texture
+      const textures: Record<string, THREE.Texture> = {}
 
       // Create Material
       const material = info.texture?.roughImg
@@ -80,18 +76,18 @@ export class Walls {
             color: info.color,
             transparent: info.transparent || false,
             opacity: info.opacity,
-            map: textures['baseTex'] || undefined,
-            normalMap: textures['normalTex'] || undefined,
-            aoMap: textures['ambientTex'] || undefined,
-            roughnessMap: textures['roughTex'] || undefined,
+            map: this.textureSource['baseTex'] || undefined,
+            normalMap: this.textureSource['normalTex'] || undefined,
+            aoMap: this.textureSource['ambientTex'] || undefined,
+            roughnessMap: this.textureSource['roughTex'] || undefined,
           })
         : new THREE.MeshLambertMaterial({
             color: info.color,
             transparent: info.transparent || false,
             opacity: info.opacity,
-            map: textures['baseTex'] || undefined,
-            normalMap: textures['normalTex'] || undefined,
-            aoMap: textures['ambientTex'] || undefined,
+            map: this.textureSource['baseTex'] || undefined,
+            normalMap: this.textureSource['normalTex'] || undefined,
+            aoMap: this.textureSource['ambientTex'] || undefined,
           })
 
       //Adjust position
@@ -168,10 +164,6 @@ export class Walls {
         const texture = this.textureSource[key]
         texture.dispose()
       }
-
-      this.textures.forEach((texture) => {
-        texture.dispose()
-      })
     }
   }
 }

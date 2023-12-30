@@ -4,10 +4,12 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import { degToRad } from 'three/src/math/MathUtils'
 import wallBaseImg from '@/assets/textures/concrete/Concrete_011_COLOR.jpg'
 import wallNormImg from '@/assets/textures/concrete/Concrete_011_NORM.jpg'
+import wallAmbientImg from '@/assets/textures/concrete/Concrete_011_OCC.jpg'
 import frameAmbientImg from '@/assets/textures/fabric/Fabric_polyester_001_ambientOcclusion.jpg'
 import frameNormImg from '@/assets/textures/fabric/Fabric_polyester_001_normal.jpg'
 import floorBaseImg from '@/assets/textures/granite/Granite_001_COLOR.jpg'
 import floorNormImg from '@/assets/textures/granite/Granite_001_NORM.jpg'
+import floorAmbientImg from '@/assets/textures/granite/Granite_001_OCC.jpg'
 import { GalleryTypeProps } from '@/features/gallery/types'
 import { getSunColor, getSunIntensity, getSunPosition } from '@/libs/sun'
 import { Ceiling } from '@/libs/three-custom/items/Ceiling'
@@ -93,38 +95,38 @@ const WALLS_DATA = [
     depth: WALL_INFO.depth,
   },
   {
-    x: 36.85,
+    x: 31.47,
     y: 2,
-    z: 13.67,
-    width: 6,
+    z: 11.14,
+    width: 10,
+    height: 5,
+    depth: WALL_INFO.depth,
+    rotationY: degToRad(-25),
+  },
+  {
+    x: 41.27,
+    y: 2,
+    z: 15.71,
+    width: 10,
+    height: 5,
+    depth: WALL_INFO.depth,
+    rotationY: degToRad(-25),
+  },
+  {
+    x: 31.47,
+    y: 7.5,
+    z: 11.14,
+    width: 10,
     height: 4,
     depth: WALL_INFO.depth,
     rotationY: degToRad(-25),
   },
   {
-    x: 43.085,
-    y: 2,
-    z: 16.555,
-    width: 8,
+    x: 41.27,
+    y: 7.5,
+    z: 15.71,
+    width: 10,
     height: 4,
-    depth: WALL_INFO.depth,
-    rotationY: degToRad(-25),
-  },
-  {
-    x: 36.85,
-    y: 6.5,
-    z: 13.67,
-    width: 6,
-    height: 3,
-    depth: WALL_INFO.depth,
-    rotationY: degToRad(-25),
-  },
-  {
-    x: 43.085,
-    y: 6.5,
-    z: 16.555,
-    width: 8,
-    height: 3,
     depth: WALL_INFO.depth,
     rotationY: degToRad(-25),
   },
@@ -133,16 +135,16 @@ const WALLS_DATA = [
     y: 2,
     z: 19.8,
     width: 8,
-    height: 7.5,
+    height: 9.5,
     depth: WALL_INFO.depth,
     rotationY: degToRad(-90),
   },
   // Middle
   {
-    x: 27.9,
+    x: 32.91,
     y: 2,
-    z: 33.17,
-    width: 15,
+    z: 33.19,
+    width: 5,
     height: 3,
     depth: WALL_INFO.depth,
   },
@@ -151,7 +153,7 @@ const WALLS_DATA = [
     y: 2,
     z: 43.88,
     width: 6,
-    height: 5,
+    height: 5.5,
     depth: WALL_INFO.depth,
   },
 
@@ -202,18 +204,18 @@ const WALLS_DATA = [
 ]
 
 const GLASS_WALL = {
-  x: 36.85,
+  x: 31.52,
   y: 2,
-  z: 13.67,
-  width: 14.8312,
-  height: 7.5,
+  z: 11.15,
+  width: 20.66,
+  height: 9.5,
   depth: 0.2,
   rotationY: degToRad(-25),
 }
 
 const CEILING_DATA = {
   x: 32.4,
-  y: 7,
+  y: 7.5,
   z: 33.03,
   width: 6,
   height: 0.2,
@@ -276,29 +278,28 @@ const FRAMES_DATA = [
   },
   {
     // 6
-    x: 31.02,
+    x: 35.4,
     y: 3.6,
-    z: 33.07,
+    z: 33.29,
     width: 1.5,
     height: 1.5,
     depth: FRAME_INFO.depth,
-    rotationY: degToRad(180),
   },
   {
     // 7
-    x: 39.78,
-    y: 3.6,
-    z: 33.07,
-    width: 1.5,
-    height: 1.5,
+    x: 35.4,
+    y: 4.5,
+    z: 43.78,
+    width: 3,
+    height: 3,
     depth: FRAME_INFO.depth,
     rotationY: degToRad(180),
   },
   {
     // 8
-    x: 35.4,
-    y: 4.5,
-    z: 43.78,
+    x: 58.83,
+    y: 5,
+    z: 43.05,
     width: 3,
     height: 3,
     depth: FRAME_INFO.depth,
@@ -432,16 +433,15 @@ const buildGallery = (props: GalleryTypeProps) => {
   // Create Floors
   const floors = new Floors({
     world: props.world,
-    color: 0x686868,
+    color: 0x787878,
     container: props.scene,
     floorsData: FLOORS_DATA,
-    repeatFactor: 1 / 3,
+    repeatFactor: 1,
     texture: {
       textureLoader,
       baseImg: floorBaseImg,
-      // ambientImg: floorAmbientImg,
+      ambientImg: floorAmbientImg,
       normalImg: floorNormImg,
-      // roughImg: floorRoughImg,
     },
   })
   items.push(floors)
@@ -479,7 +479,7 @@ const buildGallery = (props: GalleryTypeProps) => {
     texture: {
       textureLoader,
       baseImg: wallBaseImg,
-      // ambientImg: wallAmbientImg,
+      ambientImg: wallAmbientImg,
       normalImg: wallNormImg,
       repeatX: CEILING_DATA.width / 6,
       repeatY: CEILING_DATA.depth / 6,
@@ -497,9 +497,8 @@ const buildGallery = (props: GalleryTypeProps) => {
     texture: {
       textureLoader,
       baseImg: wallBaseImg,
-      // ambientImg: wallAmbientImg,
+      ambientImg: wallAmbientImg,
       normalImg: wallNormImg,
-      // roughImg: wallRoughImg,
     },
   })
   items.push(walls)

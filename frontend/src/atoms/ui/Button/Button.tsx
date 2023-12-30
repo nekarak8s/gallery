@@ -1,4 +1,5 @@
 import { FocusEventHandler, MouseEventHandler } from 'react'
+import { NavLink } from 'react-router-dom'
 import { CURSOR_SCALE } from '@/constants'
 import './Button.scss'
 
@@ -9,9 +10,11 @@ interface ButtonProps {
   type?: 'button' | 'submit' | 'reset'
   size?: 'sm' | 'md' | 'lg'
   color?: 'blue' | 'black' | 'red'
+  isTransparent?: boolean
+  to?: string
   onClick?: MouseEventHandler<HTMLButtonElement>
-  onFocus?: FocusEventHandler<HTMLButtonElement>
-  onBlur?: FocusEventHandler<HTMLButtonElement>
+  onFocus?: FocusEventHandler<HTMLElement>
+  onBlur?: FocusEventHandler<HTMLElement>
 }
 
 const Button = ({
@@ -21,22 +24,40 @@ const Button = ({
   type = 'button',
   size = 'md',
   color = 'black',
+  isTransparent = false,
+  to,
   onClick,
   onFocus,
   onBlur,
 }: ButtonProps) => {
   return (
-    <button
-      className={`button ${direction} ${size} ${color}`}
-      type={type}
-      onClick={onClick}
-      onFocus={onFocus}
-      onBlur={onBlur}
-      aria-label={ariaLabel}
-      data-cursor-scale={CURSOR_SCALE}
-    >
-      {text}
-    </button>
+    <>
+      {to ? (
+        <NavLink
+          className={`button ${direction} ${size} ${color} ${isTransparent ? 'trans' : ''}`}
+          to={to}
+          type={type}
+          onFocus={onFocus}
+          onBlur={onBlur}
+          aria-label={ariaLabel}
+          data-cursor-scale={CURSOR_SCALE}
+        >
+          {text}
+        </NavLink>
+      ) : (
+        <button
+          className={`button ${direction} ${size} ${color}  ${isTransparent ? 'trans' : ''}`}
+          type={type}
+          onClick={onClick}
+          onFocus={onFocus}
+          onBlur={onBlur}
+          aria-label={ariaLabel}
+          data-cursor-scale={CURSOR_SCALE}
+        >
+          {text}
+        </button>
+      )}
+    </>
   )
 }
 
