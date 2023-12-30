@@ -1,15 +1,31 @@
 import { useEffect, useRef, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import GalleryNavbar from './GalleryNavbar'
+import galleryBgm from '@/assets/audios/MapleStory-Pantheon.mp3'
+import greenaryBgm from '@/assets/audios/MapleStory-Raindrop-Flower.mp3'
 import CSSTransition from '@/atoms/ui/CSSTransition'
 import Fallback from '@/atoms/ui/Fallback'
+import Music from '@/atoms/ui/Music'
 import GalleryCanvas from '@/features/gallery/components/GalleryCanvas'
 import GalleryCover from '@/features/gallery/components/GalleryCover'
 import { useGalleryQuery } from '@/features/gallery/services'
 import { usePostListQuery } from '@/features/post/services'
 import useMobile from '@/hooks/useMobile'
+import musicManager from '@/utils/musicManager'
 import toastManager from '@/utils/toastManager'
 import './Gallery.scss'
+
+const MUSIC_TYPE = [
+  { src: '', title: '' },
+  {
+    src: greenaryBgm,
+    title: 'MapleStory - Raindrop Flower (ver.Piano)',
+  },
+  {
+    src: galleryBgm,
+    title: 'MapleStory - Phantheon (ver.Piano)',
+  },
+]
 
 const Gallery = () => {
   /**
@@ -44,9 +60,16 @@ const Gallery = () => {
   }, [isMobile])
 
   /**
-   * Delete cover when clicked
+   * Handle click enter button
+   * 1. Remove the cover
+   * 2. Play the music
    */
   const [isCoverShow, setIsCoverShow] = useState(true)
+
+  const onClickEnter = () => {
+    setIsCoverShow(false)
+    musicManager.playAudio()
+  }
 
   /**
    * Stat.js: check frame per second for deveopment
@@ -85,8 +108,16 @@ const Gallery = () => {
   return (
     <div className="gallery">
       <CSSTransition className="gallery__cover" isShow={isCoverShow} duration={1300}>
-        <GalleryCover gallery={gallery} onEnter={() => setIsCoverShow(false)} />
+        <GalleryCover gallery={gallery} onClickEnter={onClickEnter} />
       </CSSTransition>
+      <div className="gallery__music">
+        <Music
+          id="gallery-audio"
+          src={MUSIC_TYPE[gallery.place.placeId].src}
+          title={MUSIC_TYPE[gallery.place.placeId].title}
+          color="white"
+        />
+      </div>
       <div className="gallery__navbar">
         <GalleryNavbar />
       </div>

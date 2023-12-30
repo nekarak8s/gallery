@@ -7,7 +7,14 @@
   grid-template-columns: 1fr;
   grid-template-rows: 1fr;
   width: 100vw;
-  min-height: 100vh;
+  height: 100vh;
+}
+
+.gallery__music {
+  @include z-index(modal);
+  position: fixed;
+  bottom: 1em;
+  left: 1em;
 }
 
 .gallery__navbar {

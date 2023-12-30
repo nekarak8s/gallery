@@ -18,6 +18,7 @@ import { CannonKeypadControls } from '@/libs/three-custom/controls/CannonKeypadC
 import { RaycasterControls } from '@/libs/three-custom/controls/RaycasterControls.ts'
 import { FrameMesh } from '@/libs/three-custom/meshes/FrameMesh'
 import { DefaultRenderer } from '@/libs/three-custom/renderers/DefaultRenderer'
+import musicManager from '@/utils/musicManager'
 import toastManager from '@/utils/toastManager'
 
 type GalleryCanvasProps = {
@@ -101,12 +102,14 @@ const GalleryCanvas = ({ gallery, postList }: GalleryCanvasProps) => {
         if (item.distance > 10) toastManager.addToast('error', '앨범이 너무 멀리 있습니다')
         else {
           setSelectedPostIdx(item.object.order)
+          musicManager.muteAudio()
           controls.enabled = false
         }
       }
     }
     rayControls.onEsc = () => {
       setSelectedPostIdx(null)
+      musicManager.unmuteAudio()
       controls.enabled = true
     }
     rayControlsRef.current = rayControls

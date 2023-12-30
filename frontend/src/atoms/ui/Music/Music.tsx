@@ -1,7 +1,7 @@
-import React, { useRef, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import MusicIcon from '@/assets/svgs/music.svg'
 import { CURSOR_SCALE } from '@/constants'
-
+import musicManager from '@/utils/musicManager'
 import './Music.scss'
 
 interface Props {
@@ -12,47 +12,25 @@ interface Props {
 }
 
 const Music: React.FC<Props> = ({ src, title, id = 'audio', color = 'black' }) => {
-  const audioRef = useRef<HTMLAudioElement>(null)
-
   /**
-   * Track audio playing state
+   * Set the audio
    */
-  const isPlaying = useRef<boolean>(false)
-
   useEffect(() => {
-    const audio = audioRef.current!
-
-    audio.addEventListener('play', () => {
-      isPlaying.current = true
-    })
-    audio.addEventListener('pause', () => {
-      isPlaying.current = false
-    })
-    return () => {}
+    musicManager.setAudio(id)
   }, [])
 
   /**
-   * Toggle audio with clicking
+   * Toggle the audio
    */
   const handleClick = function toggleAudio() {
-    const audio = audioRef.current!
-
-    if (isPlaying.current) {
-      audio.pause()
-    } else {
-      audio.play()
-    }
+    musicManager.toggleAudio()
   }
 
   return (
-    <button
-      className={`music ${color}`}
-      onClick={handleClick}
-      aria-label={isPlaying ? '음악 일시정지' : '음악 재생'}
-    >
+    <button className={`music ${color}`} onClick={handleClick} aria-label={'음악 재생/일시정지'}>
       <MusicIcon />
       <span data-cursor-scale={CURSOR_SCALE}>{title}</span>
-      <audio ref={audioRef} id={id} src={src} loop></audio>
+      <audio id={id} src={src} loop></audio>
     </button>
   )
 }

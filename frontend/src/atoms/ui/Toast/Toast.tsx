@@ -5,7 +5,7 @@ import ErrorIcon from '@/assets/svgs/wreck.svg'
 
 import './Toast.scss'
 
-export interface ToastProps {
+export type ToastProps = {
   type: 'success' | 'error' | 'info'
   message: string
   destroy: () => void

@@ -113,10 +113,36 @@ const Footer = () => {
                 <td>
                   <A
                     href="https://www.youtube.com/watch?v=tFcJsB-pekY"
-                    title="프리텐다드 글꼴"
+                    title="Youtube 메이플스토리 리스항구 피아노 커버"
                     target="_blank"
                   >
                     Above the Treetops, Pair Piano
+                  </A>
+                </td>
+                <td> </td>
+              </tr>
+              <tr>
+                <th scope="row">초원 BGM</th>
+                <td>
+                  <A
+                    href="https://www.youtube.com/watch?v=YhQnBDHCMk4"
+                    title="Youtube 메이플스토리 수련의 숲 피아노 커버"
+                    target="_blank"
+                  >
+                    Raindrop Flower, Pair Piano
+                  </A>
+                </td>
+                <td> </td>
+              </tr>
+              <tr>
+                <th scope="row">갤러리 BGM</th>
+                <td>
+                  <A
+                    href="https://www.youtube.com/watch?v=JOT0auAGc_U"
+                    title="Youtube 메이플스토리 판테온 피아노 커버"
+                    target="_blank"
+                  >
+                    Pantheon, Pair Piano
                   </A>
                 </td>
                 <td> </td>

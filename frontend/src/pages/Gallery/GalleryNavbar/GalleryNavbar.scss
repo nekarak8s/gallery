@@ -1,7 +1,9 @@
+@use '@/styles/_responsive.scss' as *;
+
 .gallery-navbar {
   width: 100%;
   padding: 1em;
-  font-size: 1rem;
+  font-size: 1.2rem;
 
   > ul {
     display: flex;
@@ -33,4 +35,10 @@
 
 .gallery-navbar__notice button:hover + div {
   opacity: 1;
+}
+
+@include mobile {
+  .gallery-navbar {
+    font-size: 1rem;
+  }
 }

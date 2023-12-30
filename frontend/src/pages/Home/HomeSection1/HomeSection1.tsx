@@ -15,8 +15,8 @@ import skyWebp from '@/assets/images/home-section-1/sky.png?format=webp'
 import Loading from '@/atoms/ui/Loading'
 import ScrollDown from '@/atoms/ui/ScrollDown'
 import StaticImage from '@/atoms/ui/StaticImage'
+import musicManager from '@/utils/musicManager'
 import toFrame from '@/utils/toFrame'
-
 import './HomeSection1.scss'
 
 const TOTAL_IMAGE = 6
@@ -76,8 +76,7 @@ function HomeSection1() {
     if (imagesLoaded != TOTAL_IMAGE) return
 
     // play audio
-    const audio = document.querySelector('#home-audio') as HTMLAudioElement
-    audio.play()
+    musicManager.playAudio()
 
     // show interactive logo
     const logo = logoRef.current!

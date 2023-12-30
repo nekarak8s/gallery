@@ -1,5 +1,6 @@
 import { Body, Box, Vec3 } from 'cannon-es'
 import * as THREE from 'three'
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import { degToRad } from 'three/src/math/MathUtils'
 import wallBaseImg from '@/assets/textures/concrete/Concrete_011_COLOR.jpg'
 import wallNormImg from '@/assets/textures/concrete/Concrete_011_NORM.jpg'
@@ -398,6 +399,7 @@ const buildGallery = (props: GalleryTypeProps) => {
 
   // Create Loaders
   const textureLoader = new THREE.TextureLoader(props.loadingManager)
+  const gltfLoader = new GLTFLoader(props.loadingManager)
 
   // Array for managing resources in dispose function
   const lights: THREE.Light[] = []

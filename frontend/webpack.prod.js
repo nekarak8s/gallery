@@ -13,7 +13,7 @@ module.exports = merge(common, {
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: '[name].js',
-    publicPath: './',
+    publicPath: '/',
   },
   externals: {
     react: 'React', // CDN에서 React 로드
