@@ -5,7 +5,6 @@ const MAX_ELEVATION = 20
 // Seoul avearage sunrise & sunset
 // https://borisu-gim.tistory.com/15966610
 const SUNRISE_SUNSET = [
-  { sunrise: 0, sunset: 0 },
   { sunrise: 7 + 45 / 60, sunset: 17 + 38 / 60 },
   { sunrise: 7 + 21 / 60, sunset: 18 + 11 / 60 },
   { sunrise: 6 + 43 / 60, sunset: 18 + 39 / 60 },

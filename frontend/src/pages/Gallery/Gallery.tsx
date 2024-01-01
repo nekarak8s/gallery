@@ -19,11 +19,11 @@ const MUSIC_TYPE = [
   { src: '', title: '' },
   {
     src: greenaryBgm,
-    title: 'MapleStory - Raindrop Flower (ver.Piano)',
+    title: 'MapleStory - Raindrop Flower (ver. Piano)',
   },
   {
     src: galleryBgm,
-    title: 'MapleStory - Phantheon (ver.Piano)',
+    title: 'MapleStory - Phantheon (ver. Piano)',
   },
 ]
 

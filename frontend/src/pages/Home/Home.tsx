@@ -33,7 +33,7 @@ function Home() {
         <Music
           id="home-audio"
           src={bgm}
-          title="MapleStory - Lith Harbor (ver.Piano)"
+          title="MapleStory - Above the Treetops (ver.Piano)"
           color="white"
         />
       </div>

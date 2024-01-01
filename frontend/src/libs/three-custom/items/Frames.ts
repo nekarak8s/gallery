@@ -43,6 +43,7 @@ export class Frames {
   type: string = 'floors'
   meshes: THREE.Mesh[] = []
   textureSource: Record<string, THREE.Texture> = {}
+  textures: THREE.Texture[] = []
   spotLights: THREE.SpotLight[] = []
 
   dispose: () => void
@@ -65,8 +66,8 @@ export class Frames {
       const geometry = new THREE.BoxGeometry(frameData.width, frameData.height, frameData.depth)
 
       // Texture
-      const textures: Record<string, THREE.Texture> = {}
-      textures['baseTex'] = info.textureLoader.load(info.postList[idx].imageURL)
+      const baseTex = info.textureLoader.load(info.postList[idx].imageURL)
+      this.textures.push(baseTex)
 
       for (const key in this.textureSource) {
         this.textureSource[key].wrapS = THREE.RepeatWrapping
@@ -80,14 +81,14 @@ export class Frames {
       const material = info.roughImg
         ? new THREE.MeshStandardMaterial({
             color: info.color,
-            map: this.textureSource['baseTex'] || undefined,
+            map: baseTex,
             normalMap: this.textureSource['normalTex'] || undefined,
             aoMap: this.textureSource['ambientTex'] || undefined,
             roughnessMap: this.textureSource['roughTex'] || undefined,
           })
         : new THREE.MeshLambertMaterial({
             color: info.color,
-            map: this.textureSource['baseTex'] || undefined,
+            map: baseTex,
             normalMap: this.textureSource['normalTex'] || undefined,
             aoMap: this.textureSource['ambientTex'] || undefined,
           })
@@ -160,6 +161,10 @@ export class Frames {
         const texture = this.textureSource[key]
         texture.dispose()
       }
+
+      this.textures.forEach((texture) => {
+        texture.dispose()
+      })
     }
 
     /**

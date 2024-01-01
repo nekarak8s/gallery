@@ -41,6 +41,8 @@ const Guide = () => {
   const [isDefaultTime, setIsDefaultTime] = useState(true)
 
   useEffect(() => {
+    window.scrollTo(0, 0)
+
     setTimeout(() => {
       setIsDefaultTime(false)
     }, DEFAULT_LOADING_TIME)

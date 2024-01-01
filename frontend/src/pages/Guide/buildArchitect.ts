@@ -164,7 +164,7 @@ export function buildArchitect(props: buildArchitectProps): ThreeItem {
   const walls = new Walls({
     container: props.scene,
     wallsData: WALLS_DATA,
-    repeatFactor: 1 / 10,
+    repeatFactor: 1 / 6,
     texture: {
       textureLoader,
       baseImg: wallBaseImg,
