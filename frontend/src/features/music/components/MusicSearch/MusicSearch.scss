@@ -1,0 +1,51 @@
+@use '@/styles/_responsive.scss' as *;
+
+.music-search {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1em;
+  width: min(400px, 60vw);
+  padding: 2em;
+  font-size: 1rem;
+}
+
+.music-search__form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2em;
+  width: 100%;
+}
+
+.music-search__list {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1em;
+  width: 100%;
+  height: 11em;
+
+  li {
+    width: 100%;
+  }
+}
+
+.music-search__loading {
+  position: fixed;
+  inset: 0 0 0 0;
+}
+
+@include mobile {
+  .music-search {
+    padding: 1.5em;
+    font-size: 0.9em;
+  }
+
+  .music-search__item {
+    img {
+      width: 3em;
+      height: 3em;
+    }
+  }
+}

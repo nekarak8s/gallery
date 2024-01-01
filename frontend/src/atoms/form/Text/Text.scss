@@ -1,0 +1,56 @@
+@use '@/styles/_colors.scss' as c;
+@use '@/styles/_responsive.scss' as *;
+
+.text {
+  min-width: 10em;
+  width: 100%;
+  position: relative;
+  background-color: transparent;
+  transition: background-color 0.1s ease-in;
+}
+
+.text input {
+  width: 100%;
+  padding: 1.65em 0.4em 0.6em;
+  outline: none;
+  border: none;
+  border-bottom: 2px solid rgba(100, 100, 100, 0.3);
+  background-color: transparent;
+  font-size: 0.9em;
+  font-weight: 600;
+  transition: background-color 0.2s ease-in;
+}
+
+.text:hover {
+  background-color: rgba(228, 228, 228, 0.316);
+}
+
+.text input:focus,
+.text input:not(:placeholder-shown) {
+  border-bottom: 2px solid var(--color-ft, c.$ft-black);
+}
+
+.text label {
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin: 1.45em 0.4em 0.55em;
+  color: var(--color-ft-subtle, c.$ft-gray);
+  font-size: 1em;
+  font-weight: 600;
+  transition: 0.2s;
+}
+
+.text input:focus ~ label,
+.text input:not(:placeholder-shown) ~ label {
+  color: var(--color-ft, c.$ft-black);
+  font-size: 0.7em;
+  font-weight: 600;
+  transform: translate(0.1em, -0.7em);
+}
+
+@include mobile {
+  .text {
+    font-size: 0.9em;
+  }
+}

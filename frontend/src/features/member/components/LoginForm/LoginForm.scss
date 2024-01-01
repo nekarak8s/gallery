@@ -1,0 +1,104 @@
+@use '@/styles/_responsive.scss' as *;
+@use '@/styles/_animations.scss' as a;
+@use '@/styles/_colors.scss' as c;
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 2em 3em;
+  font-size: 1rem;
+}
+
+.login-form__header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  gap: 0.9em;
+  color: var(--color-primary, c.$primary);
+  font-size: 1.4em;
+  font-weight: 800;
+
+  svg {
+    width: 5em;
+    height: 5em;
+  }
+}
+
+.login-form__wave {
+  overflow: hidden;
+  position: absolute;
+  top: 3.3em;
+  left: 0;
+  width: 100%;
+  aspect-ratio: 5/1;
+
+  svg {
+    position: absolute;
+    width: 200%;
+  }
+
+  svg:nth-child(1) {
+    @include a.animation-flowing-horizon('wave1', 5s, 0%, 50%, -1s);
+    top: 0;
+    right: 0;
+    height: 110%;
+  }
+
+  svg:nth-child(2) {
+    @include a.animation-flowing-horizon('wave2', 6s, 0%, -50%, -3s);
+    top: 15%;
+    left: 0;
+    height: 100%;
+    path {
+      fill: white;
+    }
+  }
+}
+
+.login-form__menu {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+  margin: 2.5em 0 1.5em 0;
+}
+
+.login-form__menu-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1em;
+  width: 15em;
+  padding: 0.6em 1em;
+  font-size: 1em;
+  font-weight: 600;
+
+  svg {
+    width: 2em;
+    height: 2em;
+  }
+}
+
+.login-form__comment {
+  width: 100%;
+  padding: 1em;
+  border-top: 3px solid rgba(111, 111, 111, 0.234);
+  color: var(--color-ft-subtle, c.$ft-gray);
+  font-weight: 600;
+  font-size: 0.9em;
+  text-align: center;
+}
+
+@include mobile {
+  .login-form {
+    font-size: 3vw;
+    margin: 2em 2em;
+  }
+
+  .login-form__menu-item {
+    width: 14em;
+    padding: 0.6em 0.8em;
+  }
+}

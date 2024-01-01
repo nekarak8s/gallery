@@ -1,0 +1,9 @@
+.comment-form {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-rows: 1fr;
+  align-items: center;
+  gap: 1em;
+  width: 100%;
+  font-size: 1rem;
+}

@@ -1,0 +1,152 @@
+@use '@/styles/_z-index.scss' as *;
+@use '@/styles/_responsive.scss' as *;
+@use '@/styles/_colors.scss' as c;
+
+.navbar {
+  @include z-index(navbar);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  padding: 0.7em 1.7em 0.8em 1.7em;
+  backdrop-filter: blur(20px);
+  color: var(--color-ft, c.$ft-black);
+  font-size: 1.7rem;
+  font-weight: 800;
+  transform: translateY(0);
+  transition: transform 700ms ease;
+}
+
+.navbar.hide {
+  transform: translateY(-110%);
+}
+
+.navbar.white {
+  color: c.$ft-white;
+  text-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
+}
+
+.navbar__menu {
+  display: flex;
+  gap: 2em;
+
+  button {
+    text-shadow: inherit;
+  }
+
+  svg {
+    width: 0.9em;
+    height: 0.9em;
+    filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.3));
+  }
+
+  path {
+    stroke-width: 100;
+  }
+}
+
+.navbar__toggle {
+  display: none;
+
+  span {
+    background-color: var(--color-ft, c.$ft-black);
+  }
+}
+
+.navbar.white {
+  .navbar__toggle {
+    span {
+      background-color: c.$ft-white;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    }
+  }
+}
+
+@include tablet {
+  .navbar {
+    padding: 0.7em 1.5em 0.8em 1.5em;
+    font-size: 1.5rem;
+  }
+}
+
+// 모바일
+@include mobile {
+  .navbar {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 0.7em 1.1em 0.8em 1.1em;
+    font-size: 1.4rem;
+  }
+
+  .navbar__menu {
+    display: grid;
+    grid-template-rows: repeat(3, 0fr);
+    gap: 0;
+    transition:
+      grid-template-rows 0.2s ease-in-out,
+      margin 0.2s ease-in-out;
+
+    li {
+      overflow: hidden;
+      text-align: end;
+      margin: 0em 0;
+      transition: margin 0.2s ease-in-out;
+    }
+  }
+
+  .navbar__menu.open {
+    grid-template-rows: repeat(3, 1fr);
+    margin: 1em 0 0 0;
+
+    li {
+      margin: 0.4em 0;
+    }
+  }
+
+  .navbar__toggle {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: absolute;
+    top: 0.9em;
+    right: 1em;
+    width: 1em;
+
+    span {
+      width: 100%;
+      aspect-ratio: 7/1;
+      border-radius: 10px;
+      transition: transform 300ms ease-in-out;
+    }
+
+    span:nth-child(1) {
+      transform: translateY(-100%);
+    }
+
+    span:nth-child(2) {
+      transform: translateY(0%);
+    }
+
+    span:nth-child(3) {
+      transform: translateY(100%);
+    }
+  }
+
+  .navbar__toggle.open {
+    span:nth-child(1) {
+      transform: translateY(100%) rotate(45deg);
+    }
+
+    span:nth-child(2) {
+      transform: translateY(0%) rotate(-45deg);
+    }
+
+    span:nth-child(3) {
+      box-shadow: none;
+      transform: translateY(-100%) rotate(45deg);
+    }
+  }
+}

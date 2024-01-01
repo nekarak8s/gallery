@@ -1,0 +1,63 @@
+@use '@/styles/_colors.scss' as c;
+@use '@/styles/_responsive.scss' as *;
+
+.control-notice {
+  width: 16em;
+  padding: 1em;
+  border-radius: 0.5em;
+  background-color: var(--color-bg, c.$bg-white);
+  font-size: 1rem;
+
+  > ul {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5em;
+  }
+
+  > ul > li {
+    display: flex;
+    align-items: center;
+    gap: 1em;
+  }
+}
+
+.control-notice__controller {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  width: 2em;
+  height: 2em;
+  border-radius: 50%;
+  background-color: rgba(57, 57, 57, 0.4);
+
+  > div {
+    width: 40%;
+    height: 40%;
+    border-radius: 50%;
+    background-color: var(--color-bg, c.$bg-white);
+  }
+}
+
+.control-notice__shoot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2em;
+  height: 2em;
+  border-radius: 50%;
+  background-color: rgba(57, 57, 57, 0.4);
+
+  svg {
+    width: 1em;
+    height: 1em;
+    color: var(--color-bg, c.$bg-white);
+  }
+}
+
+@include tablet {
+  .control-notice {
+    font-size: 0.9rem;
+  }
+}
