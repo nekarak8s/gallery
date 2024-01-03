@@ -100,7 +100,7 @@ Three.js로 3D 공간을 구현하면서 두 가지 어려움을 마주했습니
    <img src="./assets/images/architecture.png" alt="더 갤러리 아키텍쳐" width=800/>
 </div>
 
-<!-- ## 관련 문서
+## 관련 문서
 
-- [API 기획]()
-- [ERD 기획]() -->
+- [API 기획](https://rainbow-walrus-258.notion.site/API-fc825416c6814635b117bda137c08989)
+- [ERD 기획](https://www.erdcloud.com/d/jFqEgZjWc7MF2B5oW)
