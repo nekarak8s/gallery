@@ -6,54 +6,48 @@
 
 더 갤러리는 3D 소셜 네트워크 서비스(SNS)입니다. 손쉽게 나만의 3D 갤러리를 열고, 작품을 전시하여 친구들에게 공유할 수 있습니다.
 
+데모 사이트 : https://nekarak8s.github.io/gallery/  
+<del>사이트 : https://thegallery.site/</del> (구축 중)
+
+## 주요 기능
+
 - :lock: 안전한 소셜 로그인
 - :musical_note: 작품별 음악 선택
 - :earth_americas: 3D 갤러리 탐방
 - :pencil2: 감상문 기록
 - :grinning: 갤러리 공유
 
-데모 사이트 : https://nekarak8s.github.io/gallery/
-<del>사이트 : https://thegallery.site/</del> (구축 중)
-
 ## 사용 가이드
 
-1. **소셜 로그인**  
-   더 갤러리는 안전한 소셜 로그인을 통해 사용 가능합니다. 사용자는 본인 인증만 진행만 진행하면 됩니다. 권한은 요구하지 않습니다.
+### 소셜 로그인
 
-   <div align="center">
-      <img src="./assets/images/login.png" alt="로그인 화면" width=500/>
-   </div>
+더 갤러리는 안전한 소셜 로그인을 통해 사용 가능합니다. 사용자는 본인 인증만 진행만 진행하면 됩니다. 권한은 요구하지 않습니다.
 
-2. **갤러리 생성**  
-   마이페이지에 들어가 [+] 카드를 클릭하면 전시회를 생성할 수 있습니다. 생성하려는 전시회의 기본 정보를 입력한 후 전시회를 생성합니다.
+<img src="./assets/images/login.png" alt="로그인 화면" width=500/>
 
-   <div align="center">
-      <img src="./assets/images/create-gallery.png" alt="갤러리 생성 화면" width=500/>
-   </div>
+### 갤러리 생성
 
-3. **작품 생성**  
-   리스트에서 생성된 전시회를 확인하고, 수정 버튼을 눌러 전시할 작품 목록을 업데이트합니다..
+마이페이지에 들어가 [+] 카드를 클릭하면 전시회를 생성할 수 있습니다. 생성하려는 전시회의 기본 정보를 입력한 후 전시회를 생성합니다.
 
-   <div align="center">
-      <img src="./assets/images/update-gallery.png" alt="갤러리 업데이트 화면" width=500/>
-   </div>
+<img src="./assets/images/create-gallery.png" alt="갤러리 생성 화면" width=500/>
 
-4. **갤러리 탐방**  
-   전시회를 방문하려면 플레이 버튼을 누릅니다. 데스크탑에서는 키보드, 모바일에서는 터치 조이스틱을 사용하여 조작할 수 있습니다.
+### 작품 등록
 
-   <div align="center">
-      <img src="./assets/images/play.png" alt="갤러리 탐방 화면" width=600/>
-   </div>
+리스트에서 생성된 전시회를 확인하고, 수정 버튼을 눌러 전시할 작품 목록을 업데이트합니다..
 
-5. **감상문 생성**  
-   각 작품에 감상문을 남기고 친구들과 소통할 수 있습니다.
+<img src="./assets/images/update-gallery.png" alt="갤러리 업데이트 화면" width=500/>
 
-   <div align="center">
-      <img src="./assets/images/comment.png" alt="감상문 생성 화면" width=500/>
-   </div>
+### 갤러리 탐방
 
-6. **갤러리 공유**  
-   생성한 전시회의 URL을 공유하여 친구들을 초대하세요.
+전시회를 방문하려면 플레이 버튼을 누릅니다. 데스크탑에서는 키보드, 모바일에서는 터치 조이스틱을 사용하여 조작할 수 있습니다.
+
+<img src="./assets/images/play.png" alt="갤러리 탐방 화면" width=600/>
+
+### 감상문 기록
+
+각 작품에 감상문을 남기고 친구들과 소통할 수 있습니다. 생성한 전시회의 URL을 공유하여 친구들을 초대하세요.
+
+<img src="./assets/images/comment.png" alt="감상문 생성 화면" width=500/>
 
 ## 기술 비하인드
 
@@ -65,7 +59,7 @@
    <img src="./assets/images/three.png" alt="2D 설계도로 3D을 공간을 구현하는" width=600/>
 </div>
 
-3D 공간을 구현하면서 두 가지 어려움을 마주했습니다. 첫번째는 부피가 있는 사물을 설계도상 정확한 위치에 배치하는 것이었고, 두번째는 Three.js 라이브러리의 누수 메모리 관리였습니다. 이를 해결하기 위해 3D 아이템을 위한 전용 클래스를 만들었습니다.
+Three.js로 3D 공간을 구현하면서 두 가지 어려움을 마주했습니다. 첫번째는 부피가 있는 사물을 설계도상 정확한 위치에 배치하는 것이었고, 두번째는 Three.js 라이브러리의 누수 메모리 관리였습니다. 이를 해결하기 위해 3D 아이템을 위한 전용 클래스를 만들었습니다.
 
 - 아이템은 각각의 특징에 따라 생성자 함수에서 위치가 재조정됩니다. 예를 들어, 벽(Wall) 아이템의 경우 처음 y축 위치보다 (height/2) 더 높게 재조정함으로써 직관적으로 바닥면에 자동 정렬되도록 했습니다.
 
@@ -103,7 +97,7 @@
 현재는 Kubernetes를 도입하여 서비스 배포를 준비하고 있습니다. EKS 운영 부담을 줄이기 위해 AWS Lightsail 서버에 k3s를 직접 설치하여 서비스할 계획입니다.
 
 <div align="center">
-   <img src="./assets/images/architecture.png" alt="더 갤러리 아키텍쳐" width=600/>
+   <img src="./assets/images/architecture.png" alt="더 갤러리 아키텍쳐" width=800/>
 </div>
 
 <!-- ## 관련 문서
