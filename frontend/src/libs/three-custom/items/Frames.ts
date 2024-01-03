@@ -35,7 +35,8 @@ export type FramesArgs = {
   normalImg?: string
   ambientImg?: string
   roughImg?: string
-  repeatFactor?: number
+  repeatX?: number
+  repeatY?: number
   spotLight?: SpotLightProps
 }
 
@@ -61,21 +62,21 @@ export class Frames {
       this.textureSource['ambientTex'] = info.textureLoader.load(info.ambientImg)
     }
 
+    for (const key in this.textureSource) {
+      this.textureSource[key].wrapS = THREE.RepeatWrapping
+      this.textureSource[key].wrapT = THREE.RepeatWrapping
+
+      this.textureSource[key].repeat.x = info.repeatX || 1
+      this.textureSource[key].repeat.y = info.repeatY || 1
+    }
+
     info.framesData.forEach((frameData, idx) => {
       // Geometry
       const geometry = new THREE.BoxGeometry(frameData.width, frameData.height, frameData.depth)
 
-      // Texture
+      // Base image texture
       const baseTex = info.textureLoader.load(info.postList[idx].imageURL)
       this.textures.push(baseTex)
-
-      for (const key in this.textureSource) {
-        this.textureSource[key].wrapS = THREE.RepeatWrapping
-        this.textureSource[key].wrapT = THREE.RepeatWrapping
-
-        this.textureSource[key].repeat.x = frameData.width * (info.repeatFactor || 1)
-        this.textureSource[key].repeat.y = frameData.height * (info.repeatFactor || 1)
-      }
 
       // Material
       const material = info.roughImg

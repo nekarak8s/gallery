@@ -29,7 +29,8 @@ export type FloorsArgs = {
   color?: THREE.ColorRepresentation
   opacity?: number
   transparent?: boolean
-  repeatFactor?: number
+  repeatX?: number
+  repeatY?: number
 }
 
 export class Floors {
@@ -54,20 +55,17 @@ export class Floors {
       }
     }
 
+    for (const key in this.textureSource) {
+      this.textureSource[key].wrapS = THREE.RepeatWrapping
+      this.textureSource[key].wrapT = THREE.RepeatWrapping
+
+      this.textureSource[key].repeat.x = info.repeatX || 1
+      this.textureSource[key].repeat.y = info.repeatY || 1
+    }
+
     info.floorsData.forEach((floorData) => {
       // Geometry
       const geometry = new THREE.BoxGeometry(floorData.width, floorData.height, floorData.depth)
-
-      // Texture
-      const textures: Record<string, THREE.Texture> = {}
-
-      for (const key in this.textureSource) {
-        this.textureSource[key].wrapS = THREE.RepeatWrapping
-        this.textureSource[key].wrapT = THREE.RepeatWrapping
-
-        this.textureSource[key].repeat.x = floorData.width * (info.repeatFactor || 1)
-        this.textureSource[key].repeat.y = floorData.depth * (info.repeatFactor || 1)
-      }
 
       // Material
       const material = info.texture?.roughImg

@@ -43,7 +43,16 @@ const WALLS_DATA = [
     x: 18,
     y: 1,
     z: 1,
-    width: 38,
+    width: 19,
+    height: 8,
+    depth: 0.3,
+    rotationY: degToRad(-90),
+  },
+  {
+    x: 18,
+    y: 1,
+    z: 20,
+    width: 19,
     height: 8,
     depth: 0.3,
     rotationY: degToRad(-90),
@@ -164,7 +173,8 @@ export function buildArchitect(props: buildArchitectProps): ThreeItem {
   const walls = new Walls({
     container: props.scene,
     wallsData: WALLS_DATA,
-    repeatFactor: 1 / 6,
+    repeatX: 15 / 6,
+    repeatY: 8 / 6,
     texture: {
       textureLoader,
       baseImg: wallBaseImg,

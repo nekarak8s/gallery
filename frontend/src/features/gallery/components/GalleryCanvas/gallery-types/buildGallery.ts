@@ -5,7 +5,6 @@ import { degToRad } from 'three/src/math/MathUtils'
 import wallBaseImg from '@/assets/textures/concrete/Concrete_011_COLOR.jpg'
 import wallNormImg from '@/assets/textures/concrete/Concrete_011_NORM.jpg'
 import wallAmbientImg from '@/assets/textures/concrete/Concrete_011_OCC.jpg'
-import frameAmbientImg from '@/assets/textures/fabric/Fabric_polyester_001_ambientOcclusion.jpg'
 import frameNormImg from '@/assets/textures/fabric/Fabric_polyester_001_normal.jpg'
 import floorBaseImg from '@/assets/textures/granite/Granite_001_COLOR.jpg'
 import floorNormImg from '@/assets/textures/granite/Granite_001_NORM.jpg'
@@ -28,7 +27,7 @@ const FLOORS_DATA = [
     y: 2,
     z: 6.09,
     width: 30,
-    height: 50,
+    height: 5,
     depth: 50,
   },
   {
@@ -436,7 +435,8 @@ const buildGallery = (props: GalleryTypeProps) => {
     color: 0x787878,
     container: props.scene,
     floorsData: FLOORS_DATA,
-    repeatFactor: 1,
+    repeatX: 30,
+    repeatY: 50,
     texture: {
       textureLoader,
       baseImg: floorBaseImg,
@@ -493,7 +493,8 @@ const buildGallery = (props: GalleryTypeProps) => {
     world: props.world,
     container: props.scene,
     wallsData: WALLS_DATA,
-    repeatFactor: 1 / 6,
+    repeatX: 8 / 6,
+    repeatY: 10 / 6,
     texture: {
       textureLoader,
       baseImg: wallBaseImg,
@@ -529,9 +530,10 @@ const buildGallery = (props: GalleryTypeProps) => {
     textureLoader,
     postList: props.postList,
     normalImg: frameNormImg,
-    ambientImg: frameAmbientImg,
+    // ambientImg: frameAmbientImg,
     framesData: FRAMES_DATA,
-    repeatFactor: 1,
+    repeatX: 3,
+    repeatY: 3,
     spotLight: {
       intensity: 3 * (1 - sunLightIntensity) + 5,
     },
