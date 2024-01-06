@@ -423,7 +423,7 @@ const buildGreenary = (props: GalleryTypeProps) => {
   const lights: THREE.Light[] = []
 
   // Ambient light
-  const ambientLight = new AmbientLight('white', 0.5)
+  const ambientLight = new AmbientLight('white', 0.8)
   props.scene.add(ambientLight)
   lights.push(ambientLight)
 

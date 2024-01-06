@@ -4,7 +4,7 @@
 @use '@/styles/_z-index.scss' as *;
 
 .hs1-back {
-  height: var(--height-back, 200vh);
+  height: var(--height-back, 200dvh);
   min-height: var(--min-height-back, 1200px);
   position: relative;
 }
@@ -14,7 +14,7 @@
   position: sticky;
   top: 0;
   width: 100vw;
-  height: 100vh;
+  height: 100dvh;
   min-height: 600px;
   perspective: 100px;
   transform-style: preserve-3d;

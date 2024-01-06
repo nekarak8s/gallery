@@ -13,7 +13,7 @@ import { CURSOR_SCALE } from '@/constants'
 import toFrame from '@/utils/toFrame'
 import './HomeSection3.scss'
 
-const BACK_HEIGHT = 3 // * 100vh
+const BACK_HEIGHT = 3 // * 100dvh
 const SCROLL_OFFSET = 300 // px.
 
 function HomeSection3() {
@@ -25,7 +25,7 @@ function HomeSection3() {
   useEffect(() => {
     const back = backRef.current!
 
-    back.style.setProperty('--height-back', `calc(${BACK_HEIGHT * 100}vh + ${SCROLL_OFFSET}px)`)
+    back.style.setProperty('--height-back', `calc(${BACK_HEIGHT * 100}dvh + ${SCROLL_OFFSET}px)`)
     back.style.setProperty('--min-height-back', `calc(${BACK_HEIGHT * 600}px + ${SCROLL_OFFSET}px)`)
   }, [])
 
@@ -76,7 +76,7 @@ function HomeSection3() {
       const posx = Number(work.dataset.posx)
       const posy = Number(work.dataset.posy)
       work.style.right = `${-100 * posx}vw`
-      work.style.top = `${100 * posy}vh`
+      work.style.top = `${100 * posy}dvh`
     }
 
     // Handle Scroll
@@ -89,7 +89,7 @@ function HomeSection3() {
       // Move art work
       const factor = (scrollTop - scrollStart) / (scrollEnd - SCROLL_OFFSET - scrollStart)
       work.style.transform = `
-        translateY(calc(-50% - ${(factor > 1 ? 1 : factor) * 85}vh))
+        translateY(calc(-50% - ${(factor > 1 ? 1 : factor) * 85}dvh))
       `
 
       if (scrollTop < scrollEnd - SCROLL_OFFSET) {

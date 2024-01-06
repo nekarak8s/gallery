@@ -38,7 +38,7 @@ import toFrame from '@/utils/toFrame'
 
 import './HomeSection2.scss'
 
-const BACK_HEIGHT = 6 // * 100vh. background height
+const BACK_HEIGHT = 6 // * 100dvh. background height
 
 function HomeSection2() {
   /**
@@ -49,7 +49,7 @@ function HomeSection2() {
   useEffect(() => {
     const back = backRef.current!
 
-    back.style.setProperty('--height-back', `${BACK_HEIGHT * 100}vh`)
+    back.style.setProperty('--height-back', `${BACK_HEIGHT * 100}dvh`)
     back.style.setProperty('--min-height-back', `${BACK_HEIGHT * 600}px`)
   }, [])
 
@@ -68,9 +68,7 @@ function HomeSection2() {
     const main = mainRef.current!
     const phrase = phraseRef.current!
     const cards = cardsRef.current!
-    const cardEles = Array.from(
-      cards.children as HTMLCollectionOf<HTMLDivElement>
-    )
+    const cardEles = Array.from(cards.children as HTMLCollectionOf<HTMLDivElement>)
 
     // Initiate scroll data & card position
     let scrollStart = 0
@@ -89,7 +87,7 @@ function HomeSection2() {
         } else {
           el.style.left = `${100 * posx}vw`
         }
-        el.style.top = `${100 * posy}vh`
+        el.style.top = `${100 * posy}dvh`
       })
     }
 
@@ -98,10 +96,7 @@ function HomeSection2() {
       const scrollTop = window.scrollY
 
       // Scroll optimization
-      if (
-        scrollTop < scrollStart ||
-        scrollTop > scrollEnd + main.offsetHeight
-      ) {
+      if (scrollTop < scrollStart || scrollTop > scrollEnd + main.offsetHeight) {
         phrase.classList.remove('opaque')
         return
       }
@@ -114,7 +109,7 @@ function HomeSection2() {
       cardEles.forEach((el) => {
         const speedy = Number(el.dataset.speedy)
         el.style.transform = `translateY(
-          calc(-50% - ${factor * (BACK_HEIGHT * 100 - 100) * speedy}vh)
+          calc(-50% - ${factor * (BACK_HEIGHT * 100 - 100) * speedy}dvh)
           )`
 
         // Open the card
@@ -510,12 +505,10 @@ function HomeSection2() {
                 date="2019.10.21"
               />
               <div className="hs2-card__phrase">
-                With the development of mobile devices, it is easy to take
-                pictures, but the value of a picture is decreasing. There are
-                hundreds of pictures on the album, but most of them are pictures
-                that you don&apos;t even know when they were taken. When was the
-                last time you remembered with your friends while looking at the
-                picture?
+                With the development of mobile devices, it is easy to take pictures, but the value
+                of a picture is decreasing. There are hundreds of pictures on the album, but most of
+                them are pictures that you don&apos;t even know when they were taken. When was the
+                last time you remembered with your friends while looking at the picture?
               </div>
             </div>
           </div>

@@ -107,7 +107,7 @@ export const galleryHandlers = [
     await delay()
 
     const data = galleryData
-    if (Math.random() < 0) {
+    if (Math.random() < 0.5) {
       data.place.placeId = 2
     }
 

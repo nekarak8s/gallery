@@ -4,7 +4,7 @@
 
 .guide {
   width: 100vw;
-  height: 600vh;
+  height: 600dvh;
   color: var(--ft-color-reverse, c.$ft-white);
   font-size: 1rem;
   text-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
@@ -15,11 +15,11 @@
   top: 0;
   left: 0;
   width: 100vw;
-  height: 100vh;
+  height: 100dvh;
 
   > canvas {
     width: 100vw !important;
-    height: 100vh !important;
+    height: 100dvh !important;
   }
 }
 
@@ -36,7 +36,7 @@
     justify-content: center;
     gap: 1em;
     position: relative;
-    height: 100vh;
+    height: 100dvh;
     width: 100vw;
     padding: 10%;
     background-color: transparent;
@@ -86,7 +86,7 @@
   top: 0;
   bottom: 0;
   width: 100vw;
-  height: 100vh;
+  height: 100dvh;
   background-color: var(--color-bg, c.$bg-white);
   opacity: 1;
 
@@ -98,7 +98,7 @@
 @include tablet {
   .guide__sections {
     > section {
-      padding: 15vh 5vw;
+      padding: 15dvh 5vw;
       align-items: center;
       justify-content: flex-end;
 

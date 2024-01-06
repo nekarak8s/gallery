@@ -7,11 +7,11 @@
   top: 0;
   left: 0;
   width: 100vw;
-  height: 100vh;
+  height: 100dvh;
 
   &__back {
     width: 100vw;
-    height: 100vh;
+    height: 100dvh;
     background-color: rgba(0, 0, 0, 0.3);
   }
 
@@ -23,7 +23,7 @@
     width: fit-content;
     max-width: 90vw;
     height: fit-content;
-    max-height: 90vh;
+    max-height: 90dvh;
     border-radius: 10px;
     background-color: var(--color-bg, c.$bg-white);
     transform: translate(-50%, -50%);
