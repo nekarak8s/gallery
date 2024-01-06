@@ -23,31 +23,41 @@
 
 더 갤러리는 안전한 소셜 로그인을 통해 사용 가능합니다. 사용자는 본인 인증만 진행만 진행하면 됩니다. 권한은 요구하지 않습니다.
 
-<img src="./assets/images/login.png" alt="로그인 화면" width=500/>
+<div align="center">
+   <img src="./assets/images/login.png" alt="로그인 화면" width=800/>
+</div>
 
 ### 갤러리 생성
 
 마이페이지에 들어가 [+] 카드를 클릭하면 전시회를 생성할 수 있습니다. 생성하려는 전시회의 기본 정보를 입력한 후 전시회를 생성합니다.
 
-<img src="./assets/images/create-gallery.png" alt="갤러리 생성 화면" width=500/>
+<div align="center">
+   <img src="./assets/images/create-gallery.png" alt="갤러리 생성 화면" width=800/>
+</div>
 
 ### 작품 등록
 
 리스트에서 생성된 전시회를 확인하고, 수정 버튼을 눌러 전시할 작품 목록을 업데이트합니다..
 
-<img src="./assets/images/update-gallery.png" alt="갤러리 업데이트 화면" width=500/>
+<div align="center">
+   <img src="./assets/images/update-gallery.png" alt="갤러리 업데이트 화면" width=800/>
+</div>
 
 ### 갤러리 탐방
 
 전시회를 방문하려면 플레이 버튼을 누릅니다. 데스크탑에서는 키보드, 모바일에서는 터치 조이스틱을 사용하여 조작할 수 있습니다.
 
-<img src="./assets/images/play.png" alt="갤러리 탐방 화면" width=600/>
+<div align="center">
+   <img src="./assets/images/play.png" alt="갤러리 탐방 화면" width=800/>
+</div>
 
 ### 감상문 기록
 
 각 작품에 감상문을 남기고 친구들과 소통할 수 있습니다. 생성한 전시회의 URL을 공유하여 친구들을 초대하세요.
 
-<img src="./assets/images/comment.png" alt="감상문 생성 화면" width=500/>
+<div align="center">
+   <img src="./assets/images/comment.png" alt="감상문 생성 화면" width=800/>
+</div>
 
 ## 기술 비하인드
 
@@ -56,7 +66,7 @@
 ### Three.js
 
 <div align="center">
-   <img src="./assets/images/three.png" alt="2D 설계도로 3D을 공간을 구현하는" width=600/>
+   <img src="./assets/images/three.png" alt="2D 설계도로 3D을 공간을 구현하는" width=800/>
 </div>
 
 Three.js로 3D 공간을 구현하면서 두 가지 어려움을 마주했습니다. 첫번째는 부피가 있는 사물을 설계도상 정확한 위치에 배치하는 것이었고, 두번째는 Three.js 라이브러리의 누수 메모리 관리였습니다. 이를 해결하기 위해 3D 아이템을 위한 전용 클래스를 만들었습니다.
@@ -83,7 +93,7 @@ Three.js로 3D 공간을 구현하면서 두 가지 어려움을 마주했습니
 ### MSA
 
 <div align="center">
-   <img src="./assets/images/msa.png" alt="카프카를 이용한 MSA 서버 간 이벤트 기반 통신" width=600/>
+   <img src="./assets/images/msa.png" alt="카프카를 이용한 MSA 서버 간 이벤트 기반 통신" width=800/>
 </div>
 
 효율적이고 안정적인 서비스 운영을 위해 백엔드는 MSA 아키텍처를 채택했습니다. 그러나 MSA 구조를 택했음에도, 서버 간 연관성이 복잡해지는 문제를 해결하기 위해 Zero-Payload 이벤트 방식을 도입했습니다.
