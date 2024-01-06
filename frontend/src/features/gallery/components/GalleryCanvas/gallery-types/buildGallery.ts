@@ -8,14 +8,12 @@ import wallAmbientImg from '@/assets/textures/concrete/Concrete_011_OCC.jpg'
 import frameNormImg from '@/assets/textures/fabric/Fabric_polyester_001_normal.jpg'
 import floorBaseImg from '@/assets/textures/granite/Granite_001_COLOR.jpg'
 import floorNormImg from '@/assets/textures/granite/Granite_001_NORM.jpg'
-import floorAmbientImg from '@/assets/textures/granite/Granite_001_OCC.jpg'
 import { GalleryTypeProps } from '@/features/gallery/types'
 import { getSunColor, getSunIntensity, getSunPosition } from '@/libs/sun'
 import { Ceiling } from '@/libs/three-custom/items/Ceiling'
 import { Floor } from '@/libs/three-custom/items/Floor'
-import { Floors } from '@/libs/three-custom/items/Floors'
 import { Frame } from '@/libs/three-custom/items/Frame'
-import { Frames } from '@/libs/three-custom/items/Frames'
+import { PostFrames } from '@/libs/three-custom/items/PostFrames'
 import { SkyItem } from '@/libs/three-custom/items/Sky'
 import { Wall } from '@/libs/three-custom/items/Wall'
 import { Walls } from '@/libs/three-custom/items/Walls'
@@ -220,6 +218,60 @@ const CEILING_DATA = {
   height: 0.2,
   depth: 11,
 }
+
+const PLANT_DATA = [
+  {
+    type: 0,
+    x: 21.12,
+    y: 2,
+    z: 10.41,
+    scale: 2,
+  },
+  {
+    type: 2,
+    x: 49.29,
+    y: 2,
+    z: 17.82,
+    scale: 2.2,
+  },
+  {
+    type: 1,
+    x: 48.89,
+    y: 2,
+    z: 21.16,
+    scale: 2.2,
+    rotation: 1,
+  },
+  {
+    type: 1,
+    x: 48.89,
+    y: 2,
+    z: 26.23,
+    scale: 2.1,
+  },
+  {
+    type: 2,
+    x: 33.49,
+    y: 2,
+    z: 44.32,
+    scale: 1.5,
+    rotation: 1,
+  },
+  {
+    type: 2,
+    x: 37.33,
+    y: 2,
+    z: 44.32,
+    scale: 1.6,
+  },
+  {
+    type: 1,
+    x: 59.23,
+    y: 2,
+    z: 40.25,
+    scale: 1.8,
+  },
+]
 
 const FRAME_INFO = {
   depth: 0.2,
@@ -430,23 +482,27 @@ const buildGallery = (props: GalleryTypeProps) => {
   items.push(water)
 
   // Create Floors
-  const floors = new Floors({
-    world: props.world,
-    color: 0x787878,
-    container: props.scene,
-    floorsData: FLOORS_DATA,
-    repeatX: 30,
-    repeatY: 50,
-    texture: {
-      textureLoader,
-      baseImg: floorBaseImg,
-      ambientImg: floorAmbientImg,
-      normalImg: floorNormImg,
-    },
-  })
-  items.push(floors)
-  floors.meshes.forEach((mesh) => {
-    props.controls.floors.push(mesh)
+  FLOORS_DATA.forEach((floorData) => {
+    const floor = new Floor({
+      container: props.scene,
+      color: 0x686868,
+      x: floorData.x,
+      y: floorData.y,
+      z: floorData.z,
+      width: floorData.width,
+      height: floorData.height,
+      depth: floorData.depth,
+      texture: {
+        textureLoader,
+        baseImg: floorBaseImg,
+        // ambientImg: floorAmbientImg,
+        normalImg: floorNormImg,
+        repeatX: floorData.width / 3,
+        repeatY: floorData.depth / 3,
+      },
+    })
+    items.push(floor)
+    props.controls.floors.push(floor.mesh)
   })
 
   GLASS_FLOORS_DATA.forEach((glassFloorData) => {
@@ -498,7 +554,7 @@ const buildGallery = (props: GalleryTypeProps) => {
     texture: {
       textureLoader,
       baseImg: wallBaseImg,
-      ambientImg: wallAmbientImg,
+      // ambientImg: wallAmbientImg,
       normalImg: wallNormImg,
     },
   })
@@ -524,8 +580,17 @@ const buildGallery = (props: GalleryTypeProps) => {
   items.push(glassWall)
   props.rayControls.rayItems.push(glassWall.mesh)
 
-  // Create Frames
-  const frames = new Frames({
+  // Create Plants
+  // const plants = new Plants({
+  //   container: props.scene,
+  //   gltfLoader,
+  //   plantsData: PLANT_DATA,
+  // })
+  // items.push(plants)
+  // props.rayControls.rayItems = [...props.rayControls.rayItems, ...plants.objects]
+
+  // Create PostFrames
+  const frames = new PostFrames({
     container: props.scene,
     textureLoader,
     postList: props.postList,
@@ -562,12 +627,12 @@ const buildGallery = (props: GalleryTypeProps) => {
   water.setSunDirection(sun)
 
   // Ambient light
-  const ambientLight = new THREE.AmbientLight(0xffffff, sunLightIntensity * 0.4)
+  const ambientLight = new THREE.AmbientLight(0xffffff, sunLightIntensity * 0.8)
   props.scene.add(ambientLight)
   lights.push(ambientLight)
 
   // Direct Light
-  const directLight = new THREE.DirectionalLight(sunLightColor, sunLightIntensity * 1.3)
+  const directLight = new THREE.DirectionalLight(sunLightColor, sunLightIntensity * 1.8)
   directLight.position.set(Math.sin(theta) * 100, Math.sin(phiEle) * 500, Math.cos(theta) * 100)
   directLight.shadow.camera.left = -60
   directLight.shadow.camera.right = 60
@@ -594,10 +659,10 @@ const buildGallery = (props: GalleryTypeProps) => {
     const sunLightIntensity = getSunIntensity(date)
     const sunLightColor = new THREE.Color(getSunColor(date))
 
-    ambientLight.intensity = sunLightIntensity * 0.4
+    ambientLight.intensity = sunLightIntensity * 0.8
 
     directLight.color = sunLightColor
-    directLight.intensity = sunLightIntensity * 1.3
+    directLight.intensity = sunLightIntensity * 1.8
     directLight.position.set(Math.sin(theta) * 100, Math.sin(phiEle) * 500, Math.cos(theta) * 100)
 
     // update light of frame

@@ -1,7 +1,7 @@
 import * as THREE from 'three'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import { degToRad } from 'three/src/math/MathUtils'
-import plantGlb from '@/assets/glbs/plants.glb'
+import plantsGlb from '@/assets/glbs/plants.glb'
 
 type PlantData = {
   type: number
@@ -27,8 +27,7 @@ export class Plants {
     /**
      * Load GLTF
      */
-    info.gltfLoader.load(plantGlb, (glb) => {
-      console.log(glb)
+    info.gltfLoader.load(plantsGlb, (glb) => {
       // Create Plants
       info.plantsData.forEach((plant) => {
         // Get an object
@@ -39,11 +38,9 @@ export class Plants {
         object.children[0].castShadow = true
         object.children[0].receiveShadow = true
 
-        object.scale.multiplyScalar(0.001 * (plant.scale || 1))
+        object.scale.multiplyScalar(1 * (plant.scale || 1))
         object.position.set(plant.x, plant.y, plant.z)
         object.rotation.set(degToRad(-90), 0, plant.rotation || 0)
-
-        console.log(object)
 
         this.objects.push(object)
         info.container.add(object)

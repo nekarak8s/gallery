@@ -22,7 +22,7 @@ import py from '@/assets/cubemaps/clear_sky/py.png'
 import pz from '@/assets/cubemaps/clear_sky/pz.png'
 import greenaryGlb from '@/assets/glbs/greenary.glb'
 import { GalleryTypeProps } from '@/features/gallery/types'
-import { Frame } from '@/libs/three-custom/items/Frame'
+import { PostFrames } from '@/libs/three-custom/items/PostFrames'
 import { Trees } from '@/libs/three-custom/items/Trees'
 
 const FRAME_INFO = {
@@ -31,66 +31,96 @@ const FRAME_INFO = {
   depth: 0.05,
 }
 
-const FRAME_DATA = [
+const FRAMES_DATA = [
   {
     // 1
     x: 40,
     y: 1,
     z: 39,
+    width: FRAME_INFO.width,
+    height: FRAME_INFO.height,
+    depth: FRAME_INFO.depth,
   },
   {
     // 2
     x: 63,
     y: 4,
     z: 53,
+    width: FRAME_INFO.width,
+    height: FRAME_INFO.height,
+    depth: FRAME_INFO.depth,
   },
   {
     // 3
     x: 75,
     y: 3,
     z: 27,
+    width: FRAME_INFO.width,
+    height: FRAME_INFO.height,
+    depth: FRAME_INFO.depth,
   },
   {
     // 4
     x: 100,
     y: 1.7,
     z: 40,
+    width: FRAME_INFO.width,
+    height: FRAME_INFO.height,
+    depth: FRAME_INFO.depth,
   },
   {
     // 5
     x: 28,
     y: 4,
     z: 66,
+    width: FRAME_INFO.width,
+    height: FRAME_INFO.height,
+    depth: FRAME_INFO.depth,
   },
   {
     // 6
     x: 64,
     y: 14.6,
     z: 78,
+    width: FRAME_INFO.width,
+    height: FRAME_INFO.height,
+    depth: FRAME_INFO.depth,
   },
   {
     // 7
     x: 83,
     y: 10,
     z: 80,
+    width: FRAME_INFO.width,
+    height: FRAME_INFO.height,
+    depth: FRAME_INFO.depth,
   },
   {
     // 8
     x: 37,
     y: 2.4,
     z: 93,
+    width: FRAME_INFO.width,
+    height: FRAME_INFO.height,
+    depth: FRAME_INFO.depth,
   },
   {
     // 9
     x: 104,
     y: -2.6,
     z: 104,
+    width: FRAME_INFO.width,
+    height: FRAME_INFO.height,
+    depth: FRAME_INFO.depth,
   },
   {
     // 10
     x: 17,
     y: 1.5,
     z: 28,
+    width: FRAME_INFO.width,
+    height: FRAME_INFO.height,
+    depth: FRAME_INFO.depth,
   },
 ]
 
@@ -538,27 +568,16 @@ const buildGreenary = (props: GalleryTypeProps) => {
   items.push(trees)
   props.rayControls.rayItems = [...props.rayControls.rayItems, ...trees.objects]
 
-  // Create Frames
-  FRAME_DATA.forEach((frameData, idx) => {
-    // Only if the post isActive
-    if (props.postList[idx].isActive) {
-      const frame = new Frame({
-        order: idx,
-        x: frameData.x,
-        y: frameData.y,
-        z: frameData.z,
-        width: FRAME_INFO.width,
-        height: FRAME_INFO.height,
-        depth: FRAME_INFO.depth,
-        container: props.scene,
-        texture: {
-          textureLoader,
-          baseImg: props.postList[idx].imageURL,
-        },
-      })
-      items.push(frame)
-      props.rayControls.rayItems.push(frame.mesh)
-    }
+  // Create PostFrames
+  const frames = new PostFrames({
+    container: props.scene,
+    textureLoader,
+    postList: props.postList,
+    framesData: FRAMES_DATA,
+  })
+  items.push(frames)
+  frames.meshes.forEach((mesh) => {
+    props.rayControls.rayItems.push(mesh)
   })
 
   /**

@@ -128,6 +128,8 @@ export function buildArchitect(props: buildArchitectProps): ThreeItem {
   const sunLightIntensity = getSunIntensity(date)
   const sunLightColor = new THREE.Color(getSunColor(date))
 
+  console.log(date, sunLightIntensity)
+
   /**
    * Meshes
    */
@@ -164,7 +166,7 @@ export function buildArchitect(props: buildArchitectProps): ThreeItem {
       normalImg: floorNormImg,
       roughImg: floorRoughImg,
       repeatX: FLOOR_DATA.width / 3,
-      repeatY: FLOOR_DATA.height / 3,
+      repeatY: FLOOR_DATA.depth / 3,
     },
   })
   items.push(floor)

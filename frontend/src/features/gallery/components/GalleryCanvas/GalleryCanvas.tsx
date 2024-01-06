@@ -219,6 +219,7 @@ const GalleryCanvas = ({ gallery, postList }: GalleryCanvasProps) => {
         isOpen={selectedPostIdx !== null}
         onClose={() => {
           setSelectedPostIdx(null)
+          musicManager.unmuteAudio()
           if (controlsRef.current) {
             controlsRef.current.enabled = true
           }
