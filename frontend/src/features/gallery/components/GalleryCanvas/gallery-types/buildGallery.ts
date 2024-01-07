@@ -8,6 +8,7 @@ import wallAmbientImg from '@/assets/textures/concrete/Concrete_011_OCC.jpg'
 import frameNormImg from '@/assets/textures/fabric/Fabric_polyester_001_normal.jpg'
 import floorBaseImg from '@/assets/textures/granite/Granite_001_COLOR.jpg'
 import floorNormImg from '@/assets/textures/granite/Granite_001_NORM.jpg'
+import floorAmbientImg from '@/assets/textures/granite/Granite_001_OCC.jpg'
 import { GalleryTypeProps } from '@/features/gallery/types'
 import { getSunColor, getSunIntensity, getSunPosition } from '@/libs/sun'
 import { Ceiling } from '@/libs/three-custom/items/Ceiling'
@@ -220,20 +221,97 @@ const CEILING_DATA = {
 }
 
 const PLANT_DATA = [
+  // lef top
   {
-    type: 0,
+    type: 2,
     x: 21.12,
     y: 2,
-    z: 10.41,
+    z: 9.07,
+    rotation: 1,
     scale: 2,
   },
   {
-    type: 2,
-    x: 49.29,
+    type: 1,
+    x: 21.12,
     y: 2,
-    z: 17.82,
+    z: 10.41,
+    rotation: 0.8,
+    scale: 2.1,
+  },
+  {
+    type: 1,
+    x: 22,
+    y: 2,
+    z: 9.97,
+    rotation: 2.1,
+    scale: 2,
+  },
+  {
+    type: 1,
+    x: 21.12,
+    y: 2,
+    z: 13.65,
+    rotation: 1.5,
+    scale: 2.1,
+  },
+  {
+    type: 2,
+    x: 21.12,
+    y: 2,
+    z: 14.77,
+    rotation: 1.4,
     scale: 2.2,
   },
+  {
+    type: 2,
+    x: 21.12,
+    y: 2,
+    z: 15.92,
+    rotation: 2,
+    scale: 2.05,
+  },
+  {
+    type: 1,
+    x: 21.12,
+    y: 2,
+    z: 17.07,
+    rotation: 2.5,
+    scale: 2.15,
+  },
+  {
+    type: 0,
+    x: 22.24,
+    y: 2,
+    z: 14.37,
+    rotation: 2.3,
+    scale: 1.7,
+  },
+  {
+    type: 2,
+    x: 22.24,
+    y: 2,
+    z: 15.57,
+    rotation: 2,
+    scale: 1.8,
+  },
+  {
+    type: 0,
+    x: 22.24,
+    y: 2,
+    z: 16.58,
+    rotation: 0.3,
+    scale: 1.73,
+  },
+  // right top
+  {
+    type: 1,
+    x: 48.89,
+    y: 2,
+    z: 20.2,
+    scale: 2,
+    rotation: 0.8,
+  },
+
   {
     type: 1,
     x: 48.89,
@@ -243,33 +321,87 @@ const PLANT_DATA = [
     rotation: 1,
   },
   {
+    type: 0,
+    x: 48.89,
+    y: 2,
+    z: 22.36,
+    scale: 1.7,
+    rotation: 1,
+  },
+  {
+    type: 1,
+    x: 48.1,
+    y: 2,
+    z: 20.76,
+    scale: 1.7,
+    rotation: 2,
+  },
+
+  {
+    type: 0,
+    x: 48.1,
+    y: 2,
+    z: 21.96,
+    scale: 2,
+    rotation: 2,
+  },
+  {
+    type: 0,
+    x: 48.89,
+    y: 2,
+    z: 25,
+    scale: 1.7,
+    rotation: 1,
+  },
+  {
     type: 1,
     x: 48.89,
     y: 2,
     z: 26.23,
     scale: 2.1,
+    rotation: 1.8,
+  },
+
+  {
+    type: 1,
+    x: 48.89,
+    y: 2,
+    z: 27.4,
+    scale: 2.05,
+    rotation: 0.6,
   },
   {
-    type: 2,
-    x: 33.49,
+    type: 0,
+    x: 48.1,
     y: 2,
-    z: 44.32,
-    scale: 1.5,
-    rotation: 1,
-  },
-  {
-    type: 2,
-    x: 37.33,
-    y: 2,
-    z: 44.32,
-    scale: 1.6,
+    z: 25.8,
+    scale: 2,
+    rotation: 2,
   },
   {
     type: 1,
-    x: 59.23,
+    x: 48.1,
     y: 2,
-    z: 40.25,
-    scale: 1.8,
+    z: 27,
+    scale: 1.7,
+    rotation: 2.9,
+  },
+  // middle
+  {
+    type: 2,
+    x: 33.4,
+    y: 2,
+    z: 44.7,
+    scale: 3,
+    rotation: 3,
+  },
+  {
+    type: 2,
+    x: 37,
+    y: 2,
+    z: 44.7,
+    scale: 3.1,
+    rotation: 2,
   },
 ]
 
@@ -495,7 +627,7 @@ const buildGallery = (props: GalleryTypeProps) => {
       texture: {
         textureLoader,
         baseImg: floorBaseImg,
-        // ambientImg: floorAmbientImg,
+        ambientImg: floorAmbientImg,
         normalImg: floorNormImg,
         repeatX: floorData.width / 3,
         repeatY: floorData.depth / 3,
@@ -549,19 +681,17 @@ const buildGallery = (props: GalleryTypeProps) => {
     world: props.world,
     container: props.scene,
     wallsData: WALLS_DATA,
-    repeatX: 8 / 6,
-    repeatY: 10 / 6,
+    repeatX: 10 / 6,
+    repeatY: 8 / 6,
     texture: {
       textureLoader,
       baseImg: wallBaseImg,
-      // ambientImg: wallAmbientImg,
+      ambientImg: wallAmbientImg,
       normalImg: wallNormImg,
     },
   })
   items.push(walls)
-  walls.meshes.forEach((mesh) => {
-    props.rayControls.rayItems.push(mesh)
-  })
+  props.rayControls.rayItems.push(walls.mesh)
 
   const glassWall = new Wall({
     world: props.world,
@@ -580,7 +710,7 @@ const buildGallery = (props: GalleryTypeProps) => {
   items.push(glassWall)
   props.rayControls.rayItems.push(glassWall.mesh)
 
-  // Create Plants
+  // // Create Plants
   // const plants = new Plants({
   //   container: props.scene,
   //   gltfLoader,

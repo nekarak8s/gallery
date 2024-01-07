@@ -1,5 +1,6 @@
 import { Body, Box, Quaternion, Vec3, World } from 'cannon-es'
 import * as THREE from 'three'
+import * as BufferGeometryUtils from 'three/examples/jsm/utils/BufferGeometryUtils.js'
 
 type TextureProps = {
   textureLoader: THREE.TextureLoader
@@ -35,60 +36,20 @@ export type WallsArgs = {
 
 export class Walls {
   type: string = 'walls'
-  meshes: THREE.Mesh[] = []
+  mesh: THREE.Mesh
   cannonBodies: Body[] = []
   textureSource: Record<string, THREE.Texture> = {}
 
   dispose: () => void
 
   constructor(info: WallsArgs) {
-    // Load Textures
-    if (info.texture) {
-      this.textureSource['baseTex'] = info.texture.textureLoader.load(info.texture.baseImg)
-      if (info.texture.normalImg) {
-        this.textureSource['normalTex'] = info.texture.textureLoader.load(info.texture.normalImg)
-      }
-      if (info.texture.roughImg) {
-        this.textureSource['roughTex'] = info.texture.textureLoader.load(info.texture.roughImg)
-      }
-      if (info.texture.ambientImg) {
-        this.textureSource['ambientTex'] = info.texture.textureLoader.load(info.texture.ambientImg)
-      }
-    }
-
-    for (const key in this.textureSource) {
-      this.textureSource[key].wrapS = THREE.RepeatWrapping
-      this.textureSource[key].wrapT = THREE.RepeatWrapping
-
-      this.textureSource[key].repeat.x = info.repeatX || 1
-      this.textureSource[key].repeat.y = info.repeatY || 1
-    }
+    const geometries: THREE.BoxGeometry[] = []
 
     info.wallsData.forEach((wallData) => {
       // Geometry
       const geometry = new THREE.BoxGeometry(wallData.width, wallData.height, wallData.depth)
 
-      // Create Material
-      const material = info.texture?.roughImg
-        ? new THREE.MeshStandardMaterial({
-            color: info.color,
-            transparent: info.transparent || false,
-            opacity: info.opacity,
-            map: this.textureSource['baseTex'] || undefined,
-            normalMap: this.textureSource['normalTex'] || undefined,
-            aoMap: this.textureSource['ambientTex'] || undefined,
-            roughnessMap: this.textureSource['roughTex'] || undefined,
-          })
-        : new THREE.MeshLambertMaterial({
-            color: info.color,
-            transparent: info.transparent || false,
-            opacity: info.opacity,
-            map: this.textureSource['baseTex'] || undefined,
-            normalMap: this.textureSource['normalTex'] || undefined,
-            aoMap: this.textureSource['ambientTex'] || undefined,
-          })
-
-      //Adjust position
+      // Adjust position
       const rotationX = wallData.rotationX || 0
       const rotationY = wallData.rotationY || 0
       const rotationZ = wallData.rotationZ || 0
@@ -97,16 +58,12 @@ export class Walls {
       const y = wallData.y + wallData.height / 2
       const z = wallData.z - (wallData.width * Math.sin(rotationY)) / 2
 
-      // Mesh
-      const mesh = new THREE.Mesh(geometry, material)
-      mesh.position.set(x, y, z)
-      mesh.rotation.set(rotationX, rotationY, rotationZ)
-      mesh.castShadow = !info.transparent ? true : false
-      mesh.receiveShadow = !info.transparent ? true : false
-      mesh.name = 'wall'
+      geometry.rotateX(rotationX)
+      geometry.rotateY(rotationY)
+      geometry.rotateZ(rotationZ)
+      geometry.translate(x, y, z)
 
-      this.meshes.push(mesh)
-      info.container.add(mesh)
+      geometries.push(geometry)
 
       // Cannon body
       if (info.world) {
@@ -130,6 +87,62 @@ export class Walls {
       }
     })
 
+    // Merge geometry
+    const geometry = BufferGeometryUtils.mergeGeometries(geometries)
+    geometries.forEach((geometry) => {
+      geometry.dispose()
+    })
+
+    // Load Textures
+    if (info.texture) {
+      this.textureSource['baseTex'] = info.texture.textureLoader.load(info.texture.baseImg)
+      if (info.texture.normalImg) {
+        this.textureSource['normalTex'] = info.texture.textureLoader.load(info.texture.normalImg)
+      }
+      if (info.texture.roughImg) {
+        this.textureSource['roughTex'] = info.texture.textureLoader.load(info.texture.roughImg)
+      }
+      if (info.texture.ambientImg) {
+        this.textureSource['ambientTex'] = info.texture.textureLoader.load(info.texture.ambientImg)
+      }
+    }
+
+    for (const key in this.textureSource) {
+      this.textureSource[key].wrapS = THREE.RepeatWrapping
+      this.textureSource[key].wrapT = THREE.RepeatWrapping
+
+      this.textureSource[key].repeat.x = info.repeatX || 1
+      this.textureSource[key].repeat.y = info.repeatY || 1
+    }
+
+    // Create Material
+    const material = info.texture?.roughImg
+      ? new THREE.MeshStandardMaterial({
+          color: info.color,
+          transparent: info.transparent || false,
+          opacity: info.opacity,
+          map: this.textureSource['baseTex'] || undefined,
+          normalMap: this.textureSource['normalTex'] || undefined,
+          aoMap: this.textureSource['ambientTex'] || undefined,
+          roughnessMap: this.textureSource['roughTex'] || undefined,
+        })
+      : new THREE.MeshLambertMaterial({
+          color: info.color,
+          transparent: info.transparent || false,
+          opacity: info.opacity,
+          map: this.textureSource['baseTex'] || undefined,
+          normalMap: this.textureSource['normalTex'] || undefined,
+          aoMap: this.textureSource['ambientTex'] || undefined,
+        })
+
+    // Create mesh
+    this.mesh = new THREE.Mesh(geometry, material)
+    this.mesh.castShadow = !info.transparent ? true : false
+    this.mesh.receiveShadow = !info.transparent ? true : false
+    this.mesh.name = 'wall'
+
+    info.container.add(this.mesh)
+
     /**
      *  Dispose function: release resources
      */
@@ -142,20 +155,17 @@ export class Walls {
       }
 
       // Dispose mesh & material & geometry
-      this.meshes.forEach((mesh) => {
-        mesh.geometry
-        if (mesh.material instanceof Array) {
-          mesh.material.forEach((material) => {
-            material.dispose()
-          })
-        } else {
-          mesh.material.dispose()
-        }
+      if (this.mesh.material instanceof Array) {
+        this.mesh.material.forEach((material) => {
+          material.dispose()
+        })
+      } else {
+        this.mesh.material.dispose()
+      }
 
-        mesh.geometry.dispose()
+      this.mesh.geometry.dispose()
 
-        info.container.remove(mesh)
-      })
+      info.container.remove(this.mesh)
 
       // Dispose textures
       for (const key in this.textureSource) {
