@@ -162,10 +162,13 @@ public class GalleryServiceImpl implements GalleryService {
     @Override
     public void modifyGallery(long memberId, long galleryId, GalleryModifyRequestDTO requestDTO) throws CustomException{
         validatePlaceExistence(requestDTO.getPlaceId()); // 공간 아이디 유효성 검사
-        validateGalleryNameUniqueness(requestDTO.getName(), memberId); // 갤러리 이름 중복 검사
 
         Gallery gallery = galleryRepository.findByMemberIdAndGalleryId(memberId, galleryId)
                 .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "GG007", "해당 갤러리 정보가 없습니다"));
+
+        if (!requestDTO.getName().equals(gallery.getName())) {
+            validateGalleryNameUniqueness(requestDTO.getName(), memberId); // 갤러리 이름 중복 검사
+        }
 
         gallery.setName(requestDTO.getName());
         gallery.setContent(requestDTO.getContent());
