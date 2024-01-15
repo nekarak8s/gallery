@@ -104,7 +104,7 @@ Three.js로 3D 공간을 구현하면서 두 가지 어려움을 마주했습니
 
 ### Kubernetes
 
-현재는 Kubernetes를 도입하여 서비스 배포를 준비하고 있습니다. EKS 운영 부담을 줄이기 위해 AWS Lightsail 서버에 k3s를 직접 설치하여 서비스할 계획입니다.
+현재는 Kubernetes를 도입하여 서비스 배포를 준비하고 있습니다. EKS 운영 부담을 줄이기 위해 AWS Lightsail 인스턴스에 k3s(Lightweight K8s)를 직접 설치하여 서비스를 준비하고 있습니다. CI/CD 전략으로는 각각 Github Actions와 Argo CD를 채택했습니다.
 
 <div align="center">
    <img src="./assets/images/architecture.png" alt="더 갤러리 아키텍쳐" width=800/>
