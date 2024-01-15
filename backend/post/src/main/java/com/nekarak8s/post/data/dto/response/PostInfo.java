@@ -29,5 +29,5 @@ public class PostInfo {
 
     private MusicInfo music;
 
-    private boolean isActive;
+    private Boolean isActive;
 }

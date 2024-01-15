@@ -1,6 +1,6 @@
 package com.nekarak8s.post.data.dto.request;
 
-import com.nekarak8s.post.validation.NumberOfCharacters;
+import com.nekarak8s.post.validation.NumberOfComment;
 import lombok.Data;
 
 /**
@@ -9,6 +9,6 @@ import lombok.Data;
 @Data
 public class CommentModifyDTO {
 
-    @NumberOfCharacters // 1글자 이상인지 체크
+    @NumberOfComment // 1글자 이상인지 체크
     private String content; // 댓글 내용
 }

@@ -14,7 +14,7 @@ import java.io.IOException;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/post")
+@RequestMapping("api/post")
 public class PostController {
 
     private final PostService postService;
@@ -51,6 +51,7 @@ public class PostController {
     @PatchMapping("list/{galleryId}")
     public ResponseEntity<?> updatePosts(@ModelAttribute PostModifyRequest request,
                                          @PathVariable(value = "galleryId") Long galleryId) throws CustomException, IOException {
+        log.debug("request : {}", request);
         log.debug("게시물 목록 수정 요청옴 : {}", request.getPosts());
         postService.modifyPosts(request.getPosts(), galleryId);
 

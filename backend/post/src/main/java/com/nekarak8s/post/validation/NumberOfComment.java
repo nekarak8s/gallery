@@ -10,10 +10,9 @@ import java.lang.annotation.Target;
 
 @Target({ElementType.FIELD, ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = NumberOfCharactersValidator.class)
-public @interface NumberOfCharacters {
-    String message() default "Validation failed";
-    String regexPattern() default "";
+@Constraint(validatedBy = NumberOfCommentValidator.class)
+public @interface NumberOfComment {
+    String message() default "댓글은 최소 1자 이상 입력해주세요";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 }
