@@ -30,7 +30,7 @@ public class GalleryController {
 
     @GetMapping("/health")
     public String health() {
-        return "갤러리서버 ok";
+        return "Gallery App ok";
     }
 
     /**
@@ -55,7 +55,7 @@ public class GalleryController {
      */
     @PostMapping()
     public ResponseEntity<ApiResponse> createGallery(@RequestHeader(value = "X-Member-ID", required = false) long memberId,
-                                                     @Valid@ RequestBody GalleryCreateRequestDTO requestDTO) throws CustomException {
+                                                     @Valid @RequestBody GalleryCreateRequestDTO requestDTO) throws CustomException {
         log.debug("갤러리 생성");
         long galleryId = galleryService.createGallery(memberId, requestDTO);
 
