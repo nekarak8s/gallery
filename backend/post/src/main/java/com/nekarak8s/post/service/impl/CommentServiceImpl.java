@@ -120,6 +120,8 @@ public class CommentServiceImpl implements CommentService {
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<Object> entity = new HttpEntity<>(headers);
 
+        log.info("DEBUG | member-service-uri : {}", memberServiceUri);
+
         UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder.fromHttpUrl(memberServiceUri+"/nickname")
                 .queryParam("memberId", memberId);
 
