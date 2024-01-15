@@ -17,7 +17,7 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/post/music")
+@RequestMapping("api/post/music")
 public class MusicController {
 
     private final MusicService musicService;
@@ -48,7 +48,7 @@ public class MusicController {
      */
     @PostMapping()
     public ResponseEntity<?> getMusic(@RequestBody MusicRequestDTO musicRequestDTO) {
-
+        log.info("음악 조회 & DB 저장");
         MusicInfo musicInfo = musicService.getMusicInfo(musicRequestDTO);
 
         ApiResponse apiResponse = ApiResponse.builder()

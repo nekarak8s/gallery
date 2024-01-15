@@ -5,7 +5,6 @@ import com.nekarak8s.post.data.dto.response.MusicInfo;
 import com.nekarak8s.post.data.dto.response.PostInfo;
 import com.nekarak8s.post.data.entity.Music;
 import com.nekarak8s.post.data.entity.Post;
-import com.nekarak8s.post.data.repo.CommentRepo;
 import com.nekarak8s.post.data.repo.MusicRepo;
 import com.nekarak8s.post.data.repo.PostRepo;
 import com.nekarak8s.post.exception.CustomException;
@@ -32,10 +31,9 @@ import java.util.List;
 public class PostServiceImpl implements PostService {
 
     private final PostRepo postRepo;
-    private final CommentRepo commentRepo;
     private final MusicRepo musicRepo;
     private final S3Service s3Service;
-    private String DEFAULT_IMAGE = "https://nekarak8s-gallery-bucket.s3.ap-northeast-2.amazonaws.com/TheGallery.png";
+    private String DEFAULT_IMAGE = "Default.png";
 //    private static final String YOUTUBE_BASE_URL = "https://www.youtube.com/watch?v=";
 
     @Value("${cloud.aws.s3..url}")
@@ -54,6 +52,7 @@ public class PostServiceImpl implements PostService {
         for (Post post : posts) {
             String imageURL = post.getImageURL();
             if (imageURL != null) imageURL = BUCKET_BASE_URL + imageURL;
+            log.info("imageURL : {}", imageURL);
             PostInfo postInfo = new PostInfo().builder()
                     .postId(post.getId())
                     .order(post.getOrder())
