@@ -224,7 +224,7 @@ public class MemberController {
      */
     @GetMapping("/memberId")
     public ResponseEntity<?> getMemberId(@RequestParam(value = "nickname") String nickname) throws CustomException {
-        log.debug("아이디 조회 요청옴");
+        log.debug("아이디 조회 요청옴 : {}", nickname);
         long memberId = memberService.getMemberId(nickname);
 
         ApiResponse apiResponse = createSuccessResponseWithData("닉네임 조회 성공", memberId);

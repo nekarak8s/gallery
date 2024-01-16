@@ -124,7 +124,10 @@ public class MemberServiceImpl implements MemberService{
 
     private void handleDeletedMember(Member member, long kakaoId, String kakaoNickname) throws CustomException {
         String newNickname = retryGenerateNewNickname(kakaoNickname);
-        Member.createNewMember(kakaoId, newNickname);
+        member.setNickname(newNickname);
+        member.setIsDeleted(false);
+        member.setDeletedDate(null);
+        member.setLastDate(LocalDateTime.now());
         memberRepository.save(member);
         nicknameService.saveNicknameInRedis(newNickname, member.getMemberId());
     }
