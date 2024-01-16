@@ -79,5 +79,4 @@ export function getSunColor(date: Date) {
 
   // Return the color in RGB format
   return `rgb(${red}, ${green}, ${blue})`
-  // return `rgb(255, 255, 255)`
 }

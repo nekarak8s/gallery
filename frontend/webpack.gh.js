@@ -18,10 +18,10 @@ module.exports = merge(common, {
     filename: '[name].js',
     publicPath: '/gallery/',
   },
-  externals: {
-    react: 'React', // CDN에서 React 로드
-    'react-dom': 'ReactDOM', // CDN에서 React DOM 로드
-  },
+  // externals: {
+  //   react: 'React', // CDN에서 React 로드
+  //   'react-dom': 'ReactDOM', // CDN에서 React DOM 로드
+  // },
   module: {
     rules: [
       {

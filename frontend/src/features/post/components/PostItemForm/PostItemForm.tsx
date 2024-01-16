@@ -121,7 +121,6 @@ const PostItemForm = ({ post, index }: PostItemFormProps) => {
           onSelect={(music) => {
             setMusic(music)
             setIsMusicOpen(false)
-            console.log('modal', music)
           }}
         />
       </Modal>

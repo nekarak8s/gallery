@@ -27,7 +27,7 @@ const Music: React.FC<Props> = ({ src, title, id = 'audio', color = 'black' }) =
   }
 
   return (
-    <button className={`music ${color}`} onClick={handleClick} aria-label={'음악 재생/일시정지'}>
+    <button className={`music ${color}`} onClick={handleClick} aria-label={title}>
       <MusicIcon />
       <span data-cursor-scale={CURSOR_SCALE}>{title}</span>
       <audio id={id} src={src} loop></audio>

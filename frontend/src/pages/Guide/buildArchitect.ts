@@ -7,13 +7,10 @@ import updateGalleryImg from '@/assets/images/guide/update-gallery.png'
 import wallBaseImg from '@/assets/textures/concrete/Concrete_011_COLOR.jpg'
 import wallNormImg from '@/assets/textures/concrete/Concrete_011_NORM.jpg'
 import wallAmbientImg from '@/assets/textures/concrete/Concrete_011_OCC.jpg'
-import wallRoughImg from '@/assets/textures/concrete/Concrete_011_ROUGH.jpg'
-import frameAmbientImg from '@/assets/textures/fabric/Fabric_polyester_001_ambientOcclusion.jpg'
 import frameNormImg from '@/assets/textures/fabric/Fabric_polyester_001_normal.jpg'
 import floorBaseImg from '@/assets/textures/granite/Granite_001_COLOR.jpg'
 import floorNormImg from '@/assets/textures/granite/Granite_001_NORM.jpg'
 import floorAmbientImg from '@/assets/textures/granite/Granite_001_OCC.jpg'
-import floorRoughImg from '@/assets/textures/granite/Granite_001_ROUGH.jpg'
 import { getSunColor, getSunIntensity, getSunPosition } from '@/libs/sun'
 import { Floor } from '@/libs/three-custom/items/Floor'
 import { Frame } from '@/libs/three-custom/items/Frame'
@@ -128,8 +125,6 @@ export function buildArchitect(props: buildArchitectProps): ThreeItem {
   const sunLightIntensity = getSunIntensity(date)
   const sunLightColor = new THREE.Color(getSunColor(date))
 
-  console.log(date, sunLightIntensity)
-
   /**
    * Meshes
    */
@@ -164,7 +159,7 @@ export function buildArchitect(props: buildArchitectProps): ThreeItem {
       baseImg: floorBaseImg,
       ambientImg: floorAmbientImg,
       normalImg: floorNormImg,
-      roughImg: floorRoughImg,
+      // roughImg: floorRoughImg,
       repeatX: FLOOR_DATA.width / 3,
       repeatY: FLOOR_DATA.depth / 3,
     },
@@ -182,7 +177,7 @@ export function buildArchitect(props: buildArchitectProps): ThreeItem {
       baseImg: wallBaseImg,
       ambientImg: wallAmbientImg,
       normalImg: wallNormImg,
-      roughImg: wallRoughImg,
+      // roughImg: wallRoughImg,
     },
   })
   items.push(walls)
@@ -203,7 +198,7 @@ export function buildArchitect(props: buildArchitectProps): ThreeItem {
       texture: {
         textureLoader,
         baseImg: frame_data.baseImg,
-        ambientImg: frameAmbientImg,
+        // ambientImg: frameAmbientImg,
         normalImg: frameNormImg,
         repeatX: frame_data.width * 1.5,
         repeatY: frame_data.height * 1.5,

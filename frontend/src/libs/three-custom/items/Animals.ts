@@ -31,7 +31,6 @@ export class Animals {
      * Load GLTF
      */
     info.gltfLoader.load(animalGlb, (glb) => {
-      console.log(glb)
       // Create Animals
       info.animalsData.forEach((animal) => {
         // Get an object
@@ -52,8 +51,6 @@ export class Animals {
         const mixer = new THREE.AnimationMixer(object)
         const actions = []
         actions[0] = mixer.clipAction(object.animations[0])
-
-        console.log(actions[0])
       })
     })
 

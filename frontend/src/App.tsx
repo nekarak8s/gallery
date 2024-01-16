@@ -1,8 +1,6 @@
 import { Suspense, lazy } from 'react'
 import { Routes, Route } from 'react-router-dom'
 import Fallback from './atoms/ui/Fallback'
-import Home from './pages/Home'
-import MyPage from './pages/MyPage'
 import Cursor from '@/atoms/ui/Cursor'
 import useMobile from '@/hooks/useMobile'
 import NavbarLayout from '@/layouts/NavbarLayout'
@@ -13,6 +11,8 @@ import '@/styles/_global.scss'
 
 import './App.scss'
 
+const Home = lazy(() => import('@/pages/Home'))
+const MyPage = lazy(() => import('@/pages/MyPage'))
 const Guide = lazy(() => import('@/pages/Guide'))
 const Gallery = lazy(() => import('@/pages/Gallery'))
 

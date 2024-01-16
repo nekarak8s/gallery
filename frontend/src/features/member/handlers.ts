@@ -8,7 +8,6 @@ export const memberHandlers = [
     // get query parameters
     const url = new URL(request.url)
     const type = url.searchParams.get('type')
-    console.log('type', type)
 
     // make response
     return HttpResponse.json(
@@ -27,8 +26,6 @@ export const memberHandlers = [
     const url = new URL(request.url)
     const type = url.searchParams.get('type')
     const code = url.searchParams.get('code')
-    console.log('type', type)
-    console.log('code', code)
 
     // make response
     const now = new Date()

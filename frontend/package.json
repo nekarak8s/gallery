@@ -24,6 +24,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@sentry/react": "^7.93.0",
     "axios": "^1.4.0",
     "cannon-es": "^0.20.0",
     "gsap": "^3.12.2",

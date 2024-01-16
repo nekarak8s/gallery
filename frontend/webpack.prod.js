@@ -15,10 +15,10 @@ module.exports = merge(common, {
     filename: '[name].js',
     publicPath: '/',
   },
-  externals: {
-    react: 'React', // CDN에서 React 로드
-    'react-dom': 'ReactDOM', // CDN에서 React DOM 로드
-  },
+  // externals: {
+  //   react: 'React', // CDN에서 React 로드
+  //   'react-dom': 'ReactDOM', // CDN에서 React DOM 로드
+  // },
   module: {
     rules: [
       {
@@ -96,7 +96,7 @@ module.exports = merge(common, {
       new TerserPlugin({
         terserOptions: {
           compress: {
-            // drop_console: true,
+            drop_console: true,
           },
         },
       }),

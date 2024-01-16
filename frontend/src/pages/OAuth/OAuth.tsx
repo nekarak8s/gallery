@@ -27,8 +27,7 @@ function OAuth() {
   useEffect(() => {
     if (isSuccess) {
       const pathname = window.sessionStorage.getItem('login-pathname')
-      console.log('pathname', pathname)
-      if (pathname && pathname !== routes['Login'].path) {
+      if (pathname && pathname !== routes['Login'].path && pathname !== routes['Home'].path) {
         navigate(pathname)
       } else {
         navigate(routes['MyPage'].path)

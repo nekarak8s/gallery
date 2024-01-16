@@ -4,7 +4,6 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import { degToRad } from 'three/src/math/MathUtils'
 import wallBaseImg from '@/assets/textures/concrete/Concrete_011_COLOR.jpg'
 import wallNormImg from '@/assets/textures/concrete/Concrete_011_NORM.jpg'
-import wallAmbientImg from '@/assets/textures/concrete/Concrete_011_OCC.jpg'
 import frameNormImg from '@/assets/textures/fabric/Fabric_polyester_001_normal.jpg'
 import floorBaseImg from '@/assets/textures/granite/Granite_001_COLOR.jpg'
 import floorNormImg from '@/assets/textures/granite/Granite_001_NORM.jpg'
@@ -667,7 +666,7 @@ const buildGallery = (props: GalleryTypeProps) => {
     texture: {
       textureLoader,
       baseImg: wallBaseImg,
-      ambientImg: wallAmbientImg,
+      // ambientImg: wallAmbientImg,
       normalImg: wallNormImg,
       repeatX: CEILING_DATA.width / 6,
       repeatY: CEILING_DATA.depth / 6,
@@ -686,7 +685,7 @@ const buildGallery = (props: GalleryTypeProps) => {
     texture: {
       textureLoader,
       baseImg: wallBaseImg,
-      ambientImg: wallAmbientImg,
+      // ambientImg: wallAmbientImg,
       normalImg: wallNormImg,
     },
   })

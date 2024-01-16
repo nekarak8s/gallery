@@ -58,7 +58,7 @@ const GalleryCanvas = ({ gallery, postList }: GalleryCanvasProps) => {
       setLoadedCount((cnt) => cnt + 1)
     }
     loadingManager.onError = function toastLoadingErrorMesage(url) {
-      console.log(url)
+      console.error(url)
       toastManager.addToast('error', '필요한 자원을 로드하지 못했습니다')
     }
 
