@@ -4,10 +4,8 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import { degToRad } from 'three/src/math/MathUtils'
 import wallBaseImg from '@/assets/textures/concrete/Concrete_011_COLOR.jpg'
 import wallNormImg from '@/assets/textures/concrete/Concrete_011_NORM.jpg'
-import frameNormImg from '@/assets/textures/fabric/Fabric_polyester_001_normal.jpg'
 import floorBaseImg from '@/assets/textures/granite/Granite_001_COLOR.jpg'
 import floorNormImg from '@/assets/textures/granite/Granite_001_NORM.jpg'
-import floorAmbientImg from '@/assets/textures/granite/Granite_001_OCC.jpg'
 import { GalleryTypeProps } from '@/features/gallery/types'
 import { getSunColor, getSunIntensity, getSunPosition } from '@/libs/sun'
 import { Ceiling } from '@/libs/three-custom/items/Ceiling'
@@ -626,7 +624,6 @@ const buildGallery = (props: GalleryTypeProps) => {
       texture: {
         textureLoader,
         baseImg: floorBaseImg,
-        ambientImg: floorAmbientImg,
         normalImg: floorNormImg,
         repeatX: floorData.width / 3,
         repeatY: floorData.depth / 3,
@@ -666,10 +663,9 @@ const buildGallery = (props: GalleryTypeProps) => {
     texture: {
       textureLoader,
       baseImg: wallBaseImg,
-      // ambientImg: wallAmbientImg,
       normalImg: wallNormImg,
-      repeatX: CEILING_DATA.width / 6,
-      repeatY: CEILING_DATA.depth / 6,
+      repeatX: CEILING_DATA.width / 10,
+      repeatY: CEILING_DATA.depth / 10,
     },
   })
   items.push(ceiling)
@@ -680,12 +676,11 @@ const buildGallery = (props: GalleryTypeProps) => {
     world: props.world,
     container: props.scene,
     wallsData: WALLS_DATA,
-    repeatX: 10 / 6,
-    repeatY: 8 / 6,
+    repeatX: 10 / 10,
+    repeatY: 8 / 10,
     texture: {
       textureLoader,
       baseImg: wallBaseImg,
-      // ambientImg: wallAmbientImg,
       normalImg: wallNormImg,
     },
   })
@@ -723,11 +718,7 @@ const buildGallery = (props: GalleryTypeProps) => {
     container: props.scene,
     textureLoader,
     postList: props.postList,
-    normalImg: frameNormImg,
-    // ambientImg: frameAmbientImg,
     framesData: FRAMES_DATA,
-    repeatX: 3,
-    repeatY: 3,
     spotLight: {
       intensity: 3 * (1 - sunLightIntensity) + 5,
     },

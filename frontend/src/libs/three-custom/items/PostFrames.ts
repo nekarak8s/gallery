@@ -71,6 +71,8 @@ export class PostFrames {
     }
 
     info.framesData.forEach((frameData, idx) => {
+      if (!info.postList[idx].isActive) return
+
       // Geometry
       const geometry = new THREE.BoxGeometry(frameData.width, frameData.height, frameData.depth)
 
@@ -99,7 +101,7 @@ export class PostFrames {
       const rotationY = frameData.rotationY || 0
       const rotationZ = frameData.rotationZ || 0
 
-      const mesh = new FrameMesh(geometry, material, info.postList[idx].order)
+      const mesh = new FrameMesh(geometry, material, idx)
       mesh.position.set(frameData.x, frameData.y, frameData.z)
       mesh.rotation.set(rotationX, rotationY, rotationZ)
       mesh.castShadow = true

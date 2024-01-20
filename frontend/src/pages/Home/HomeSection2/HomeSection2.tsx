@@ -38,7 +38,7 @@ import toFrame from '@/utils/toFrame'
 
 import './HomeSection2.scss'
 
-const BACK_HEIGHT = 6 // * 100dvh. background height
+const BACK_HEIGHT = 6 // * 100vh. background height
 
 function HomeSection2() {
   /**
@@ -49,7 +49,7 @@ function HomeSection2() {
   useEffect(() => {
     const back = backRef.current!
 
-    back.style.setProperty('--height-back', `${BACK_HEIGHT * 100}dvh`)
+    back.style.setProperty('--height-back', `${BACK_HEIGHT * 100}vh`)
     back.style.setProperty('--min-height-back', `${BACK_HEIGHT * 600}px`)
   }, [])
 
@@ -87,7 +87,7 @@ function HomeSection2() {
         } else {
           el.style.left = `${100 * posx}vw`
         }
-        el.style.top = `${100 * posy}dvh`
+        el.style.top = `${100 * posy}vh`
       })
     }
 
@@ -109,7 +109,7 @@ function HomeSection2() {
       cardEles.forEach((el) => {
         const speedy = Number(el.dataset.speedy)
         el.style.transform = `translateY(
-          calc(-50% - ${factor * (BACK_HEIGHT * 100 - 100) * speedy}dvh)
+          calc(-50% - ${factor * (BACK_HEIGHT * 100 - 100) * speedy}vh)
           )`
 
         // Open the card

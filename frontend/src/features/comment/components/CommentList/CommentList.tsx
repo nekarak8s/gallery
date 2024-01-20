@@ -1,9 +1,10 @@
+import { useQueryClient } from '@tanstack/react-query'
 import { useCommentListQuery } from '../../services'
 import CommentForm from '../CommentForm'
 import CommentItem from '../CommentItem'
 import Loading from '@/atoms/ui/Loading'
+import { UserData } from '@/features/member/types'
 import './CommentList.scss'
-import { useUserQuery } from '@/features/member/services'
 
 type CommentListProps = {
   postId: number
@@ -13,16 +14,17 @@ const CommentList = ({ postId }: CommentListProps) => {
   /**
    * Get data
    */
-  const { data: user, isLoading: isUserLoading, isError: isUserError } = useUserQuery()
+  const queryClient = useQueryClient()
+  const user = queryClient.getQueryData(['user']) as UserData | undefined
   const {
     data: commentList,
     isLoading: isCommentLoading,
     isError: isCommentError,
   } = useCommentListQuery(postId)
 
-  if (isUserError || isCommentError) return null
+  if (isCommentError) return null
 
-  if (isUserLoading || isCommentLoading) return <Loading />
+  if (isCommentLoading) return <Loading />
 
   return (
     <section className="comment-list">

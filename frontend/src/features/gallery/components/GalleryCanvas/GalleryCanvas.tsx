@@ -101,7 +101,7 @@ const GalleryCanvas = ({ gallery, postList }: GalleryCanvasProps) => {
       if (item.object instanceof FrameMesh) {
         if (item.distance > 10) toastManager.addToast('error', '앨범이 너무 멀리 있습니다')
         else {
-          setSelectedPostIdx(item.object.order)
+          setSelectedPostIdx(item.object.index)
           musicManager.muteAudio()
           controls.enabled = false
         }

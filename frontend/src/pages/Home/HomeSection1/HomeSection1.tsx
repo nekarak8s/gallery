@@ -20,7 +20,7 @@ import toFrame from '@/utils/toFrame'
 import './HomeSection1.scss'
 
 const TOTAL_IMAGE = 6
-const BACK_HEIGHT = 2 // * 100dvh. background height
+const BACK_HEIGHT = 2 // * 100vh. background height
 const SCROLL_OFFSET = 300 // px. fade start offset on scroll
 const ROTATION_DEGREE = 20 // deg. max rotation degree on mousemove
 
@@ -33,7 +33,7 @@ function HomeSection1() {
   useEffect(() => {
     const back = backRef.current!
 
-    back.style.setProperty('--height-back', `${BACK_HEIGHT * 100}dvh`)
+    back.style.setProperty('--height-back', `${BACK_HEIGHT * 100}vh`)
     back.style.setProperty('--back-min-height', `${BACK_HEIGHT * 600}px`)
   }, [])
 

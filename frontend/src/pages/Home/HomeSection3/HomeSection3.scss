@@ -3,7 +3,7 @@
 @use '@/styles/_animations.scss' as a;
 
 .hs3-back {
-  height: var(--height-back, calc(400dvh + 200px));
+  height: var(--height-back, calc(400vh + 200px));
   min-height: var(--min-height-back, calc(1800px + 200px));
   position: relative;
 }
@@ -14,7 +14,7 @@
   left: 0;
   top: 0;
   width: 100vw;
-  height: 100dvh;
+  height: 100vh;
   min-height: 600px;
   color: var(--color, rgb(255, 93, 52));
   transition: color var(--transition-time-home) ease-in-out;
@@ -145,7 +145,7 @@
   overflow: hidden;
   position: absolute;
   z-index: 3;
-  top: 150dvh;
+  top: 150vh;
   right: 20vw;
   transform: translateY(-50%);
   transform-style: preserve-3d;

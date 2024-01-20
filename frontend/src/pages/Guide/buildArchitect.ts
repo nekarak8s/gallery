@@ -7,7 +7,6 @@ import updateGalleryImg from '@/assets/images/guide/update-gallery.png'
 import wallBaseImg from '@/assets/textures/concrete/Concrete_011_COLOR.jpg'
 import wallNormImg from '@/assets/textures/concrete/Concrete_011_NORM.jpg'
 import wallAmbientImg from '@/assets/textures/concrete/Concrete_011_OCC.jpg'
-import frameNormImg from '@/assets/textures/fabric/Fabric_polyester_001_normal.jpg'
 import floorBaseImg from '@/assets/textures/granite/Granite_001_COLOR.jpg'
 import floorNormImg from '@/assets/textures/granite/Granite_001_NORM.jpg'
 import floorAmbientImg from '@/assets/textures/granite/Granite_001_OCC.jpg'
@@ -159,7 +158,6 @@ export function buildArchitect(props: buildArchitectProps): ThreeItem {
       baseImg: floorBaseImg,
       ambientImg: floorAmbientImg,
       normalImg: floorNormImg,
-      // roughImg: floorRoughImg,
       repeatX: FLOOR_DATA.width / 3,
       repeatY: FLOOR_DATA.depth / 3,
     },
@@ -177,7 +175,6 @@ export function buildArchitect(props: buildArchitectProps): ThreeItem {
       baseImg: wallBaseImg,
       ambientImg: wallAmbientImg,
       normalImg: wallNormImg,
-      // roughImg: wallRoughImg,
     },
   })
   items.push(walls)
@@ -198,10 +195,6 @@ export function buildArchitect(props: buildArchitectProps): ThreeItem {
       texture: {
         textureLoader,
         baseImg: frame_data.baseImg,
-        // ambientImg: frameAmbientImg,
-        normalImg: frameNormImg,
-        repeatX: frame_data.width * 1.5,
-        repeatY: frame_data.height * 1.5,
       },
       spotLight: {
         intensity: 3 * (1 - sunLightIntensity) + 5,

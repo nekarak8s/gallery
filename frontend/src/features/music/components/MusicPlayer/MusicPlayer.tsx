@@ -27,8 +27,8 @@ const MusicPlayer = ({ music }: MusicPlayerProps) => {
             music.title +
             '\u00a0-\u00a0' +
             music.artist +
-            '\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0'
-          ).repeat(10)}
+            '\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0'
+          ).repeat(5)}
         </p>
       </div>
     </section>

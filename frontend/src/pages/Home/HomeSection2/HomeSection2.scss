@@ -2,7 +2,7 @@
 @use '@/styles/_z-index.scss' as *;
 
 .hs2-back {
-  height: var(--background-height, 600dvh);
+  height: var(--background-height, 600vh);
   min-height: var(--min-height-back, 3600px);
   position: relative;
 }
@@ -13,7 +13,7 @@
   left: 0;
   top: 0;
   width: 100vw;
-  height: 100dvh;
+  height: 100vh;
   min-height: 600px;
   color: var(--color, rgb(255, 93, 52));
   background-color: var(--background-color, rgb(122, 200, 219));

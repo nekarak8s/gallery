@@ -158,7 +158,7 @@ const Guide = () => {
 
       currentSection = newSection
 
-      sections.style.transform = `translate(0, -${newSection * 100}dvh)`
+      sections.style.transform = `translate(0, -${newSection * 100}vh)`
 
       // Move camera
       if (window.innerWidth < MOBILE_WIDTH) {
