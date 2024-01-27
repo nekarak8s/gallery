@@ -11,6 +11,7 @@
   height: 100vh;
   width: 100vw;
   overflow: hidden;
+  font-size: 1rem;
 
   &__background {
     // filter: blur(5px);
@@ -18,14 +19,12 @@
     position: absolute;
     top: 0;
     left: 0;
-
     height: 100%;
     width: 100%;
   }
 
   &__background::after {
     content: '';
-
     position: absolute;
     top: 0;
     left: 0;
@@ -33,40 +32,39 @@
     height: 100%;
     width: 100%;
   }
+}
 
-  &__form {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    justify-items: center;
-    overflow: hidden;
-    z-index: 1;
-    width: 47rem;
-    border-radius: 10px;
-    background-color: var(--color-bg, c.$bg-white);
-  }
+.login__form {
+  display: grid;
+  grid-template-columns: 23em 23em;
+  justify-items: center;
+  overflow: hidden;
+  z-index: 1;
+  width: 46em;
+  border-radius: 10px;
+  background-color: var(--color-bg, c.$bg-white);
 }
 
 @include laptop {
   .login {
-    &__form {
-      width: 43rem;
-    }
+    font-size: 0.9em;
   }
 }
 
 @include tablet {
   .login {
-    &__form {
-      width: 38rem;
-    }
+    font-size: 0.8em;
   }
 }
 
 @include mobile {
-  .login {
-    &__form {
-      width: auto;
-      grid-template-columns: 0 1fr;
+  .login__form {
+    width: auto;
+    grid-template-columns: 0 1fr;
+
+    > :nth-child(1) {
+      width: 0 !important;
+      overflow: hidden;
     }
   }
 }

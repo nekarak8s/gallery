@@ -19,6 +19,7 @@ const Login = () => {
         <StaticImage
           webpSrc={webpSrc}
           imgSrc={imgSrc}
+          width="23em"
           alt="해변가 파도"
           sizes="(max-width: 750px) 0px, (max-width: 1500px) 50vw, 750px"
         />
