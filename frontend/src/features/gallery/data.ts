@@ -10,7 +10,7 @@ export const galleryData: GalleryData = {
   createdDate: '2023-08-03T23:59:59',
   modifiedDate: '2023-08-04T00:59:59',
   place: {
-    placeId: 1,
+    placeId: 2,
     name: 'Gallery A',
     maximumFrameNumber: 10,
     threeDimensionImageUri: threeDimImage,
@@ -132,7 +132,7 @@ export const placeListData: PlaceData[] = [
     placeId: 2,
     name: '공간2',
     maximumFrameNumber: 10,
-    twoDimensionImageUri: 'https://source.unsplash.com/random/300×300',
-    threeDimensionImageUri: 'https://source.unsplash.com/random/300×300',
+    twoDimensionImageUri: 'https://source.unsplash.com/random/400×400',
+    threeDimensionImageUri: 'https://source.unsplash.com/random/400×400',
   },
 ]

@@ -17,5 +17,7 @@ export const Default: Story = {
   args: {
     name: 'checkbox',
     label: 'Checkbox',
+    value: 'true',
+    falseValue: 'false',
   },
 }

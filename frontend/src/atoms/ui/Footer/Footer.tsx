@@ -15,7 +15,7 @@ const Footer = () => {
     <>
       <footer className="footer">
         <p>
-          더 갤러리: <del>인스타그램 3D 버전</del> 쿠버네티스 배포용 프로젝트
+          더 갤러리: 당신만의 3D <del>인스타그램</del>갤러리
         </p>
         <address>
           <ul>

@@ -7,13 +7,14 @@
   align-items: flex-end;
   gap: 10px;
   width: 100%;
+  font-size: 1rem;
 
   input {
     width: 100%;
     padding: 0.5em 0.5em;
     border-bottom: 2px solid black;
     font: inherit;
-    font-size: 0.8rem;
+    font-size: 1em;
   }
 
   input::file-selector-button {
@@ -27,6 +28,15 @@
 }
 
 @include mobile {
+  .file {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 10px;
+    width: 100%;
+    font-size: 0.8rem;
+  }
+
   .file__buttons {
     display: flex;
     gap: 15px;

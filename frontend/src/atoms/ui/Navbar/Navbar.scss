@@ -32,6 +32,10 @@
     svg {
       filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.3));
     }
+
+    button {
+      text-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
+    }
   }
 }
 

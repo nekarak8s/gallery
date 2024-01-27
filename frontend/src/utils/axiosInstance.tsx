@@ -4,7 +4,7 @@ import axios, { AxiosError, AxiosResponse, AxiosInstance } from 'axios'
 const BASE_API_URL =
   (process.env.REACT_APP_API_BASE_URL
     ? process.env.REACT_APP_API_BASE_URL
-    : `${window.location.protocol}://${window.location.hostname}:${window.location.port}`) + '/api'
+    : `${window.location.origin}`) + '/api'
 
 // Axios Instance
 const axiosInstance: AxiosInstance = axios.create({

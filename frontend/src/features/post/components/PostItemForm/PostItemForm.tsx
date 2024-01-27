@@ -1,4 +1,4 @@
-import { ChangeEventHandler, useEffect, useMemo, useState } from 'react'
+import { ChangeEvent, useEffect, useMemo, useRef, useState } from 'react'
 import { PostData } from '../../types'
 import Checkbox from '@/atoms/form/Checkbox'
 import File from '@/atoms/form/File'
@@ -7,6 +7,7 @@ import Text from '@/atoms/form/Text'
 import Textarea from '@/atoms/form/Textarea'
 import Button from '@/atoms/ui/Button'
 import Modal from '@/atoms/ui/Modal'
+import { CURSOR_SCALE } from '@/constants'
 import MusicSearch from '@/features/music/components/MusicSearch'
 import './PostItemForm.scss'
 import { MusicData } from '@/features/music/types'
@@ -18,7 +19,34 @@ type PostItemFormProps = {
 
 const PostItemForm = ({ post, index }: PostItemFormProps) => {
   /**
-   * Set the preview image
+   * Open / Close the card
+   */
+  const cardRef = useRef<HTMLElement>(null)
+
+  const toggleCard = () => {
+    cardRef.current?.classList.toggle('open')
+  }
+
+  /**
+   * Change Title
+   */
+  const [title, setTitle] = useState(post.title)
+
+  const handleChangeTitle = (event: ChangeEvent<HTMLInputElement>) => {
+    setTitle(event.target.value)
+  }
+
+  /**
+   * Toggle isActive (Show the post in the gallery)
+   */
+  const [isActive, setIsActive] = useState(true)
+
+  const handleIsActiveChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setIsActive(event.target.checked)
+  }
+
+  /**
+   * Show the preview image
    */
   const [imageURL, setImageUrl] = useState<string | undefined>(undefined)
 
@@ -38,7 +66,7 @@ const PostItemForm = ({ post, index }: PostItemFormProps) => {
   }
 
   /**
-   * Reset the preview image
+   * Reset to the original image
    */
   const originalImageUrl = useMemo(() => {
     return post.imageURL
@@ -49,55 +77,70 @@ const PostItemForm = ({ post, index }: PostItemFormProps) => {
   }
 
   /**
-   * Music select modal
+   * Open music select modal
    */
   const [isMusicOpen, setIsMusicOpen] = useState(false)
 
   const [music, setMusic] = useState<MusicData | undefined>(undefined)
 
-  /**
-   * Change background color by isActive value
-   */
-  const [isActive, setIsActive] = useState(post.isActive)
-
-  const handleIsActiveChange: ChangeEventHandler<HTMLInputElement> = (e) => {
-    setIsActive(e.target.checked)
-  }
-
   useEffect(() => {
+    setIsActive(post.isActive)
     setImageUrl(post.imageURL)
     setMusic(post.music)
   }, [])
 
   return (
     <>
-      <article className={`post-item-form ${!isActive && 'inactive'}`}>
-        <input readOnly type="hidden" name={`posts[${index}].postId`} value={post.postId} />
-        <input readOnly type="hidden" name={`posts[${index}].order`} value={index + 1} />
-        <div className="post-item-form__image-music">
-          <img src={imageURL} />
-          <div>
-            <File
-              name={`posts[${index}].image`}
-              accept="image/*"
-              onChange={handleFileChange}
-              onReset={handleFileReset}
-            />
-            <div className="post-item-form__music">
-              <Select name={`posts[${index}].musicId`}>
-                {music && (
-                  <option selected className="post-form__music" value={music.musicId}>
-                    {music.title} - {music.artist}
-                  </option>
-                )}
-                <option value="">노래 없음</option>
-              </Select>
-              <Button text="음악 선택" size="sm" onClick={() => setIsMusicOpen(true)} />
-            </div>
+      <article className={`post-item-form`} ref={cardRef}>
+        <div
+          className={`post-item-form__header ${isActive || 'inactive'}`}
+          tabIndex={0}
+          onClick={toggleCard}
+          data-cursor-sclae={CURSOR_SCALE}
+        >
+          <input type="hidden" name={`posts[${index}].postId`} value={post.postId} />
+          <input type="hidden" name={`posts[${index}].order`} value={index + 1} />
+          <div className="post-item-form__order-title">
+            <span className="post-item-form__toggle">&#9654;</span>
+            <span>{index + 1}번</span>
+            <span>|</span>
+            <h2>{title}</h2>
           </div>
+          <Checkbox
+            className="post-item-form__is-active"
+            name={`posts[${index}].isActive`}
+            value="true"
+            falseValue="false"
+            label={isActive ? '전시 중' : '보관 중'}
+            defaultChecked={post.isActive}
+            onChange={handleIsActiveChange}
+          />
         </div>
-        <div className="post-item-form__title-content">
-          <Text label="제목" name={`posts[${index}].title`} initialValue={post.title} />
+        <div className="post-item-form__card">
+          <img src={imageURL} />
+          <File
+            name={`posts[${index}].image`}
+            accept="image/*"
+            onChange={handleFileChange}
+            onReset={handleFileReset}
+          />
+          <div className="post-item-form__music">
+            <Select name={`posts[${index}].musicId`}>
+              {music && (
+                <option selected className="post-form__music" value={music.musicId}>
+                  {music.title} - {music.artist}
+                </option>
+              )}
+              <option value="">노래 없음</option>
+            </Select>
+            <Button text="음악 선택" size="sm" onClick={() => setIsMusicOpen(true)} />
+          </div>
+          <Text
+            label="제목"
+            name={`posts[${index}].title`}
+            initialValue={post.title}
+            onChange={handleChangeTitle}
+          />
           <Textarea
             label="설명"
             name={`posts[${index}].content`}
@@ -105,15 +148,6 @@ const PostItemForm = ({ post, index }: PostItemFormProps) => {
             height="3.5em"
           />
         </div>
-        {/* Incase unchecked */}
-        {!isActive && <input type="hidden" name={`posts[${index}].isActive`} value="false" />}
-        <Checkbox
-          className="post-item-form__is-active"
-          name={`posts[${index}].isActive`}
-          value="true"
-          defaultChecked={post.isActive}
-          onChange={handleIsActiveChange}
-        />
       </article>
       {/* Music Select Modal */}
       <Modal isOpen={isMusicOpen} onClose={() => setIsMusicOpen(false)}>

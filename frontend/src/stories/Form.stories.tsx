@@ -44,9 +44,9 @@ export const Default: Story = {
           <option value="3">Option3</option>
         </Select>
         <Row>
-          <Checkbox name="checkbox" label="Checkbox1" />
-          <Checkbox name="checkbox" label="Checkbox2" />
-          <Checkbox name="checkbox" label="Checkbox3" />
+          <Checkbox name="checkbox" label="Checkbox1" value="true" falseValue="false" />
+          <Checkbox name="checkbox" label="Checkbox2" value="true" falseValue="false" />
+          <Checkbox name="checkbox" label="Checkbox3" value="true" falseValue="false" />
         </Row>
         <Row>
           <Radio name="radio" label="radio1" value="1" />

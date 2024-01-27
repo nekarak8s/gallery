@@ -28,9 +28,10 @@ const PlacesRadio = ({ placeList, defaultChecked }: PlaceRadioProps) => {
     }
 
     for (let idx = 0; idx < placeList.length; idx++) {
-      placeList[idx].placeId === defaultChecked
-      setIndex(idx)
-      break
+      if (placeList[idx].placeId === defaultChecked) {
+        setIndex(idx)
+        break
+      }
     }
   }, [placeList, defaultChecked])
 
@@ -69,7 +70,7 @@ const PlacesRadio = ({ placeList, defaultChecked }: PlaceRadioProps) => {
 
   useEffect(() => {
     if (isFirstLoad.current) {
-      isFirstLoad.current = true
+      isFirstLoad.current = false
       return
     }
 
@@ -121,7 +122,7 @@ const PlacesRadio = ({ placeList, defaultChecked }: PlaceRadioProps) => {
           <RightArrow />
         </button>
         <div className="places-radio__image">
-          <button aria-label="갤러리 2D 이미지 열기">
+          <button type="button" aria-label="갤러리 2D 이미지 열기">
             <ImageIcon />
           </button>
           <img src={placeList[index].twoDimensionImageUri} />
