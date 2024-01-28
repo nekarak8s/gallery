@@ -15,7 +15,7 @@ const Textarea = ({
   label,
   name,
   initialValue,
-  height = '6em',
+  height = '6.5em',
   onChange,
   readOnly = false,
 }: TextareaProps) => {

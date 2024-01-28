@@ -107,7 +107,6 @@ const PostItemForm = ({ post, index }: PostItemFormProps) => {
             <h2>{title}</h2>
           </div>
           <Checkbox
-            className="post-item-form__is-active"
             name={`posts[${index}].isActive`}
             value="true"
             falseValue="false"
@@ -145,7 +144,7 @@ const PostItemForm = ({ post, index }: PostItemFormProps) => {
             label="설명"
             name={`posts[${index}].content`}
             initialValue={post.content}
-            height="3.5em"
+            height="4em"
           />
         </div>
       </article>

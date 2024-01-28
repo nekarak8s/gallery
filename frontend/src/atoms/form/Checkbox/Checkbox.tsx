@@ -32,7 +32,13 @@ const Checkbox = ({
   }
 
   return (
-    <label htmlFor={id} className={`checkbox ${className ? className : ''}`}>
+    <label
+      htmlFor={id}
+      className={`checkbox ${className ? className : ''}`}
+      onClick={(e) => {
+        e.stopPropagation()
+      }}
+    >
       {!isChecked && <input type="hidden" name={name} value={falseValue} />}
       <div className="checkbox__label">
         <input
