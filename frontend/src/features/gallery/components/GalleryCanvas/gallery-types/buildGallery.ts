@@ -676,8 +676,8 @@ const buildGallery = (props: GalleryTypeProps) => {
     world: props.world,
     container: props.scene,
     wallsData: WALLS_DATA,
-    repeatX: 10 / 10,
-    repeatY: 8 / 10,
+    repeatX: 10 / 7,
+    repeatY: 8 / 7,
     texture: {
       textureLoader,
       baseImg: wallBaseImg,

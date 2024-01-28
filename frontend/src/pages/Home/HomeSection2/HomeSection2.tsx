@@ -34,7 +34,7 @@ import wideVid2 from '@/assets/videos/home-video-2.mp4'
 import wideWebm2 from '@/assets/videos/home-video-2.webm'
 import narrowVid1 from '@/assets/videos/home-video-3.mp4'
 import narrowWebm1 from '@/assets/videos/home-video-3.webm'
-import toFrame from '@/utils/toFrame'
+import toFrame from '@/libs/toFrame'
 
 import './HomeSection2.scss'
 

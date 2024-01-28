@@ -9,7 +9,7 @@ import Loading from '@/atoms/ui/Loading'
 import ScrollDown from '@/atoms/ui/ScrollDown'
 import { DefaultCamera } from '@/libs/three-custom/cameras/DefaultCamera'
 import { DefaultRenderer } from '@/libs/three-custom/renderers/DefaultRenderer'
-import toFrame from '@/utils/toFrame'
+import toFrame from '@/libs/toFrame'
 import './Guide.scss'
 
 const CAMERA_ORDERS = [

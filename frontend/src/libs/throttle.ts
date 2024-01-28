@@ -4,10 +4,7 @@
  * @param delay time for throttle
  * @returns  optimized function
  */
-export default function throttle(
-  cb: (...args: any[]) => void,
-  delay: number = 300
-) {
+export default function throttle(cb: (...args: any[]) => void, delay: number = 300) {
   if (!cb) {
     throw Error('Invalid required arguments')
   }

@@ -10,7 +10,7 @@ export const galleryData: GalleryData = {
   createdDate: '2023-08-03T23:59:59',
   modifiedDate: '2023-08-04T00:59:59',
   place: {
-    placeId: 2,
+    placeId: 1,
     name: 'Gallery A',
     maximumFrameNumber: 10,
     threeDimensionImageUri: threeDimImage,

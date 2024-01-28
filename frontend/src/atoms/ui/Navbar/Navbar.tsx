@@ -6,7 +6,7 @@ import Modal from '@/atoms/ui/Modal'
 import { CURSOR_SCALE } from '@/constants'
 import GallerySearch from '@/features/gallery/components/GallerySearch'
 import LoginForm from '@/features/member/components/LoginForm'
-import throttle from '@/utils/throttle'
+import throttle from '@/libs/throttle'
 import './Navbar.scss'
 
 type NavbarProps = {
