@@ -120,7 +120,7 @@ const PostItemForm = ({ post, index }: PostItemFormProps) => {
           <img src={imageURL} />
           <File
             name={`posts[${index}].image`}
-            accept="image/*"
+            accept="image/png, image/jpeg"
             onChange={handleFileChange}
             onReset={handleFileReset}
           />

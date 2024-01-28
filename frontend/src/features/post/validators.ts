@@ -5,7 +5,6 @@ export async function validatePostListForm(formData: FormData): Promise<RegexRes
     'image/jpeg',
     'image/png',
     'image/gif',
-    'image/bmp',
     'image/webp' /* add more as needed */,
   ]
   const reader = new FileReader()

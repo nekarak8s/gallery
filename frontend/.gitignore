@@ -1,5 +1,7 @@
-.env.*
+clear/
 storybook-static/
+.env.*
+*.log
 
 # Created by https://www.toptal.com/developers/gitignore/api/macos,windows,node,react,visualstudiocode,intellij
 # Edit at https://www.toptal.com/developers/gitignore?templates=macos,windows,node,react,visualstudiocode,intellij

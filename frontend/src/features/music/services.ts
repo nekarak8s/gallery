@@ -1,9 +1,10 @@
 import { useQuery, useMutation } from '@tanstack/react-query'
 import { MusicData, MusicSearchData } from './types'
+import { ErrorResponse, MessageResponse, TUseMutationOptions, TUseQueryOptions } from '@/@types/api'
 import axiosInstance from '@/utils/axiosInstance'
 import toastManager from '@/utils/toastManager'
 
-export function useMusicListQuery(query: string) {
+export function useMusicListQuery(query: string, options?: TUseQueryOptions<MusicSearchData[]>) {
   return useQuery<MessageResponse<MusicSearchData[]>, ErrorResponse, MusicSearchData[]>(
     ['music', { query }],
     () =>
@@ -21,11 +22,12 @@ export function useMusicListQuery(query: string) {
         return res.data
       },
       enabled: false,
+      ...options,
     }
   )
 }
 
-export function useCreateMusic() {
+export function useCreateMusic(options?: TUseMutationOptions<MusicSearchData>) {
   return useMutation<MessageResponse<MusicData>, ErrorResponse, MusicSearchData>(
     (data) => axiosInstance.post(`/post/music`, data),
     {
@@ -33,6 +35,7 @@ export function useCreateMusic() {
       onError: (err) => {
         toastManager.addToast('error', err.message)
       },
+      ...options,
     }
   )
 }

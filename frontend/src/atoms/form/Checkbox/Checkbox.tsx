@@ -23,7 +23,7 @@ const Checkbox = ({
   defaultChecked = false,
   children,
 }: PropsWithChildren<CheckboxProps>) => {
-  const [isChecked, setIsChecked] = useState(false)
+  const [isChecked, setIsChecked] = useState(defaultChecked)
 
   const handleChange = function toggleIsChecked(event: ChangeEvent<HTMLInputElement>) {
     event.stopPropagation()

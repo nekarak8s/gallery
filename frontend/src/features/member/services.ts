@@ -1,10 +1,11 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { LoginCallbackData, ProfileFormData, UserData } from './types'
+import { ErrorResponse, MessageResponse, TUseMutationOptions, TUseQueryOptions } from '@/@types/api'
 import { useLoginStore } from '@/stores/auth.store'
 import axiosInstance from '@/utils/axiosInstance'
 import toastManager from '@/utils/toastManager'
 
-export function useLogin() {
+export function useLogin(options?: TUseMutationOptions<string>) {
   return useMutation<MessageResponse<string>, ErrorResponse, string>(
     (type) => axiosInstance.post(`/member/login?type=${type}`),
     {
@@ -15,6 +16,7 @@ export function useLogin() {
       onError: (err) => {
         toastManager.addToast('error', err.message)
       },
+      ...options,
     }
   )
 }
@@ -36,7 +38,7 @@ export function useLoginCallback(type: string, code: string) {
   )
 }
 
-export function useLogout() {
+export function useLogout(options?: TUseMutationOptions) {
   const resetExpDate = useLoginStore((state) => state.resetExpDate)
   return useMutation<MessageResponse<undefined>, ErrorResponse>(
     () => axiosInstance.post(`/member/logout`),
@@ -48,11 +50,12 @@ export function useLogout() {
       onError: (err) => {
         toastManager.addToast('error', err.message)
       },
+      ...options,
     }
   )
 }
 
-export function useUserQuery() {
+export function useUserQuery(options?: TUseQueryOptions<UserData>) {
   return useQuery<MessageResponse<UserData>, ErrorResponse, UserData>(
     ['user'],
     () => axiosInstance.get(`/member`),
@@ -65,11 +68,12 @@ export function useUserQuery() {
         return res.data
       },
       staleTime: Infinity,
+      ...options,
     }
   )
 }
 
-export function useUpdateUser() {
+export function useUpdateUser(options?: TUseMutationOptions<ProfileFormData>) {
   const queryClient = useQueryClient()
   return useMutation<MessageResponse, ErrorResponse, ProfileFormData>(
     (data) => axiosInstance.patch(`/member`, data),
@@ -81,11 +85,12 @@ export function useUpdateUser() {
       onError: (err) => {
         toastManager.addToast('error', err.message)
       },
+      ...options,
     }
   )
 }
 
-export function useWithdrawl() {
+export function useWithdrawl(options?: TUseMutationOptions) {
   const resetExpDate = useLoginStore((state) => state.resetExpDate)
   return useMutation<MessageResponse<undefined>, ErrorResponse>(
     () => axiosInstance.delete(`/member`),
@@ -97,6 +102,7 @@ export function useWithdrawl() {
       onError: (err) => {
         toastManager.addToast('error', err.message)
       },
+      ...options,
     }
   )
 }

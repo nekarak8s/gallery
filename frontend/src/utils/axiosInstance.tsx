@@ -1,4 +1,5 @@
 import axios, { AxiosError, AxiosResponse, AxiosInstance } from 'axios'
+import { ErrorResponse } from '@/@types/api'
 
 // Base URL
 const BASE_API_URL =

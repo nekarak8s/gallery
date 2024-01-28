@@ -179,6 +179,7 @@ const GalleryCanvas = ({ gallery, postList }: GalleryCanvasProps) => {
       renderer.setAnimationLoop(null)
       renderer.dispose()
       controls.dispose()
+      rayControls.dispose()
 
       disposeCanvas()
 
