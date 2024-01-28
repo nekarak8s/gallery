@@ -28,11 +28,12 @@
   > p {
     width: 100%;
     font-size: 1em;
+    line-height: 140%;
   }
 }
 
 .post__image {
-  width: 100%;
+  width: 95%;
   aspect-ratio: 1/1;
   object-fit: cover;
 }

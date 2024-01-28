@@ -9,6 +9,7 @@ interface InputProps {
   name: string
   initialValue: string
   placeholder?: string
+  readOnly?: boolean
   onChange?: ChangeEventHandler<HTMLInputElement>
 }
 
@@ -19,6 +20,7 @@ const Text = ({
   name,
   initialValue,
   placeholder = ' ',
+  readOnly = false,
   onChange,
 }: InputProps) => {
   const handleKeyDown: KeyboardEventHandler<HTMLInputElement> = function focusNextEle(e) {
@@ -55,6 +57,7 @@ const Text = ({
         defaultValue={initialValue}
         onChange={onChange}
         onKeyDown={handleKeyDown}
+        readOnly={readOnly}
       />
       <label>{label}</label>
     </div>

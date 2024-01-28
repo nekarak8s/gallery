@@ -8,9 +8,17 @@ interface TextareaProps {
   initialValue: string
   height?: string | undefined
   onChange?: ChangeEventHandler<HTMLTextAreaElement>
+  readOnly?: boolean
 }
 
-const Textarea = ({ label, name, initialValue, height = '6em', onChange }: TextareaProps) => {
+const Textarea = ({
+  label,
+  name,
+  initialValue,
+  height = '6em',
+  onChange,
+  readOnly = false,
+}: TextareaProps) => {
   return (
     <div className="textarea">
       <textarea
@@ -19,6 +27,7 @@ const Textarea = ({ label, name, initialValue, height = '6em', onChange }: Texta
         onChange={onChange}
         placeholder=" "
         style={{ height }}
+        readOnly={readOnly}
       ></textarea>
       <label>{label}</label>
       <div />

@@ -1,18 +1,23 @@
+import { useState } from 'react'
 import { useCreateComment } from '../../services'
 import { validateCommentCreateForm } from '../../validators'
 import Form from '@/atoms/form/Form'
 import Text from '@/atoms/form/Text'
 import Button from '@/atoms/ui/Button'
+import Modal from '@/atoms/ui/Modal'
+import LoginForm from '@/features/member/components/LoginForm'
+import { UserData } from '@/features/member/types'
 import toastManager from '@/utils/toastManager'
 import './CommentForm.scss'
 
 type CommentFormProps = {
   postId: number
+  user: UserData | undefined
   onSuccess?: () => void | undefined
   onError?: () => void | undefined
 }
 
-const CommentForm = ({ postId, onSuccess, onError }: CommentFormProps) => {
+const CommentForm = ({ postId, user, onSuccess, onError }: CommentFormProps) => {
   /**
    * Create comment
    */
@@ -42,12 +47,32 @@ const CommentForm = ({ postId, onSuccess, onError }: CommentFormProps) => {
       })
   }
 
+  /**
+   * Login Modal
+   */
+  const [isLoginOpen, setIsLoginOpen] = useState(false)
+
   return (
-    <Form className="comment-form" onSubmit={handleSubmit}>
-      <input type="hidden" name="postId" value={postId} />
-      <Text label="감상문" name="content" initialValue="" />
-      <Button type="submit" text="생성" />
-    </Form>
+    <>
+      <Form className="comment-form" onSubmit={handleSubmit}>
+        <input type="hidden" name="postId" value={postId} />
+        {user ? (
+          <>
+            <Text label="감상문" name="content" initialValue="" />
+            <Button type="submit" text="생성" />
+          </>
+        ) : (
+          <>
+            <Text readOnly={true} label="감상문을 작성하세요" name="content" initialValue="" />
+            <Button type="button" text="로그인" onClick={() => setIsLoginOpen(true)} />
+          </>
+        )}
+      </Form>
+      {/* Login Modal */}
+      <Modal isOpen={isLoginOpen} onClose={() => setIsLoginOpen(false)}>
+        <LoginForm />
+      </Modal>
+    </>
   )
 }
 
