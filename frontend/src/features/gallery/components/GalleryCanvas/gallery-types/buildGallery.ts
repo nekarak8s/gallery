@@ -1,14 +1,12 @@
-import { Body, Box, Vec3 } from 'cannon-es'
 import * as THREE from 'three'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import { degToRad } from 'three/src/math/MathUtils'
 import wallBaseImg from '@/assets/textures/concrete/Concrete_019_BaseColor.jpg'
-import wallNormImg from '@/assets/textures/concrete/Concrete_019_Normal.jpg'
 import floorBaseImg from '@/assets/textures/granite/Granite_001_COLOR.jpg'
-import floorNormImg from '@/assets/textures/granite/Granite_001_NORM.jpg'
 import { GalleryTypeProps } from '@/features/gallery/types'
 import { getSunColor, getSunIntensity, getSunPosition } from '@/libs/sun'
 import { Ceiling } from '@/libs/three-custom/items/Ceiling'
+import { Edges } from '@/libs/three-custom/items/Edges'
 import { Floor } from '@/libs/three-custom/items/Floor'
 import { Frame } from '@/libs/three-custom/items/Frame'
 import { PostFrames } from '@/libs/three-custom/items/PostFrames'
@@ -50,6 +48,7 @@ const buildGallery = (props: GalleryTypeProps) => {
     textureLoader,
     width: 1000,
     depth: 1000,
+    distortionScale: 3,
   })
   items.push(water)
 
@@ -67,7 +66,7 @@ const buildGallery = (props: GalleryTypeProps) => {
       texture: {
         textureLoader,
         baseImg: floorBaseImg,
-        normalImg: floorNormImg,
+        // normalImg: floorNormImg,
         repeatX: floorData.width / 3,
         repeatY: floorData.depth / 3,
       },
@@ -106,17 +105,17 @@ const buildGallery = (props: GalleryTypeProps) => {
     texture: {
       textureLoader,
       baseImg: wallBaseImg,
-      normalImg: wallNormImg,
+      // normalImg: wallNormImg,
       repeatX: CEILING_DATA.width / 10,
       repeatY: CEILING_DATA.depth / 10,
     },
   })
   items.push(ceiling)
   props.rayControls.rayItems.push(ceiling.mesh)
+  props.controls.obstacles.push(ceiling.mesh)
 
   // Create walls
   const walls = new Walls({
-    world: props.world,
     container: props.scene,
     wallsData: WALLS_DATA,
     repeatX: 10 / 10,
@@ -124,14 +123,14 @@ const buildGallery = (props: GalleryTypeProps) => {
     texture: {
       textureLoader,
       baseImg: wallBaseImg,
-      normalImg: wallNormImg,
+      // normalImg: wallNormImg,
     },
   })
   items.push(walls)
   props.rayControls.rayItems.push(walls.mesh)
+  props.controls.obstacles.push(walls.mesh)
 
   const glassWall = new Wall({
-    world: props.world,
     container: props.scene,
     color: 0xffffff,
     x: GLASS_WALL.x,
@@ -146,6 +145,7 @@ const buildGallery = (props: GalleryTypeProps) => {
   })
   items.push(glassWall)
   props.rayControls.rayItems.push(glassWall.mesh)
+  props.controls.obstacles.push(glassWall.mesh)
 
   // // Create Plants
   // const plants = new Plants({
@@ -167,9 +167,7 @@ const buildGallery = (props: GalleryTypeProps) => {
     },
   })
   items.push(frames)
-  frames.meshes.forEach((mesh) => {
-    props.rayControls.rayItems.push(mesh)
-  })
+  props.rayControls.rayItems = [...props.rayControls.rayItems, ...frames.meshes]
 
   /**
    * Light
@@ -243,24 +241,13 @@ const buildGallery = (props: GalleryTypeProps) => {
     })
   }
 
-  /**
-   * Cannon.js Edges
-   */
-  EDGES_DATA.forEach((edgeData) => {
-    const shape = new Box(new Vec3(edgeData.width / 2, edgeData.height / 2, edgeData.depth / 2))
-    const body = new Body({
-      mass: 0,
-      position: new Vec3(edgeData.x, edgeData.y, edgeData.z),
-      shape,
-    })
-    props.world.addBody(body)
-
-    items.push({
-      dispose: () => {
-        props.world.removeBody(body)
-      },
-    })
+  // Create edges
+  const edges = new Edges({
+    container: props.scene,
+    edgesData: EDGES_DATA,
   })
+  items.push(edges)
+  props.controls.obstacles.push(edges.mesh)
 
   /**
    * Update function: Render canvas

@@ -160,13 +160,29 @@ export class KeypadControls {
   }
 
   /**
+   * Set camera position
+   */
+  setPosition(x: number, y: number, z: number) {
+    this.camera.position.set(x, y, z)
+    this.setOrientation()
+  }
+
+  /**
+   * Set camera rotation
+   */
+  setQuaternion(x: number, y: number, z: number) {
+    this.camera.rotation.set(x, y, z)
+    this.setOrientation()
+  }
+
+  /**
    * Move camera tagging along with cannon body
    */
   update(delta: number) {
     if (!this.enabled) return
 
     // Rotate camera
-    const actualLookSpeed = delta * this.#lookSpeedRatio * this.#LookSpeed * 13
+    const actualLookSpeed = delta * this.#lookSpeedRatio * this.#LookSpeed * 17
 
     this.#lon += actualLookSpeed
     const phi = MathUtils.degToRad(90)
@@ -174,22 +190,27 @@ export class KeypadControls {
     this.#target.setFromSphericalCoords(1, phi, theta).add(this.camera.position)
 
     this.camera.lookAt(this.#target)
+    this.#lookDirection.set(0, 0, -1).applyQuaternion(this.camera.quaternion)
 
     // Move camera forward / backward
-    let actualMoveSpeed = delta * this.#movementSpeedRatio * this.#movementSpeed * 8
+    let actualMoveSpeed = delta * this.#movementSpeedRatio * this.#movementSpeed * 7
 
-    // Stop if there's an obstacle
-    this.#raycaster.set(this.camera.position, this.#target)
-
-    let intersects = this.#raycaster.intersectObjects(this.obstacles)
-
-    // console.log(this.obstacles)
-    for (const item of intersects) {
-      //   console.log('item', item)
-      if (item.distance < 1 && actualMoveSpeed > 0) {
+    // Stop by obastacle
+    let intersects
+    if (actualMoveSpeed > 0) {
+      // front obastacke
+      this.#raycaster.set(this.camera.position, this.#lookDirection)
+      intersects = this.#raycaster.intersectObjects(this.obstacles)
+      if (intersects.length && intersects[0].distance < 1) {
         actualMoveSpeed = 0
       }
-      break
+    } else {
+      // backward obstacle
+      this.#raycaster.set(this.camera.position, this.#lookDirection.negate())
+      intersects = this.#raycaster.intersectObjects(this.obstacles)
+      if (intersects.length && intersects[0].distance < 1) {
+        actualMoveSpeed = 0
+      }
     }
     this.camera.translateZ(-actualMoveSpeed)
 

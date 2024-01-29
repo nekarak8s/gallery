@@ -1,6 +1,5 @@
-import { World } from 'cannon-es'
 import { PostData } from '../post/types'
-import { CannonKeypadControls } from '@/libs/three-custom/controls/CannonKeypadControls'
+import { KeypadControls } from '@/libs/three-custom/controls/KeypadControls'
 import { RaycasterControls } from '@/libs/three-custom/controls/RaycasterControls.ts'
 
 export type GalleryFormData = {
@@ -61,8 +60,7 @@ export type GalleryTypeProps = {
   renderer: THREE.WebGLRenderer
   scene: THREE.Scene
   camera: THREE.PerspectiveCamera
-  world: World
-  controls: CannonKeypadControls
+  controls: KeypadControls
   rayControls: RaycasterControls
   postList: PostData[]
 }

@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect, useMemo, useRef, useState } from 'react'
+import { ChangeEvent, useMemo, useRef, useState } from 'react'
 import { PostData } from '../../types'
 import Checkbox from '@/atoms/form/Checkbox'
 import File from '@/atoms/form/File'
@@ -39,7 +39,7 @@ const PostItemForm = ({ post, index }: PostItemFormProps) => {
   /**
    * Toggle isActive (Show the post in the gallery)
    */
-  const [isActive, setIsActive] = useState(true)
+  const [isActive, setIsActive] = useState(post.isActive)
 
   const handleIsActiveChange = (event: ChangeEvent<HTMLInputElement>) => {
     setIsActive(event.target.checked)
@@ -48,7 +48,7 @@ const PostItemForm = ({ post, index }: PostItemFormProps) => {
   /**
    * Show the preview image
    */
-  const [imageURL, setImageUrl] = useState<string | undefined>(undefined)
+  const [imageURL, setImageUrl] = useState<string | undefined>(post.imageURL)
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (!event.target.files || !event.target.files.length) return
@@ -81,13 +81,7 @@ const PostItemForm = ({ post, index }: PostItemFormProps) => {
    */
   const [isMusicOpen, setIsMusicOpen] = useState(false)
 
-  const [music, setMusic] = useState<MusicData | undefined>(undefined)
-
-  useEffect(() => {
-    setIsActive(post.isActive)
-    setImageUrl(post.imageURL)
-    setMusic(post.music)
-  }, [])
+  const [music, setMusic] = useState<MusicData | undefined>(post.music)
 
   return (
     <>

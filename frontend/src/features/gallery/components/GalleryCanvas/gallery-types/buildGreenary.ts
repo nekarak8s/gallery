@@ -1,17 +1,4 @@
-import { Body, Box, Vec3 } from 'cannon-es'
-import {
-  AmbientLight,
-  Box3,
-  BoxGeometry,
-  CubeTextureLoader,
-  CylinderGeometry,
-  DoubleSide,
-  DirectionalLight,
-  TextureLoader,
-  Vector3,
-  Mesh,
-  MeshLambertMaterial,
-} from 'three'
+import * as THREE from 'three'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import { degToRad } from 'three/src/math/MathUtils'
 import nx from '@/assets/cubemaps/clear_sky/nx.png'
@@ -22,18 +9,19 @@ import py from '@/assets/cubemaps/clear_sky/py.png'
 import pz from '@/assets/cubemaps/clear_sky/pz.png'
 import greenaryGlb from '@/assets/glbs/greenary.glb'
 import { GalleryTypeProps } from '@/features/gallery/types'
+import { Edges } from '@/libs/three-custom/items/Edges'
 import { PostFrames } from '@/libs/three-custom/items/PostFrames'
 import { Trees } from '@/libs/three-custom/items/Trees'
 
 const buildGreenary = (props: GalleryTypeProps) => {
-  // Create Loaders
-  const textureLoader = new TextureLoader(props.loadingManager)
-  const cubeTextureLoader = new CubeTextureLoader(props.loadingManager)
-  const gltfLoader = new GLTFLoader(props.loadingManager)
-
   // Set camera position & rotation by controls
   props.controls.setPosition(25.1, 5, 25.1)
   props.controls.setQuaternion(0, degToRad(-135), 0)
+
+  // Create Loaders
+  const textureLoader = new THREE.TextureLoader(props.loadingManager)
+  const cubeTextureLoader = new THREE.CubeTextureLoader(props.loadingManager)
+  const gltfLoader = new GLTFLoader(props.loadingManager)
 
   // Set scene background cubemap
   props.scene.background = cubeTextureLoader.load([px, nx, py, ny, pz, nz])
@@ -44,12 +32,12 @@ const buildGreenary = (props: GalleryTypeProps) => {
   const lights: THREE.Light[] = []
 
   // Ambient light
-  const ambientLight = new AmbientLight('white', 0.8)
+  const ambientLight = new THREE.AmbientLight('white', 0.8)
   props.scene.add(ambientLight)
   lights.push(ambientLight)
 
   // Direct Light
-  const directLight = new DirectionalLight('white', 1.8)
+  const directLight = new THREE.DirectionalLight('white', 1.8)
   directLight.position.set(110, 220, 110)
   directLight.shadow.camera.left = -60
   directLight.shadow.camera.right = 60
@@ -76,8 +64,8 @@ const buildGreenary = (props: GalleryTypeProps) => {
     const mesh = glb.scene.children[0]
     mesh.receiveShadow = true
 
-    const box = new Box3().setFromObject(mesh)
-    const { x: width, y: height, z: depth } = box.getSize(new Vector3())
+    const box = new THREE.Box3().setFromObject(mesh)
+    const { x: width, y: height, z: depth } = box.getSize(new THREE.Vector3())
 
     mesh.position.x += width / 2
     mesh.position.z += depth / 2
@@ -94,14 +82,14 @@ const buildGreenary = (props: GalleryTypeProps) => {
   })
 
   // Ocean meshes
-  const oceanGeometry = new BoxGeometry(1000, 5, 1000)
-  const oceanMaterial = new MeshLambertMaterial({
+  const oceanGeometry = new THREE.BoxGeometry(1000, 5, 1000)
+  const oceanMaterial = new THREE.MeshLambertMaterial({
     color: 0x008cf1,
-    side: DoubleSide,
+    side: THREE.DoubleSide,
     opacity: 0.8,
     transparent: true,
   })
-  const ocean = new Mesh(oceanGeometry, oceanMaterial)
+  const ocean = new THREE.Mesh(oceanGeometry, oceanMaterial)
 
   ocean.position.set(55, -3.8, 55)
   props.scene.add(ocean)
@@ -115,57 +103,23 @@ const buildGreenary = (props: GalleryTypeProps) => {
     },
   })
 
-  // Create ocean cannon bodies
-  const oceanShape1 = new Box(new Vec3(55, 50, 1))
-  const oceanBody1 = new Body({
-    mass: 0,
-    position: new Vec3(55, 0, -1),
-    shape: oceanShape1,
+  // Create edges
+  const edges = new Edges({
+    container: props.scene,
+    edgesData: EDGES_DATA,
   })
-  props.world.addBody(oceanBody1)
-
-  const oceanShape2 = new Box(new Vec3(55, 50, 1))
-  const oceanBody2 = new Body({
-    mass: 0,
-    position: new Vec3(55, 0, 109),
-    shape: oceanShape2,
-  })
-  props.world.addBody(oceanBody2)
-
-  const oceanShape3 = new Box(new Vec3(1, 50, 55))
-  const oceanBody3 = new Body({
-    mass: 0,
-    position: new Vec3(-1, 0, 55),
-    shape: oceanShape3,
-  })
-  props.world.addBody(oceanBody3)
-
-  const oceanShape4 = new Box(new Vec3(1, 50, 55))
-  const oceanBody4 = new Body({
-    mass: 0,
-    position: new Vec3(109, 0, 55),
-    shape: oceanShape4,
-  })
-  props.world.addBody(oceanBody4)
-
-  items.push({
-    dispose: () => {
-      props.world.removeBody(oceanBody1)
-      props.world.removeBody(oceanBody2)
-      props.world.removeBody(oceanBody3)
-      props.world.removeBody(oceanBody4)
-    },
-  })
+  items.push(edges)
+  props.controls.obstacles.push(edges.mesh)
 
   // Create lake
-  const lakeGeometry = new CylinderGeometry(17, 17, 5)
-  const lakeMaterial = new MeshLambertMaterial({
+  const lakeGeometry = new THREE.CylinderGeometry(17, 17, 5)
+  const lakeMaterial = new THREE.MeshLambertMaterial({
     color: 0x0bd3ff,
-    side: DoubleSide,
+    side: THREE.DoubleSide,
     opacity: 0.7,
     transparent: true,
   })
-  const lake = new Mesh(lakeGeometry, lakeMaterial)
+  const lake = new THREE.Mesh(lakeGeometry, lakeMaterial)
 
   lake.position.set(45, -3, 43)
   props.scene.add(lake)
@@ -182,12 +136,14 @@ const buildGreenary = (props: GalleryTypeProps) => {
   // Create Trees
   const trees = new Trees({
     container: props.scene,
-    world: props.world,
     gltfLoader,
     treesData: TREE_DATA,
+    onLoad: (tree: THREE.Object3D) => {
+      props.rayControls.rayItems.push(tree)
+      props.controls.obstacles.push(tree)
+    },
   })
   items.push(trees)
-  props.rayControls.rayItems = [...props.rayControls.rayItems, ...trees.objects]
 
   // Create PostFrames
   const frames = new PostFrames({
@@ -227,6 +183,12 @@ const buildGreenary = (props: GalleryTypeProps) => {
 }
 
 export default buildGreenary
+
+const FRAME_INFO = {
+  width: 2,
+  height: 2,
+  depth: 0.05,
+}
 
 const FRAMES_DATA = [
   {
@@ -599,10 +561,11 @@ const PLAIN_TREE = [
   },
 ]
 
-const FRAME_INFO = {
-  width: 2,
-  height: 2,
-  depth: 0.05,
-}
-
 const TREE_DATA = [...FOREST_TREE, ...MOUNTAIN_TREE, ...BEACH_TREE, ...LAKE_TREE, ...PLAIN_TREE]
+
+const EDGES_DATA = [
+  { width: 120, height: 100, depth: 1, x: 55, y: 0, z: -1 },
+  { width: 120, height: 100, depth: 1, x: 55, y: 0, z: 109 },
+  { width: 1, height: 100, depth: 120, x: -1, y: 0, z: 55 },
+  { width: 1, height: 100, depth: 120, x: 109, y: 0, z: 55 },
+]

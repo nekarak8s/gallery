@@ -18,6 +18,7 @@ export type TreesProps = {
   world?: World | undefined
   gltfLoader: GLTFLoader
   treesData: TreeData[]
+  onLoad?: (tree: THREE.Object3D) => void
 }
 
 export class Trees {
@@ -47,6 +48,8 @@ export class Trees {
 
         this.objects.push(object)
         info.container.add(object)
+
+        info.onLoad && info.onLoad(object)
 
         // Create cannon body
         if (info.world) {

@@ -1,13 +1,9 @@
 import * as regexes from './regexes'
 
+const reader = new FileReader()
+
 export async function validatePostListForm(formData: FormData): Promise<RegexResult<FormData>> {
-  const imageMimeTypes = [
-    'image/jpeg',
-    'image/png',
-    'image/gif',
-    'image/webp' /* add more as needed */,
-  ]
-  const reader = new FileReader()
+  const imageMimeTypes = ['image/jpeg', 'image/png', 'image/webp' /* add more as needed */]
 
   for (let i = 0; i < 10; i++) {
     // validate postId
@@ -48,11 +44,16 @@ export async function validatePostListForm(formData: FormData): Promise<RegexRes
 
     // validate image File
     const file = formData.get(`posts[${i}].image`) as File
+    if (!file) {
+      return { result: false, reason: `${i + 1}번째 게시물: 사진 없음` }
+    }
+    // replace the image
     formData.delete(`posts[${i}].image`)
     if (imageMimeTypes.includes(file.type)) {
       try {
         const resizedImage = await resizeImage(file, reader)
         formData.append(`posts[${i}].image`, resizedImage)
+        console.log(resizedImage, 'resie')
       } catch (e) {
         return { result: false, reason: `${i + 1}번째 게시물: 이미지 변환 실패` }
       }
@@ -67,46 +68,49 @@ export async function validatePostListForm(formData: FormData): Promise<RegexRes
 
 async function resizeImage(file: File, reader: FileReader): Promise<File> {
   return new Promise((resolve, reject) => {
-    reader.onload = (event: ProgressEvent<FileReader>) => {
+    reader.onload = (event) => {
       const img = new Image()
-      img.src = event.target?.result as string
-
       img.onload = () => {
         const canvas = document.createElement('canvas')
-        const ctx = canvas.getContext('2d')
-
-        const maxWidth = 800
-        const maxHeight = 800
-
+        const ctx = canvas.getContext('2d')!
+        const maxSize = 720
         let width = img.width
         let height = img.height
 
+        // Resize the image while maintaining aspect ratio
         if (width > height) {
-          if (width > maxWidth) {
-            height *= maxWidth / width
-            width = maxWidth
+          if (width > maxSize) {
+            height *= maxSize / width
+            width = maxSize
           }
         } else {
-          if (height > maxHeight) {
-            width *= maxHeight / height
-            height = maxHeight
+          if (height > maxSize) {
+            width *= maxSize / height
+            height = maxSize
           }
         }
 
         canvas.width = width
         canvas.height = height
 
-        ctx?.drawImage(img, 0, 0, width, height)
+        // Crop the image to 720px * 720px
+        const offsetX = (width - 720) / 2
+        const offsetY = (height - 720) / 2
+        ctx.drawImage(img, offsetX, offsetY, 720, 720, 0, 0, 720, 720)
 
         canvas.toBlob((blob) => {
-          if (blob) {
-            const resizedFile = new File([blob], file.name, { type: file.type })
-            resolve(resizedFile)
-          } else {
-            reject(new Error('이미지 변환 실패'))
+          if (!blob) {
+            reject(new Error('Failed to resize and crop image.'))
+            return
           }
-        }, file.type)
+          const resizedFile = new File([blob], file.name, {
+            type: 'image/jpeg', // Change the type if necessary
+            lastModified: Date.now(),
+          })
+          resolve(resizedFile)
+        }, 'image/jpeg')
       }
+      img.src = event.target!.result as string
     }
 
     reader.onerror = () => {
