@@ -174,17 +174,23 @@ const GalleryCanvas = ({ gallery, postList }: GalleryCanvasProps) => {
    */
   const isMobile = useMobile()
 
+  const joystickControl = useCallback((x: number, y: number) => {
+    if (!controlsRef.current) return
+
+    controlsRef.current.lookSpeedRatio = x
+    controlsRef.current.movementSpeedRatio = -y
+  }, [])
+
   const joystickShoot = useCallback(() => {
     if (!rayControlsRef.current) return
 
     rayControlsRef.current.shoot()
   }, [])
 
-  const joystickControl = useCallback((x: number, y: number) => {
+  const joystickJump = useCallback(() => {
     if (!controlsRef.current) return
 
-    controlsRef.current.lookSpeedRatio = -x
-    controlsRef.current.movementSpeedRatio = -y
+    controlsRef.current.jump()
   }, [])
 
   return (
@@ -212,7 +218,7 @@ const GalleryCanvas = ({ gallery, postList }: GalleryCanvasProps) => {
       </Modal>
       {isMobile && (
         <div className="gallery-canvas__joystick">
-          <Joystick control={joystickControl} shoot={joystickShoot} />
+          <Joystick control={joystickControl} shoot={joystickShoot} jump={joystickJump} />
         </div>
       )}
     </div>

@@ -1,20 +1,23 @@
 import { useEffect, useRef } from 'react'
 import BowIcon from '@/assets/svgs/bow.svg'
-import './Joystick.scss'
+import JumpIcon from '@/assets/svgs/jump.svg'
 import toFrame from '@/libs/toFrame'
+import './Joystick.scss'
 
 type JoystickProps = {
-  control?: (x: number, y: number) => void | undefined
-  shoot?: () => void | undefined
+  control?: (x: number, y: number) => void
+  shoot?: () => void
+  jump?: () => void
 }
 
-const Joystick = ({ control, shoot }: JoystickProps) => {
+const Joystick = ({ control, shoot, jump }: JoystickProps) => {
   /**
    * Joystick control
    */
   const joystickRef = useRef<HTMLDivElement>(null)
   const coreRef = useRef<HTMLDivElement>(null)
   const shootRef = useRef<HTMLDivElement>(null)
+  const jumpRef = useRef<HTMLDivElement>(null)
 
   const isTracking = useRef(false)
 
@@ -22,6 +25,7 @@ const Joystick = ({ control, shoot }: JoystickProps) => {
     const joystick = joystickRef.current!
     const core = coreRef.current!
     const shoot = shootRef.current!
+    const jump = jumpRef.current!
 
     /**
      * Set the controller origin & shoot top, bottom, left, right
@@ -39,6 +43,13 @@ const Joystick = ({ control, shoot }: JoystickProps) => {
       right: 0,
     }
 
+    const jumpInfo = {
+      top: 0,
+      bottom: 0,
+      left: 0,
+      right: 0,
+    }
+
     const handleResize = function seOrigin() {
       let rect = joystick.getBoundingClientRect()
       contrlOrigin.x = rect.x + joystick.offsetWidth / 2
@@ -50,6 +61,12 @@ const Joystick = ({ control, shoot }: JoystickProps) => {
       shootInfo.bottom = rect.y + shoot.offsetHeight
       shootInfo.left = rect.x
       shootInfo.right = rect.x + shoot.offsetWidth
+
+      rect = jump.getBoundingClientRect()
+      jumpInfo.top = rect.y
+      jumpInfo.bottom = rect.y + jump.offsetHeight
+      jumpInfo.left = rect.x
+      jumpInfo.right = rect.x + jump.offsetWidth
     }
 
     /**
@@ -73,6 +90,15 @@ const Joystick = ({ control, shoot }: JoystickProps) => {
         lastTouch.clientX < shootInfo.right &&
         lastTouch.clientY > shootInfo.top &&
         lastTouch.clientY < shootInfo.bottom
+      )
+        return
+
+      // if jump is clicked, return
+      if (
+        lastTouch.clientX > jumpInfo.left &&
+        lastTouch.clientX < jumpInfo.right &&
+        lastTouch.clientY > jumpInfo.top &&
+        lastTouch.clientY < jumpInfo.bottom
       )
         return
 
@@ -139,8 +165,13 @@ const Joystick = ({ control, shoot }: JoystickProps) => {
       <div className="joystick__controller" ref={joystickRef}>
         <div className="joystick__controller--core" ref={coreRef}></div>
       </div>
-      <div className="joystick__shoot" onClick={shoot} ref={shootRef}>
-        <BowIcon />
+      <div className="joystick__buttons">
+        <div className="joystick__shoot" onClick={shoot} ref={shootRef}>
+          <BowIcon />
+        </div>
+        <div className="joystick__jump" onClick={jump} ref={jumpRef}>
+          <JumpIcon />
+        </div>
       </div>
     </div>
   )

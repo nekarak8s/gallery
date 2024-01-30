@@ -61,7 +61,7 @@ export class RaycasterControls {
     if (!this.enabled) return
 
     switch (event.code) {
-      case 'Space':
+      case 'ControlLeft':
         event.preventDefault()
         this.shoot()
         break

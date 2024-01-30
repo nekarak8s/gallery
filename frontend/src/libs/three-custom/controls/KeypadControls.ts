@@ -1,28 +1,38 @@
-import { Vector3, Raycaster, Spherical, MathUtils } from 'three'
+import * as THREE from 'three'
 
-const _downDirection = new Vector3(0, -1, 0)
+const _downDirection = new THREE.Vector3(0, -1, 0)
+const _offset = 0.01
 
 export class KeypadControls {
   // arguments
   canvas: HTMLCanvasElement
   camera: THREE.Camera
   height: number
+  gravity: number
+  jumpForce: number
+  minFallSpeed: number
+  maxFallSpeed: number
 
   // internals
-  #raycaster: Raycaster = new Raycaster()
+  #raycaster = new THREE.Raycaster()
 
-  #movementSpeedRatio: number = 0
   #movementSpeed: number = 1
+  #moveForwardRatio: number = 0
+  #moveBackwardRatio: number = 0
 
-  #lookSpeedRatio: number = 0
   #LookSpeed: number = 1.5
+  #lookRightRatio: number = 0
+  #lookLeftRatio: number = 0
 
-  #lookDirection = new Vector3()
-  #spherical = new Spherical()
-  #target = new Vector3()
+  // rotation variables
+  #lookDirection = new THREE.Vector3()
+  #spherical = new THREE.Spherical()
+  #target = new THREE.Vector3()
+  #lon: number = 0
 
-  // #lat = 0
-  #lon = 0
+  // jump variables
+  #isJump: boolean = false
+  #floatDuration: number = 0
 
   // API
   enabled: boolean = true
@@ -31,10 +41,22 @@ export class KeypadControls {
 
   dispose: () => void
 
-  constructor(canvas: HTMLCanvasElement, camera: THREE.Camera, height: number = 1.6) {
+  constructor(
+    canvas: HTMLCanvasElement,
+    camera: THREE.Camera,
+    height: number = 1.6,
+    gravity: number = 9.8,
+    jumpForce: number = 100,
+    minFallSpeed: number = 150,
+    maxFallSpeed: number = 200
+  ) {
     this.canvas = canvas
     this.camera = camera
     this.height = height
+    this.gravity = gravity
+    this.jumpForce = jumpForce
+    this.minFallSpeed = minFallSpeed
+    this.maxFallSpeed = maxFallSpeed
 
     // Add event listener
     const _onKeyDown = this.onKeyDown.bind(this)
@@ -53,40 +75,6 @@ export class KeypadControls {
   }
 
   /**
-   * Set movement speed ratio
-   */
-  set movementSpeedRatio(speed: number) {
-    if (speed > 1) this.#movementSpeedRatio = 1
-    else if (speed < -1) this.#movementSpeedRatio = -1
-    else this.#movementSpeedRatio = speed
-  }
-
-  /**
-   * Set movement speed
-   */
-  set movementSpeed(speed: number) {
-    if (speed > 0) this.#movementSpeed = speed
-    else this.#movementSpeed = 1.6
-  }
-
-  /**
-   * Set lookSpeedRatio
-   */
-  set lookSpeedRatio(speed: number) {
-    if (speed > 1) this.#lookSpeedRatio = 1
-    else if (speed < -1) this.#lookSpeedRatio = -1
-    else this.#lookSpeedRatio = speed
-  }
-
-  /**
-   * Set LookSpeed
-   */
-  set LookSpeed(speed: number) {
-    if (speed > 0) this.#LookSpeed = speed
-    else this.#LookSpeed = 1.6
-  }
-
-  /**
    * Keydown event handler
    */
   onKeyDown(event: KeyboardEvent) {
@@ -96,25 +84,36 @@ export class KeypadControls {
       case 'ArrowUp':
       case 'KeyW':
         event.preventDefault()
-        this.#movementSpeedRatio = 1
-        break
-
-      case 'ArrowLeft':
-      case 'KeyA':
-        event.preventDefault()
-        this.#lookSpeedRatio = 1
+        this.#moveForwardRatio = 1
+        this.#moveBackwardRatio = 0
         break
 
       case 'ArrowDown':
       case 'KeyS':
         event.preventDefault()
-        this.#movementSpeedRatio = -1
+        this.#moveForwardRatio = 0
+        this.#moveBackwardRatio = 1
         break
 
       case 'ArrowRight':
       case 'KeyD':
         event.preventDefault()
-        this.#lookSpeedRatio = -1
+        this.#lookLeftRatio = 0
+        this.#lookRightRatio = 1
+        break
+
+      case 'ArrowLeft':
+      case 'KeyA':
+        event.preventDefault()
+        this.#lookLeftRatio = 1
+        this.#lookRightRatio = 0
+        break
+
+      case 'AltLeft':
+        event.preventDefault()
+        if (this.#floatDuration === 0) {
+          this.#isJump = true
+        }
         break
     }
   }
@@ -126,23 +125,85 @@ export class KeypadControls {
     switch (event.code) {
       case 'ArrowUp':
       case 'KeyW':
-        this.#movementSpeedRatio = 0
-        break
-
-      case 'ArrowLeft':
-      case 'KeyA':
-        this.#lookSpeedRatio = 0
+        this.#moveForwardRatio = 0
         break
 
       case 'ArrowDown':
       case 'KeyS':
-        this.#movementSpeedRatio = 0
+        this.#moveBackwardRatio = 0
         break
 
       case 'ArrowRight':
       case 'KeyD':
-        this.#lookSpeedRatio = 0
+        this.#lookRightRatio = 0
         break
+
+      case 'ArrowLeft':
+      case 'KeyA':
+        this.#lookLeftRatio = 0
+        break
+    }
+  }
+  /**
+   * Set movement speed
+   */
+  set movementSpeed(speed: number) {
+    if (speed > 0) this.#movementSpeed = speed
+    else this.#movementSpeed = 1.6
+  }
+
+  /**
+   * Set movement speed ratio
+   */
+  set movementSpeedRatio(speed: number) {
+    if (speed > 1) {
+      this.#moveForwardRatio = 1
+      this.#moveBackwardRatio = 0
+    } else if (speed > 0) {
+      this.#moveForwardRatio = speed
+      this.#moveBackwardRatio = 0
+    } else if (speed < -1) {
+      this.#moveForwardRatio = 0
+      this.#moveBackwardRatio = 1
+    } else {
+      this.#moveForwardRatio = 0
+      this.#moveBackwardRatio = -speed
+    }
+  }
+
+  /**
+   * Set LookSpeed
+   */
+  set LookSpeed(speed: number) {
+    if (speed > 0) this.#LookSpeed = speed
+    else this.#LookSpeed = 1.6
+  }
+
+  /**
+   * Set lookSpeedRatio
+   */
+  set lookSpeedRatio(speed: number) {
+    if (speed > 1) {
+      this.#lookRightRatio = 1
+      this.#lookLeftRatio = 0
+    } else if (speed > 0) {
+      this.#lookRightRatio = speed
+      this.#lookLeftRatio = 0
+    } else if (speed < -1) {
+      this.#lookRightRatio = 0
+      this.#lookLeftRatio = 1
+    } else {
+      this.#lookRightRatio = 0
+      this.#lookLeftRatio = -speed
+    }
+  }
+
+  /**
+   * Jump
+   */
+  jump() {
+    if (this.#floatDuration === 0) {
+      this.#isJump = true
     }
   }
 
@@ -154,9 +215,10 @@ export class KeypadControls {
 
     this.#lookDirection.set(0, 0, -1).applyQuaternion(quaternion)
     this.#spherical.setFromVector3(this.#lookDirection)
+    this.#lon = THREE.MathUtils.radToDeg(this.#spherical.theta)
 
-    // this.#lat = 90 - MathUtils.radToDeg(this.#spherical.phi)
-    this.#lon = MathUtils.radToDeg(this.#spherical.theta)
+    this.#isJump = false
+    this.#floatDuration = 0
   }
 
   /**
@@ -182,18 +244,20 @@ export class KeypadControls {
     if (!this.enabled) return
 
     // Rotate camera
-    const actualLookSpeed = delta * this.#lookSpeedRatio * this.#LookSpeed * 17
+    const actualLookSpeed =
+      delta * this.#LookSpeed * (this.#lookLeftRatio - this.#lookRightRatio) * 17
 
     this.#lon += actualLookSpeed
-    const phi = MathUtils.degToRad(90)
-    const theta = MathUtils.degToRad(this.#lon)
+    const phi = THREE.MathUtils.degToRad(90)
+    const theta = THREE.MathUtils.degToRad(this.#lon)
     this.#target.setFromSphericalCoords(1, phi, theta).add(this.camera.position)
 
     this.camera.lookAt(this.#target)
     this.#lookDirection.set(0, 0, -1).applyQuaternion(this.camera.quaternion)
 
     // Move camera forward / backward
-    let actualMoveSpeed = delta * this.#movementSpeedRatio * this.#movementSpeed * 7
+    let actualMoveSpeed =
+      delta * this.#movementSpeed * (this.#moveForwardRatio - this.#moveBackwardRatio) * 5
 
     // Stop by obastacle
     let intersects
@@ -216,11 +280,27 @@ export class KeypadControls {
 
     // Position the camera on floor
     this.#raycaster.set(this.camera.position, _downDirection)
-
     intersects = this.#raycaster.intersectObjects(this.floors)
-    for (const item of intersects) {
-      this.camera.position.y += this.height - item.distance
-      break
+    if (intersects.length && intersects[0].distance < this.height) {
+      this.#isJump = false
+      this.#floatDuration = 0
+      this.camera.position.y += this.height - intersects[0].distance + _offset
+    } else if (intersects.length && intersects[0].distance <= this.height + _offset) {
+      if (this.#floatDuration) {
+        this.#floatDuration = 0
+        this.#isJump = false
+      }
+      this.camera.position.y += delta * (this.#isJump ? this.jumpForce : 0) * 0.015
+    } else {
+      this.#floatDuration += delta
+      let fallspeed = this.gravity * this.#floatDuration * 8
+      // minfall speed
+      if (fallspeed < this.minFallSpeed) fallspeed = this.minFallSpeed
+      // max fall speed
+      fallspeed = fallspeed * this.#floatDuration - (this.#isJump ? this.jumpForce : 0)
+      if (fallspeed > this.maxFallSpeed) fallspeed = this.maxFallSpeed
+
+      this.camera.position.y -= delta * fallspeed * 0.015
     }
   }
 }

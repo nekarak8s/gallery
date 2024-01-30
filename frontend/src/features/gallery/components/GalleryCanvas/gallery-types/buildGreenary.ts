@@ -14,10 +14,6 @@ import { PostFrames } from '@/libs/three-custom/items/PostFrames'
 import { Trees } from '@/libs/three-custom/items/Trees'
 
 const buildGreenary = (props: GalleryTypeProps) => {
-  // Set camera position & rotation by controls
-  props.controls.setPosition(25.1, 5, 25.1)
-  props.controls.setQuaternion(0, degToRad(-135), 0)
-
   // Create Loaders
   const textureLoader = new THREE.TextureLoader(props.loadingManager)
   const cubeTextureLoader = new THREE.CubeTextureLoader(props.loadingManager)
@@ -73,6 +69,10 @@ const buildGreenary = (props: GalleryTypeProps) => {
     props.scene.add(mesh)
     props.controls.floors.push(mesh)
     props.rayControls.rayItems.push(mesh)
+
+    // Set camera position & rotation by controls
+    props.controls.setPosition(25.1, 5, 25.1)
+    props.controls.setQuaternion(0, degToRad(-135), 0)
 
     items.push({
       dispose: () => {

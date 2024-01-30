@@ -1,22 +1,19 @@
-import React, { MouseEventHandler } from 'react'
-import {
-  useDeleteGallery,
-  useGalleryQuery,
-  usePlaceListQuery,
-  useUpdateGallery,
-} from '../../services'
+import React, { useState } from 'react'
+import { useGalleryQuery, usePlaceListQuery, useUpdateGallery } from '../../services'
 import { validateUpdateGalleryForm } from '../../validators'
+import GalleryDeleteForm from '../GalleryDeleteForm'
 import PlacesRadio from '../PlacesRadio'
 import Form from '@/atoms/form/Form'
 import Text from '@/atoms/form/Text'
 import Textarea from '@/atoms/form/Textarea'
 import Button from '@/atoms/ui/Button'
 import Loading from '@/atoms/ui/Loading'
+import Modal from '@/atoms/ui/Modal'
 import PostListForm from '@/features/post/components/PostListForm/PostListForm'
 import { usePostListQuery, useUpdatePostList } from '@/features/post/services'
-import './GalleryUpdateForm.scss'
 import { validatePostListForm } from '@/features/post/validators'
 import toastManager from '@/utils/toastManager'
+import './GalleryUpdateForm.scss'
 
 type GalleryDetailFormProps = {
   galleryId: number
@@ -76,8 +73,6 @@ const GalleryUpdateForm = ({ galleryId, onSuccess, onError }: GalleryDetailFormP
       return
     }
 
-    console.log('data', postResult.data)
-
     updateGallery(galleryResult.data)
       .then(() => {
         updatePostList(postResult.data)
@@ -94,18 +89,16 @@ const GalleryUpdateForm = ({ galleryId, onSuccess, onError }: GalleryDetailFormP
   /**
    * Handle delete
    */
-  const { mutateAsync: deleteGallery } = useDeleteGallery(galleryId)
+  const [isDeleteOpen, setIsDeleteOpen] = useState(false)
 
-  const handleDelteClick: MouseEventHandler<HTMLButtonElement> = (e) => {
-    e.stopPropagation()
+  const onDeleteSuccess = () => {
+    onSuccess && onSuccess()
+    setIsDeleteOpen(false)
+  }
 
-    deleteGallery()
-      .then(() => {
-        onSuccess && onSuccess()
-      })
-      .catch(() => {
-        onError && onError()
-      })
+  const onDeleteError = () => {
+    onError && onError()
+    setIsDeleteOpen(false)
   }
 
   if (isGalleryError || isPlaceError || isPostError) return null
@@ -121,13 +114,27 @@ const GalleryUpdateForm = ({ galleryId, onSuccess, onError }: GalleryDetailFormP
         <PostListForm postList={postList} />
         <div className="gallery-update-form__buttons">
           <Button type="submit" direction="center" ariaLabel="전시회 생성" text="수정하기" />
-          <Button color="red" ariaLabel="전시회 삭제" text="삭제하기" onClick={handleDelteClick} />
+          <Button
+            color="red"
+            ariaLabel="전시회 삭제"
+            text="삭제하기"
+            onClick={() => setIsDeleteOpen(true)}
+          />
         </div>
       </Form>
       {(isUpdateGalleryLoading || isUpdatePostLoading) && (
         <div className="gallery-update-form__loading">
           <Loading />
         </div>
+      )}
+      {isDeleteOpen && (
+        <Modal isOpen={isDeleteOpen} onClose={() => setIsDeleteOpen(false)}>
+          <GalleryDeleteForm
+            galleryId={galleryId}
+            onSuccess={onDeleteSuccess}
+            onError={onDeleteError}
+          />
+        </Modal>
       )}
     </>
   )

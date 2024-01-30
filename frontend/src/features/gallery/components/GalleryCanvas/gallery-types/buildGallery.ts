@@ -16,9 +16,6 @@ import { Walls } from '@/libs/three-custom/items/Walls'
 import { WaterItem } from '@/libs/three-custom/items/Water'
 
 const buildGallery = (props: GalleryTypeProps) => {
-  // Set camera position
-  props.controls.setPosition(35, 5, 62)
-
   // Create Loaders
   const textureLoader = new THREE.TextureLoader(props.loadingManager)
   const gltfLoader = new GLTFLoader(props.loadingManager)
@@ -91,6 +88,9 @@ const buildGallery = (props: GalleryTypeProps) => {
     items.push(glassFloor)
     props.controls.floors.push(glassFloor.mesh)
   })
+
+  // Set camera position
+  props.controls.setPosition(35, 15, 62)
 
   // Create ceiling
   const ceiling = new Ceiling({
