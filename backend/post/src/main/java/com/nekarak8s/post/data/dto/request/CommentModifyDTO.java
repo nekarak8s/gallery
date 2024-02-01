@@ -1,6 +1,6 @@
 package com.nekarak8s.post.data.dto.request;
 
-import com.nekarak8s.post.validation.NumberOfComment;
+import com.nekarak8s.post.validation.NumberOfCharacters;
 import lombok.Data;
 
 /**
@@ -9,6 +9,6 @@ import lombok.Data;
 @Data
 public class CommentModifyDTO {
 
-    @NumberOfComment // 1글자 이상인지 체크
+    @NumberOfCharacters(message = "댓글은 최소 1자 이상 입력해주세요", regexPattern = "^\\S.{0,100}$")
     private String content; // 댓글 내용
 }
