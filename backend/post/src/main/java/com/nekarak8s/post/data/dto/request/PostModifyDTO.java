@@ -1,7 +1,6 @@
 package com.nekarak8s.post.data.dto.request;
 
 import com.nekarak8s.post.validation.NumberOfCharacters;
-import com.nekarak8s.post.validation.NumberOfPostContent;
 import lombok.Data;
 
 @Data
@@ -9,12 +8,10 @@ public class PostModifyDTO {
 
     private Long postId;
 
-    //@NotBlank(message = "갤러리 이름은 최소 1자, 최대 15자 이내로 작성해주세요")
-    //@NumberOfPostTitle
-    @NumberOfCharacters(message = "이병호", regexPattern = "^[\\sA-Za-z\\dㄱ-ㅎㅏ-ㅣ가-힣]{0,15}$")
+    @NumberOfCharacters(message = "갤러리 이름은 최소 1자, 최대 15자 이내로 작성해주세요", regexPattern = "^[\\sA-Za-z\\dㄱ-ㅎㅏ-ㅣ가-힣]{1,15}$")
     private String title;
 
-    @NumberOfPostContent
+    @NumberOfCharacters(message = "게시물 내용은 150자 이내로 작성해주세요", regexPattern = "^[\\sA-Za-z\\dㄱ-ㅎㅏ-ㅣ가-힣]{1,150}$")
     private String content;
 
     private Long order;
