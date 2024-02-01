@@ -30,42 +30,52 @@ public class SpotifyServiceImpl implements SpotifyService {
     @Value("${spotify.client-secret}")
     private String CLIENT_SECRET;
 
+    private long tokenExpirationTime;
+    private String accessToken;
+
     // Get Spotify AccessToken
     public String getAccessToken() throws CustomException {
-        String credentials = CLIENT_ID + ":" + CLIENT_SECRET; // 필수 파라미터
-        String base64Credentials = new String(java.util.Base64.getEncoder().encode(credentials.getBytes()));
 
-        MultiValueMap<String, String> requestBody = new LinkedMultiValueMap<>();
-        requestBody.add("grant_type", "client_credentials");
+        if (accessToken == null || System.currentTimeMillis() > tokenExpirationTime) {
+            log.info("새로운 Spotify 토큰 발급");
+            String credentials = CLIENT_ID + ":" + CLIENT_SECRET; // 필수 파라미터
+            String base64Credentials = new String(java.util.Base64.getEncoder().encode(credentials.getBytes()));
 
-        // HTTP 요청 헤더 설정 (Content-Type, Authorization)
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-        headers.add("Authorization", "Basic " + base64Credentials);
+            MultiValueMap<String, String> requestBody = new LinkedMultiValueMap<>();
+            requestBody.add("grant_type", "client_credentials");
 
-        // HTTP 요청 엔터티 생성
-        HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(requestBody, headers);
+            // HTTP 요청 헤더 설정 (Content-Type, Authorization)
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+            headers.add("Authorization", "Basic " + base64Credentials);
 
-        // Spotify API에 POST 요청을 보내 access_token을 받아옴 (RestTenplate)
-        ResponseEntity<SpotifyToken> responseEntity = restTemplate.exchange("https://accounts.spotify.com/api/token", HttpMethod.POST, requestEntity, SpotifyToken.class);
+            // HTTP 요청 엔터티 생성
+            HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(requestBody, headers);
 
-        String token = null;
-        if (responseEntity.getStatusCode() == HttpStatus.OK) {
-            SpotifyToken response = responseEntity.getBody();
+            // Spotify API에 POST 요청을 보내 access_token을 받아옴 (RestTenplate)
+            ResponseEntity<SpotifyToken> responseEntity = restTemplate.exchange("https://accounts.spotify.com/api/token", HttpMethod.POST, requestEntity, SpotifyToken.class);
 
-            if (response != null) {
-                token = response.getAccess_token();
+            if (responseEntity.getStatusCode() == HttpStatus.OK) {
+                SpotifyToken response = responseEntity.getBody();
+
+                if (response != null) {
+                    log.info("spotify response : {}", response);
+                    accessToken = response.getAccess_token();
+                    tokenExpirationTime = System.currentTimeMillis() + (response.getExpires_in() * 1000);
+                }
             }
+
+        } else {
+            log.info("기존 Spotify 토큰 사용");
         }
 
-        if (token == null) throw new CustomException(HttpStatus.INTERNAL_SERVER_ERROR, "GP000", "Spotify 토큰 발급 중 예외 발생");
-        return token;
+        return accessToken;
     }
+
 
     // Get Spotify Tracks
     @Override
     public List<SpotifyTrackDTO> getSpotifyTracks(String query) throws CustomException {
-        // Todo : accessToken 유효성 체크 (시간) -> Redis 저장
         String token = getAccessToken();
 
         // 앨범 정보 조회

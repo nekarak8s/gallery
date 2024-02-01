@@ -69,7 +69,7 @@ public class CommentServiceImpl implements CommentService {
      */
     @Override
     public List<CommentInfo> findCommentList(long postId, int page) throws CustomException {
-        PageRequest pageRequest = PageRequest.of(page, 20, Sort.by(Sort.Direction.DESC, "createdDate"));
+        PageRequest pageRequest = PageRequest.of(page, 20, Sort.by(Sort.Direction.ASC, "createdDate"));
         Page<Comment> comments = commentRepo.findAllByPostId(pageRequest, postId);
 
         List<CommentInfo> commentInfoList = new ArrayList<>();

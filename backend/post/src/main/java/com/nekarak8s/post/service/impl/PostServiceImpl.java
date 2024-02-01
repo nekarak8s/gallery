@@ -100,14 +100,7 @@ public class PostServiceImpl implements PostService {
     @Transactional
     @Override
     public void modifyPosts(List<PostModifyDTO> postModifyDTOList, Long galleryId) throws CustomException, IOException {
-        long preMaxOrder = -1; // 이전 저장 순서 최댓값
-        List<Post> posts = postRepo.findAllByGalleryId(galleryId);
-        if (posts.size() == 0) throw new CustomException(HttpStatus.NOT_FOUND, "GP007", "갤러리 정보가 존재하지 않습니다");
-
-        // 이전 저장 order 최댓값 구하기
-        for (Post post : posts) {
-            preMaxOrder = Math.max(preMaxOrder, post.getOrder());
-        }
+        long preMaxOrder = getPreOrder(galleryId); // 이전 저장 순서 최댓값
 
         // 반복 수정
         for (PostModifyDTO dto : postModifyDTOList) {
@@ -115,21 +108,14 @@ public class PostServiceImpl implements PostService {
             log.debug("게시물 Id : {}", dto.getPostId());
             Post post = postRepo.findById(dto.getPostId()).get();
 
-            if (!dto.getIsActive()) { // 비활성화 요청인 경우 (사용안하는 게시물 -> 화면에서 보여지면 안됨) / 순서는 같이 증가
-                post.setActive(false); // 비활성화
-                log.info("비활성화 게시물도 순서는 증가 !!!");
-                post.setOrder(dto.getOrder() + preMaxOrder);
-                postRepo.save(post);
-                continue; // 게시물 무시
-            }
-
-            // 활성화 게시물 (화면에서 보여질 게시물)
-            // 게시물 수정 (회원이 입력한 값으로 채워넣기)
-            if (dto.getMusicId() != null) post.setMusic(musicRepo.findById(dto.getMusicId()).get());
+            // request -> post
+            if (dto.getMusicId() != null) post.setMusic(musicRepo.findById(dto.getMusicId()).orElseThrow(
+                    () -> new CustomException(HttpStatus.NOT_FOUND, "GP001", "음악 정보가 존재하지 않습니다.")
+            ));
             post.setTitle(dto.getTitle());
             post.setContent(dto.getContent());
-            post.setOrder(dto.getOrder() + preMaxOrder); // unique key order 충돌 회피 (나중에 order 값 낮춰주는 batch 처리 예정)
-            post.setActive(true); // 화면에서 보여짐 여부
+            post.setOrder(dto.getOrder() + preMaxOrder);
+            post.setActive(dto.getIsActive());
 
             // 이미지 : String | MultipartFile
             if (dto.getImage() instanceof String) { // 기존 S3 경로
@@ -146,6 +132,18 @@ public class PostServiceImpl implements PostService {
             }
             postRepo.save(post); // DB update
         }
+    }
+
+    private long getPreOrder(Long galleryId) {
+        long preMaxOrder = -1;
+        List<Post> posts = postRepo.findAllByGalleryId(galleryId); // 게시물 10개
+
+        // 이전 저장 order 최댓값 구하기
+        for (Post post : posts) {
+            preMaxOrder = Math.max(preMaxOrder, post.getOrder());
+        }
+
+        return preMaxOrder;
     }
 
     /**

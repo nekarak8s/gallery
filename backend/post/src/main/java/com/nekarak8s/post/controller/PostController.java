@@ -4,6 +4,7 @@ import com.nekarak8s.post.data.dto.request.PostModifyRequest;
 import com.nekarak8s.post.data.dto.response.ApiResponse;
 import com.nekarak8s.post.exception.CustomException;
 import com.nekarak8s.post.service.PostService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -49,7 +50,7 @@ public class PostController {
      * @throws CustomException
      */
     @PatchMapping("list/{galleryId}")
-    public ResponseEntity<?> updatePosts(@ModelAttribute PostModifyRequest request,
+    public ResponseEntity<?> updatePosts(@Valid @ModelAttribute PostModifyRequest request,
                                          @PathVariable(value = "galleryId") Long galleryId) throws CustomException, IOException {
         log.debug("request : {}", request);
         log.debug("게시물 목록 수정 요청옴 : {}", request.getPosts());
