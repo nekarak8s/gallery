@@ -55,7 +55,6 @@ jobs:
           kustomize: '3.7.0'
 
       - name: Update kubernetes manifest
-        uses: actions/checkout@v3
         run: |
           git checkout front-argo
           cd config/deploy/react/
