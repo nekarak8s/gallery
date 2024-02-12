@@ -12,7 +12,7 @@ spec:
         app: react
     spec:
       containers:
-        - image: byongho/gallery-react
+        - image: hello-world
           name: react
           ports:
             - containerPort: 80
