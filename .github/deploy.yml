@@ -5,11 +5,6 @@ on:
     branches:
       - front
 
-env:
-  FRONT_DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-  FRONT_DOCKER_TOKEN: ${{ secrets.DOCKER_KEY }}
-  FRONT_IMAGE_NAME: app-helm
-
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
