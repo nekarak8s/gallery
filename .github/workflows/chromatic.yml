@@ -16,6 +16,8 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - run: cd frontend/
+      - run: pwd
+      - run: ls
       - run: yarn
         #👇 Adds Chromatic as a step in the workflow
       - uses: chromaui/action@v1
