@@ -70,7 +70,7 @@ jobs:
       - name: Update kubernetes manifest
         run: |
           cd config/deploy/react/
-          kustomize edit set image ${{ github.sha }}
+          kustomize edit set image ${{ secrets.FRONT_DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
           git config user.name "GitHub Actions"
           git config user.email "<>"
           git add .
