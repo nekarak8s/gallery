@@ -12,6 +12,11 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
 
+    defaults:
+      run:
+        shell: bash
+        working-directory: ./frontend
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -29,10 +34,8 @@ jobs:
           restore-keys: D
             ${{ runner.os }}-node-
 
-      - run: |
-          cd frontend/
-          npm ci
-          npm run build
+      - run: npm ci
+      - run: npm run build
 
       - name: Login to Docker Hub
         uses: docker/login-action@v1
@@ -41,7 +44,7 @@ jobs:
           password: ${{ secrets.FRONT_DOCKER_TOKEN }}
 
       - name: Build Docker image
-        run: docker build -t ${{ secrets.FRONT_DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}:${{ github.sha }} frontend/.
+        run: docker build -t ${{ secrets.FRONT_DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}:${{ github.sha }} .
 
       - name: Push Docker image
         run: docker push ${{ secrets.FRONT_DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
@@ -54,11 +57,10 @@ jobs:
       - name: Update kubernetes manifest
         run: |
           git switch front-argo
-          git reset --hard ${{ github.ref_name }}
           cd config/deploy/react/
           kustomize edit set image ${{ github.sha }}
           git config user.name "GitHub Actions"
           git config user.email "<>"
           git add .
           git commit -m 'k8s manifest for ${{ github.sha }}'
-          git push origin front-argo -f
+          git push origin
