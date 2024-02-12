@@ -44,12 +44,12 @@ const ControlNotice = () => {
           </li>
           <li>
             <p>
-              <kbd>Alt</kbd>&nbsp; 키로 점프
+              <kbd>Ctrl</kbd>&nbsp; 키로 앨범 조준
             </p>
           </li>
           <li>
             <p>
-              <kbd>Ctrl</kbd>&nbsp; 키로 앨범 조준
+              <kbd>Alt</kbd>&nbsp;/&nbsp;<kbd>Opt</kbd>&nbsp; 키로 점프
             </p>
           </li>
         </ul>

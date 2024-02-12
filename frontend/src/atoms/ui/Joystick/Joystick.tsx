@@ -24,11 +24,11 @@ const Joystick = ({ control, shoot, jump }: JoystickProps) => {
   useEffect(() => {
     const joystick = joystickRef.current!
     const core = coreRef.current!
-    const shoot = shootRef.current!
-    const jump = jumpRef.current!
+    const shootDiv = shootRef.current!
+    const jumpDiv = jumpRef.current!
 
     /**
-     * Set the controller origin & shoot top, bottom, left, right
+     * Set the controller origin & shootDiv top, bottom, left, right
      */
     const contrlOrigin = {
       x: 0,
@@ -56,17 +56,17 @@ const Joystick = ({ control, shoot, jump }: JoystickProps) => {
       contrlOrigin.y = rect.y + joystick.offsetHeight / 2
       contrlOrigin.radius = joystick.offsetWidth / 2
 
-      rect = shoot.getBoundingClientRect()
+      rect = shootDiv.getBoundingClientRect()
       shootInfo.top = rect.y
-      shootInfo.bottom = rect.y + shoot.offsetHeight
+      shootInfo.bottom = rect.y + shootDiv.offsetHeight
       shootInfo.left = rect.x
-      shootInfo.right = rect.x + shoot.offsetWidth
+      shootInfo.right = rect.x + shootDiv.offsetWidth
 
-      rect = jump.getBoundingClientRect()
+      rect = jumpDiv.getBoundingClientRect()
       jumpInfo.top = rect.y
-      jumpInfo.bottom = rect.y + jump.offsetHeight
+      jumpInfo.bottom = rect.y + jumpDiv.offsetHeight
       jumpInfo.left = rect.x
-      jumpInfo.right = rect.x + jump.offsetWidth
+      jumpInfo.right = rect.x + jumpDiv.offsetWidth
     }
 
     /**
@@ -84,7 +84,7 @@ const Joystick = ({ control, shoot, jump }: JoystickProps) => {
 
       const lastTouch = e.changedTouches[e.changedTouches.length - 1]
 
-      // if shoot is clicked, return
+      // if shootDiv is clicked, return
       if (
         lastTouch.clientX > shootInfo.left &&
         lastTouch.clientX < shootInfo.right &&
@@ -93,7 +93,7 @@ const Joystick = ({ control, shoot, jump }: JoystickProps) => {
       )
         return
 
-      // if jump is clicked, return
+      // if jumpDiv is clicked, return
       if (
         lastTouch.clientX > jumpInfo.left &&
         lastTouch.clientX < jumpInfo.right &&
@@ -125,14 +125,27 @@ const Joystick = ({ control, shoot, jump }: JoystickProps) => {
     const handleTouchEnd = function disableTracking(e: TouchEvent) {
       const lastTouch = e.changedTouches[e.changedTouches.length - 1]
 
-      // if shoot is clicked, return
+      // if shootDiv is clicked, return
       if (
         lastTouch.clientX > shootInfo.left &&
         lastTouch.clientX < shootInfo.right &&
         lastTouch.clientY > shootInfo.top &&
         lastTouch.clientY < shootInfo.bottom
-      )
+      ) {
+        shoot && shoot()
         return
+      }
+
+      // if jumpDiv is clicked, return
+      if (
+        lastTouch.clientX > jumpInfo.left &&
+        lastTouch.clientX < jumpInfo.right &&
+        lastTouch.clientY > jumpInfo.top &&
+        lastTouch.clientY < jumpInfo.bottom
+      ) {
+        jump && jump()
+        return
+      }
 
       isTracking.current = false
       core.style.transform = `

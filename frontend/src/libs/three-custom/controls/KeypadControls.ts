@@ -1,7 +1,8 @@
 import * as THREE from 'three'
 
 const _downDirection = new THREE.Vector3(0, -1, 0)
-const _offset = 0.01
+const _groundOffset = 0.3
+const _floatPrecision = 0.001
 
 export class KeypadControls {
   // arguments
@@ -10,7 +11,6 @@ export class KeypadControls {
   height: number
   gravity: number
   jumpForce: number
-  minFallSpeed: number
   maxFallSpeed: number
 
   // internals
@@ -45,17 +45,15 @@ export class KeypadControls {
     canvas: HTMLCanvasElement,
     camera: THREE.Camera,
     height: number = 1.6,
-    gravity: number = 9.8,
-    jumpForce: number = 100,
-    minFallSpeed: number = 150,
-    maxFallSpeed: number = 200
+    gravity: number = 10,
+    jumpForce: number = 10,
+    maxFallSpeed: number = 7
   ) {
     this.canvas = canvas
     this.camera = camera
     this.height = height
     this.gravity = gravity
     this.jumpForce = jumpForce
-    this.minFallSpeed = minFallSpeed
     this.maxFallSpeed = maxFallSpeed
 
     // Add event listener
@@ -262,7 +260,7 @@ export class KeypadControls {
     // Stop by obastacle
     let intersects
     if (actualMoveSpeed > 0) {
-      // front obastacke
+      // front obastacle
       this.#raycaster.set(this.camera.position, this.#lookDirection)
       intersects = this.#raycaster.intersectObjects(this.obstacles)
       if (intersects.length && intersects[0].distance < 1) {
@@ -278,29 +276,32 @@ export class KeypadControls {
     }
     this.camera.translateZ(-actualMoveSpeed)
 
-    // Position the camera on floor
+    // Position the camera on the floor
     this.#raycaster.set(this.camera.position, _downDirection)
     intersects = this.#raycaster.intersectObjects(this.floors)
-    if (intersects.length && intersects[0].distance < this.height) {
+
+    let fallspeed =
+      this.gravity * this.#floatDuration ** 2 * 10 - (this.#isJump ? this.jumpForce : 0)
+    if (fallspeed > this.maxFallSpeed) fallspeed = this.maxFallSpeed // max fall speed
+
+    if (intersects.length === 0) {
+      this.#floatDuration += delta
+      this.camera.position.y -= delta * fallspeed
+      return
+    }
+
+    const distance = intersects[0].distance
+
+    if (distance < this.height && this.#floatDuration) {
       this.#isJump = false
       this.#floatDuration = 0
-      this.camera.position.y += this.height - intersects[0].distance + _offset
-    } else if (intersects.length && intersects[0].distance <= this.height + _offset) {
-      if (this.#floatDuration) {
-        this.#floatDuration = 0
-        this.#isJump = false
-      }
-      this.camera.position.y += delta * (this.#isJump ? this.jumpForce : 0) * 0.015
+      this.camera.position.y += this.height - distance
+    } else if (distance < this.height + _groundOffset && !this.#isJump) {
+      this.#floatDuration = 0
+      this.camera.position.y += this.height - distance
     } else {
       this.#floatDuration += delta
-      let fallspeed = this.gravity * this.#floatDuration * 8
-      // minfall speed
-      if (fallspeed < this.minFallSpeed) fallspeed = this.minFallSpeed
-      // max fall speed
-      fallspeed = fallspeed * this.#floatDuration - (this.#isJump ? this.jumpForce : 0)
-      if (fallspeed > this.maxFallSpeed) fallspeed = this.maxFallSpeed
-
-      this.camera.position.y -= delta * fallspeed * 0.015
+      this.camera.position.y -= delta * fallspeed
     }
   }
 }

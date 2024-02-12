@@ -34,7 +34,7 @@ const buildGreenary = (props: GalleryTypeProps) => {
 
   // Direct Light
   const directLight = new THREE.DirectionalLight('white', 1.8)
-  directLight.position.set(110, 220, 110)
+  directLight.position.set(0, 110, 110)
   directLight.shadow.camera.left = -60
   directLight.shadow.camera.right = 60
   directLight.shadow.camera.top = 60
@@ -73,6 +73,8 @@ const buildGreenary = (props: GalleryTypeProps) => {
     // Set camera position & rotation by controls
     props.controls.setPosition(25.1, 5, 25.1)
     props.controls.setQuaternion(0, degToRad(-135), 0)
+
+    directLight.target = mesh
 
     items.push({
       dispose: () => {
@@ -564,8 +566,8 @@ const PLAIN_TREE = [
 const TREE_DATA = [...FOREST_TREE, ...MOUNTAIN_TREE, ...BEACH_TREE, ...LAKE_TREE, ...PLAIN_TREE]
 
 const EDGES_DATA = [
-  { width: 120, height: 100, depth: 1, x: 55, y: 0, z: -1 },
+  { width: 120, height: 100, depth: 1, x: 55, y: 0, z: 1 },
   { width: 120, height: 100, depth: 1, x: 55, y: 0, z: 109 },
-  { width: 1, height: 100, depth: 120, x: -1, y: 0, z: 55 },
+  { width: 1, height: 100, depth: 120, x: 1, y: 0, z: 55 },
   { width: 1, height: 100, depth: 120, x: 109, y: 0, z: 55 },
 ]
