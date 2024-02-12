@@ -41,7 +41,7 @@ jobs:
           password: ${{ secrets.FRONT_DOCKER_TOKEN }}
 
       - name: Build Docker image
-        run: docker build -t ${{ secrets.FRONT_DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}:${{ github.sha }} .
+        run: docker build -t ${{ secrets.FRONT_DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}:${{ github.sha }} frontend/.
 
       - name: Push Docker image
         run: docker push ${{ secrets.FRONT_DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
