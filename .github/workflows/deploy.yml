@@ -49,6 +49,11 @@ jobs:
       - name: Push Docker image
         run: docker push ${{ secrets.FRONT_DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
 
+  kustomize-update:
+    runs-on: ubuntu-latest
+    needs: build-and-deploy
+
+    steps:
       - name: Checkout repository
         uses: actions/checkout@v2
 
@@ -62,7 +67,7 @@ jobs:
 
       - name: Update kubernetes manifest
         run: |
-          cd ../config/deploy/react/
+          cd config/deploy/react/
           kustomize edit set image ${{ github.sha }}
           git config user.name "GitHub Actions"
           git config user.email "<>"
