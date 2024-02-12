@@ -58,7 +58,9 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Switch to front-argo branch
-        run: git checkout front-argo
+        run: |
+          git fetch
+          git checkout front-argo
 
       - name: Set Kustomize
         uses: yokawasa/action-setup-kube-tools@v0.9.2
