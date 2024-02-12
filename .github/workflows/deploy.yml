@@ -5,6 +5,9 @@ on:
     branches:
       - front
 
+env:
+  IMAGE_NAME: gallery-react
+
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
@@ -38,10 +41,10 @@ jobs:
           password: ${{ secrets.FRONT_DOCKER_TOKEN }}
 
       - name: Build Docker image
-        run: docker build -t ${{ secrets.FRONT_DOCKER_USERNAME }}/${{ secrets.FRONT_IMAGE_NAME }}:${{ github.sha }} .
+        run: docker build -t ${{ secrets.FRONT_DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}:${{ github.sha }} .
 
       - name: Push Docker image
-        run: docker push ${{ secrets.FRONT_DOCKER_USERNAME }}/${{ secrets.FRONT_IMAGE_NAME }}:${{ github.sha }}
+        run: docker push ${{ secrets.FRONT_DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
 
       - name: Set Kustomize
         uses: yokawasa/action-setup-kube-tools@v0.9.2
