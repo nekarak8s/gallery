@@ -75,4 +75,9 @@ jobs:
           git config user.email "<>"
           git add .
           git commit -m 'k8s manifest for ${{ github.sha }}'
-          git push origin
+
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.ACCESS_TOKEN }}
+          branch: front-argo
