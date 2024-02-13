@@ -9,9 +9,15 @@ on:
 
 # List of jobs
 jobs:
-  test:
+  chromatic-deploy:
     # Operating System
     runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        shell: bash
+        working-directory: ./frontend
+
     # Job steps
     steps:
       - uses: actions/checkout@v1
