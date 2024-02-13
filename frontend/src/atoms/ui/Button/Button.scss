@@ -1,0 +1,166 @@
+@use '@/styles/_responsive.scss' as *;
+@use '@/styles/_colors.scss' as c;
+
+.button {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid black;
+  border-radius: 0.1em;
+  background-repeat: no-repeat;
+  background-position: 0% 0%;
+  background-size: 0% 0%;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    background-size 0.15s linear 0.1s,
+    color 0.15s linear 0.1s;
+}
+
+.button::after {
+  z-index: -1;
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--color-bg, c.$bg-white);
+}
+
+.button.trans::after {
+  background-color: transparent;
+}
+
+// direction
+.button {
+  &.left {
+    background-position: 0% 0%;
+    background-size: 0% 100%;
+  }
+
+  &.right {
+    background-position: 100% 0%;
+    background-size: 0% 100%;
+  }
+
+  &.top {
+    background-position: 0% 0%;
+    background-size: 100% 0%;
+  }
+
+  &.bottom {
+    background-position: 0% 100%;
+    background-size: 100% 0%;
+  }
+
+  &.center {
+    background-position: 50% 50%;
+    background-size: 0% 0%;
+  }
+}
+
+.button:hover,
+.button:focus {
+  background-size: 100% 100%;
+}
+
+// color
+.button {
+  &.blue {
+    color: var(--color-primary, c.$primary);
+    border: 2px solid var(--color-primary, c.$primary);
+    background-image: linear-gradient(
+      0deg,
+      var(--color-primary, c.$primary),
+      var(--color-primary, c.$primary)
+    );
+
+    &:hover,
+    &:focus {
+      color: var(--color-ft-reverse, c.$ft-white);
+    }
+  }
+
+  &.black {
+    color: var(--color-ft, c.$ft-black);
+    border: 2px solid var(--color-ft, c.$ft-black);
+    background-image: linear-gradient(
+      0deg,
+      var(--color-ft, c.$ft-black),
+      var(--color-ft, c.$ft-black)
+    );
+
+    &:hover,
+    &:focus {
+      color: var(--color-ft-reverse, c.$ft-white);
+    }
+  }
+
+  &.red {
+    color: var(--color-ft-warning, c.$ft-red);
+    border: 2px solid var(--color-ft-warning, c.$ft-red);
+    background-image: linear-gradient(
+      0deg,
+      var(--color-ft-warning, c.$ft-red),
+      var(--color-ft-warning, c.$ft-red)
+    );
+
+    &:hover,
+    &:focus {
+      color: var(--color-ft-reverse, c.$ft-white);
+    }
+  }
+}
+
+// size
+.button {
+  &.lg {
+    padding: 0.8em 1.5em;
+    font-size: 1.3rem;
+  }
+
+  &.md {
+    padding: 0.6em 1.2em;
+    font-size: 1.1rem;
+  }
+
+  &.sm {
+    padding: 0.4em 0.9em;
+    font-size: 0.9rem;
+  }
+}
+
+@include tablet {
+  .button {
+    &.lg {
+      font-size: 1.2rem;
+    }
+
+    &.md {
+      font-size: 1rem;
+    }
+
+    &.sm {
+      font-size: 0.8rem;
+    }
+  }
+}
+
+@include mobile {
+  .button {
+    &.lg {
+      font-size: 1rem;
+    }
+
+    &.md {
+      font-size: 0.8rem;
+    }
+
+    &.sm {
+      font-size: 0.7rem;
+    }
+  }
+}

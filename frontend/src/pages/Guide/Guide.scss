@@ -1,0 +1,136 @@
+@use '@/styles/_responsive.scss' as *;
+@use '@/styles/_z-index.scss' as *;
+@use '@/styles/_colors.scss' as c;
+
+.guide {
+  width: 100vw;
+  height: 600vh;
+  color: var(--ft-color-reverse, c.$ft-white);
+  font-size: 1rem;
+  text-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
+}
+
+.guide__main {
+  position: sticky;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+
+  > canvas {
+    width: 100vw !important;
+    height: 100vh !important;
+  }
+}
+
+.guide__sections {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transition: transform 800ms ease-in-out;
+
+  > section {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 1em;
+    position: relative;
+    height: 100vh;
+    width: 100vw;
+    padding: 10%;
+    background-color: transparent;
+    text-align: start;
+
+    h1 {
+      position: relative;
+      font-size: 2.5em;
+      font-weight: 800;
+      text-align: center;
+      line-height: 150%;
+    }
+
+    h2 {
+      font-size: 2em;
+      font-weight: 600;
+      line-height: 150%;
+    }
+
+    p {
+      font-size: 1.5em;
+      line-height: 150%;
+      width: min(500px, 80%);
+    }
+  }
+
+  > section:nth-child(even) {
+    align-items: end;
+  }
+
+  > section:first-child,
+  > section:last-child {
+    align-items: center;
+  }
+}
+
+.guide__scroll {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translate(-50%, -10%);
+}
+
+.guide__loading {
+  @include z-index(top);
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: var(--color-bg, c.$bg-white);
+  opacity: 1;
+
+  &--leave {
+    opacity: 0;
+  }
+}
+
+@include tablet {
+  .guide__sections {
+    > section {
+      padding: 15vh 5vw;
+      align-items: center;
+      justify-content: flex-end;
+
+      p {
+        width: min(680px, 80%);
+        margin-top: 0.5em;
+        line-height: 150%;
+        text-align: center;
+      }
+    }
+
+    > section:nth-child(even) {
+      align-items: center;
+    }
+
+    > section:first-child,
+    > section:last-child {
+      justify-content: center;
+    }
+  }
+}
+
+@include mobile {
+  .guide {
+    font-size: 3vw;
+  }
+
+  .guide__sections {
+    > section {
+      p {
+        width: 90%;
+      }
+    }
+  }
+}

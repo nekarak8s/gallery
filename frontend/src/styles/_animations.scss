@@ -1,0 +1,319 @@
+// speed normalization
+$speed-normal: (
+  slow: 1000ms,
+  normal: 500ms,
+  fast: 200ms,
+);
+
+@mixin animation(
+  $delay,
+  $duration,
+  $animation,
+  $function,
+  $direction: normal,
+  $fillmode: forwards,
+  $iteration: 1
+) {
+  animation-delay: $delay;
+  animation-duration: $duration;
+  animation-name: $animation;
+  animation-timing-function: $function;
+  animation-direction: $direction;
+  animation-fill-mode: $fillmode;
+  animation-iteration-count: $iteration;
+}
+
+@mixin animation-slide-in-down(
+  $name,
+  $speed: normal,
+  $distance: 100%,
+  $delay: 0s
+) {
+  @include animation(
+    $delay,
+    map-get($speed-normal, speed),
+    animation-slide-in-down-#{$name},
+    ease-in-out
+  );
+
+  @keyframes animation-slide-in-down-#{$name} {
+    0% {
+      opacity: 0;
+      transform: translateY(-$distance);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
+
+@mixin animation-slide-in-up(
+  $name,
+  $speed: normal,
+  $distance: 100%,
+  $delay: 0s
+) {
+  @include animation(
+    $delay,
+    map-get($speed-normal, $speed),
+    animation-slide-in-up-#{$name},
+    ease-in-out
+  );
+
+  @keyframes animation-slide-in-up-#{$name} {
+    0% {
+      opacity: 0;
+      transform: translateY($distance);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
+
+@mixin animation-slide-in-left(
+  $name,
+  $speed: normal,
+  $distance: 100%,
+  $delay: 0s
+) {
+  @include animation(
+    $delay,
+    map-get($speed-normal, $speed),
+    animation-slide-in-left-#{$name},
+    ease-in
+  );
+
+  @keyframes animation-slide-in-left-#{$name} {
+    0% {
+      opacity: 0;
+      transform: translateX($distance);
+    }
+    100% {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+}
+
+@mixin animation-slide-in-right(
+  $name,
+  $speed: normal,
+  $distance: 100%,
+  $delay: 0s
+) {
+  @include animation(
+    $delay,
+    map-get($speed-normal, $speed),
+    animation-slide-in-right-#{$name},
+    ease-in
+  );
+
+  @keyframes animation-slide-in-right-#{$name} {
+    0% {
+      opacity: 0;
+      transform: translateX(-$distance);
+    }
+    100% {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+}
+
+@mixin animation-slide-out-down(
+  $name,
+  $speed: normal,
+  $distance: 100%,
+  $delay: 0s
+) {
+  @include animation(
+    $delay,
+    map-get($speed-normal, $speed),
+    animation-slide-out-down-#{$name},
+    ease-out
+  );
+
+  @keyframes animation-slide-out-down-#{$name} {
+    0% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    100% {
+      opacity: 0;
+      transform: translateY($distance);
+    }
+  }
+}
+
+@mixin animation-slide-out-up(
+  $name,
+  $speed: normal,
+  $distance: 100%,
+  $delay: 0s
+) {
+  @include animation(
+    $delay,
+    map-get($speed-normal, $speed),
+    animation-slide-out-up-#{$name},
+    ease-out
+  );
+
+  @keyframes animation-slide-out-up-#{$name} {
+    0% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(-$distance);
+    }
+  }
+}
+
+@mixin animation-slide-out-left(
+  $name,
+  $speed: normal,
+  $distance: 100%,
+  $delay: 0s
+) {
+  @include animation(
+    $delay,
+    map-get($speed-normal, $speed),
+    animation-slide-out-left-#{$name},
+    ease-out
+  );
+
+  @keyframes animation-slide-out-left-#{$name} {
+    0% {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    100% {
+      opacity: 0;
+      transform: translateX(-$distance);
+    }
+  }
+}
+
+@mixin animation-slide-out-right(
+  $name,
+  $speed: normal,
+  $distance: 100%,
+  $delay: 0s
+) {
+  @include animation(
+    $delay,
+    map-get($speed-normal, $speed),
+    animation-slide-out-right-#{$name},
+    ease-out
+  );
+
+  @keyframes animation-slide-out-right-#{$name} {
+    0% {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    100% {
+      opacity: 0;
+      transform: translateX($distance);
+    }
+  }
+}
+
+@mixin animation-flowing-horizon(
+  $name,
+  $speed: 10s,
+  $start: 0%,
+  $end: 100%,
+  $delay: 0s
+) {
+  @include animation(
+    $delay,
+    $speed,
+    animation-flowing-horizon-#{$name},
+    linear,
+    normal,
+    none,
+    infinite
+  );
+
+  @keyframes animation-flowing-horizon-#{$name} {
+    0% {
+      transform: translateX($start);
+    }
+    100% {
+      transform: translateX($end);
+    }
+  }
+}
+
+@mixin animation-clear($name, $speed: normal, $delay: 0) {
+  @include animation(
+    $delay,
+    map-get($speed-normal, $speed),
+    animation-clear-#{$name},
+    ease-out
+  );
+
+  @keyframes animation-clear-#{$name} {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+}
+
+@mixin animation-floating($name, $speed: 2s, $distance: 100%, $delay: 0s) {
+  @include animation(
+    $delay,
+    $speed,
+    animation-floating-#{$name},
+    ease-in-out,
+    alternate,
+    none,
+    infinite
+  );
+
+  @content;
+
+  @keyframes animation-floating-#{$name} {
+    0% {
+      transform: translateY(-$distance);
+    }
+    100% {
+      transform: translateY($distance);
+    }
+  }
+}
+
+@mixin animation-rotate-clockwise(
+  $name,
+  $speed: 10s,
+  $times: 1,
+  $time-function: linear
+) {
+  @include animation(
+    0s,
+    $speed,
+    animation-rotate-clockwise-#{$name},
+    $time-function,
+    normal,
+    none,
+    infinite
+  );
+
+  @keyframes animation-rotate-clockwise-#{$name} {
+    0% {
+      transform: rotate(0);
+    }
+    100% {
+      // prettier-ignore
+      transform: rotate(#{$times}turn);
+    }
+  }
+}

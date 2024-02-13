@@ -1,0 +1,28 @@
+@use '@/styles/_colors.scss' as c;
+@use '@/styles/_responsive.scss' as *;
+
+.gallery-create {
+  width: clamp(100px, 100%, 800px);
+  height: 10em;
+  border-radius: 1em;
+  background-color: var(--color-bg-subtle, c.$bg-gray);
+  font-size: 1.4rem;
+
+  svg {
+    width: 2.5em;
+    height: 2.5em;
+    color: var(--color-ft, c.$ft-black);
+  }
+}
+
+@include tablet {
+  .gallery-create {
+    font-size: 1.2rem;
+  }
+}
+
+@include mobile {
+  .gallery-create {
+    font-size: 4vw;
+  }
+}
