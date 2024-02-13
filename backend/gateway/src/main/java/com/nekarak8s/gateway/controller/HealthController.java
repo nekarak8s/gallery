@@ -9,10 +9,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @Slf4j
 public class HealthController {
-    @GetMapping("/health")
+    @GetMapping("/api/health")
     public String health() {
-        log.info("게이트웨이 서버 ok");
-        return "게이트웨이 서버 ok";
+        return "Gateway ok";
     }
 }
 
