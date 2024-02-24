@@ -146,13 +146,16 @@ Three.js로 3D 공간을 구현하면서 두 가지 어려움을 마주했습니
 
 ### Prometheus & Grafana
 
+운영 환경 모니터링을 위해 Prometheus와 Grafana를 도입했습니다.  
+Ubuntu 서버와 Spring Application Metrics를 Prometheus로 수집하고, Grafana Dashboard를 이용해 시각화 했습니다.  
+
+
 <div align="center">
    <img src="./assets/images/ubuntu-dashboard.png" alt="모니터링 대시보드" width=800/>
    <img src="./assets/images/gateway-dashboard.png" alt="모니터링 대시보드" width=800/>
 </div>
 
-운영 환경 모니터링을 위해 Prometheus와 Grafana를 도입했습니다. 
-Ubuntu 서버와 Spring Application Metrics를 Prometheus로 수집하고, Grafana Dashboard를 이용해 시각화 했습니다.
+
 
 
 ## 관련 문서
