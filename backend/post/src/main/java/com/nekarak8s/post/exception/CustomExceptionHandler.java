@@ -33,7 +33,7 @@ public class CustomExceptionHandler {
 
         Map<String, String> map = new HashMap<>();
         map.put("errorType", httpStatus.getReasonPhrase());
-        map.put("erroCode", "GP005");
+        map.put("errorCode", "GP005");
         map.put("message", defaultMessage);
 
         return new ResponseEntity<>(map, responseHeaders, httpStatus);
