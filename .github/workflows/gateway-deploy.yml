@@ -30,7 +30,9 @@ jobs:
       - name: Retrieve application properties
         env:
           APPLICATION_PROPERTIES: ${{ secrets.GATEWAY_APPLICATION_PROPERTIES }}
-        run: echo "${APPLICATION_PROPERTIES}"
+        run: |
+          touch ./src/main/resources/application.yml
+          echo "${APPLICATION_PROPERTIES}" > ./src/main/resources/application.yml
 
       - name: Build Spring Boot application
         run: ./gradlew clean build -x test
