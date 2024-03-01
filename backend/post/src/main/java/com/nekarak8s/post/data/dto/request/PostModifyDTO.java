@@ -8,10 +8,10 @@ public class PostModifyDTO {
 
     private Long postId;
 
-    @NumberOfCharacters(message = "갤러리 이름은 최소 1자, 최대 15자 이내로 작성해주세요", regexPattern = "^[\\sA-Za-z\\dㄱ-ㅎㅏ-ㅣ가-힣]{1,15}$")
+    @NumberOfCharacters(message = "게시물 제목은 최대 15자 이내로 작성해주세요", regexPattern = "^[\\sA-Za-z\\dㄱ-ㅎㅏ-ㅣ가-힣]{0,15}$")
     private String title;
 
-    @NumberOfCharacters(message = "게시물 내용은 150자 이내로 작성해주세요", regexPattern = "^[\\sA-Za-z\\dㄱ-ㅎㅏ-ㅣ가-힣]{1,150}$")
+    @NumberOfCharacters(message = "게시물 내용은 500자 이내로 작성해주세요", regexPattern = "^[\\sA-Za-z\\dㄱ-ㅎㅏ-ㅣ가-힣]{0,500}$")
     private String content;
 
     private Long order;

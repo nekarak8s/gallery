@@ -40,7 +40,10 @@ public class Post extends BaseEntity{
     @Column(name = "image_url", nullable = false) // 기본이미지 존재
     private String imageURL;
 
-    @OneToOne(fetch = FetchType.LAZY)
+//    @OneToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "music_id")
+//    private Music music;
+    @ManyToOne
     @JoinColumn(name = "music_id")
     private Music music;
 
