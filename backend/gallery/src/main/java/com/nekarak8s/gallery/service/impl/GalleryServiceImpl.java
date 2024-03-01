@@ -10,7 +10,6 @@ import com.nekarak8s.gallery.data.repository.gallery.GalleryRepository;
 import com.nekarak8s.gallery.data.repository.place.PlaceRepository;
 import com.nekarak8s.gallery.exception.CustomException;
 import com.nekarak8s.gallery.kafka.dto.GalleryEvent;
-import com.nekarak8s.gallery.kafka.producer.KafkaProducer;
 import com.nekarak8s.gallery.service.GalleryService;
 import com.nekarak8s.gallery.util.MemberServiceAPI;
 import com.nekarak8s.gallery.util.PlaceUtil;
@@ -41,8 +40,10 @@ public class GalleryServiceImpl implements GalleryService {
     private final PlaceUtil placeUtil;
     private final MemberServiceAPI memberServiceAPI;
 
+    private final RestTemplate restTemplate;
+
     // kafka
-    private final KafkaProducer producer;
+//    private final KafkaProducer producer;
     private final static String GALLERY_TOPIC   = "gallery";
     private final static String CREATE_TYPE     = "create";
     private final static String DELETE_TYPE     = "delete";
@@ -50,6 +51,10 @@ public class GalleryServiceImpl implements GalleryService {
     // 회원 서비스 URI
     @Value("${spring.member-service.uri}")
     private String memberServiceUri;
+
+    // 게시물 서비스 URI
+    @Value("${spring.post-service.uri}")
+    private String postServiceUri;
 
     /**
      * 지정된 회원의 갤러리 생성
@@ -67,7 +72,8 @@ public class GalleryServiceImpl implements GalleryService {
         Gallery gallery = createNewGallery(memberId, requestDTO);
         galleryRepository.save(gallery);
 
-        sendGalleryEvent(gallery.getGalleryId(), CREATE_TYPE); // send create event to kafka
+//        sendGalleryEvent(gallery.getGalleryId(), CREATE_TYPE); // send create event to kafka
+        sendGalleryEvent(gallery.getGalleryId(), CREATE_TYPE);
 
         return gallery.getGalleryId();
     }
@@ -80,7 +86,7 @@ public class GalleryServiceImpl implements GalleryService {
     }
 
     private void validateGalleryNameUniqueness(String galleryName, long memberId) throws CustomException {
-        log.info("{}", isGalleryNameUnique(galleryName, memberId));
+        log.info("isUnique: {}", isGalleryNameUnique(galleryName, memberId));
         if (!isGalleryNameUnique(galleryName, memberId)) {
             log.error("이미 사용중인 갤러리 이름");
             throw new CustomException(HttpStatus.CONFLICT, "GG006", "이미 사용중인 갤러리 이름입니다");
@@ -96,13 +102,33 @@ public class GalleryServiceImpl implements GalleryService {
                 .build();
     }
 
-    private void sendGalleryEvent(long galleryId, String type) throws CustomException {
+//    private void sendGalleryEvent(long galleryId, String type) throws CustomException {
+//        try {
+//            GalleryEvent galleryEvent = GalleryEvent.createGalleryEvent(galleryId, type);
+//            if (producer.isExist(GALLERY_TOPIC)) producer.sendMessage(GALLERY_TOPIC, galleryEvent);
+//        } catch (Exception e) {
+//            log.error("카프카 에러");
+//            throw new CustomException(HttpStatus.INTERNAL_SERVER_ERROR, "GG001", "Kafka 통신 예외 발생");
+//        }
+//    }
+
+    private void sendGalleryEvent(long galleryId, String type) {
         try {
             GalleryEvent galleryEvent = GalleryEvent.createGalleryEvent(galleryId, type);
-            if (producer.isExist(GALLERY_TOPIC)) producer.sendMessage(GALLERY_TOPIC, galleryEvent);
+
+            // 요청 헤더 설정
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+
+            // 요청 바디 설정
+            HttpEntity<GalleryEvent> requestEntity = new HttpEntity<>(galleryEvent, headers);
+
+            // POST 요청 보내기
+            restTemplate.postForObject(postServiceUri+"/api/post/chain", requestEntity, Void.class);
+
+
         } catch (Exception e) {
-            log.error("카프카 에러");
-            throw new CustomException(HttpStatus.INTERNAL_SERVER_ERROR, "GG001", "Kafka 통신 예외 발생");
+            log.error(e.getMessage());
         }
     }
 
@@ -187,7 +213,8 @@ public class GalleryServiceImpl implements GalleryService {
     @Override
     public void deleteGallery(long memberId, long galleryId) throws CustomException {
         galleryRepository.deleteById(galleryId);
-        sendGalleryEvent(galleryId, DELETE_TYPE); // send delete event to kafka
+//        sendGalleryEvent(galleryId, DELETE_TYPE); // send delete event to kafka
+        sendGalleryEvent(galleryId, DELETE_TYPE);
     }
 
     /**
@@ -199,6 +226,7 @@ public class GalleryServiceImpl implements GalleryService {
     @Override
     public void deleteAllGallery(long memberId) {
         galleryRepository.deleteAllByMemberId(memberId);
+        // Todo : 갤러리 Id 리스트 Post 서버로 보내기 -> 연쇄 삭제
     }
 
 
