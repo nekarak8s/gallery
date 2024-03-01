@@ -30,7 +30,6 @@ jobs:
         env:
           APPLICATION_PROPERTIES: ${{ secrets.GALLERY_APPLICATION_PROPERTIES }} # 시크릿에 등록시킨 application.yml 불러오기
         run: |
-          mkdir ./src/main/resources
           touch ./src/main/resources/application.yml
           echo "${APPLICATION_PROPERTIES}" > ./src/main/resources/application.yml
 
