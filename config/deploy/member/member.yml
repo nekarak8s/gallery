@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: member-dp
+spec:
+  selector:
+    matchLabels:
+      app: member
+  template:
+    metadata:
+      labels:
+        app: member
+    spec:
+      containers:
+        - image: chancehee/gallery-member
+          name: member
+          env:
+            - name: REDIS_HOST
+              value: "redis-svc"
+            - name: REDIS_PORT
+              value: "6379"
+            - name: REDIS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: gallery-secret
+                  key: REDIS_PASSWORD
+            - name: GALLERY_DB_HOST
+              value: "mysql-svc:3306"
+            - name: GALLERY_DB_USER
+              value: "root"
+            - name: GALLERY_DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: gallery-secret
+                  key: MYSQL_ROOT_PASSWORD
+            - name: KAKAO_REDIRECT_URI
+              value: "http://thegallery.site/oauth/kakao"
+            # - name: BOOTSTRAP_SERVERS
+            #   value: "kafka-svc:9092"
+            - name: GALLERY_GALLERY_HOST
+              value: "gallery-svc:8002"
+            - name: JPA_DDL_TYPE
+              value: "update"
+          ports:
+            - containerPort: 8001
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: member-svc
+spec:
+  ports:
+    - port: 8001
+  selector:
+    app: member
