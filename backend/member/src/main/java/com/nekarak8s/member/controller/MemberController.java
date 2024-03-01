@@ -45,8 +45,8 @@ public class MemberController {
 
     @GetMapping("/health")
     public String health(){
-        log.info("member 서버 ok");
-        return "member 서버 ok";
+        log.info("member ok");
+        return "member ok";
     }
 
     /**
