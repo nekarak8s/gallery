@@ -2,8 +2,8 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 resources:
-  - gallery.yml
+- gallery.yml
 
 images:
-  - name: chancehee/gallery-gallery
-    newTag: 6919d288ad46de5a0129f0883fb9bf3ed2b8c4a533333333
+- name: chancehee/gallery-gallery
+  newTag: a31fd198c7fbe383dc620ee3c7d0c16c35ac2497
