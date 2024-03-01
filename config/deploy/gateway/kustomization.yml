@@ -6,4 +6,4 @@ resources:
 
 images:
 - name: chancehee/gallery-gateway
-  newTag: 084db6fbd9cf3dae4bf0557cf9ebd44c9d1b305b
+  newTag: 6919d288ad46de5a0129f0883fb9bf3ed2b8c4a5
