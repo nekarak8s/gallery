@@ -34,13 +34,11 @@ spec:
                   name: gallery-secret
                   key: MYSQL_ROOT_PASSWORD
             - name: KAKAO_REDIRECT_URI
-              value: "http://thegallery.site/oauth/kakao"
-            # - name: BOOTSTRAP_SERVERS
-            #   value: "kafka-svc:9092"
+              value: "https://thegallery.site/oauth/kakao"
             - name: GALLERY_GALLERY_HOST
               value: "gallery-svc:8002"
             - name: JPA_DDL_TYPE
-              value: "update"
+              value: "none"
           ports:
             - containerPort: 8001
 
