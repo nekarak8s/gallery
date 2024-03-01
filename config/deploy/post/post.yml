@@ -34,11 +34,11 @@ spec:
                   name: gallery-secret
                   key: MYSQL_ROOT_PASSWORD
             - name: GALLERY_MEMBER_HOST
-              value: "member-svc"
+              value: "member-svc:8001/api/member"
             # - name: BOOTSTRAP_SERVERS
             #   value: "kafka-svc:9092"
             - name: JPA_DDL_TYPE
-              value: "update"
+              value: "none"
           ports:
             - containerPort: 8003
 
