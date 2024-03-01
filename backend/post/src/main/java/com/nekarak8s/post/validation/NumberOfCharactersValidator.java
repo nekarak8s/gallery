@@ -13,6 +13,6 @@ public class NumberOfCharactersValidator implements ConstraintValidator<NumberOf
 
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {
-        return value != null && !value.trim().isEmpty() && value.matches(regexPattern);
+        return value != null && value.matches(regexPattern);
     }
 }

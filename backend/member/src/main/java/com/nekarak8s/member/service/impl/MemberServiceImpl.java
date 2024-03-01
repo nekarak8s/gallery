@@ -8,7 +8,6 @@ import com.nekarak8s.member.data.entity.Member;
 import com.nekarak8s.member.data.repository.MemberRepository;
 import com.nekarak8s.member.exception.CustomException;
 import com.nekarak8s.member.kafka.dto.MemberEvent;
-import com.nekarak8s.member.kafka.producer.KafkaProducer;
 import com.nekarak8s.member.redis.service.NicknameService;
 import com.nekarak8s.member.service.AuthService;
 import com.nekarak8s.member.service.MemberService;
@@ -18,9 +17,14 @@ import com.nekarak8s.member.util.jwt.TokenMember;
 import com.nekarak8s.member.util.pair.Pair;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -47,9 +51,14 @@ public class MemberServiceImpl implements MemberService{
     private final JwtProperties jwtProperties;
 
     // kafka
-    private final KafkaProducer producer;
-    private final static String MEMBER_TOPIC = "member";
+//    private final KafkaProducer producer;
+//    private final static String MEMBER_TOPIC = "member";
     private final static String DELETE_TYPE = "delete";
+
+    private final RestTemplate restTemplate;
+
+    @Value("${spring.gallery-service.uri}")
+    private String galleryServiceUri;
 
     // custom exception
     private static final GAError INTERNAL_SERVER_ERROR = GAError.INTERNAL_SERVER_ERROR;
@@ -212,7 +221,10 @@ public class MemberServiceImpl implements MemberService{
                 .orElseThrow(() -> new CustomException(RESOURCE_NOT_FOUND.getHttpStatus(), RESOURCE_NOT_FOUND.getCode(), "삭제하려는 회원 정보가 존재하지 않습니다"));
 
         markMemberAsDeleted(member); // update database
-        sendMemberEvent(memberId, DELETE_TYPE); // send event to kafka
+//        sendMemberEvent(memberId, DELETE_TYPE); // send event to kafka
+        // 회원 탈퇴 이벤트 전달
+        sendMemberEvent(memberId, DELETE_TYPE);
+
         updateCache(memberId); // update cache
     }
 
@@ -222,13 +234,32 @@ public class MemberServiceImpl implements MemberService{
         memberRepository.save(member);
     }
 
-    private void sendMemberEvent(long memberId, String type) throws CustomException {
+//    private void sendMemberEvent(long memberId, String type) throws CustomException {
+//        try {
+//            MemberEvent memberEvent = MemberEvent.createMemberEvent(memberId, type);
+//            if (producer.isExist(MEMBER_TOPIC)) producer.sendMessage(MEMBER_TOPIC, memberEvent); // produce event (to Kafka)
+//        } catch (Exception e) {
+//            log.error("카프카 에러");
+//            throw new CustomException(INTERNAL_SERVER_ERROR.getHttpStatus(), INTERNAL_SERVER_ERROR.getCode(), INTERNAL_SERVER_ERROR.getDescription());
+//        }
+//    }
+
+    private void sendMemberEvent(long memberId, String type) {
         try {
             MemberEvent memberEvent = MemberEvent.createMemberEvent(memberId, type);
-            if (producer.isExist(MEMBER_TOPIC)) producer.sendMessage(MEMBER_TOPIC, memberEvent); // produce event (to Kafka)
+
+            // 요청 헤더 설정
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+
+            // 요청 바디 설정
+            HttpEntity<MemberEvent> requestEntity = new HttpEntity<>(memberEvent, headers);
+
+            // POST 요청 보내기
+            restTemplate.postForObject(galleryServiceUri+"/api/gallery/chain", requestEntity, Void.class);
+
         } catch (Exception e) {
-            log.error("카프카 에러");
-            throw new CustomException(INTERNAL_SERVER_ERROR.getHttpStatus(), INTERNAL_SERVER_ERROR.getCode(), INTERNAL_SERVER_ERROR.getDescription());
+            log.error(e.getMessage());
         }
     }
 
