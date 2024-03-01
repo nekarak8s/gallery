@@ -58,7 +58,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Switch to gateway-argo branch
+      - name: Switch to post-argo branch
         run: |
           git fetch
           git checkout post-argo
@@ -70,7 +70,7 @@ jobs:
 
       - name: Update kubernetes manifest
         run: |
-          cd config/deploy/gateway/
+          cd config/deploy/post/
           kustomize edit set image ${{ secrets.BACK_DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
           git config user.name "GitHub Actions"
           git config user.email "<>"
@@ -81,4 +81,4 @@ jobs:
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: gateway-argo
+          branch: post-argo
