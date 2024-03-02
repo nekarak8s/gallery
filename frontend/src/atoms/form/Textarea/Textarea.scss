@@ -49,6 +49,19 @@
   transform: translate(0.1em, 0em);
 }
 
+.textarea span {
+  z-index: 0;
+  position: absolute;
+  bottom: 0.5em;
+  right: 0.9em;
+  font-size: 0.8em;
+  color: var(--color-ft-subtle, c.$ft-gray);
+}
+
+.textarea textarea.error ~ span {
+  color: var(--color-ft-warning, c.$ft-red);
+}
+
 .textarea div {
   z-index: 0;
   position: absolute;

@@ -139,6 +139,7 @@ const PostItemForm = ({ post, index }: PostItemFormProps) => {
             name={`posts[${index}].content`}
             initialValue={post.content}
             height="4em"
+            maxLen={500}
           />
         </div>
       </article>

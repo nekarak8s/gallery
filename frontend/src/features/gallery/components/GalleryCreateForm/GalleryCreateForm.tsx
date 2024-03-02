@@ -54,7 +54,7 @@ const GalleryCreateForm = ({ onSuccess, onError }: GalleryFormProps) => {
     <>
       <Form className="gallery-create-form" onSubmit={handleSubmit}>
         <Text label="전시회 이름" name="name" initialValue="" />
-        <Textarea label="소개글" name="content" initialValue="" />
+        <Textarea label="소개글" name="content" initialValue="" maxLen={150} />
         <PlacesRadio placeList={placeList} showSelected={false} />
         <Button type="submit" direction="left" ariaLabel="전시회 생성" text="전시회 개관" />
       </Form>
