@@ -1,0 +1,52 @@
+@use '@/styles/_responsive.scss' as *;
+
+.profile-edit {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: flex-end;
+  gap: 1em;
+  font-size: 1rem;
+}
+
+.profile-edit__toggle {
+  margin: 0.4em 0.5em;
+
+  svg {
+    width: 1.5em;
+    height: 1.5em;
+  }
+}
+
+.profile-edit__menu {
+  display: flex;
+  flex-direction: column-reverse;
+  justify-content: flex-end;
+  gap: 0px;
+  opacity: 0;
+  transform: scale(0);
+  transform-origin: bottom right;
+
+  &--enter {
+    gap: 10px;
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  &--leave {
+    gap: 0px;
+    opacity: 0;
+    transform: scale(0);
+  }
+}
+
+@include tablet {
+  .profile-edit {
+    font-size: 0.9rem;
+  }
+}
+
+@include mobile {
+  .profile-edit {
+    font-size: 0.8rem;
+  }
+}

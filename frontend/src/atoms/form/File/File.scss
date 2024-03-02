@@ -1,0 +1,34 @@
+@use '@/styles/_colors.scss' as c;
+@use '@/styles/_responsive.scss' as *;
+
+.file {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
+  width: 100%;
+
+  input {
+    width: 100%;
+    padding: 0.5em 0.5em;
+    border-bottom: 2px solid black;
+    font: inherit;
+    font-size: 0.8rem;
+  }
+
+  input::file-selector-button {
+    display: none;
+  }
+}
+
+.file__buttons {
+  display: flex;
+  gap: 20px;
+}
+
+@include mobile {
+  .file__buttons {
+    display: flex;
+    gap: 15px;
+  }
+}

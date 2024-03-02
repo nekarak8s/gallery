@@ -1,0 +1,42 @@
+@use '@/styles/_responsive.scss' as *;
+
+.gallery-update-form {
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  padding: 2em 3em;
+  width: min(800px, 80vw);
+  font-size: 1rem;
+}
+
+.gallery-update-form__loading {
+  position: fixed;
+  inset: 0 0 0 0;
+}
+
+.gallery-update-form__buttons {
+  display: flex;
+  justify-content: center;
+  position: relative;
+  width: 100%;
+
+  button:nth-child(2) {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+  }
+}
+
+@include tablet {
+  .gallery-update-form {
+    padding: 2em 3em;
+  }
+}
+
+@include mobile {
+  .gallery-update-form {
+    padding: 2em 1em;
+  }
+}

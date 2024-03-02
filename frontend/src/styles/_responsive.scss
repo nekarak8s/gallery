@@ -1,0 +1,24 @@
+$breakpoint-mobile: 640px;
+$breakpoint-tablet: 992px;
+$breakpoint-laptop: 1280px;
+
+// Mobile devices (up to 767px)
+@mixin mobile {
+  @media (max-width: #{$breakpoint-mobile}) {
+    @content;
+  }
+}
+
+// Tablet devices (up to 1023px)
+@mixin tablet {
+  @media (max-width: #{$breakpoint-tablet}) {
+    @content;
+  }
+}
+
+// Laptop devices (up to 1280px)
+@mixin laptop {
+  @media (max-width: #{$breakpoint-laptop}) {
+    @content;
+  }
+}

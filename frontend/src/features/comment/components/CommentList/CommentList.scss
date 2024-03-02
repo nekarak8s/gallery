@@ -1,0 +1,15 @@
+.comment-list {
+  display: flex;
+  flex-direction: column;
+  position: sticky;
+  top: 0;
+  max-height: 100%;
+  font-size: 1rem;
+}
+
+.comment-list__list {
+  flex: 1;
+  gap: 0.5em;
+  margin: 0 0 0.3em 0;
+  overflow: auto;
+}

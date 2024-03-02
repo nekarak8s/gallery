@@ -1,0 +1,75 @@
+@use '@/styles/_responsive.scss' as *;
+
+.post-item-form {
+  z-index: 1;
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr;
+  gap: 1em;
+
+  &.inactive {
+    background-color: rgba(0, 0, 0, 0.2);
+  }
+}
+
+.post-item-form__image-music {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+
+  > img {
+    width: 9em;
+    height: 9em;
+    aspect-ratio: 1/1;
+    object-fit: cover;
+  }
+
+  > div {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+  }
+}
+
+.post-item-form__title-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+}
+
+.post-item-form__music {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
+  width: 100%;
+}
+
+.post-item-form__is-active {
+  position: absolute;
+  top: 0.8em;
+  left: 0.5em;
+}
+
+@include tablet {
+  .post-item-form {
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(2, auto);
+    gap: 0;
+  }
+
+  .post-item-form__title-content {
+    gap: 0.5em;
+    flex: auto;
+  }
+
+  .post-item-form__image-music {
+    > img {
+      width: 8em;
+      height: 8em;
+    }
+  }
+}

@@ -1,0 +1,24 @@
+@use '@/styles/_animations.scss' as a;
+
+.gallery-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.gallery-list__item {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  opacity: 0;
+  transform: translate(0, 20px);
+  transition:
+    transform 300ms,
+    opacity 300ms;
+}
+
+.gallery-list__item.show {
+  opacity: 1;
+  transform: translate(0, 0);
+}

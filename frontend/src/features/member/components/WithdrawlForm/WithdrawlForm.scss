@@ -1,0 +1,28 @@
+@use '@/styles/_responsive.scss' as *;
+
+.withdrawl-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2em;
+  width: min(350px, 80vw);
+  padding: 3em 3em 2em;
+  font-size: 1rem;
+
+  > p {
+    text-align: center;
+    line-height: 150%;
+    white-space: nowrap;
+  }
+}
+
+.withdrawl-form__loading {
+  position: fixed;
+  inset: 0 0 0 0;
+}
+
+@include tablet {
+  .withdrawl-form {
+    font-size: 0.9rem;
+  }
+}
