@@ -179,10 +179,10 @@ const Joystick = ({ control, shoot, jump }: JoystickProps) => {
         <div className="joystick__controller--core" ref={coreRef}></div>
       </div>
       <div className="joystick__buttons">
-        <div className="joystick__shoot" onClick={shoot} ref={shootRef}>
+        <div className="joystick__shoot" onMouseUp={shoot} ref={shootRef}>
           <BowIcon />
         </div>
-        <div className="joystick__jump" onClick={jump} ref={jumpRef}>
+        <div className="joystick__jump" onMouseUp={jump} ref={jumpRef}>
           <JumpIcon />
         </div>
       </div>

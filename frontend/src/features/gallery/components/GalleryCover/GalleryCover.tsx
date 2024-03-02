@@ -63,7 +63,6 @@ const GalleryCover = ({ gallery, onClickEnter }: GalleryCoverProps) => {
       <article className="gallery-cover__content" ref={contentRef}>
         <h1>{gallery.name}</h1>
         <p>{gallery.content}</p>
-
         <Button text="입장하기" onClick={onClickEnter} direction="center" />
         <div className="gallery-cover__content--light" ref={contentLightRef} />
       </article>

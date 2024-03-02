@@ -14,9 +14,7 @@ const Footer = () => {
   return (
     <>
       <footer className="footer">
-        <p>
-          더 갤러리: 당신만의 3D <del>인스타그램</del>갤러리
-        </p>
+        <p>더 갤러리 : 당신만의 3D 전시회</p>
         <address>
           <ul>
             <li>
