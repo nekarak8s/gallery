@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react'
 import { NavLink } from 'react-router-dom'
 import gsap, { Elastic } from 'gsap'
-import throttle from '@/utils/throttle'
+import throttle from '@/libs/throttle'
 import './MagneticButton.scss'
 
 interface Props {

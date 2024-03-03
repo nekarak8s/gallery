@@ -1,13 +1,7 @@
 import * as regexes from './regexes'
 
 export async function validatePostListForm(formData: FormData): Promise<RegexResult<FormData>> {
-  const imageMimeTypes = [
-    'image/jpeg',
-    'image/png',
-    'image/gif',
-    'image/bmp',
-    'image/webp' /* add more as needed */,
-  ]
+  const imageMimeTypes = ['image/jpeg', 'image/png', 'image/webp' /* add more as needed */]
   const reader = new FileReader()
 
   for (let i = 0; i < 10; i++) {
@@ -54,6 +48,7 @@ export async function validatePostListForm(formData: FormData): Promise<RegexRes
       try {
         const resizedImage = await resizeImage(file, reader)
         formData.append(`posts[${i}].image`, resizedImage)
+        console.log(resizedImage, 'resie')
       } catch (e) {
         return { result: false, reason: `${i + 1}번째 게시물: 이미지 변환 실패` }
       }
@@ -76,28 +71,25 @@ async function resizeImage(file: File, reader: FileReader): Promise<File> {
         const canvas = document.createElement('canvas')
         const ctx = canvas.getContext('2d')
 
-        const maxWidth = 800
-        const maxHeight = 800
+        const width = 800
+        const height = 800
 
-        let width = img.width
-        let height = img.height
-
-        if (width > height) {
-          if (width > maxWidth) {
-            height *= maxWidth / width
-            width = maxWidth
-          }
-        } else {
-          if (height > maxHeight) {
-            width *= maxHeight / height
-            height = maxHeight
-          }
-        }
+        const distance = img.width < img.height ? img.width : img.height
 
         canvas.width = width
         canvas.height = height
 
-        ctx?.drawImage(img, 0, 0, width, height)
+        ctx?.drawImage(
+          img,
+          img.width / 2 - distance / 2,
+          img.height / 2 - distance / 2,
+          img.width / 2 + distance / 2,
+          img.height / 2 + distance / 2,
+          0,
+          0,
+          width,
+          height
+        )
 
         canvas.toBlob((blob) => {
           if (blob) {

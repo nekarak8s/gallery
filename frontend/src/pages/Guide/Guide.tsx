@@ -9,7 +9,7 @@ import Loading from '@/atoms/ui/Loading'
 import ScrollDown from '@/atoms/ui/ScrollDown'
 import { DefaultCamera } from '@/libs/three-custom/cameras/DefaultCamera'
 import { DefaultRenderer } from '@/libs/three-custom/renderers/DefaultRenderer'
-import toFrame from '@/utils/toFrame'
+import toFrame from '@/libs/toFrame'
 import './Guide.scss'
 
 const CAMERA_ORDERS = [
@@ -216,29 +216,29 @@ const Guide = () => {
           <section>
             <h2>로그인 해주세요</h2>
             <p>
-              더갤러리는 안전한 소셜로그인을 지원합니다. 그 과정에서 어떠한 권한도 요구하지
-              않습니다. 저희 말고 IT 대기업을 신뢰하세요!
+              더 갤러리는 안전하고 간편한 소셜 로그인을 이용합니다. 본인 인증만 진행할 뿐 어떠한
+              권한도 받아오지 않습니다.
             </p>
           </section>
           <section>
             <h2>전시회를 생성하세요</h2>
             <p>
-              마이페이지에서 &apos;+&apos; 버튼을 눌러 갤러리를 생성합니다. 전시회의 이름과 소개를
-              적고 공간타입을 선택하세요.
+              마이페이지에 접속하여 [ + ] 카드를 클릭하면 새로운 전시회를 생성할 수 있습니다.
+              전시회의 기본 정보를 입력하고 손쉽게 전시회를 개최해보세요.
             </p>
           </section>
           <section>
-            <h2>사진을 등록하세요</h2>
+            <h2>작품을 등록하세요</h2>
             <p>
-              여러분의 사진첩에서 선보이고 싶은 사진들을 골라 등록하세요. 각 사진마다 어울리는
-              음악을 검색해 등록할 수 있습니다.
+              생성한 전시회의 수정 버튼을 클릭하면 작품 목록을 업데이트할 수 있습니다. 작품마다
+              제목과 설명글을 기입하고, 어울리는 노래도 선택해보세요.
             </p>
           </section>
           <section>
             <h2>전시회에 입장하세요</h2>
             <p>
-              입장 버튼을 통해 전시회를 관람할 수 있습니다. 전시회 곳곳을 돌아다니며 앨범에 방명록을
-              남겨보세요.
+              입장 버튼을 눌러 전시회에 방문할 수 있습니다. 액자를 조준해서 맞추면 작품에 대한
+              감상을 남길 수 있습니다.
             </p>
           </section>
           <section>

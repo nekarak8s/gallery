@@ -4,7 +4,7 @@ export const name: RegexCondition = {
 }
 
 export const content: RegexCondition = {
-  regex: /[\s\S]{1,150}/,
+  regex: /^[\s\S]{1,150}$/,
   condition: '공백 포함 150자로 입력해주세요',
 }
 

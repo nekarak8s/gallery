@@ -1,15 +1,28 @@
+@use '@/styles/_colors' as c;
+
 .comment-list {
-  display: flex;
-  flex-direction: column;
-  position: sticky;
-  top: 0;
-  max-height: 100%;
-  font-size: 1rem;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: minmax(0, 1fr) auto;
+  justify-content: center;
+  align-items: center;
+  // position: sticky;
+  // top: 0;
+  height: 100%;
 }
 
 .comment-list__list {
-  flex: 1;
+  display: flex;
+  flex-direction: column;
   gap: 0.5em;
   margin: 0 0 0.3em 0;
+  height: 100%;
   overflow: auto;
+}
+
+.comment-list__empty {
+  text-align: center;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-ft-subtle, c.$ft-gray);
 }

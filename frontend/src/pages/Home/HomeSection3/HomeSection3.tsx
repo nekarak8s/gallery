@@ -10,7 +10,7 @@ import Button3D from '@/atoms/ui/Button3D'
 import StaticImage from '@/atoms/ui/StaticImage'
 import StaticVideo from '@/atoms/ui/StaticVideo'
 import { CURSOR_SCALE } from '@/constants'
-import toFrame from '@/utils/toFrame'
+import toFrame from '@/libs/toFrame'
 import './HomeSection3.scss'
 
 const BACK_HEIGHT = 3 // * 100vh

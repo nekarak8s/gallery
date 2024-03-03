@@ -1,26 +1,279 @@
-import { Body, Box, Vec3 } from 'cannon-es'
 import * as THREE from 'three'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import { degToRad } from 'three/src/math/MathUtils'
-import wallBaseImg from '@/assets/textures/concrete/Concrete_011_COLOR.jpg'
-import wallNormImg from '@/assets/textures/concrete/Concrete_011_NORM.jpg'
-import wallAmbientImg from '@/assets/textures/concrete/Concrete_011_OCC.jpg'
-import frameAmbientImg from '@/assets/textures/fabric/Fabric_polyester_001_ambientOcclusion.jpg'
-import frameNormImg from '@/assets/textures/fabric/Fabric_polyester_001_normal.jpg'
+import wallBaseImg from '@/assets/textures/concrete/Concrete_019_BaseColor.jpg'
 import floorBaseImg from '@/assets/textures/granite/Granite_001_COLOR.jpg'
-import floorNormImg from '@/assets/textures/granite/Granite_001_NORM.jpg'
-import floorAmbientImg from '@/assets/textures/granite/Granite_001_OCC.jpg'
 import { GalleryTypeProps } from '@/features/gallery/types'
 import { getSunColor, getSunIntensity, getSunPosition } from '@/libs/sun'
 import { Ceiling } from '@/libs/three-custom/items/Ceiling'
+import { Edges } from '@/libs/three-custom/items/Edges'
 import { Floor } from '@/libs/three-custom/items/Floor'
-import { Floors } from '@/libs/three-custom/items/Floors'
 import { Frame } from '@/libs/three-custom/items/Frame'
-import { Frames } from '@/libs/three-custom/items/Frames'
+import { PostFrames } from '@/libs/three-custom/items/PostFrames'
 import { SkyItem } from '@/libs/three-custom/items/Sky'
 import { Wall } from '@/libs/three-custom/items/Wall'
 import { Walls } from '@/libs/three-custom/items/Walls'
 import { WaterItem } from '@/libs/three-custom/items/Water'
+
+const buildGallery = (props: GalleryTypeProps) => {
+  // Create Loaders
+  const textureLoader = new THREE.TextureLoader(props.loadingManager)
+  const gltfLoader = new GLTFLoader(props.loadingManager)
+
+  // Array for managing resources in dispose function
+  const lights: THREE.Light[] = []
+  const items: ThreeItem[] = []
+
+  // Sun information
+  const date = new Date()
+  const sunLightIntensity = getSunIntensity(date)
+  const sunLightColor = new THREE.Color(getSunColor(date))
+
+  /**
+   * Meshes
+   */
+  // Create sky
+  const sky = new SkyItem({
+    scene: props.scene,
+    size: 2000,
+  })
+  items.push(sky)
+
+  // Create water
+  const water = new WaterItem({
+    container: props.scene,
+    textureLoader,
+    width: 1000,
+    depth: 1000,
+    distortionScale: 3,
+  })
+  items.push(water)
+
+  // Create Floors
+  FLOORS_DATA.forEach((floorData) => {
+    const floor = new Floor({
+      container: props.scene,
+      color: 0x686868,
+      x: floorData.x,
+      y: floorData.y,
+      z: floorData.z,
+      width: floorData.width,
+      height: floorData.height,
+      depth: floorData.depth,
+      texture: {
+        textureLoader,
+        baseImg: floorBaseImg,
+        // normalImg: floorNormImg,
+        repeatX: floorData.width / 3,
+        repeatY: floorData.depth / 3,
+      },
+    })
+    items.push(floor)
+    props.controls.floors.push(floor.mesh)
+  })
+
+  GLASS_FLOORS_DATA.forEach((glassFloorData) => {
+    const glassFloor = new Floor({
+      container: props.scene,
+      color: 0xffffff,
+      x: glassFloorData.x,
+      y: glassFloorData.y,
+      z: glassFloorData.z,
+      width: glassFloorData.width,
+      height: glassFloorData.height,
+      depth: glassFloorData.depth,
+      transparent: true,
+      opacity: 0.4,
+    })
+    items.push(glassFloor)
+    props.controls.floors.push(glassFloor.mesh)
+  })
+
+  // Set camera position
+  props.controls.setPosition(35, 15, 62)
+
+  // Create ceiling
+  const ceiling = new Ceiling({
+    container: props.scene,
+    color: 0xffffff,
+    x: CEILING_DATA.x,
+    y: CEILING_DATA.y,
+    z: CEILING_DATA.z,
+    width: CEILING_DATA.width,
+    height: CEILING_DATA.height,
+    depth: CEILING_DATA.depth,
+    texture: {
+      textureLoader,
+      baseImg: wallBaseImg,
+      // normalImg: wallNormImg,
+      repeatX: CEILING_DATA.width / 10,
+      repeatY: CEILING_DATA.depth / 10,
+    },
+  })
+  items.push(ceiling)
+  props.rayControls.rayItems.push(ceiling.mesh)
+  props.controls.obstacles.push(ceiling.mesh)
+
+  // Create walls
+  const walls = new Walls({
+    container: props.scene,
+    wallsData: WALLS_DATA,
+    repeatX: 10 / 10,
+    repeatY: 8 / 10,
+    texture: {
+      textureLoader,
+      baseImg: wallBaseImg,
+      // normalImg: wallNormImg,
+    },
+  })
+  items.push(walls)
+  props.rayControls.rayItems.push(walls.mesh)
+  props.controls.obstacles.push(walls.mesh)
+
+  const glassWall = new Wall({
+    container: props.scene,
+    color: 0xffffff,
+    x: GLASS_WALL.x,
+    y: GLASS_WALL.y,
+    z: GLASS_WALL.z,
+    width: GLASS_WALL.width,
+    height: GLASS_WALL.height,
+    depth: GLASS_WALL.depth,
+    rotationY: GLASS_WALL.rotationY,
+    transparent: true,
+    opacity: 0.2,
+  })
+  items.push(glassWall)
+  props.rayControls.rayItems.push(glassWall.mesh)
+  props.controls.obstacles.push(glassWall.mesh)
+
+  // // Create Plants
+  // const plants = new Plants({
+  //   container: props.scene,
+  //   gltfLoader,
+  //   plantsData: PLANT_DATA,
+  // })
+  // items.push(plants)
+  // props.rayControls.rayItems = [...props.rayControls.rayItems, ...plants.objects]
+
+  // Create PostFrames
+  const frames = new PostFrames({
+    container: props.scene,
+    textureLoader,
+    postList: props.postList,
+    framesData: FRAMES_DATA,
+    spotLight: {
+      intensity: 3 * (1 - sunLightIntensity) + 5,
+    },
+  })
+  items.push(frames)
+  props.rayControls.rayItems = [...props.rayControls.rayItems, ...frames.meshes]
+
+  /**
+   * Light
+   */
+  // Create sun
+  const sun = new THREE.Vector3()
+
+  // Get sun position
+  const { elevation, azimuth } = getSunPosition(date)
+
+  const phi = THREE.MathUtils.degToRad(90 - elevation)
+  const phiEle = THREE.MathUtils.degToRad(elevation * 3)
+  const theta = THREE.MathUtils.degToRad(azimuth - 25)
+
+  // Set on the sky & water
+  sun.setFromSphericalCoords(1, phi, theta)
+  sky.setSunPosition(sun)
+  water.setSunDirection(sun)
+
+  // Ambient light
+  const ambientLight = new THREE.AmbientLight(0xffffff, sunLightIntensity * 0.8)
+  props.scene.add(ambientLight)
+  lights.push(ambientLight)
+
+  // Direct Light
+  const directLight = new THREE.DirectionalLight(sunLightColor, sunLightIntensity * 1.8)
+  directLight.position.set(Math.sin(theta) * 100, Math.sin(phiEle) * 500, Math.cos(theta) * 100)
+  directLight.shadow.camera.left = -60
+  directLight.shadow.camera.right = 60
+  directLight.shadow.camera.top = 60
+  directLight.shadow.camera.bottom = -100
+  directLight.castShadow = true
+  props.scene.add(directLight)
+  lights.push(directLight)
+
+  const lightInterval = setInterval(() => {
+    const date = new Date()
+
+    // Update sun position
+    const { elevation, azimuth } = getSunPosition(date)
+
+    const phi = THREE.MathUtils.degToRad(90 - elevation)
+    const phiEle = THREE.MathUtils.degToRad(elevation * 3)
+    const theta = THREE.MathUtils.degToRad(azimuth - 25)
+
+    sun.setFromSphericalCoords(1, phi, theta)
+    sky.setSunPosition(sun)
+    water.setSunDirection(sun)
+
+    const sunLightIntensity = getSunIntensity(date)
+    const sunLightColor = new THREE.Color(getSunColor(date))
+
+    ambientLight.intensity = sunLightIntensity * 0.8
+
+    directLight.color = sunLightColor
+    directLight.intensity = sunLightIntensity * 1.8
+    directLight.position.set(Math.sin(theta) * 100, Math.sin(phiEle) * 500, Math.cos(theta) * 100)
+
+    // update light of frame
+    items.forEach((item) => {
+      if (item instanceof Frame && item.spotLight) {
+        item.spotLight.intensity = 3 * (1 - sunLightIntensity) + 5
+      }
+    })
+  }, 60 * 1000)
+
+  // Light Helper : Development
+  if (process.env.NODE_ENV !== 'production') {
+    import('three').then(({ CameraHelper }) => {
+      props.scene.add(new CameraHelper(directLight.shadow.camera))
+    })
+  }
+
+  // Create edges
+  const edges = new Edges({
+    container: props.scene,
+    edgesData: EDGES_DATA,
+  })
+  items.push(edges)
+  props.controls.obstacles.push(edges.mesh)
+
+  /**
+   * Update function: Render canvas
+   */
+  const update = function renderCanvas() {
+    water.update()
+  }
+
+  /**
+   * Dispose function: Release all the resources
+   */
+  const dispose = function () {
+    lightInterval && clearInterval(lightInterval)
+    lights.forEach((light) => {
+      props.scene.remove(light)
+      light.dispose()
+    })
+    items.forEach((object) => {
+      object.dispose && object.dispose()
+    })
+  }
+
+  return { update, dispose }
+}
+
+export default buildGallery
 
 const FLOORS_DATA = [
   {
@@ -28,7 +281,7 @@ const FLOORS_DATA = [
     y: 2,
     z: 6.09,
     width: 30,
-    height: 50,
+    height: 5,
     depth: 50,
   },
   {
@@ -222,6 +475,191 @@ const CEILING_DATA = {
   depth: 11,
 }
 
+const PLANT_DATA = [
+  // lef top
+  {
+    type: 2,
+    x: 21.12,
+    y: 2,
+    z: 9.07,
+    rotation: 1,
+    scale: 2,
+  },
+  {
+    type: 1,
+    x: 21.12,
+    y: 2,
+    z: 10.41,
+    rotation: 0.8,
+    scale: 2.1,
+  },
+  {
+    type: 1,
+    x: 22,
+    y: 2,
+    z: 9.97,
+    rotation: 2.1,
+    scale: 2,
+  },
+  {
+    type: 1,
+    x: 21.12,
+    y: 2,
+    z: 13.65,
+    rotation: 1.5,
+    scale: 2.1,
+  },
+  {
+    type: 2,
+    x: 21.12,
+    y: 2,
+    z: 14.77,
+    rotation: 1.4,
+    scale: 2.2,
+  },
+  {
+    type: 2,
+    x: 21.12,
+    y: 2,
+    z: 15.92,
+    rotation: 2,
+    scale: 2.05,
+  },
+  {
+    type: 1,
+    x: 21.12,
+    y: 2,
+    z: 17.07,
+    rotation: 2.5,
+    scale: 2.15,
+  },
+  {
+    type: 0,
+    x: 22.24,
+    y: 2,
+    z: 14.37,
+    rotation: 2.3,
+    scale: 1.7,
+  },
+  {
+    type: 2,
+    x: 22.24,
+    y: 2,
+    z: 15.57,
+    rotation: 2,
+    scale: 1.8,
+  },
+  {
+    type: 0,
+    x: 22.24,
+    y: 2,
+    z: 16.58,
+    rotation: 0.3,
+    scale: 1.73,
+  },
+  // right top
+  {
+    type: 1,
+    x: 48.89,
+    y: 2,
+    z: 20.2,
+    scale: 2,
+    rotation: 0.8,
+  },
+
+  {
+    type: 1,
+    x: 48.89,
+    y: 2,
+    z: 21.16,
+    scale: 2.2,
+    rotation: 1,
+  },
+  {
+    type: 0,
+    x: 48.89,
+    y: 2,
+    z: 22.36,
+    scale: 1.7,
+    rotation: 1,
+  },
+  {
+    type: 1,
+    x: 48.1,
+    y: 2,
+    z: 20.76,
+    scale: 1.7,
+    rotation: 2,
+  },
+
+  {
+    type: 0,
+    x: 48.1,
+    y: 2,
+    z: 21.96,
+    scale: 2,
+    rotation: 2,
+  },
+  {
+    type: 0,
+    x: 48.89,
+    y: 2,
+    z: 25,
+    scale: 1.7,
+    rotation: 1,
+  },
+  {
+    type: 1,
+    x: 48.89,
+    y: 2,
+    z: 26.23,
+    scale: 2.1,
+    rotation: 1.8,
+  },
+
+  {
+    type: 1,
+    x: 48.89,
+    y: 2,
+    z: 27.4,
+    scale: 2.05,
+    rotation: 0.6,
+  },
+  {
+    type: 0,
+    x: 48.1,
+    y: 2,
+    z: 25.8,
+    scale: 2,
+    rotation: 2,
+  },
+  {
+    type: 1,
+    x: 48.1,
+    y: 2,
+    z: 27,
+    scale: 1.7,
+    rotation: 2.9,
+  },
+  // middle
+  {
+    type: 2,
+    x: 33.4,
+    y: 2,
+    z: 44.7,
+    scale: 3,
+    rotation: 3,
+  },
+  {
+    type: 2,
+    x: 37,
+    y: 2,
+    z: 44.7,
+    scale: 3.1,
+    rotation: 2,
+  },
+]
+
 const FRAME_INFO = {
   depth: 0.2,
 }
@@ -393,267 +831,3 @@ const EDGES_DATA = [
     z: 61.09,
   },
 ]
-
-const buildGallery = (props: GalleryTypeProps) => {
-  // Set camera position
-  props.controls.setPosition(35, 5, 62)
-
-  // Create Loaders
-  const textureLoader = new THREE.TextureLoader(props.loadingManager)
-  const gltfLoader = new GLTFLoader(props.loadingManager)
-
-  // Array for managing resources in dispose function
-  const lights: THREE.Light[] = []
-  const items: ThreeItem[] = []
-
-  // Sun information
-  const date = new Date()
-  const sunLightIntensity = getSunIntensity(date)
-  const sunLightColor = new THREE.Color(getSunColor(date))
-
-  /**
-   * Meshes
-   */
-  // Create sky
-  const sky = new SkyItem({
-    scene: props.scene,
-    size: 2000,
-  })
-  items.push(sky)
-
-  // Create water
-  const water = new WaterItem({
-    container: props.scene,
-    textureLoader,
-    width: 1000,
-    depth: 1000,
-  })
-  items.push(water)
-
-  // Create Floors
-  const floors = new Floors({
-    world: props.world,
-    color: 0x787878,
-    container: props.scene,
-    floorsData: FLOORS_DATA,
-    repeatFactor: 1,
-    texture: {
-      textureLoader,
-      baseImg: floorBaseImg,
-      ambientImg: floorAmbientImg,
-      normalImg: floorNormImg,
-    },
-  })
-  items.push(floors)
-  floors.meshes.forEach((mesh) => {
-    props.controls.floors.push(mesh)
-  })
-
-  GLASS_FLOORS_DATA.forEach((glassFloorData) => {
-    const glassFloor = new Floor({
-      container: props.scene,
-      color: 0xffffff,
-      x: glassFloorData.x,
-      y: glassFloorData.y,
-      z: glassFloorData.z,
-      width: glassFloorData.width,
-      height: glassFloorData.height,
-      depth: glassFloorData.depth,
-      transparent: true,
-      opacity: 0.4,
-    })
-    items.push(glassFloor)
-    props.controls.floors.push(glassFloor.mesh)
-  })
-
-  // Create ceiling
-  const ceiling = new Ceiling({
-    container: props.scene,
-    color: 0xffffff,
-    x: CEILING_DATA.x,
-    y: CEILING_DATA.y,
-    z: CEILING_DATA.z,
-    width: CEILING_DATA.width,
-    height: CEILING_DATA.height,
-    depth: CEILING_DATA.depth,
-    texture: {
-      textureLoader,
-      baseImg: wallBaseImg,
-      ambientImg: wallAmbientImg,
-      normalImg: wallNormImg,
-      repeatX: CEILING_DATA.width / 6,
-      repeatY: CEILING_DATA.depth / 6,
-    },
-  })
-  items.push(ceiling)
-  props.rayControls.rayItems.push(ceiling.mesh)
-
-  // Create walls
-  const walls = new Walls({
-    world: props.world,
-    container: props.scene,
-    wallsData: WALLS_DATA,
-    repeatFactor: 1 / 6,
-    texture: {
-      textureLoader,
-      baseImg: wallBaseImg,
-      ambientImg: wallAmbientImg,
-      normalImg: wallNormImg,
-    },
-  })
-  items.push(walls)
-  walls.meshes.forEach((mesh) => {
-    props.rayControls.rayItems.push(mesh)
-  })
-
-  const glassWall = new Wall({
-    world: props.world,
-    container: props.scene,
-    color: 0xffffff,
-    x: GLASS_WALL.x,
-    y: GLASS_WALL.y,
-    z: GLASS_WALL.z,
-    width: GLASS_WALL.width,
-    height: GLASS_WALL.height,
-    depth: GLASS_WALL.depth,
-    rotationY: GLASS_WALL.rotationY,
-    transparent: true,
-    opacity: 0.2,
-  })
-  items.push(glassWall)
-  props.rayControls.rayItems.push(glassWall.mesh)
-
-  // Create Frames
-  const frames = new Frames({
-    container: props.scene,
-    textureLoader,
-    postList: props.postList,
-    normalImg: frameNormImg,
-    ambientImg: frameAmbientImg,
-    framesData: FRAMES_DATA,
-    repeatFactor: 1,
-    spotLight: {
-      intensity: 3 * (1 - sunLightIntensity) + 5,
-    },
-  })
-  items.push(frames)
-  frames.meshes.forEach((mesh) => {
-    props.rayControls.rayItems.push(mesh)
-  })
-
-  /**
-   * Light
-   */
-  // Create sun
-  const sun = new THREE.Vector3()
-
-  // Get sun position
-  const { elevation, azimuth } = getSunPosition(date)
-
-  const phi = THREE.MathUtils.degToRad(90 - elevation)
-  const phiEle = THREE.MathUtils.degToRad(elevation * 3)
-  const theta = THREE.MathUtils.degToRad(azimuth - 25)
-
-  // Set on the sky & water
-  sun.setFromSphericalCoords(1, phi, theta)
-  sky.setSunPosition(sun)
-  water.setSunDirection(sun)
-
-  // Ambient light
-  const ambientLight = new THREE.AmbientLight(0xffffff, sunLightIntensity * 0.4)
-  props.scene.add(ambientLight)
-  lights.push(ambientLight)
-
-  // Direct Light
-  const directLight = new THREE.DirectionalLight(sunLightColor, sunLightIntensity * 1.3)
-  directLight.position.set(Math.sin(theta) * 100, Math.sin(phiEle) * 500, Math.cos(theta) * 100)
-  directLight.shadow.camera.left = -60
-  directLight.shadow.camera.right = 60
-  directLight.shadow.camera.top = 60
-  directLight.shadow.camera.bottom = -100
-  directLight.castShadow = true
-  props.scene.add(directLight)
-  lights.push(directLight)
-
-  const lightInterval = setInterval(() => {
-    const date = new Date()
-
-    // Update sun position
-    const { elevation, azimuth } = getSunPosition(date)
-
-    const phi = THREE.MathUtils.degToRad(90 - elevation)
-    const phiEle = THREE.MathUtils.degToRad(elevation * 3)
-    const theta = THREE.MathUtils.degToRad(azimuth - 25)
-
-    sun.setFromSphericalCoords(1, phi, theta)
-    sky.setSunPosition(sun)
-    water.setSunDirection(sun)
-
-    const sunLightIntensity = getSunIntensity(date)
-    const sunLightColor = new THREE.Color(getSunColor(date))
-
-    ambientLight.intensity = sunLightIntensity * 0.4
-
-    directLight.color = sunLightColor
-    directLight.intensity = sunLightIntensity * 1.3
-    directLight.position.set(Math.sin(theta) * 100, Math.sin(phiEle) * 500, Math.cos(theta) * 100)
-
-    // update light of frame
-    items.forEach((item) => {
-      if (item instanceof Frame && item.spotLight) {
-        item.spotLight.intensity = 3 * (1 - sunLightIntensity) + 5
-      }
-    })
-  }, 60 * 1000)
-
-  // Light Helper : Development
-  if (process.env.NODE_ENV !== 'production') {
-    import('three').then(({ CameraHelper }) => {
-      props.scene.add(new CameraHelper(directLight.shadow.camera))
-    })
-  }
-
-  /**
-   * Cannon.js Edges
-   */
-  EDGES_DATA.forEach((edgeData) => {
-    const shape = new Box(new Vec3(edgeData.width / 2, edgeData.height / 2, edgeData.depth / 2))
-    const body = new Body({
-      mass: 0,
-      position: new Vec3(edgeData.x, edgeData.y, edgeData.z),
-      shape,
-    })
-    props.world.addBody(body)
-
-    items.push({
-      dispose: () => {
-        props.world.removeBody(body)
-      },
-    })
-  })
-
-  /**
-   * Update function: Render canvas
-   */
-  const update = function renderCanvas() {
-    water.update()
-  }
-
-  /**
-   * Dispose function: Release all the resources
-   */
-  const dispose = function () {
-    lightInterval && clearInterval(lightInterval)
-    lights.forEach((light) => {
-      props.scene.remove(light)
-      light.dispose()
-    })
-    items.forEach((object) => {
-      object.dispose && object.dispose()
-    })
-  }
-
-  return { update, dispose }
-}
-
-export default buildGallery

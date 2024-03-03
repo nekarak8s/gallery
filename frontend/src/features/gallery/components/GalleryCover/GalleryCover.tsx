@@ -1,7 +1,7 @@
 import React, { MouseEventHandler, useEffect, useRef } from 'react'
 import { GalleryData } from '../../types'
 import Button from '@/atoms/ui/Button'
-import toFrame from '@/utils/toFrame'
+import toFrame from '@/libs/toFrame'
 import './GalleryCover.scss'
 
 type GalleryCoverProps = {

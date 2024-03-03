@@ -7,7 +7,7 @@
   justify-content: center;
   position: relative;
   width: 100%;
-  aspect-ratio: 10/7;
+  aspect-ratio: 10/6;
 
   svg {
     width: 40px;
@@ -76,5 +76,5 @@
 .places-radio__image:hover img,
 .places-radio__image button:focus + img,
 .places-radio__image button:hover + img {
-  width: min(80%, 500px);
+  width: min(60%, 500px);
 }

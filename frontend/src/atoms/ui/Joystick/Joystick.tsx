@@ -1,30 +1,34 @@
 import { useEffect, useRef } from 'react'
 import BowIcon from '@/assets/svgs/bow.svg'
+import JumpIcon from '@/assets/svgs/jump.svg'
+import toFrame from '@/libs/toFrame'
 import './Joystick.scss'
-import toFrame from '@/utils/toFrame'
 
 type JoystickProps = {
-  control?: (x: number, y: number) => void | undefined
-  shoot?: () => void | undefined
+  control?: (x: number, y: number) => void
+  shoot?: () => void
+  jump?: () => void
 }
 
-const Joystick = ({ control, shoot }: JoystickProps) => {
+const Joystick = ({ control, shoot, jump }: JoystickProps) => {
   /**
    * Joystick control
    */
   const joystickRef = useRef<HTMLDivElement>(null)
   const coreRef = useRef<HTMLDivElement>(null)
   const shootRef = useRef<HTMLDivElement>(null)
+  const jumpRef = useRef<HTMLDivElement>(null)
 
   const isTracking = useRef(false)
 
   useEffect(() => {
     const joystick = joystickRef.current!
     const core = coreRef.current!
-    const shoot = shootRef.current!
+    const shootDiv = shootRef.current!
+    const jumpDiv = jumpRef.current!
 
     /**
-     * Set the controller origin & shoot top, bottom, left, right
+     * Set the controller origin & shootDiv top, bottom, left, right
      */
     const contrlOrigin = {
       x: 0,
@@ -39,17 +43,30 @@ const Joystick = ({ control, shoot }: JoystickProps) => {
       right: 0,
     }
 
+    const jumpInfo = {
+      top: 0,
+      bottom: 0,
+      left: 0,
+      right: 0,
+    }
+
     const handleResize = function seOrigin() {
       let rect = joystick.getBoundingClientRect()
       contrlOrigin.x = rect.x + joystick.offsetWidth / 2
       contrlOrigin.y = rect.y + joystick.offsetHeight / 2
       contrlOrigin.radius = joystick.offsetWidth / 2
 
-      rect = shoot.getBoundingClientRect()
+      rect = shootDiv.getBoundingClientRect()
       shootInfo.top = rect.y
-      shootInfo.bottom = rect.y + shoot.offsetHeight
+      shootInfo.bottom = rect.y + shootDiv.offsetHeight
       shootInfo.left = rect.x
-      shootInfo.right = rect.x + shoot.offsetWidth
+      shootInfo.right = rect.x + shootDiv.offsetWidth
+
+      rect = jumpDiv.getBoundingClientRect()
+      jumpInfo.top = rect.y
+      jumpInfo.bottom = rect.y + jumpDiv.offsetHeight
+      jumpInfo.left = rect.x
+      jumpInfo.right = rect.x + jumpDiv.offsetWidth
     }
 
     /**
@@ -67,12 +84,21 @@ const Joystick = ({ control, shoot }: JoystickProps) => {
 
       const lastTouch = e.changedTouches[e.changedTouches.length - 1]
 
-      // if shoot is clicked, return
+      // if shootDiv is clicked, return
       if (
         lastTouch.clientX > shootInfo.left &&
         lastTouch.clientX < shootInfo.right &&
         lastTouch.clientY > shootInfo.top &&
         lastTouch.clientY < shootInfo.bottom
+      )
+        return
+
+      // if jumpDiv is clicked, return
+      if (
+        lastTouch.clientX > jumpInfo.left &&
+        lastTouch.clientX < jumpInfo.right &&
+        lastTouch.clientY > jumpInfo.top &&
+        lastTouch.clientY < jumpInfo.bottom
       )
         return
 
@@ -99,14 +125,27 @@ const Joystick = ({ control, shoot }: JoystickProps) => {
     const handleTouchEnd = function disableTracking(e: TouchEvent) {
       const lastTouch = e.changedTouches[e.changedTouches.length - 1]
 
-      // if shoot is clicked, return
+      // if shootDiv is clicked, return
       if (
         lastTouch.clientX > shootInfo.left &&
         lastTouch.clientX < shootInfo.right &&
         lastTouch.clientY > shootInfo.top &&
         lastTouch.clientY < shootInfo.bottom
-      )
+      ) {
+        shoot && shoot()
         return
+      }
+
+      // if jumpDiv is clicked, return
+      if (
+        lastTouch.clientX > jumpInfo.left &&
+        lastTouch.clientX < jumpInfo.right &&
+        lastTouch.clientY > jumpInfo.top &&
+        lastTouch.clientY < jumpInfo.bottom
+      ) {
+        jump && jump()
+        return
+      }
 
       isTracking.current = false
       core.style.transform = `
@@ -139,8 +178,13 @@ const Joystick = ({ control, shoot }: JoystickProps) => {
       <div className="joystick__controller" ref={joystickRef}>
         <div className="joystick__controller--core" ref={coreRef}></div>
       </div>
-      <div className="joystick__shoot" onClick={shoot} ref={shootRef}>
-        <BowIcon />
+      <div className="joystick__buttons">
+        <div className="joystick__shoot" onMouseUp={shoot} ref={shootRef}>
+          <BowIcon />
+        </div>
+        <div className="joystick__jump" onMouseUp={jump} ref={jumpRef}>
+          <JumpIcon />
+        </div>
       </div>
     </div>
   )

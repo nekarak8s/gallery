@@ -52,7 +52,7 @@ const Gallery = () => {
   useEffect(() => {
     // rotate page
     if (isMobile) {
-      toastManager.addToast('info', '가로모드로 플레이하면 더욱 좋습니다', 6000)
+      toastManager.addToast('info', '가로모드로 더욱 쾌적하게 플레이할 수 있습니다', 6000)
     }
 
     // Reset

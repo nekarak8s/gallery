@@ -6,7 +6,7 @@ import Modal from '@/atoms/ui/Modal'
 import { CURSOR_SCALE } from '@/constants'
 import GallerySearch from '@/features/gallery/components/GallerySearch'
 import LoginForm from '@/features/member/components/LoginForm'
-import throttle from '@/utils/throttle'
+import throttle from '@/libs/throttle'
 import './Navbar.scss'
 
 type NavbarProps = {
@@ -102,7 +102,11 @@ function Navbar({ whitePathname, isLogin }: NavbarProps) {
         </NavLink>
         <ul className="navbar__menu" ref={menuRef}>
           <li>
-            <button onClick={handleSearchClick} data-cursor-scale={CURSOR_SCALE}>
+            <button
+              onClick={handleSearchClick}
+              data-cursor-scale={CURSOR_SCALE}
+              aria-label="갤러리 검색"
+            >
               <SearchIcon />
             </button>
           </li>
@@ -136,13 +140,11 @@ function Navbar({ whitePathname, isLogin }: NavbarProps) {
                   onClick={handleLoginClick}
                   onFocus={showNavbar}
                   data-cursor-scale={CURSOR_SCALE}
-                  aria-label="로그인"
                 >
                   Login
                 </button>
               </li>
             ))}
-
           {process.env.REACT_APP_BASE_URL === '/gallery' && (
             <li>
               <NavLink

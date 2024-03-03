@@ -52,12 +52,12 @@ export function getSunIntensity(date: Date): number {
 
   // Sun on the sky
   if (elevation > 0) {
-    return (elevation / MAX_ELEVATION) * 0.6 + 0.4
+    return (elevation / MAX_ELEVATION) * 0.5 + 0.5
   }
 
   // Sunset but light scattering
   if (elevation > -2.5) {
-    return ((2.5 + elevation) / 2.5) * 0.3 + 0.1
+    return ((2.5 + elevation) / 2.5) ** 2 * 0.4 + 0.1
   }
 
   // Darkness
@@ -79,5 +79,4 @@ export function getSunColor(date: Date) {
 
   // Return the color in RGB format
   return `rgb(${red}, ${green}, ${blue})`
-  // return `rgb(255, 255, 255)`
 }

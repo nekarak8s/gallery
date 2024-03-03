@@ -8,6 +8,6 @@ export const postHandlers = [
   }),
   http.patch('*/api/post/list/:galleryId', async () => {
     await delay()
-    return HttpResponse.json({ message: '[MSW] 사진 정보가 수정되었습니다' }, { status: 200 })
+    return HttpResponse.json({ message: '[MSW] 게시물이 수정되었습니다' }, { status: 200 })
   }),
 ]

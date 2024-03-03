@@ -4,10 +4,7 @@
  * @param delay time for debounce
  * @returns  optimized function
  */
-export default function debounce(
-  cb: (...args: any[]) => void,
-  delay: number = 300
-) {
+export default function debounce(cb: (...args: any[]) => void, delay: number = 300) {
   if (!cb) {
     throw Error('Invalid required arguments')
   }

@@ -21,11 +21,11 @@ export class CannonKeypadControls {
   #cannonBody: Body
   #raycaster: Raycaster = new Raycaster()
 
-  #movementSpeed: number = 0
-  #maxMovementSpeed: number = 1.6
+  #movementSpeedRatio: number = 0
+  #movementSpeed: number = 1.6
 
-  #lookSpeed: number = 0
-  #maxLookSpeed: number = 0.8
+  #lookSpeedRatio: number = 0
+  #lookSpeed: number = 0.8
 
   // API
   enabled: boolean = true
@@ -97,37 +97,37 @@ export class CannonKeypadControls {
   }
 
   /**
-   * Set movementSpeed
+   * Set movementSpeedRatio
    */
-  set movementSpeed(speed: number) {
-    if (speed > 1) this.#movementSpeed = 1
-    else if (speed < -1) this.#movementSpeed = -1
-    else this.#movementSpeed = speed
+  set movementSpeedRatio(speed: number) {
+    if (speed > 1) this.#movementSpeedRatio = 1
+    else if (speed < -1) this.#movementSpeedRatio = -1
+    else this.#movementSpeedRatio = speed
   }
 
   /**
-   * Set maxMovementSpeed
+   * Set movementSpeed
    */
-  set maxMovementSpeed(speed: number) {
-    if (speed > 0) this.#maxMovementSpeed = speed
-    else this.#maxMovementSpeed = 1.6
+  set movementSpeed(speed: number) {
+    if (speed > 0) this.#movementSpeed = speed
+    else this.#movementSpeed = 1.6
+  }
+
+  /**
+   * Set lookSpeedRatio
+   */
+  set lookSpeedRatio(speed: number) {
+    if (speed > 1) this.#lookSpeedRatio = 1
+    else if (speed < -1) this.#lookSpeedRatio = -1
+    else this.#lookSpeedRatio = speed
   }
 
   /**
    * Set lookSpeed
    */
   set lookSpeed(speed: number) {
-    if (speed > 1) this.#lookSpeed = 1
-    else if (speed < -1) this.#lookSpeed = -1
-    else this.#lookSpeed = speed
-  }
-
-  /**
-   * Set maxLookSpeed
-   */
-  set maxLookSpeed(speed: number) {
-    if (speed > 0) this.#maxLookSpeed = speed
-    else this.#maxLookSpeed = 1.6
+    if (speed > 0) this.#lookSpeed = speed
+    else this.#lookSpeed = 1.6
   }
 
   /**
@@ -140,25 +140,25 @@ export class CannonKeypadControls {
       case 'ArrowUp':
       case 'KeyW':
         event.preventDefault()
-        this.#movementSpeed = 1
+        this.#movementSpeedRatio = 1
         break
 
       case 'ArrowLeft':
       case 'KeyA':
         event.preventDefault()
-        this.#lookSpeed = 1
+        this.#lookSpeedRatio = 1
         break
 
       case 'ArrowDown':
       case 'KeyS':
         event.preventDefault()
-        this.#movementSpeed = -1
+        this.#movementSpeedRatio = -1
         break
 
       case 'ArrowRight':
       case 'KeyD':
         event.preventDefault()
-        this.#lookSpeed = -1
+        this.#lookSpeedRatio = -1
         break
     }
   }
@@ -170,22 +170,22 @@ export class CannonKeypadControls {
     switch (event.code) {
       case 'ArrowUp':
       case 'KeyW':
-        this.#movementSpeed = 0
+        this.#movementSpeedRatio = 0
         break
 
       case 'ArrowLeft':
       case 'KeyA':
-        this.#lookSpeed = 0
+        this.#lookSpeedRatio = 0
         break
 
       case 'ArrowDown':
       case 'KeyS':
-        this.#movementSpeed = 0
+        this.#movementSpeedRatio = 0
         break
 
       case 'ArrowRight':
       case 'KeyD':
-        this.#lookSpeed = 0
+        this.#lookSpeedRatio = 0
         break
     }
   }
@@ -208,8 +208,8 @@ export class CannonKeypadControls {
     // Move cannonBody forward or backward
     this.#cannonBody.velocity.set(0, 0, 0)
 
-    if (this.#movementSpeed) {
-      const actualMoveSpeed = 10000 * this.#movementSpeed * this.#maxMovementSpeed
+    if (this.#movementSpeedRatio) {
+      const actualMoveSpeed = 10000 * this.#movementSpeedRatio * this.#movementSpeed
       this.camera.getWorldDirection(_cameraDirection).normalize().multiplyScalar(actualMoveSpeed)
 
       this.#cannonBody.applyForce(
@@ -218,8 +218,8 @@ export class CannonKeypadControls {
     }
 
     // Rotate cannonBody angle
-    if (this.#lookSpeed) {
-      const actualLookSpeed = delta * this.#lookSpeed * this.#maxLookSpeed
+    if (this.#lookSpeedRatio) {
+      const actualLookSpeed = delta * this.#lookSpeedRatio * this.#lookSpeed
       _rotationQuaternion.setFromAxisAngle(_yAxis, actualLookSpeed)
 
       const currentQuaternion = this.#cannonBody.quaternion

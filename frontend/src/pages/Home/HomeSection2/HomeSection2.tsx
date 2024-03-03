@@ -34,7 +34,7 @@ import wideVid2 from '@/assets/videos/home-video-2.mp4'
 import wideWebm2 from '@/assets/videos/home-video-2.webm'
 import narrowVid1 from '@/assets/videos/home-video-3.mp4'
 import narrowWebm1 from '@/assets/videos/home-video-3.webm'
-import toFrame from '@/utils/toFrame'
+import toFrame from '@/libs/toFrame'
 
 import './HomeSection2.scss'
 
@@ -68,9 +68,7 @@ function HomeSection2() {
     const main = mainRef.current!
     const phrase = phraseRef.current!
     const cards = cardsRef.current!
-    const cardEles = Array.from(
-      cards.children as HTMLCollectionOf<HTMLDivElement>
-    )
+    const cardEles = Array.from(cards.children as HTMLCollectionOf<HTMLDivElement>)
 
     // Initiate scroll data & card position
     let scrollStart = 0
@@ -98,10 +96,7 @@ function HomeSection2() {
       const scrollTop = window.scrollY
 
       // Scroll optimization
-      if (
-        scrollTop < scrollStart ||
-        scrollTop > scrollEnd + main.offsetHeight
-      ) {
+      if (scrollTop < scrollStart || scrollTop > scrollEnd + main.offsetHeight) {
         phrase.classList.remove('opaque')
         return
       }
@@ -510,12 +505,10 @@ function HomeSection2() {
                 date="2019.10.21"
               />
               <div className="hs2-card__phrase">
-                With the development of mobile devices, it is easy to take
-                pictures, but the value of a picture is decreasing. There are
-                hundreds of pictures on the album, but most of them are pictures
-                that you don&apos;t even know when they were taken. When was the
-                last time you remembered with your friends while looking at the
-                picture?
+                With the development of mobile devices, it is easy to take pictures, but the value
+                of a picture is decreasing. There are hundreds of pictures on the album, but most of
+                them are pictures that you don&apos;t even know when they were taken. When was the
+                last time you remembered with your friends while looking at the picture?
               </div>
             </div>
           </div>

@@ -1,6 +1,4 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { SAPBroadphase, World } from 'cannon-es'
-import CannonDebugger from 'cannon-es-debugger'
 import * as THREE from 'three'
 import buildGallery from './gallery-types/buildGallery'
 import buildGreenary from './gallery-types/buildGreenary'
@@ -14,7 +12,7 @@ import PostDetail from '@/features/post/components/PostDetail'
 import { PostItemData } from '@/features/post/types'
 import useMobile from '@/hooks/useMobile'
 import { DefaultCamera } from '@/libs/three-custom/cameras/DefaultCamera'
-import { CannonKeypadControls } from '@/libs/three-custom/controls/CannonKeypadControls'
+import { KeypadControls } from '@/libs/three-custom/controls/KeypadControls'
 import { RaycasterControls } from '@/libs/three-custom/controls/RaycasterControls.ts'
 import { FrameMesh } from '@/libs/three-custom/meshes/FrameMesh'
 import { DefaultRenderer } from '@/libs/three-custom/renderers/DefaultRenderer'
@@ -36,7 +34,7 @@ const GalleryCanvas = ({ gallery, postList }: GalleryCanvasProps) => {
    * Render the Three.js canvas
    */
   const canvasRef = useRef<HTMLCanvasElement>(null)
-  const controlsRef = useRef<CannonKeypadControls | null>(null)
+  const controlsRef = useRef<KeypadControls | null>(null)
   const rayControlsRef = useRef<RaycasterControls | null>(null)
 
   const [requiredCount, setRequiredCount] = useState(0)
@@ -58,7 +56,7 @@ const GalleryCanvas = ({ gallery, postList }: GalleryCanvasProps) => {
       setLoadedCount((cnt) => cnt + 1)
     }
     loadingManager.onError = function toastLoadingErrorMesage(url) {
-      console.log(url)
+      console.error(url)
       toastManager.addToast('error', '필요한 자원을 로드하지 못했습니다')
     }
 
@@ -72,7 +70,7 @@ const GalleryCanvas = ({ gallery, postList }: GalleryCanvasProps) => {
     const camera = new DefaultCamera({ canvas })
     scene.add(camera)
 
-    // Capture camera
+    // // Capture camera
     // const camera2 = new THREE.OrthographicCamera(
     //   canvas.offsetWidth / -2,
     //   canvas.offsetWidth / 2,
@@ -87,12 +85,8 @@ const GalleryCanvas = ({ gallery, postList }: GalleryCanvasProps) => {
     // camera2.updateProjectionMatrix()
     // scene.add(camera2)
 
-    // Cannon world
-    const world = new World()
-    world.broadphase = new SAPBroadphase(world)
-
     // Main controls
-    const controls = new CannonKeypadControls(canvas, camera, world, 1.6)
+    const controls = new KeypadControls(canvas, camera, 1.6)
     controlsRef.current = controls
 
     // Raycaster controls
@@ -101,7 +95,7 @@ const GalleryCanvas = ({ gallery, postList }: GalleryCanvasProps) => {
       if (item.object instanceof FrameMesh) {
         if (item.distance > 10) toastManager.addToast('error', '앨범이 너무 멀리 있습니다')
         else {
-          setSelectedPostIdx(item.object.order)
+          setSelectedPostIdx(item.object.index)
           musicManager.muteAudio()
           controls.enabled = false
         }
@@ -114,10 +108,6 @@ const GalleryCanvas = ({ gallery, postList }: GalleryCanvasProps) => {
     }
     rayControlsRef.current = rayControls
 
-    // Cannon Helper : Development
-    let cannonDebugger: { update: () => void } | null = null
-    if (process.env.NODE_ENV !== 'production') cannonDebugger = CannonDebugger(scene, world, {})
-
     // Render canvas
     const { update: updateCanvas, dispose: disposeCanvas } = CANVAS_TYPE[gallery.place.placeId]({
       canvas,
@@ -125,7 +115,6 @@ const GalleryCanvas = ({ gallery, postList }: GalleryCanvasProps) => {
       renderer,
       scene,
       camera,
-      world,
       controls,
       rayControls,
       postList,
@@ -154,13 +143,6 @@ const GalleryCanvas = ({ gallery, postList }: GalleryCanvasProps) => {
       renderer.render(scene, camera)
       renderer.setAnimationLoop(draw)
 
-      // Update cannon world
-      world.step(delta < 0.01 ? 1 / 120 : 1 / 60, delta, 3)
-
-      if (process.env.NODE_ENV !== 'production') {
-        cannonDebugger && cannonDebugger.update()
-      }
-
       // Update controls
       controls.update(delta)
 
@@ -179,6 +161,7 @@ const GalleryCanvas = ({ gallery, postList }: GalleryCanvasProps) => {
       renderer.setAnimationLoop(null)
       renderer.dispose()
       controls.dispose()
+      rayControls.dispose()
 
       disposeCanvas()
 
@@ -191,17 +174,23 @@ const GalleryCanvas = ({ gallery, postList }: GalleryCanvasProps) => {
    */
   const isMobile = useMobile()
 
+  const joystickControl = useCallback((x: number, y: number) => {
+    if (!controlsRef.current) return
+
+    controlsRef.current.lookSpeedRatio = x
+    controlsRef.current.movementSpeedRatio = -y
+  }, [])
+
   const joystickShoot = useCallback(() => {
     if (!rayControlsRef.current) return
 
     rayControlsRef.current.shoot()
   }, [])
 
-  const joystickControl = useCallback((x: number, y: number) => {
+  const joystickJump = useCallback(() => {
     if (!controlsRef.current) return
 
-    controlsRef.current.lookSpeed = -x
-    controlsRef.current.movementSpeed = -y
+    controlsRef.current.jump()
   }, [])
 
   return (
@@ -219,6 +208,7 @@ const GalleryCanvas = ({ gallery, postList }: GalleryCanvasProps) => {
         isOpen={selectedPostIdx !== null}
         onClose={() => {
           setSelectedPostIdx(null)
+          musicManager.unmuteAudio()
           if (controlsRef.current) {
             controlsRef.current.enabled = true
           }
@@ -228,7 +218,7 @@ const GalleryCanvas = ({ gallery, postList }: GalleryCanvasProps) => {
       </Modal>
       {isMobile && (
         <div className="gallery-canvas__joystick">
-          <Joystick control={joystickControl} shoot={joystickShoot} />
+          <Joystick control={joystickControl} shoot={joystickShoot} jump={joystickJump} />
         </div>
       )}
     </div>

@@ -1,11 +1,12 @@
-import { ChangeEventHandler, PropsWithChildren } from 'react'
+import { ChangeEvent, ChangeEventHandler, PropsWithChildren, useState } from 'react'
 import './Checkbox.scss'
 
 type CheckboxProps = {
   id?: string | undefined
   className?: string | undefined
   name: string
-  value?: string
+  value: string
+  falseValue: string
   label?: string
   onChange?: ChangeEventHandler
   defaultChecked?: boolean
@@ -17,12 +18,28 @@ const Checkbox = ({
   name,
   label,
   value,
+  falseValue,
   onChange,
   defaultChecked = false,
   children,
 }: PropsWithChildren<CheckboxProps>) => {
+  const [isChecked, setIsChecked] = useState(defaultChecked)
+
+  const handleChange = function toggleIsChecked(event: ChangeEvent<HTMLInputElement>) {
+    event.stopPropagation()
+    setIsChecked(event.target.checked)
+    onChange && onChange(event)
+  }
+
   return (
-    <label htmlFor={id} className={`checkbox ${className ? className : ''}`}>
+    <label
+      htmlFor={id}
+      className={`checkbox ${className ? className : ''}`}
+      onClick={(e) => {
+        e.stopPropagation()
+      }}
+    >
+      {!isChecked && <input type="hidden" name={name} value={falseValue} />}
       <div className="checkbox__label">
         <input
           id={id}
@@ -30,7 +47,7 @@ const Checkbox = ({
           name={name}
           value={value}
           defaultChecked={defaultChecked}
-          onChange={onChange}
+          onChange={handleChange}
         />
         {label}
       </div>

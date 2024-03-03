@@ -10,7 +10,7 @@ import './CommentItem.scss'
 type CommentItemProps = {
   postId: number
   comment: CommentData
-  user: UserData
+  user: UserData | undefined
 }
 
 const CommentItem = ({ postId, comment, user }: CommentItemProps) => {
@@ -34,7 +34,7 @@ const CommentItem = ({ postId, comment, user }: CommentItemProps) => {
           <b>{comment.nickname}</b>&nbsp;&nbsp;{comment.content}
         </p>
         <p>{new Date(comment.createdDate).toLocaleDateString()}</p>
-        {comment.nickname === user.nickname && (
+        {user && comment.nickname === user.nickname && (
           <button
             type="button"
             onClick={() => {

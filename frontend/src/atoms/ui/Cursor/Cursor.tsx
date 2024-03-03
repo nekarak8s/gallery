@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react'
-import throttle from '@/utils/throttle'
+import throttle from '@/libs/throttle'
 
 import './Cursor.scss'
 

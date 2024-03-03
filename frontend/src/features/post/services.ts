@@ -1,9 +1,10 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { PostItemData } from './types'
+import { ErrorResponse, MessageResponse, TUseMutationOptions, TUseQueryOptions } from '@/@types/api'
 import axiosInstance from '@/utils/axiosInstance'
 import toastManager from '@/utils/toastManager/toastManager'
 
-export function usePostListQuery(galleryId: number) {
+export function usePostListQuery(galleryId: number, options?: TUseQueryOptions<PostItemData[]>) {
   return useQuery<MessageResponse<PostItemData[]>, ErrorResponse, PostItemData[]>(
     ['post', { galleryId }],
     () => axiosInstance.get(`/post/list/${galleryId}`),
@@ -15,11 +16,12 @@ export function usePostListQuery(galleryId: number) {
       select: (res) => {
         return res.data
       },
+      ...options,
     }
   )
 }
 
-export function useUpdatePostList(galleryId: number) {
+export function useUpdatePostList(galleryId: number, options?: TUseMutationOptions<FormData>) {
   const queryClient = useQueryClient()
   return useMutation<MessageResponse, ErrorResponse, FormData>(
     (data) =>
@@ -36,6 +38,7 @@ export function useUpdatePostList(galleryId: number) {
       onError: (err) => {
         toastManager.addToast('error', err.message)
       },
+      ...options,
     }
   )
 }

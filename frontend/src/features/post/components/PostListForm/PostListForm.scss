@@ -3,13 +3,13 @@
 .post-list-form {
   display: flex;
   flex-direction: column;
-  gap: 1.5em;
+  gap: 1em;
   width: 100%;
   font-size: 1rem;
 }
 
 @include tablet {
   .post-list-form {
-    gap: 2em;
+    gap: 1.3em;
   }
 }

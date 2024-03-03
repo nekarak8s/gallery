@@ -26,7 +26,7 @@ type FrameData = {
   rotationZ?: number
 }
 
-export type FramesArgs = {
+export type PostFramesArgs = {
   postList: PostData[]
   container: THREE.Mesh | THREE.Scene
   color?: THREE.ColorRepresentation
@@ -35,11 +35,12 @@ export type FramesArgs = {
   normalImg?: string
   ambientImg?: string
   roughImg?: string
-  repeatFactor?: number
+  repeatX?: number
+  repeatY?: number
   spotLight?: SpotLightProps
 }
 
-export class Frames {
+export class PostFrames {
   type: string = 'floors'
   meshes: THREE.Mesh[] = []
   textureSource: Record<string, THREE.Texture> = {}
@@ -49,7 +50,7 @@ export class Frames {
   dispose: () => void
   update: (delta: number) => void
 
-  constructor(info: FramesArgs) {
+  constructor(info: PostFramesArgs) {
     // Load Textures
     if (info.normalImg) {
       this.textureSource['normalTex'] = info.textureLoader.load(info.normalImg)
@@ -61,21 +62,23 @@ export class Frames {
       this.textureSource['ambientTex'] = info.textureLoader.load(info.ambientImg)
     }
 
+    for (const key in this.textureSource) {
+      this.textureSource[key].wrapS = THREE.RepeatWrapping
+      this.textureSource[key].wrapT = THREE.RepeatWrapping
+
+      this.textureSource[key].repeat.x = info.repeatX || 1
+      this.textureSource[key].repeat.y = info.repeatY || 1
+    }
+
     info.framesData.forEach((frameData, idx) => {
+      if (!info.postList[idx].isActive) return
+
       // Geometry
       const geometry = new THREE.BoxGeometry(frameData.width, frameData.height, frameData.depth)
 
-      // Texture
+      // Base image texture
       const baseTex = info.textureLoader.load(info.postList[idx].imageURL)
       this.textures.push(baseTex)
-
-      for (const key in this.textureSource) {
-        this.textureSource[key].wrapS = THREE.RepeatWrapping
-        this.textureSource[key].wrapT = THREE.RepeatWrapping
-
-        this.textureSource[key].repeat.x = frameData.width * (info.repeatFactor || 1)
-        this.textureSource[key].repeat.y = frameData.height * (info.repeatFactor || 1)
-      }
 
       // Material
       const material = info.roughImg
@@ -98,7 +101,7 @@ export class Frames {
       const rotationY = frameData.rotationY || 0
       const rotationZ = frameData.rotationZ || 0
 
-      const mesh = new FrameMesh(geometry, material, info.postList[idx].order)
+      const mesh = new FrameMesh(geometry, material, idx)
       mesh.position.set(frameData.x, frameData.y, frameData.z)
       mesh.rotation.set(rotationX, rotationY, rotationZ)
       mesh.castShadow = true

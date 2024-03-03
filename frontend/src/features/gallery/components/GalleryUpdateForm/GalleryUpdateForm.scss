@@ -7,7 +7,7 @@
   align-items: center;
   gap: 20px;
   padding: 2em 3em;
-  width: min(800px, 80vw);
+  width: min(800px, 90vw);
   font-size: 1rem;
 }
 
@@ -21,6 +21,7 @@
   justify-content: center;
   position: relative;
   width: 100%;
+  margin: 1em 0 0 0;
 
   button:nth-child(2) {
     position: absolute;

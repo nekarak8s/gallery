@@ -1,4 +1,5 @@
 import BowIcon from '@/assets/svgs/bow.svg'
+import JumpIcon from '@/assets/svgs/jump.svg'
 import useMobile from '@/hooks/useMobile'
 import './ControlNotice.scss'
 
@@ -15,10 +16,16 @@ const ControlNotice = () => {
             <p>컨트롤러로 이동</p>
           </li>
           <li>
-            <div className="control-notice__shoot">
+            <div className="control-notice__button">
+              <JumpIcon />
+            </div>
+            <p>버튼으로 점프</p>
+          </li>
+          <li>
+            <div className="control-notice__button">
               <BowIcon />
             </div>
-            <p>슈팅버튼으로 앨범 조준</p>
+            <p>버튼으로 앨범 조준</p>
           </li>
         </ul>
       ) : (
@@ -37,7 +44,12 @@ const ControlNotice = () => {
           </li>
           <li>
             <p>
-              <kbd>스페이스</kbd>&nbsp; 키로 앨범 조준
+              <kbd>Ctrl</kbd>&nbsp; 키로 앨범 조준
+            </p>
+          </li>
+          <li>
+            <p>
+              <kbd>Alt</kbd>&nbsp;/&nbsp;<kbd>Opt</kbd>&nbsp; 키로 점프
             </p>
           </li>
         </ul>

@@ -22,7 +22,14 @@ const Radio = ({
   children,
 }: PropsWithChildren<RadioProps>) => {
   return (
-    <label htmlFor={id} className={`radio ${className ? className : ''}`} style={{ flexDirection }}>
+    <label
+      htmlFor={id}
+      className={`radio ${className ? className : ''}`}
+      style={{ flexDirection }}
+      onClick={(e) => {
+        e.stopPropagation()
+      }}
+    >
       <div className="radio__label">
         <input type="radio" id={id} name={name} value={value} defaultChecked={defaultChecked} />
         <span>{label}</span>

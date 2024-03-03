@@ -1,10 +1,11 @@
 import axios, { AxiosError, AxiosResponse, AxiosInstance } from 'axios'
+import { ErrorResponse } from '@/@types/api'
 
 // Base URL
 const BASE_API_URL =
   (process.env.REACT_APP_API_BASE_URL
     ? process.env.REACT_APP_API_BASE_URL
-    : `${window.location.protocol}://${window.location.hostname}:${window.location.port}`) + '/api'
+    : window.location.origin) + '/api'
 
 // Axios Instance
 const axiosInstance: AxiosInstance = axios.create({
@@ -25,9 +26,9 @@ axiosInstance.interceptors.response.use(
     console.log(err)
 
     /*eslint-disable*/
-    for (const key of err.config!.data!.keys()) {
-      console.log(key, ':', err.config?.data.get(key))
-    }
+    // for (const key of err.config!.data!.keys()) {
+    //   console.log(key, ':', err.config?.data.get(key))
+    // }
 
     if (
       err.response?.data.errorCode === 'GATE002' ||
@@ -35,10 +36,10 @@ axiosInstance.interceptors.response.use(
       err.response?.data.errorCode === 'GATE004'
     ) {
       // Token Error: Redirect to login page
-      ;(process.env.REACT_APP_API_BASE_URL
-        ? process.env.REACT_APP_API_BASE_URL
-        : `${window.location.protocol}://${window.location.hostname}:${window.location.port}`) +
-        '/login'
+      window.location.href =
+        (process.env.REACT_APP_API_BASE_URL
+          ? process.env.REACT_APP_API_BASE_URL
+          : window.location.origin) + '/login'
     }
     return Promise.reject(err.response?.data)
   }

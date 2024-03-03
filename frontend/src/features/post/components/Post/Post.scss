@@ -3,6 +3,7 @@
 .post {
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 1em;
   width: 100%;
   height: 100%;
@@ -27,11 +28,13 @@
   > p {
     width: 100%;
     font-size: 1em;
+    line-height: 140%;
+    white-space: pre-wrap;
   }
 }
 
 .post__image {
-  width: 100%;
+  width: 95%;
   aspect-ratio: 1/1;
   object-fit: cover;
 }
@@ -39,5 +42,9 @@
 @include tablet {
   .post {
     font-size: 0.9rem;
+  }
+
+  .post__image {
+    width: 95%;
   }
 }

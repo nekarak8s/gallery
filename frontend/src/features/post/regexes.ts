@@ -9,13 +9,13 @@ export const order: RegexCondition = {
 }
 
 export const title: RegexCondition = {
-  regex: /^[A-Za-z0-9ㄱ-ㅎㅏ-ㅣ가-힣\s]{0,15}$/,
-  condition: '한/영/숫자 조합 15자 이내로 입력해주세요',
+  regex: /^[A-Za-z0-9ㄱ-ㅎㅏ-ㅣ가-힣\s]{1,15}$/,
+  condition: '한/영/숫자 조합 1~15자 이내로 입력해주세요',
 }
 
 export const content: RegexCondition = {
-  regex: /[\s\S]{0,150}/,
-  condition: '공백 포함 1~150자 이내로 입력해주세요',
+  regex: /^[\s\S]{1,500}$/,
+  condition: '공백 포함 1~500자 이내로 입력해주세요',
 }
 
 export const musicId: RegexCondition = {
