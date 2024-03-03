@@ -20,7 +20,7 @@ export class KeypadControls {
   #moveForwardRatio: number = 0
   #moveBackwardRatio: number = 0
 
-  #LookSpeed: number = 1.5
+  #lookSpeed: number = 1
   #lookRightRatio: number = 0
   #lookLeftRatio: number = 0
 
@@ -170,11 +170,11 @@ export class KeypadControls {
   }
 
   /**
-   * Set LookSpeed
+   * Set lookSpeed
    */
-  set LookSpeed(speed: number) {
-    if (speed > 0) this.#LookSpeed = speed
-    else this.#LookSpeed = 1.6
+  set lookSpeed(speed: number) {
+    if (speed > 0) this.#lookSpeed = speed
+    else this.#lookSpeed = 1.5
   }
 
   /**
@@ -243,24 +243,18 @@ export class KeypadControls {
 
     // Rotate camera
     const actualLookSpeed =
-      delta * this.#LookSpeed * (this.#lookLeftRatio - this.#lookRightRatio) * 17
-
-    this.#lon += actualLookSpeed
-    const phi = THREE.MathUtils.degToRad(90)
-    const theta = THREE.MathUtils.degToRad(this.#lon)
-    this.#target.setFromSphericalCoords(1, phi, theta).add(this.camera.position)
-
-    this.camera.lookAt(this.#target)
-    this.#lookDirection.set(0, 0, -1).applyQuaternion(this.camera.quaternion)
+      delta * this.#lookSpeed * (this.#lookLeftRatio - this.#lookRightRatio) * 0.6
+    this.camera.rotateY(actualLookSpeed)
 
     // Move camera forward / backward
     let actualMoveSpeed =
       delta * this.#movementSpeed * (this.#moveForwardRatio - this.#moveBackwardRatio) * 5
 
-    // Stop by obastacle
+    // Stop by obstacle
     let intersects
+    this.camera.getWorldDirection(this.#lookDirection)
     if (actualMoveSpeed > 0) {
-      // front obastacle
+      // front obstacle
       this.#raycaster.set(this.camera.position, this.#lookDirection)
       intersects = this.#raycaster.intersectObjects(this.obstacles)
       if (intersects.length && intersects[0].distance < 1) {

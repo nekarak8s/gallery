@@ -9,6 +9,8 @@ import py from '@/assets/cubemaps/clear_sky/py.png'
 import pz from '@/assets/cubemaps/clear_sky/pz.png'
 import greenaryGlb from '@/assets/glbs/greenary.glb'
 import { GalleryTypeProps } from '@/features/gallery/types'
+import Animals from '@/libs/three-custom/items/Animals'
+import { Fox } from '@/libs/three-custom/items/Animals/species/Fox'
 import { Edges } from '@/libs/three-custom/items/Edges'
 import { PostFrames } from '@/libs/three-custom/items/PostFrames'
 import { Trees } from '@/libs/three-custom/items/Trees'
@@ -55,6 +57,19 @@ const buildGreenary = (props: GalleryTypeProps) => {
    */
   const items: ThreeItem[] = []
 
+  // fox
+  const fox = Fox.build(gltfLoader).then((fox) => {
+    const animal = new Animals({
+      species: fox,
+      container: props.scene,
+      x: 70,
+      y: 5,
+      z: 59,
+    })
+    items.push(animal)
+    return animal
+  })
+
   // Greeneary floor
   gltfLoader.load(greenaryGlb, (glb) => {
     const mesh = glb.scene.children[0]
@@ -75,6 +90,10 @@ const buildGreenary = (props: GalleryTypeProps) => {
     props.controls.setQuaternion(0, degToRad(-135), 0)
 
     directLight.target = mesh
+
+    fox.then((fox) => {
+      fox.floors.push(mesh)
+    })
 
     items.push({
       dispose: () => {
@@ -143,6 +162,9 @@ const buildGreenary = (props: GalleryTypeProps) => {
     onLoad: (tree: THREE.Object3D) => {
       props.rayControls.rayItems.push(tree)
       props.controls.obstacles.push(tree)
+      fox.then((fox) => {
+        fox.obstacles.push(tree)
+      })
     },
   })
   items.push(trees)

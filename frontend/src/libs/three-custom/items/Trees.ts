@@ -2,7 +2,7 @@ import { Body, Cylinder, Vec3, World } from 'cannon-es'
 import * as THREE from 'three'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import { degToRad } from 'three/src/math/MathUtils'
-import spotLightGlb from '@/assets/glbs/trees.glb'
+import treesGlb from '@/assets/glbs/trees.glb'
 
 type TreeData = {
   type: number
@@ -31,7 +31,7 @@ export class Trees {
     /**
      * Load GLTF
      */
-    info.gltfLoader.load(spotLightGlb, (glb) => {
+    info.gltfLoader.load(treesGlb, (glb) => {
       // Create Trees
       info.treesData.forEach((tree) => {
         // Get an object
