@@ -398,10 +398,9 @@ export const FOX_DATA = [
 export const SHEEP_DATA = [
   { x: 45, y: 5, z: 57 },
   { x: 24, y: 5, z: 77 },
-  { x: 80, y: 5, z: 89 },
 ]
 
 export const DUCK_DATA = [
-  { x: 75, y: 5, z: 40 },
   { x: 54, y: 5, z: 17 },
+  { x: 39, y: 5, z: 41 },
 ]

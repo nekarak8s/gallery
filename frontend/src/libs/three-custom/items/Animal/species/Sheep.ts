@@ -42,7 +42,7 @@ export class Sheep {
 
     // Extract mesh
     const object = glb.scene.children[0]
-    object.scale.multiplyScalar(1.9)
+    object.scale.multiplyScalar(2)
     object.traverse((obj) => {
       obj.castShadow = true
       obj.receiveShadow = true

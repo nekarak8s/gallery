@@ -114,25 +114,21 @@ export default class Animal {
     const intersects = this.#raycaster.intersectObjects(this.floors)
     if (!intersects[0]) return
 
-    // move forward
-    const actualMoveSpeed = this.#movementSpeed * delta
-    this.species.object.translateZ(actualMoveSpeed)
-
     // Position on the floor
     const distance = intersects[0].distance
-    this.species.object.position.y += this.height / 2 - distance
+    this.species.object.position.y += this.height / 3 - distance
 
     // normal vector 와 (0, 1, 0) 사이 각도 체크)
     // const worldNormal = intersects[0].normal!.clone() // intersects[0].normal을 변경하지 않도록 복제합니다.
     // worldNormal.applyMatrix4(intersects[0].object.matrixWorld)
 
-    // Swim or Walk (y < 0.4)
-    // if (this.species.object.position.y <= -0.55) {
-    //   this.species.object.position.y = -0.55
-    //   if (this.#status !== 'swim') this.swim()
-    // } else if (this.#status === 'swim') {
-    //   this.walk()
-    // }
+    // Swim or Walk (y < 0.6)
+    if (this.species.object.position.y <= -0.8) {
+      this.species.object.position.y = -0.8
+      if (this.#status !== 'swim') this.swim()
+    } else if (this.#status === 'swim') {
+      this.walk()
+    }
 
     // Pause
     if (this.#status === 'pause') {
@@ -172,10 +168,14 @@ export default class Animal {
       this.species.object.getWorldDirection(this.#lookDirection)
       this.#raycaster.set(this.species.object.position, this.#lookDirection)
       const intersects = this.#raycaster.intersectObjects(this.obstacles)
-      if (intersects.length > 0 && intersects[0].distance < 0.2) {
+      if (intersects.length > 0 && intersects[0].distance < 0.5) {
         this.turn()
         return
       }
     }
+
+    // move forward
+    const actualMoveSpeed = this.#movementSpeed * delta
+    this.species.object.translateZ(actualMoveSpeed)
   }
 }

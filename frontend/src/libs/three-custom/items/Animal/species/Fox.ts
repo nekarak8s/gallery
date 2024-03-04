@@ -42,7 +42,7 @@ export class Fox {
 
     // Extract mesh
     const object = glb.scene.children[0]
-    object.scale.multiplyScalar(1.5)
+    object.scale.multiplyScalar(1.7)
     object.traverse((obj) => {
       obj.castShadow = true
       obj.receiveShadow = true
@@ -55,6 +55,6 @@ export class Fox {
     const walk = mixer.clipAction(glb.animations[17])
     const swim = mixer.clipAction(glb.animations[16])
 
-    return new Fox({ object, mixer, idle, walk, swim, height: 0.5 })
+    return new Fox({ object, mixer, idle, walk, swim, height: 0.4 })
   }
 }

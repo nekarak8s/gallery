@@ -42,7 +42,7 @@ export class Duck {
 
     // Extract mesh
     const object = glb.scene.children[0]
-    object.scale.multiplyScalar(1.6)
+    object.scale.multiplyScalar(1.9)
     object.traverse((obj) => {
       obj.castShadow = true
       obj.receiveShadow = true
@@ -55,6 +55,6 @@ export class Duck {
     const walk = mixer.clipAction(glb.animations[17])
     const swim = mixer.clipAction(glb.animations[16])
 
-    return new Duck({ object, mixer, idle, walk, swim, height: 0.4 })
+    return new Duck({ object, mixer, idle, walk, swim, height: 0.3 })
   }
 }
