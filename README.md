@@ -12,40 +12,40 @@
 ## 기술 스택
 
 <div align=center>
-<img src="https://img.shields.io/badge/Ubuntu-E95420?style=for-the-badge&logo=Ubuntu&logoColor=white" style="height : auto; margin-left : 10px; margin-right : 10px;"/>
-<img src="https://img.shields.io/badge/K3s-FFC61C?style=for-the-badge&logo=K3s&logoColor=white" style="height : auto; margin-left : 10px; margin-right : 10px;"/>
-<img src="https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=Docker&logoColor=white" style="height : auto; margin-left : 10px; margin-right : 10px;"/>
-<img src="https://img.shields.io/badge/Nginx-009639?style=for-the-badge&logo=NGINX&logoColor=white" style="height : auto; margin-left : 10px; margin-right : 10px;"/>
-<img src="https://img.shields.io/badge/Traefik-24A1C1?style=for-the-badge&logo=Traefik Proxy&logoColor=white" style="height : auto; margin-left : 10px; margin-right : 10px;"/>
-<img src="https://img.shields.io/badge/Let's Encrypt-003A70?style=for-the-badge&logo=Let's Encrypt&logoColor=white" style="height : auto; margin-left : 10px; margin-right : 10px;"/>
 
-<br>
-   
-<img src="https://img.shields.io/badge/Argo-EF7B4D?style=for-the-badge&logo=Argo&logoColor=white" style="height : auto; margin-left : 10px; margin-right : 10px;"/>
-<img src="https://img.shields.io/badge/GitHub Actions-2088FF?style=for-the-badge&logo=GitHub Actions&logoColor=white" style="height : auto; margin-left : 10px; margin-right : 10px;"/>
+   <div align=center>
+      <img src="https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=React&logoColor=white"/>
+      <img src="https://img.shields.io/badge/React Query-FF4154?style=for-the-badge&logo=React Query&logoColor=white"/>
+      <img src="https://img.shields.io/badge/Three-000000?style=for-the-badge&logo=Three.js&logoColor=white"/>
+      <img src="https://img.shields.io/badge/MSW-FF6A33?style=for-the-badge&logo=MockServiceWorker&logoColor=white"/>
+      <img src="https://img.shields.io/badge/Webpack-8DD6F9?style=for-the-badge&logo=Webpack&logoColor=white"/>
+   </div>
 
-<br>
+   <div align=center>
+      <img src="https://img.shields.io/badge/Prometheus-E6522C?style=for-the-badge&logo=Prometheus&logoColor=white"/>
+      <img src="https://img.shields.io/badge/Grafana-F46800?style=for-the-badge&logo=Grafana&logoColor=white"/>
 
-<img src="https://img.shields.io/badge/Three.js-000000?style=for-the-badge&logo=Three.js&logoColor=white" style="height : auto; margin-left : 10px; margin-right : 10px;"/>
-<img src="https://img.shields.io/badge/Sass-CC6699?style=for-the-badge&logo=Sass&logoColor=white" style="height : auto; margin-left : 10px; margin-right : 10px;"/>
-<img src="https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=TypeScript&logoColor=white" style="height : auto; margin-left : 10px; margin-right : 10px;"/>
-<img src="https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=React&logoColor=white" style="height : auto; margin-left : 10px; margin-right : 10px;"/>
-<img src="https://img.shields.io/badge/React Query-FF4154?style=for-the-badge&logo=React Query&logoColor=white" style="height : auto; margin-left : 10px; margin-right : 10px;"/>
+   </div>
 
-<br>
+   <div align=center>
+      <img src="https://img.shields.io/badge/Spring Boot-6DB33F?style=for-the-badge&logo=Spring Boot&logoColor=white"/>
+      <img src="https://img.shields.io/badge/Apache Kafka-231F20?style=for-the-badge&logo=Apache Kafka&logoColor=white"/>
+      <img src="https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=MySQL&logoColor=white"/>
+      <img src="https://img.shields.io/badge/Redis-DC382D?style=for-the-badge&logo=Redis&logoColor=white"/>
+   </div>
 
-<img src="https://img.shields.io/badge/Java-437291?style=for-the-badge&logo=OpenJDK&logoColor=white" style="height : auto; margin-left : 10px; margin-right : 10px;"/>
-<img src="https://img.shields.io/badge/Spring Boot-6DB33F?style=for-the-badge&logo=Spring Boot&logoColor=white" style="height : auto; margin-left : 10px; margin-right : 10px;"/>
-<img src="https://img.shields.io/badge/Apache Kafka-231F20?style=for-the-badge&logo=Apache Kafka&logoColor=white" style="height : auto; margin-left : 10px; margin-right : 10px;"/>
-<img src="https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=MySQL&logoColor=white" style="height : auto; margin-left : 10px; margin-right : 10px;"/>
-<img src="https://img.shields.io/badge/Redis-DC382D?style=for-the-badge&logo=Redis&logoColor=white" style="height : auto; margin-left : 10px; margin-right : 10px;"/>
+   <div  align=center>
+      <img src="https://img.shields.io/badge/ArgoCD-EF7B4D?style=for-the-badge&logo=Argo&logoColor=white"/>
+      <img src="https://img.shields.io/badge/GitHub Actions-2088FF?style=for-the-badge&logo=GitHub Actions&logoColor=white"/>
+      <img src="https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=Docker&logoColor=white"/>
+   </div>
 
-
-<br>
-
-<img src="https://img.shields.io/badge/Prometheus-E6522C?style=for-the-badge&logo=Prometheus&logoColor=white" style="height : auto; margin-left : 10px; margin-right : 10px;"/>
-<img src="https://img.shields.io/badge/Grafana-F46800?style=for-the-badge&logo=Grafana&logoColor=white" style="height : auto; margin-left : 10px; margin-right : 10px;"/>
-
+   <div align=cente>
+      <img src="https://img.shields.io/badge/Ubuntu-E95420?style=for-the-badge&logo=Ubuntu&logoColor=white"/>
+      <img src="https://img.shields.io/badge/K3s-FFC61C?style=for-the-badge&logo=K3s&logoColor=white"/>
+      <img src="https://img.shields.io/badge/Traefik-24A1C1?style=for-the-badge&logo=Traefik Proxy&logoColor=white"/>
+      <img src="https://img.shields.io/badge/Let's Encrypt-003A70?style=for-the-badge&logo=Let's Encrypt&logoColor=white"/>
+   </div>
 </div>
 
 ## 주요 기능
@@ -129,7 +129,7 @@ Three.js로 3D 공간을 구현하면서 두 가지 어려움을 마주했습니
 
 - 각 아이템 클래스마다 자신의 리소스를 회수하는 dispose메소드를 가지고 있습니다. 외부에서 이 dispose 함수를 호출함으로써 간편하게 리소스를 회수할 수 있습니다.
 
-### MSA
+### Micro Service Architecture
 
 <div align="center">
    <img src="./assets/images/msa.png" alt="카프카를 이용한 MSA 서버 간 이벤트 기반 통신" width=800/>
@@ -149,19 +149,14 @@ EKS 운영 부담을 줄이기 위해 AWS Lightsail 인스턴스에 k3s(쿠버�
    <img src="./assets/images/architecture.png" alt="더 갤러리 아키텍쳐" width=800/>
 </div>
 
-### Prometheus & Grafana
+### Monitoring
 
-운영 환경 모니터링을 위해 Prometheus와 Grafana를 도입했습니다.  
-Ubuntu 서버와 Spring Application Metrics를 Prometheus로 수집하고, Grafana Dashboard를 이용해 시각화 했습니다.  
-
+운영 환경 모니터링을 위해 Prometheus와 Grafana를 도입했습니다. Ubuntu 서버와 Spring Application Metrics를 Prometheus로 수집하고, Grafana Dashboard를 이용해 시각화 했습니다.
 
 <div align="center">
    <img src="./assets/images/ubuntu-dashboard.png" alt="모니터링 대시보드" width=800/>
    <img src="./assets/images/gateway-dashboard.png" alt="모니터링 대시보드" width=800/>
 </div>
-
-
-
 
 ## 관련 문서
 
