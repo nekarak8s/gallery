@@ -92,7 +92,7 @@ export default class Animal {
   turn() {
     this.#status = 'turn'
     this.rotatingTime = 0
-    this.rotatingPeriod = getRandom(0.2, 0.5)
+    this.rotatingPeriod = getRandom(0.1, 0.3)
 
     this.species.walk.stop()
     this.species.idle.play()
@@ -111,7 +111,7 @@ export default class Animal {
     this.mixer.update(delta)
 
     this.#raycaster.set(this.species.object.position, _downDirection)
-    const intersects = this.#raycaster.intersectObjects(this.floors)
+    let intersects = this.#raycaster.intersectObjects(this.floors)
     if (!intersects[0]) return
 
     // Position on the floor
@@ -122,13 +122,12 @@ export default class Animal {
     // const worldNormal = intersects[0].normal!.clone() // intersects[0].normal을 변경하지 않도록 복제합니다.
     // worldNormal.applyMatrix4(intersects[0].object.matrixWorld)
 
-    // Swim or Walk (y < 0.6)
-    if (this.species.object.position.y <= -0.8) {
-      this.species.object.position.y = -0.8
-      if (this.#status !== 'swim') this.swim()
-    } else if (this.#status === 'swim') {
-      this.walk()
+    // Swim
+    if (this.#status === 'swim') {
+      if (this.species.object.position.y > -0.8) this.walk()
     }
+
+    if (this.species.object.position.y < -0.8) this.species.object.position.y = -0.8
 
     // Pause
     if (this.#status === 'pause') {
@@ -144,7 +143,9 @@ export default class Animal {
       const actualLookSpeed = delta * this.#lookSpeed
       this.species.object.rotateY(actualLookSpeed)
 
-      if (this.rotatingTime > this.rotatingPeriod) this.walk()
+      if (this.rotatingTime > this.rotatingPeriod) {
+        this.species.object.position.y > -0.8 ? this.walk() : this.swim()
+      }
       return
     }
 
@@ -158,20 +159,21 @@ export default class Animal {
         return
       }
 
-      // avoid water (lookDirection과 normal vector 사이 각도 체크)
-      // if (this.species.object.position.y < -0.4) {
-      //   this.turn()
-      //   return
-      // }
-
-      // obstacle
-      this.species.object.getWorldDirection(this.#lookDirection)
-      this.#raycaster.set(this.species.object.position, this.#lookDirection)
-      const intersects = this.#raycaster.intersectObjects(this.obstacles)
-      if (intersects.length > 0 && intersects[0].distance < 0.5) {
-        this.turn()
+      // swim
+      if (this.species.object.position.y < -0.8) {
+        this.species.object.position.y = -0.8
+        this.swim()
         return
       }
+    }
+
+    // obstacle
+    this.species.object.getWorldDirection(this.#lookDirection)
+    this.#raycaster.set(this.species.object.position, this.#lookDirection)
+    intersects = this.#raycaster.intersectObjects(this.obstacles)
+    if (intersects.length > 0 && intersects[0].distance < 0.5) {
+      this.turn()
+      return
     }
 
     // move forward
