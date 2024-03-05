@@ -5,16 +5,20 @@ import foxGlb from '@/assets/glbs/fox.glb'
 type FoxProps = {
   object: THREE.Object3D
   mixer: THREE.AnimationMixer
-  walk: THREE.AnimationAction
   idle: THREE.AnimationAction
+  walk: THREE.AnimationAction
+  swim: THREE.AnimationAction
+  height: number
 }
 
 export class Fox {
   type: string = 'fox'
   object: THREE.Object3D
   mixer: THREE.AnimationMixer
-  walk: THREE.AnimationAction
   idle: THREE.AnimationAction
+  walk: THREE.AnimationAction
+  swim: THREE.AnimationAction
+  height: number
 
   constructor(props: FoxProps) {
     if (!props) {
@@ -23,8 +27,10 @@ export class Fox {
 
     this.object = props.object
     this.mixer = props.mixer
-    this.walk = props.walk
     this.idle = props.idle
+    this.walk = props.walk
+    this.swim = props.swim
+    this.height = props.height
   }
 
   // Construct asynchronously
@@ -36,6 +42,7 @@ export class Fox {
 
     // Extract mesh
     const object = glb.scene.children[0]
+    object.scale.multiplyScalar(1.7)
     object.traverse((obj) => {
       obj.castShadow = true
       obj.receiveShadow = true
@@ -43,10 +50,11 @@ export class Fox {
 
     // Extract animations
     const mixer = new THREE.AnimationMixer(object)
-    mixer.timeScale = 1 / 3
+    mixer.timeScale = 1 / 2
     const idle = mixer.clipAction(glb.animations[8])
     const walk = mixer.clipAction(glb.animations[17])
+    const swim = mixer.clipAction(glb.animations[16])
 
-    return new Fox({ object, mixer, walk, idle })
+    return new Fox({ object, mixer, idle, walk, swim, height: 0.4 })
   }
 }

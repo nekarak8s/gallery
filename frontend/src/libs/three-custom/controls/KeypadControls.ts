@@ -274,26 +274,31 @@ export class KeypadControls {
     this.#raycaster.set(this.camera.position, _downDirection)
     intersects = this.#raycaster.intersectObjects(this.floors)
 
+    // Calculate fallspeed (including jumping)
     let fallspeed =
       this.gravity * this.#floatDuration ** 2 * 10 - (this.#isJump ? this.jumpForce : 0)
     if (fallspeed > this.maxFallSpeed) fallspeed = this.maxFallSpeed // max fall speed
 
+    // Just falling
     if (intersects.length === 0) {
       this.#floatDuration += delta
       this.camera.position.y -= delta * fallspeed
       return
     }
 
+    // Ground
     const distance = intersects[0].distance
-
     if (distance < this.height && this.#floatDuration) {
+      // just grounded
       this.#isJump = false
       this.#floatDuration = 0
       this.camera.position.y += this.height - distance
     } else if (distance < this.height + _groundOffset && !this.#isJump) {
+      // just jumped
       this.#floatDuration = 0
       this.camera.position.y += this.height - distance
     } else {
+      // others
       this.#floatDuration += delta
       this.camera.position.y -= delta * fallspeed
     }
