@@ -82,10 +82,10 @@
     height: 52.5vw;
 
     h1 {
-      font-size: 4vw;
+      font-size: 1.8em;
     }
     p {
-      font-size: 2vw;
+      font-size: 1.2em;
     }
   }
 }
@@ -94,14 +94,14 @@
   .gallery-cover__content {
     gap: 1em;
     width: 85vw;
-    height: 64vw;
+    min-height: 70vw;
     padding: 1em 1em;
 
     h1 {
-      font-size: 5vw;
+      font-size: 1.4em;
     }
     p {
-      font-size: 3vw;
+      font-size: 0.8em;
     }
   }
 }

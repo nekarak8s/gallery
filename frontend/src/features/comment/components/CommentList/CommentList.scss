@@ -1,4 +1,5 @@
 @use '@/styles/_colors' as c;
+@use '@/styles/_responsive.scss' as *;
 
 .comment-list {
   display: grid;
@@ -6,15 +7,13 @@
   grid-template-rows: minmax(0, 1fr) auto;
   justify-content: center;
   align-items: center;
-  // position: sticky;
-  // top: 0;
-  height: 100%;
+  width: 100%;
 }
 
 .comment-list__list {
   display: flex;
   flex-direction: column;
-  gap: 0.5em;
+  gap: 0.4em;
   margin: 0 0 0.3em 0;
   height: 100%;
   overflow: auto;
@@ -25,4 +24,10 @@
   font-size: 1rem;
   font-weight: 600;
   color: var(--color-ft-subtle, c.$ft-gray);
+}
+
+@include tablet {
+  .comment-list {
+    gap: 1em;
+  }
 }

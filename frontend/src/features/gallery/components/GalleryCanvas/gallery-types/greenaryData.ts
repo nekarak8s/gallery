@@ -390,17 +390,8 @@ export const EDGES_DATA = [
   { width: 1, height: 100, depth: 120, x: 109, y: 0, z: 55 },
 ]
 
-export const FOX_DATA = [
-  { x: 70, y: 5, z: 59 },
-  { x: 89, y: 5, z: 23 },
-]
+export const FOX_DATA = [{ x: 70, y: 5, z: 59 }]
 
-export const SHEEP_DATA = [
-  { x: 45, y: 5, z: 57 },
-  { x: 24, y: 5, z: 77 },
-]
+export const SHEEP_DATA = [{ x: 45, y: 5, z: 57 }]
 
-export const DUCK_DATA = [
-  { x: 54, y: 5, z: 17 },
-  { x: 39, y: 5, z: 41 },
-]
+export const DUCK_DATA = [{ x: 39, y: 5, z: 41 }]

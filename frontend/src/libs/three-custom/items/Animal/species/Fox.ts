@@ -55,6 +55,6 @@ export class Fox {
     const walk = mixer.clipAction(glb.animations[17])
     const swim = mixer.clipAction(glb.animations[16])
 
-    return new Fox({ object, mixer, idle, walk, swim, height: 0.4 })
+    return new Fox({ object, mixer, idle, walk, swim, height: 0.6 })
   }
 }

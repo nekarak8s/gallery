@@ -110,13 +110,16 @@ export default class Animal {
     // Animation
     this.mixer.update(delta)
 
-    this.#raycaster.set(this.species.object.position, _downDirection)
+    this.#raycaster.set(
+      this.species.object.position.add(new THREE.Vector3(0, this.height / 2, 0)),
+      _downDirection
+    )
     let intersects = this.#raycaster.intersectObjects(this.floors)
     if (!intersects[0]) return
 
     // Position on the floor
     const distance = intersects[0].distance
-    this.species.object.position.y += this.height / 3 - distance
+    this.species.object.position.y -= distance
 
     // normal vector 와 (0, 1, 0) 사이 각도 체크)
     // const worldNormal = intersects[0].normal!.clone() // intersects[0].normal을 변경하지 않도록 복제합니다.
