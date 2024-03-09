@@ -131,8 +131,10 @@ const Joystick = ({ control, shoot, jump }: JoystickProps) => {
         lastTouch.clientX < shootInfo.right &&
         lastTouch.clientY > shootInfo.top &&
         lastTouch.clientY < shootInfo.bottom
-      )
+      ) {
+        shoot && shoot()
         return
+      }
 
       // if jumpDiv is clicked, return
       if (
@@ -140,8 +142,10 @@ const Joystick = ({ control, shoot, jump }: JoystickProps) => {
         lastTouch.clientX < jumpInfo.right &&
         lastTouch.clientY > jumpInfo.top &&
         lastTouch.clientY < jumpInfo.bottom
-      )
+      ) {
+        jump && jump()
         return
+      }
 
       isTracking.current = false
       core.style.transform = `
@@ -175,10 +179,10 @@ const Joystick = ({ control, shoot, jump }: JoystickProps) => {
         <div className="joystick__controller--core" ref={coreRef}></div>
       </div>
       <div className="joystick__buttons">
-        <div className="joystick__shoot" onMouseUp={shoot} ref={shootRef}>
+        <div className="joystick__shoot" ref={shootRef}>
           <BowIcon />
         </div>
-        <div className="joystick__jump" onMouseUp={jump} ref={jumpRef}>
+        <div className="joystick__jump" ref={jumpRef}>
           <JumpIcon />
         </div>
       </div>

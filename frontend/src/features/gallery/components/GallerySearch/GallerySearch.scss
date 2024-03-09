@@ -9,19 +9,31 @@
   right: 0;
   width: 100%;
   height: 100%;
+  max-height: 100vh;
   font-size: 1.5rem;
-  overflow: hidden;
+  overflow: auto;
 
   .gallery-search__back {
-    svg {
+    svg:nth-child(1) {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 0;
+      height: 0;
+      transform: translate(-50%, -50%);
+      transition: all 700ms ease-out;
+      fill: c.$secondary;
+    }
+
+    svg:nth-child(2) {
       position: absolute;
       top: 0;
       right: 0;
       width: 0;
       height: 0;
       transform: translate(50%, -50%);
-      transition: all 500ms ease-out;
-      fill: #eaf6ff;
+      transition: all 500ms ease-out 200ms;
+      fill: rgb(235, 245, 255);
     }
   }
 
@@ -31,7 +43,12 @@
 
   &--enter {
     .gallery-search__back {
-      svg {
+      svg:nth-child(1) {
+        width: 300vmax;
+        height: 300vmax;
+      }
+
+      svg:nth-child(2) {
         width: 300vmax;
         height: 300vmax;
       }
@@ -44,7 +61,12 @@
 
   &--leave {
     .gallery-search__back {
-      svg {
+      svg:nth-child(1) {
+        width: 0;
+        height: 0;
+      }
+
+      svg:nth-child(2) {
         width: 0;
         height: 0;
       }
@@ -107,7 +129,6 @@
   display: flex;
   flex-direction: column;
   gap: 0.5em;
-  height: 18em;
 }
 
 @include laptop {

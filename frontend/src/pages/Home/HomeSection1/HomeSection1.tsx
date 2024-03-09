@@ -120,10 +120,10 @@ function HomeSection1() {
 
         // Move the element
         el.style.transform = `
-        rotateY(${rValue * speedr}deg)
+        rotateY(${-1 * rValue * speedr}deg)
         translate(
-          calc(-50% + ${xValue * speedx}px),
-          calc(-50% + ${yValue * speedy}px)
+          calc(-50% - ${xValue * speedx}px),
+          calc(-50% - ${yValue * speedy}px)
           )
         `
       })
@@ -153,7 +153,7 @@ function HomeSection1() {
     let scrollStart = 0
     let scrollEnd = 0
     const init = function initiateHS1ScrollData() {
-      scrollStart = window.pageYOffset + back.getBoundingClientRect().top
+      scrollStart = window.scrollY + back.getBoundingClientRect().top
       scrollEnd = scrollStart + back.offsetHeight - main.offsetHeight
     }
 
@@ -298,7 +298,7 @@ function HomeSection1() {
               className="hs1-interact__gallery"
               data-speedx="0.16"
               data-speedy="0.12"
-              data-speedr="0"
+              data-speedr="0.1"
             >
               <StaticImage
                 imgSrc={galleryImg}

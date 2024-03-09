@@ -2,6 +2,7 @@ import { useRef, useState } from 'react'
 import { PostItemData } from '../../types'
 import PostItemForm from '../PostItemForm'
 import './PostListForm.scss'
+import useMobile from '@/hooks/useMobile'
 
 type PostListFormProps = {
   postList: PostItemData[]
@@ -44,20 +45,25 @@ const PostListForm = ({ postList: pl }: PostListFormProps) => {
     draggedOverPost.current = null
   }
 
+  const isMobile = useMobile()
+
   return (
-    <ol className="post-list-form">
-      {postList.map((post, index) => (
-        <li
-          key={`${post.postId}-${new Date().toISOString()}`}
-          draggable={true}
-          onDragStart={(e) => handleDragStart(e, index)}
-          onDragOver={(e) => handleDragOver(e, index)}
-          onDragEnd={handleDragEnd}
-        >
-          <PostItemForm post={post} index={index} />
-        </li>
-      ))}
-    </ol>
+    <div className="post-list-form">
+      {!isMobile && <p>* 드래그하여 작품 순서를 바꿀 수 있습니다.</p>}
+      <ol>
+        {postList.map((post, index) => (
+          <li
+            key={`${post.postId}-${new Date().toISOString()}`}
+            draggable={true}
+            onDragStart={(e) => handleDragStart(e, index)}
+            onDragOver={(e) => handleDragOver(e, index)}
+            onDragEnd={handleDragEnd}
+          >
+            <PostItemForm post={post} index={index} />
+          </li>
+        ))}
+      </ol>
+    </div>
   )
 }
 

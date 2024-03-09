@@ -75,7 +75,7 @@ function HomeSection2() {
     let scrollEnd = 0
     const init = function initiateHS2ScrollData() {
       // Initiate scroll data
-      scrollStart = window.pageYOffset + back.getBoundingClientRect().top
+      scrollStart = window.scrollY + back.getBoundingClientRect().top
       scrollEnd = scrollStart + back.offsetHeight - main.offsetHeight
 
       // Initiate card position

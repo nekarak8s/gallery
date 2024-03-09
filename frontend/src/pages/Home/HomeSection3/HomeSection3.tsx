@@ -69,7 +69,7 @@ function HomeSection3() {
     let scrollEnd = 0
     const init = function setInitialPositionData2() {
       // Initiate scroll data
-      scrollStart = window.pageYOffset + back.getBoundingClientRect().top
+      scrollStart = window.scrollY + back.getBoundingClientRect().top
       scrollEnd = scrollStart + back.offsetHeight - main.offsetHeight
 
       // Initiate art work position

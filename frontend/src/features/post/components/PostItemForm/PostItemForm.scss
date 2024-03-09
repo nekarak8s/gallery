@@ -4,7 +4,7 @@
 .post-item-form {
   z-index: 1;
   display: grid;
-  grid-template-rows: 3.5em 0fr;
+  grid-template-rows: 3.3em 0fr;
   overflow: hidden;
   position: relative;
   border-radius: 0.5em;
@@ -13,7 +13,7 @@
   font-size: 1rem;
 
   &.open {
-    grid-template-rows: 3.5em 1fr;
+    grid-template-rows: 3.3em 1fr;
 
     .post-item-form__card {
       padding: 1em 1em 2em;
@@ -28,28 +28,37 @@
 .post-item-form__header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   gap: 0.5em;
   width: 100%;
-  padding: 1em;
+  padding: 0 1em 0 0;
   border-bottom: 1px solid var(--color-bg-subtle, c.$bg-gray);
+  overflow: hidden;
 
   &.inactive {
     background-color: var(--color-bg-subtle, c.$bg-gray);
   }
 }
 
-.post-item-form__toggle {
-  width: 1em;
-  height: 1em;
-  transition: transform 0.2s ease-in-out;
+.post-item-form__drag {
+  display: flex;
+  align-items: center;
+  left: 0;
+  height: 100%;
+  padding: 0.7em;
+  box-shadow: 0 0 3px 1px var(--color-bg-subtle, c.$bg-gray);
+
+  path {
+    color: c.$ft-gray;
+  }
 }
 
 .post-item-form__order-title {
+  flex: 1;
   display: grid;
-  grid-template-columns: auto 2em auto auto;
+  grid-template-columns: auto 2em auto 1fr;
   gap: 1em;
   align-items: center;
+  padding: 1em;
 
   > h2 {
     overflow: hidden;
@@ -57,6 +66,12 @@
     text-overflow: ellipsis;
     white-space: nowrap;
   }
+}
+
+.post-item-form__toggle {
+  width: 1em;
+  height: 1em;
+  transition: transform 0.2s ease-in-out;
 }
 
 .post-item-form__card {

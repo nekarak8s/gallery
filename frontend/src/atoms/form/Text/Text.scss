@@ -7,6 +7,7 @@
   position: relative;
   background-color: transparent;
   transition: background-color 0.1s ease-in;
+  font-size: 1rem;
 }
 
 .text input {
@@ -50,6 +51,6 @@
 
 @include mobile {
   .text {
-    font-size: 0.9em;
+    font-size: 0.9rem;
   }
 }

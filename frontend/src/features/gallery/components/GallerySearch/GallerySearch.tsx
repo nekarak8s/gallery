@@ -38,18 +38,14 @@ const GallerySearch = ({ isShow, onClose }: GallerySearchProps) => {
   }, [debouncedQuery])
 
   return (
-    <CSSTransition className="gallery-search" isShow={isShow} duration={500}>
+    <CSSTransition className="gallery-search" isShow={isShow} duration={700}>
       <div className="gallery-search__back">
+        <CircleIcon />
         <CircleIcon />
       </div>
       <div className="gallery-search__search" ref={focusRef}>
         <div className="gallery-search__search-bar">
-          <Text
-            label="갤러리 검색"
-            name="query"
-            initialValue=""
-            onChange={(e) => setQuery(e.target.value)}
-          />
+          <Text label="" name="query" initialValue="" onChange={(e) => setQuery(e.target.value)} />
           <Select name="type" onChange={(e) => setType(e.target.value)}>
             <option selected value="all">
               전체

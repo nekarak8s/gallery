@@ -1,14 +1,28 @@
 @use '@/styles/_responsive.scss' as *;
+@use '@/styles/_colors.scss' as c;
 
 .post-list-form {
   display: flex;
   flex-direction: column;
   gap: 1em;
-  width: 100%;
   font-size: 1rem;
 
-  > li.dragging {
-    opacity: 0.5;
+  > p {
+    color: var(--color-ft-subtle, c.$ft-gray);
+    font-weight: 600;
+    font-size: 0.9em;
+  }
+
+  > ol {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    width: 100%;
+    font-size: 1rem;
+
+    > li.dragging {
+      opacity: 0.5;
+    }
   }
 }
 
