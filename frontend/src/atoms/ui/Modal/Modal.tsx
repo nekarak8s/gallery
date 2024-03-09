@@ -9,15 +9,18 @@ interface ModalProps {
   onClose: () => void
 }
 
-const Modal = ({
-  children,
-  isOpen,
-  onClose,
-}: PropsWithChildren<ModalProps>) => {
+const Modal = ({ children, isOpen, onClose }: PropsWithChildren<ModalProps>) => {
   const backRef = useRef<HTMLDivElement>(null)
   const contentRef = useFocusTrap(isOpen, onClose)
 
+  /**
+   * Close modal
+   * 1. backdrop is clicked
+   * 2. Esc keyboard is pressed
+   */
   useEffect(() => {
+    if (!isOpen) return
+
     const back = backRef.current
     if (!back) return
 
@@ -26,9 +29,19 @@ const Modal = ({
       onClose()
     }
 
+    const handleKeyDown = function closeModal(e: KeyboardEvent) {
+      if (e.code !== 'Escape') return
+      e.preventDefault()
+      onClose()
+    }
+
     back.addEventListener('click', handleClick)
+    window.addEventListener('keydown', handleKeyDown)
+
     return () => {
+      console.log('modal-close')
       back.removeEventListener('click', handleClick)
+      window.removeEventListener('keydown', handleKeyDown)
     }
   }, [isOpen])
 

@@ -55,9 +55,9 @@ const GalleryUpdateForm = ({ galleryId, onSuccess, onError }: GalleryDetailFormP
     const form = e.currentTarget
     const formData = new FormData(form)
 
-    // for (let key of formData.keys()) {
-    //   console.log(key, ':', formData.get(key))
-    // }
+    for (let key of formData.keys()) {
+      console.log(key, ':', formData.get(key))
+    }
 
     // validate gallery data
     const galleryResult = validateUpdateGalleryForm(formData)
@@ -109,7 +109,7 @@ const GalleryUpdateForm = ({ galleryId, onSuccess, onError }: GalleryDetailFormP
     <>
       <Form className="gallery-update-form" onSubmit={handleSubmit}>
         <Text label="전시회 이름" name="name" initialValue={gallery.name} />
-        <Textarea label="소개글" name="content" initialValue={gallery.content} />
+        <Textarea label="소개글" name="content" maxLen={500} initialValue={gallery.content} />
         <PlacesRadio placeList={placeList} defaultChecked={gallery.place.placeId} />
         <PostListForm postList={postList} />
         <div className="gallery-update-form__buttons">

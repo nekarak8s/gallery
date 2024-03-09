@@ -1,46 +1,49 @@
-import { useEffect, useRef } from 'react'
+import { useCallback, useEffect, useRef } from 'react'
 
-function useFocusTrap(enabled: boolean = true, escape: () => void) {
-  /**
-   * Focus Trap
-   * 1. 'Esc': run escape function. ex) close the modal
-   * 2. 'Tab' && the last element : move to the first element
-   * 3. 'Shift + Tab' && the first element : move to the last element
-   */
+function useFocusTrap(enabled: boolean, escape: () => void) {
   const containerRef = useRef<HTMLDivElement>(null)
 
+  /**
+   * Find focusable elements
+   */
+  const findFocusEles = useCallback(() => {
+    const container = containerRef.current
+
+    if (!container) return false
+
+    const focusEles = container.querySelectorAll(
+      'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+    ) as NodeListOf<HTMLElement>
+
+    if (focusEles.length === 0) return false
+
+    return Array.from(focusEles)
+  }, [])
+
+  /**
+   * Focus Trap
+   */
   useEffect(() => {
     if (!enabled) return
 
     const container = containerRef.current
     if (!container) return
 
-    // Get focusable elements
-    let focusEles = container.querySelectorAll(
-      'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
-    ) as NodeListOf<HTMLElement>
-
-    // Filter invalid condition
-    let N = focusEles.length
-    if (N === 0) return
-
-    // Get the edge elments
-    let firstEle = focusEles[0]
-    let lastEle = focusEles[N - 1]
-
+    /**
+     * 1. 'Esc': run escape function. ex) close the modal
+     * 2. 'Tab' && the last element : move to the first element
+     * 3. 'Shift + Tab' && the first element : move to the last element
+     */
     const handleKeyDown = (e: KeyboardEvent) => {
       // Get focusable elements
-      focusEles = container.querySelectorAll(
-        'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
-      ) as NodeListOf<HTMLElement>
+      const focusEles = findFocusEles()
+      if (!focusEles) return
 
-      // Filter invalid condition
-      N = focusEles.length
-      if (N === 0) return
+      const N = focusEles.length
 
       // Get the edge elments
-      firstEle = focusEles[0]
-      lastEle = focusEles[N - 1]
+      const firstEle = focusEles[0]
+      const lastEle = focusEles[N - 1]
 
       // Run escape function
       if (e.key === 'Escape') {
@@ -50,6 +53,16 @@ function useFocusTrap(enabled: boolean = true, escape: () => void) {
 
       // Filter invalid conditions
       if (e.key !== 'Tab') return
+
+      // Focus if the activated element is not in the container
+      if (
+        !(document.activeElement instanceof HTMLElement) ||
+        !focusEles.includes(document.activeElement)
+      ) {
+        e.preventDefault()
+        firstEle.focus()
+        return
+      }
 
       // 'Tab' && the last element : move to the first element
       if (!e.shiftKey && document.activeElement === lastEle) {
@@ -68,8 +81,10 @@ function useFocusTrap(enabled: boolean = true, escape: () => void) {
 
     // Auto focus
     setTimeout(() => {
-      firstEle.focus()
-    }, 0)
+      const focusEles = findFocusEles()
+      if (!focusEles) return
+      focusEles[0].focus()
+    }, 300)
 
     // Add event listener
     document.addEventListener('keydown', handleKeyDown)

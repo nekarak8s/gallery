@@ -123,9 +123,7 @@ const GalleryItem = ({ gallery }: GalleryItemProps) => {
   return (
     <>
       <article tabIndex={0} className="gallery-item" ref={itemRef}>
-        <h2 className="gallery-item__title" data-cursor-scale={CURSOR_SCALE}>
-          {gallery.name}
-        </h2>
+        <h2 className="gallery-item__title">{gallery.name}</h2>
         <ul className="gallery-item__icons" ref={buttonsRef} data-cursor-scale={CURSOR_SCALE}>
           <li>
             <button
@@ -155,7 +153,7 @@ const GalleryItem = ({ gallery }: GalleryItemProps) => {
             </button>
           </li>
         </ul>
-        <div className="gallery-item__content" data-cursor-scale={CURSOR_SCALE}>
+        <div className="gallery-item__content">
           <div ref={contentRef}></div>
           <p>{gallery.content}</p>
         </div>

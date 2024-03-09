@@ -131,10 +131,8 @@ const Joystick = ({ control, shoot, jump }: JoystickProps) => {
         lastTouch.clientX < shootInfo.right &&
         lastTouch.clientY > shootInfo.top &&
         lastTouch.clientY < shootInfo.bottom
-      ) {
-        shoot && shoot()
+      )
         return
-      }
 
       // if jumpDiv is clicked, return
       if (
@@ -142,10 +140,8 @@ const Joystick = ({ control, shoot, jump }: JoystickProps) => {
         lastTouch.clientX < jumpInfo.right &&
         lastTouch.clientY > jumpInfo.top &&
         lastTouch.clientY < jumpInfo.bottom
-      ) {
-        jump && jump()
+      )
         return
-      }
 
       isTracking.current = false
       core.style.transform = `
