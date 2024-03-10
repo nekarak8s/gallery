@@ -11,7 +11,6 @@ import Modal from '@/atoms/ui/Modal'
 import { CURSOR_SCALE } from '@/constants'
 import MusicSearch from '@/features/music/components/MusicSearch'
 import { MusicData } from '@/features/music/types'
-import useMobile from '@/hooks/useMobile'
 import './PostItemForm.scss'
 
 type PostItemFormProps = {
@@ -20,7 +19,7 @@ type PostItemFormProps = {
 }
 
 const PostItemForm = ({ post, index }: PostItemFormProps) => {
-  const isMobile = useMobile()
+  // const isMobile = useMobile()
 
   /**
    * Open / Close the card
@@ -97,7 +96,7 @@ const PostItemForm = ({ post, index }: PostItemFormProps) => {
         >
           <input type="hidden" name={`posts[${index}].postId`} value={post.postId} />
           <input type="hidden" name={`posts[${index}].order`} value={index + 1} />
-          {!isMobile && (
+          {false && (
             <div className="post-item-form__drag" data-cursor-scale={CURSOR_SCALE}>
               <DragIcon />
             </div>

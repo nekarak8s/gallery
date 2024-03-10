@@ -36,7 +36,7 @@ const Textarea = ({
   )
 
   return (
-    <div className="textarea">
+    <div className="textarea" draggable={false}>
       <textarea
         name={name}
         defaultValue={initialValue}
