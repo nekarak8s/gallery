@@ -33,7 +33,7 @@ public class PostServiceImpl implements PostService {
     private final PostRepo postRepo;
     private final MusicRepo musicRepo;
     private final S3Service s3Service;
-    private String DEFAULT_IMAGE = "Default.png";
+    private String DEFAULT_IMAGE = "Default.png2024-03-10T05:04:46.319822842";
 //    private static final String YOUTUBE_BASE_URL = "https://www.youtube.com/watch?v=";
 
     @Value("${cloud.aws.s3..url}")
