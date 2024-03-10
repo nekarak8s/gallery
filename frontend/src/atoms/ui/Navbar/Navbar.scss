@@ -46,6 +46,7 @@
 
   button {
     display: flex;
+    justify-content: flex-end;
     align-items: center;
     width: 100%;
     height: 100%;
@@ -97,6 +98,7 @@
   .navbar__menu {
     display: grid;
     grid-template-rows: repeat(3, 0fr);
+    align-items: stretch;
     gap: 0;
     transition:
       grid-template-rows 0.2s ease-in-out,
