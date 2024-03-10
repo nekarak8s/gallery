@@ -34,7 +34,7 @@ import wideVid2 from '@/assets/videos/home-video-2.mp4'
 import wideWebm2 from '@/assets/videos/home-video-2.webm'
 import narrowVid1 from '@/assets/videos/home-video-3.mp4'
 import narrowWebm1 from '@/assets/videos/home-video-3.webm'
-import toFrame from '@/libs/toFrame'
+import throttle from '@/libs/throttle'
 
 import './HomeSection2.scss'
 
@@ -120,7 +120,7 @@ function HomeSection2() {
     }
 
     init()
-    const optimizedHandleScroll = toFrame(handleScroll)
+    const optimizedHandleScroll = throttle(handleScroll, 16)
 
     window.addEventListener('resize', init)
     window.addEventListener('scroll', optimizedHandleScroll, { passive: true })

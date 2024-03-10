@@ -10,8 +10,8 @@ import Button3D from '@/atoms/ui/Button3D'
 import StaticImage from '@/atoms/ui/StaticImage'
 import StaticVideo from '@/atoms/ui/StaticVideo'
 import { CURSOR_SCALE } from '@/constants'
-import toFrame from '@/libs/toFrame'
 import './HomeSection3.scss'
+import throttle from '@/libs/throttle'
 
 const BACK_HEIGHT = 3 // * 100vh
 const SCROLL_OFFSET = 300 // px.
@@ -125,7 +125,7 @@ function HomeSection3() {
 
     init()
 
-    const optimizedHandleScroll = toFrame(handleScroll)
+    const optimizedHandleScroll = throttle(handleScroll, 16)
 
     window.addEventListener('resize', init)
     window.addEventListener('scroll', optimizedHandleScroll, { passive: true })
@@ -180,7 +180,7 @@ function HomeSection3() {
       `
     }
 
-    const optimizedHandleMousemove = toFrame(handleMousemove)
+    const optimizedHandleMousemove = throttle(handleMousemove, 16)
 
     const handleMouseEnter = function startArtWorkTilt() {
       if (!isMousemove.current) return

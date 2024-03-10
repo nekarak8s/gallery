@@ -15,6 +15,7 @@ import skyWebp from '@/assets/images/home-section-1/sky.png?format=webp'
 import Loading from '@/atoms/ui/Loading'
 import ScrollDown from '@/atoms/ui/ScrollDown'
 import StaticImage from '@/atoms/ui/StaticImage'
+import throttle from '@/libs/throttle'
 import toFrame from '@/libs/toFrame'
 import musicManager from '@/utils/musicManager'
 import './HomeSection1.scss'
@@ -129,7 +130,7 @@ function HomeSection1() {
       })
     }
 
-    const optimizedHandleMouseMove = toFrame(handleMousemove)
+    const optimizedHandleMouseMove = throttle(handleMousemove, 16)
 
     window.addEventListener('mousemove', optimizedHandleMouseMove)
     return () => {
