@@ -55,7 +55,6 @@
     border-bottom: 3px solid var(--color, rgb(255, 93, 52));
     transform: rotateX(-90deg);
     transform-origin: top;
-    transform-style: preserve-3d;
     transition: transform 300ms ease-in;
   }
 

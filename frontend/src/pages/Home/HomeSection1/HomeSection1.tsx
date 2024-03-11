@@ -110,18 +110,17 @@ function HomeSection1() {
       // Set distance values from the mouse position
       const xValue = e.clientX - window.innerWidth / 2
       const yValue = e.clientY - window.innerHeight / 2
-      const rValue = (xValue / (window.innerWidth / 2)) * ROTATION_DEGREE
+      // const rValue = (xValue / (window.innerWidth / 2)) * ROTATION_DEGREE
 
       // Move interactive elements
       interactEles.forEach((el) => {
         // Get factors from the element
         const speedx = Number(el.dataset.speedx)
         const speedy = Number(el.dataset.speedy)
-        const speedr = Number(el.dataset.speedr)
+        // const speedr = Number(el.dataset.speedr)
 
         // Move the element
         el.style.transform = `
-        rotateY(${-1 * rValue * speedr}deg)
         translate(
           calc(-50% - ${xValue * speedx}px),
           calc(-50% - ${yValue * speedy}px)

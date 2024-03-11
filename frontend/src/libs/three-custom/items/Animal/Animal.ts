@@ -48,6 +48,8 @@ export default class Animal {
   rotatingPeriod = 0.5
   rotatingTime = 0
 
+  #lateTime = Date.now()
+
   constructor(info: AnimalProps) {
     /**
      * Load GLTF
@@ -171,12 +173,16 @@ export default class Animal {
     }
 
     // obstacle
-    this.species.object.getWorldDirection(this.#lookDirection)
-    this.#raycaster.set(this.species.object.position, this.#lookDirection)
-    intersects = this.#raycaster.intersectObjects(this.obstacles)
-    if (intersects.length > 0 && intersects[0].distance < 0.5) {
-      this.turn()
-      return
+    if (Date.now() > this.#lateTime + 150) {
+      this.species.object.getWorldDirection(this.#lookDirection)
+      this.#raycaster.set(this.species.object.position, this.#lookDirection)
+      intersects = this.#raycaster.intersectObjects(this.obstacles)
+
+      this.#lateTime = Date.now()
+      if (intersects.length > 0 && intersects[0].distance < 0.5) {
+        this.turn()
+        return
+      }
     }
 
     // move forward
