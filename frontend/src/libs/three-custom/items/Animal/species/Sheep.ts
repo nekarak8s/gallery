@@ -55,6 +55,6 @@ export class Sheep {
     const walk = mixer.clipAction(glb.animations[17])
     const swim = mixer.clipAction(glb.animations[16])
 
-    return new Sheep({ object, mixer, idle, walk, swim, height: 0.6 })
+    return new Sheep({ object, mixer, idle, walk, swim, height: 1.2 })
   }
 }

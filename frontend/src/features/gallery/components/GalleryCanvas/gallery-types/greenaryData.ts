@@ -392,6 +392,6 @@ export const EDGES_DATA = [
 
 export const FOX_DATA = [{ x: 70, y: 5, z: 59 }]
 
-export const SHEEP_DATA = [{ x: 45, y: 5, z: 57 }]
+export const SHEEP_DATA = [{ x: 45, y: 3, z: 57 }]
 
-export const DUCK_DATA = [{ x: 39, y: 5, z: 41 }]
+export const DUCK_DATA = [{ x: 39, y: 2, z: 41 }]

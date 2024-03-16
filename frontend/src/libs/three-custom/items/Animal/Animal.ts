@@ -1,4 +1,5 @@
 import * as THREE from 'three'
+import { acceleratedRaycast } from 'three-mesh-bvh'
 import { getRandom } from '@/libs/math'
 
 type Species = {
@@ -21,6 +22,8 @@ type AnimalProps = {
 }
 
 const _downDirection = new THREE.Vector3(0, -1, 0)
+
+THREE.Mesh.prototype.raycast = acceleratedRaycast
 
 export default class Animal {
   type: string = 'trees'
@@ -63,6 +66,9 @@ export default class Animal {
     this.species.walk.play()
 
     this.height = info.species.height
+
+    this.#raycaster.far = 5
+    this.#raycaster.firstHitOnly = true
 
     /**
      *  Dispose function: release resources
@@ -113,7 +119,7 @@ export default class Animal {
     this.mixer.update(delta)
 
     this.#raycaster.set(
-      this.species.object.position.add(new THREE.Vector3(0, this.height / 2, 0)),
+      new THREE.Vector3(0, this.height / 2, 0).add(this.species.object.position),
       _downDirection
     )
     let intersects = this.#raycaster.intersectObjects(this.floors)
@@ -121,7 +127,7 @@ export default class Animal {
 
     // Position on the floor
     const distance = intersects[0].distance
-    this.species.object.position.y -= distance
+    this.species.object.position.y -= distance - this.height / 2
 
     // normal vector 와 (0, 1, 0) 사이 각도 체크)
     // const worldNormal = intersects[0].normal!.clone() // intersects[0].normal을 변경하지 않도록 복제합니다.
@@ -173,7 +179,7 @@ export default class Animal {
     }
 
     // obstacle
-    if (Date.now() > this.#lateTime + 150) {
+    if (Date.now() > this.#lateTime + 200) {
       this.species.object.getWorldDirection(this.#lookDirection)
       this.#raycaster.set(this.species.object.position, this.#lookDirection)
       intersects = this.#raycaster.intersectObjects(this.obstacles)
