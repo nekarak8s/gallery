@@ -34,7 +34,7 @@ public class SpotifyServiceImpl implements SpotifyService {
     private String accessToken;
 
     // Get Spotify AccessToken
-    public String getAccessToken() throws CustomException {
+    public String getAccessToken() {
 
         if (accessToken == null || System.currentTimeMillis() > tokenExpirationTime) {
             log.info("새로운 Spotify 토큰 발급");
@@ -64,7 +64,6 @@ public class SpotifyServiceImpl implements SpotifyService {
                     tokenExpirationTime = System.currentTimeMillis() + (response.getExpires_in() * 1000);
                 }
             }
-
         } else {
             log.info("기존 Spotify 토큰 사용");
         }
@@ -75,7 +74,7 @@ public class SpotifyServiceImpl implements SpotifyService {
 
     // Get Spotify Tracks
     @Override
-    public List<SpotifyTrackDTO> getSpotifyTracks(String query) throws CustomException {
+    public List<SpotifyTrackDTO> getSpotifyTracks(String query) {
         String token = getAccessToken();
 
         // 앨범 정보 조회

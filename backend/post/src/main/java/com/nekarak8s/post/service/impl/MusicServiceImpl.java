@@ -25,11 +25,6 @@ public class MusicServiceImpl implements MusicService {
     private final SpotifyService spotifyAPI;
     private final MusicRepo musicRepo;
 
-    /**
-     * 음악 단일 조회
-     * @param dto
-     * @return
-     */
     @Override
     public MusicInfo getMusicInfo(MusicRequestDTO dto) {
         Music music = getMusicFromCache(dto);
@@ -45,11 +40,8 @@ public class MusicServiceImpl implements MusicService {
         return MusicInfo.toDTO(music);
     }
 
-    /**
-     * Spotify 음악 목록 조회
-     * @param query
-     * @return
-     */
+
+    // Spotify 음악 목록 조회
     @Override
     public List<SpotifyTrackDTO> getTracks(String query) throws CustomException {
         return spotifyAPI.getSpotifyTracks(query);

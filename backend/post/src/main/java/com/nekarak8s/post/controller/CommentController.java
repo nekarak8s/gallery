@@ -19,19 +19,12 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("api/post/comment")
 public class CommentController {
-
     private final CommentService commentService;
 
-    /**
-     * 댓글 생성
-     * @param requestDTO
-     * @return
-     * @throws CustomException
-     */
+    // 댓글 생성
     @PostMapping
     public ResponseEntity<?> createComment(@RequestHeader(value = "X-Member-ID", required = false) Long memberId,
                                            @Valid @RequestBody CommentCreateDTO requestDTO) throws CustomException {
-        log.debug("댓글 생성 요청, 회원 아이디 : {}, requestDTO : {}", memberId, requestDTO);
         commentService.createComment(memberId, requestDTO);
 
         ApiResponse apiResponse = ApiResponse.builder()
@@ -40,15 +33,9 @@ public class CommentController {
         return ResponseEntity.ok(apiResponse);
     }
 
-    /**
-     * 댓글 목록 조회
-     * @param postId
-     * @return
-     * @throws CustomException
-     */
+    // 댓글 목록 조회
     @GetMapping("/list/{postId}")
-    public ResponseEntity<?> findCommentList(@PathVariable(value = "postId") Long postId) throws CustomException {
-        log.debug("댓글 목록 조회, 게시물 아이디 : {}", postId);
+    public ResponseEntity<?> getComments(@PathVariable(value = "postId") Long postId) throws CustomException {
         List<CommentInfo> list = commentService.findCommentList(postId, 0);
 
         ApiResponse apiResponse = ApiResponse.builder()
@@ -58,16 +45,10 @@ public class CommentController {
         return ResponseEntity.ok(apiResponse);
     }
 
-    /**
-     * 댓글 수정
-     * @param requestDTO
-     * @return
-     * @throws CustomException
-     */
+    // 댓글 수정
     @PatchMapping("/{commentId}")
     public ResponseEntity<?> modifyComment(@PathVariable(value = "commentId") Long commentId,
                                            @Valid @RequestBody CommentModifyDTO requestDTO) throws CustomException{
-        log.debug("댓글 수정 요청 : {}", requestDTO);
         commentService.modifyComment(commentId, requestDTO);
 
         ApiResponse apiResponse = ApiResponse.builder()
@@ -76,15 +57,9 @@ public class CommentController {
         return ResponseEntity.ok(apiResponse);
     }
 
-    /**
-     * 댓글 삭제
-     * @param commentId
-     * @return
-     * @throws CustomException
-     */
+    // 댓글 삭제
     @DeleteMapping("/{commentId}")
     public ResponseEntity<?> deleteComment(@PathVariable(value = "commentId") Long commentId) throws CustomException{
-        log.debug("댓글 삭제 / 댓글 아이디 : {}", commentId);
         commentService.deleteComment(commentId);
 
         ApiResponse apiResponse = ApiResponse.builder()

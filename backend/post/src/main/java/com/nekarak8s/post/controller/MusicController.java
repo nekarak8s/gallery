@@ -19,15 +19,9 @@ import java.util.List;
 @RestController
 @RequestMapping("api/post/music")
 public class MusicController {
-
     private final MusicService musicService;
 
-    /**
-     * 음악 목록 조회
-     *  사용자가 음악 선택시 hover로 보여질 목록
-     * @param query
-     * @return
-     */
+    // 음악 목록 조회
     @GetMapping("/list")
     public ResponseEntity<?> getMusicList(@RequestParam(value = "q", required = false) String query) throws CustomException {
         if (query == null || "".equals(query)) throw new CustomException(HttpStatus.BAD_REQUEST, "GP004", "필수 파라미터 누락");
@@ -41,14 +35,9 @@ public class MusicController {
     }
 
 
-    /**
-     * 음악 단일 조회
-     * @param musicRequestDTO
-     * @return
-     */
+    // 음악 단일 조회
     @PostMapping()
     public ResponseEntity<?> getMusic(@RequestBody MusicRequestDTO musicRequestDTO) {
-        log.info("음악 조회 & DB 저장");
         MusicInfo musicInfo = musicService.getMusicInfo(musicRequestDTO);
 
         ApiResponse apiResponse = ApiResponse.builder()

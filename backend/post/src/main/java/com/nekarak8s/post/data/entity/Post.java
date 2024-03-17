@@ -1,5 +1,6 @@
 package com.nekarak8s.post.data.entity;
 
+import com.nekarak8s.post.data.dto.response.PostInfo;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -37,12 +38,9 @@ public class Post extends BaseEntity{
     @Column(name = "orders", nullable = false)
     private Long order;
 
-    @Column(name = "image_url", nullable = false) // 기본이미지 존재
+    @Column(name = "image_url", nullable = false)
     private String imageURL;
 
-//    @OneToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "music_id")
-//    private Music music;
     @ManyToOne
     @JoinColumn(name = "music_id")
     private Music music;
@@ -52,4 +50,17 @@ public class Post extends BaseEntity{
 
     @Column(name = "isActive")
     private boolean isActive = true;
+
+    public PostInfo toPostInfo(String imageURL) {
+        return PostInfo.builder()
+                .postId(id)
+                .order(order)
+                .title(title)
+                .content(content)
+                .imageURL(imageURL)
+                .createdDate(getCreatedDate())
+                .modifiedDate(getModifiedDate())
+                .isActive(isActive)
+                .build();
+    }
 }

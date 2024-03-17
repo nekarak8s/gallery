@@ -17,17 +17,14 @@ import java.time.LocalDateTime;
 @Service
 @RequiredArgsConstructor
 public class S3ServiceImpl implements S3Service {
-
     private final AmazonS3 amazonS3;
 
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
 
-
-
     // 파일 업로드
     @Override
-    public String uploadFile(MultipartFile multipartFile) throws CustomException, IOException {
+    public String uploadFile(MultipartFile multipartFile) throws IOException {
         String originalFilename = multipartFile.getOriginalFilename();
         String key = originalFilename + LocalDateTime.now();
 
@@ -41,7 +38,7 @@ public class S3ServiceImpl implements S3Service {
 
     // 파일 다운로드
     @Override
-    public String downloadFile(String key) throws CustomException {
+    public String downloadFile(String key) {
         return amazonS3.getUrl(bucket, key).toString();
     }
 
