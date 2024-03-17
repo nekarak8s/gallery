@@ -35,16 +35,9 @@ public class CommentServiceImpl implements CommentService {
     private final CommentRepo commentRepo;
     private final RestTemplate restTemplate;
 
-    // 회원 서버 URI
     @Value("${spring.member-service.uri}")
     private String memberServiceUri;
 
-    /**
-     * 댓글 생성
-     * @param memberId
-     * @param requestDTO
-     * @throws CustomException
-     */
     @Transactional
     @Override
     public void createComment(long memberId, CommentCreateDTO requestDTO) throws CustomException{
@@ -61,12 +54,6 @@ public class CommentServiceImpl implements CommentService {
         commentRepo.save(comment);
     }
 
-    /**
-     * 댓글 목록 조회
-     * @param postId
-     * @param page
-     * @return
-     */
     @Override
     public List<CommentInfo> findCommentList(long postId, int page) throws CustomException {
         PageRequest pageRequest = PageRequest.of(page, 20, Sort.by(Sort.Direction.ASC, "createdDate"));
@@ -78,7 +65,7 @@ public class CommentServiceImpl implements CommentService {
             String nickname;
             try {
                 log.debug("회원 아이디 : {}", comment.getMemberId());
-                nickname = getMemberNickname(comment.getMemberId()); // 회원 서버에서 닉네임 조회
+                nickname = getMemberNickname(comment.getMemberId());
             } catch (Exception e) {
                 log.error("닉네임 조회 통신 실패 !!!");
                 throw new CustomException(HttpStatus.INTERNAL_SERVER_ERROR, "GP001", "회원 서버 통신중 에러 발생");
@@ -89,11 +76,6 @@ public class CommentServiceImpl implements CommentService {
         return commentInfoList;
     }
 
-    /**
-     * 댓글 수정
-     * @param requestDTO
-     * @throws CustomException
-     */
     @Transactional
     @Override
     public void modifyComment(long commentId, CommentModifyDTO requestDTO) throws CustomException {
@@ -102,25 +84,15 @@ public class CommentServiceImpl implements CommentService {
         commentRepo.save(comment);
     }
 
-    /**
-     * 댓글 삭제
-     * @param commentId
-     * @throws CustomException
-     */
     @Transactional
     @Override
-    public void deleteComment(long commentId) throws CustomException {
+    public void deleteComment(long commentId) {
         commentRepo.deleteById(commentId);
     }
 
-    /**
-     * 회원 서버에서 아이디 -> 닉네임 조회
-     */
     private String getMemberNickname(long memberId) {
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<Object> entity = new HttpEntity<>(headers);
-
-        log.info("DEBUG | member-service-uri : {}", memberServiceUri);
 
         UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder.fromHttpUrl(memberServiceUri+"/nickname")
                 .queryParam("memberId", memberId);
