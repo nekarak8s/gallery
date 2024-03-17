@@ -17,7 +17,6 @@ import java.util.List;
 @Service
 @Slf4j
 public class YoutubeServiceImpl implements YoutubeService {
-
     private final WebClient webClient;
 
     @Value("${youtube.api-key}")

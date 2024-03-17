@@ -33,17 +33,11 @@ public class PostServiceImpl implements PostService {
     private final PostRepo postRepo;
     private final MusicRepo musicRepo;
     private final S3Service s3Service;
-    private String DEFAULT_IMAGE = "Default.png2024-03-10T05:04:46.319822842";
-//    private static final String YOUTUBE_BASE_URL = "https://www.youtube.com/watch?v=";
+    private final String DEFAULT_IMAGE = "Default.png2024-03-10T05:04:46.319822842";
 
     @Value("${cloud.aws.s3..url}")
     private String BUCKET_BASE_URL;
 
-    /**
-     * 게시물 목록 조회
-     * @param galleryId
-     * @return
-     */
     @Override
     public List<PostInfo> selectPosts(long galleryId) {
         List<Post> posts = postRepo.findAllByGalleryId(galleryId);
@@ -52,17 +46,17 @@ public class PostServiceImpl implements PostService {
         for (Post post : posts) {
             String imageURL = post.getImageURL();
             if (imageURL != null) imageURL = BUCKET_BASE_URL + imageURL;
-            log.info("imageURL : {}", imageURL);
-            PostInfo postInfo = new PostInfo().builder()
-                    .postId(post.getId())
-                    .order(post.getOrder())
-                    .title(post.getTitle())
-                    .content(post.getContent())
-                    .imageURL(imageURL)
-                    .createdDate(post.getCreatedDate())
-                    .modifiedDate(post.getModifiedDate())
-                    .isActive(post.isActive())
-                    .build();
+//            PostInfo postInfo = new PostInfo().builder()
+//                    .postId(post.getId())
+//                    .order(post.getOrder())
+//                    .title(post.getTitle())
+//                    .content(post.getContent())
+//                    .imageURL(imageURL)
+//                    .createdDate(post.getCreatedDate())
+//                    .modifiedDate(post.getModifiedDate())
+//                    .isActive(post.isActive())
+//                    .build();
+            PostInfo postInfo = post.toPostInfo(imageURL);
 
             if (post.getMusic() == null) {
                 postInfo.setMusic(null);
@@ -91,16 +85,10 @@ public class PostServiceImpl implements PostService {
         return postInfos;
     }
 
-    /**
-     * 게시물 목록 수정
-     * @param postModifyDTOList
-     * @param galleryId
-     * @throws CustomException
-     */
     @Transactional
     @Override
     public void modifyPosts(List<PostModifyDTO> postModifyDTOList, Long galleryId) throws CustomException, IOException {
-        long preMaxOrder = getPreOrder(galleryId); // 이전 저장 순서 최댓값
+        long preMaxOrder = getPreOrder(galleryId);
 
         // 반복 수정
         for (PostModifyDTO dto : postModifyDTOList) {
@@ -146,10 +134,6 @@ public class PostServiceImpl implements PostService {
         return preMaxOrder;
     }
 
-    /**
-     * 게시물 생성
-     * count : 게시물 개수
-     */
     @Transactional
     @Override
     public void createPostByGallery(long galleryId, int count) throws CustomException{
@@ -176,10 +160,6 @@ public class PostServiceImpl implements PostService {
         }
     }
 
-    /**
-     * 게시물 삭제
-     * @param galleryId
-     */
     @Transactional
     @Override
     public void deletePostByGallery(long galleryId) {
