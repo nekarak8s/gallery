@@ -1,6 +1,7 @@
 package com.nekarak8s.post.data.entity;
 
 import com.nekarak8s.post.data.dto.request.MusicRequestDTO;
+import com.nekarak8s.post.data.dto.response.MusicInfo;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -44,6 +45,17 @@ public class Music {
                 .coverURL(dto.getCoverURL())
                 .videoId(videoId)
                 .releasedDate(dto.getReleasedDate())
+                .build();
+    }
+
+    public MusicInfo toMusicInfo() {
+        return MusicInfo.builder()
+                .musicId(id)
+                .title(title)
+                .artist(artist)
+                .videoId(videoId)
+                .releasedDate(releasedDate)
+                .coverURL(coverURL)
                 .build();
     }
 }

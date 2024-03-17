@@ -44,32 +44,12 @@ public class PostServiceImpl implements PostService {
         List<PostInfo> postInfos = new ArrayList<>();
 
         for (Post post : posts) {
-            String imageURL = post.getImageURL();
-            if (imageURL != null) imageURL = BUCKET_BASE_URL + imageURL;
-//            PostInfo postInfo = new PostInfo().builder()
-//                    .postId(post.getId())
-//                    .order(post.getOrder())
-//                    .title(post.getTitle())
-//                    .content(post.getContent())
-//                    .imageURL(imageURL)
-//                    .createdDate(post.getCreatedDate())
-//                    .modifiedDate(post.getModifiedDate())
-//                    .isActive(post.isActive())
-//                    .build();
-            PostInfo postInfo = post.toPostInfo(imageURL);
+            PostInfo postInfo = post.toPostInfo(getImageURL(post.getImageURL()));
 
             if (post.getMusic() == null) {
                 postInfo.setMusic(null);
             } else {
-                Music music = post.getMusic();
-                MusicInfo musicInfo = MusicInfo.builder()
-                        .musicId(music.getId())
-                        .title(music.getTitle())
-                        .artist(music.getArtist())
-                        .videoId(music.getVideoId())
-                        .releasedDate(music.getReleasedDate())
-                        .coverURL(music.getCoverURL())
-                        .build();
+                MusicInfo musicInfo = post.getMusic().toMusicInfo();
                 postInfo.setMusic(musicInfo);
             }
             postInfos.add(postInfo);
@@ -77,7 +57,6 @@ public class PostServiceImpl implements PostService {
 
         postInfos.sort(Comparator.comparing(PostInfo::getOrder));
 
-        // 사용자에게 보여지는 order : 1 ~ 활성화 게시물 개수
         int idx = 1;
         for (PostInfo postInfo : postInfos) {
             postInfo.setOrder(idx++);
@@ -85,15 +64,16 @@ public class PostServiceImpl implements PostService {
         return postInfos;
     }
 
+    private String getImageURL(String imageURL) {
+        return BUCKET_BASE_URL + imageURL;
+    }
+
     @Transactional
     @Override
     public void modifyPosts(List<PostModifyDTO> postModifyDTOList, Long galleryId) throws CustomException, IOException {
         long preMaxOrder = getPreOrder(galleryId);
 
-        // 반복 수정
         for (PostModifyDTO dto : postModifyDTOList) {
-            // id로 게시물 조회
-            log.debug("게시물 Id : {}", dto.getPostId());
             Post post = postRepo.findById(dto.getPostId()).get();
 
             // request -> post
@@ -115,7 +95,6 @@ public class PostServiceImpl implements PostService {
                 }
                 log.debug("새로운 이미지 S3저장");
                 String imageURL = s3Service.uploadFile((MultipartFile) dto.getImage()); // S3 이미지 저장
-                log.debug("새로운 이미지로 DB업데이트");
                 post.setImageURL(imageURL); // S3 URL 세팅
             }
             postRepo.save(post); // DB update
@@ -137,20 +116,18 @@ public class PostServiceImpl implements PostService {
     @Transactional
     @Override
     public void createPostByGallery(long galleryId, int count) throws CustomException{
-        // 갤러리 존재 여부 체크
         List<Post> prePosts = postRepo.findAllByGalleryId(galleryId);
         if (prePosts.size() > 0) throw new CustomException(HttpStatus.CONFLICT, "GP006", "이미 존재하는 갤러리입니다");
 
         List<Post> posts = new ArrayList<>();
         try {
-            // count 개수 만큼 게시물 반복 생성
             for (int i = 0; i < count; i++) {
                 Post post = new Post();
                 post.setGalleryId(galleryId);
                 post.setOrder((long) (i + 1));
                 post.setTitle("");
                 post.setContent("");
-                post.setImageURL(DEFAULT_IMAGE); // 기본 이미지
+                post.setImageURL(DEFAULT_IMAGE);
                 post.setActive(true);
                 posts.add(post);
             }
