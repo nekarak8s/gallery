@@ -4,11 +4,16 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.client.HttpClientErrorException;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -46,7 +51,6 @@ public class CustomExceptionHandler {
     public ResponseEntity<Map<String, String>> dtoValidation(final MethodArgumentNotValidException e, HttpServletRequest request) {
         HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
         HttpHeaders responseHeaders = new HttpHeaders();
-        log.debug("handleException 호출, {}, {}", request.getRequestURI(), e.getMessage());
 
         Map<String, String> map = new HashMap<>();
         map.put("errorType", httpStatus.getReasonPhrase());
@@ -55,4 +59,16 @@ public class CustomExceptionHandler {
 
         return new ResponseEntity<>(map, responseHeaders, httpStatus);
     }
+
+    @ExceptionHandler(MissingServletRequestParameterException.class)
+    public ResponseEntity<Object> handleMissingServletRequestParameter(MissingServletRequestParameterException ex) {
+        Map<String, String> map = new HashMap<>();
+        map.put("errorType", HttpStatus.BAD_REQUEST.getReasonPhrase());
+        map.put("errorCode", "GA005");
+        map.put("message", ex.getParameterName() + " 파라미터를 확인해주세요");
+
+        return new ResponseEntity<>(map, HttpStatus.BAD_REQUEST);
+    }
+
+
 }
