@@ -1,0 +1,73 @@
+@import '@/styles/_responsive.scss';
+
+.magnetic-button {
+  position: relative;
+  padding: 1.1em 1.3em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 3em;
+  box-shadow:
+    inset 0.4em 0.3em 0.4em rgba(255, 255, 255, 0.3),
+    inset -0.3em -0.3em 0.4em rgba(30, 30, 30, 0.2);
+  font-weight: 600;
+  transform-style: preserve-3d;
+  perspective: 1000px;
+  cursor: pointer;
+}
+
+.magnetic-button {
+  .lg {
+    font-size: 1.8rem;
+  }
+
+  .md {
+    font-size: 1.3rem;
+  }
+
+  .sm {
+    font-size: 1rem;
+  }
+}
+
+.magnetic-button {
+  .primary {
+    background-color: #176beb;
+  }
+}
+
+.magnetic-button__text {
+  color: white;
+}
+
+@include tablet {
+  .button.lg {
+    font-size: 1.6rem;
+  }
+
+  .button.md {
+    font-size: 1.2rem;
+  }
+
+  .button.sm {
+    font-size: 0.8rem;
+  }
+}
+
+@include mobile {
+  .button {
+    padding: 1em 1.2em;
+  }
+
+  .button.lg {
+    font-size: 1rem;
+  }
+
+  .button.md {
+    font-size: 0.8rem;
+  }
+
+  .button.sm {
+    font-size: 0.6rem;
+  }
+}

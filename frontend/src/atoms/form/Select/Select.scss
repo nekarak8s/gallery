@@ -1,0 +1,24 @@
+@use '@/styles/_colors.scss' as c;
+@use '@/styles/_responsive.scss' as *;
+
+.select {
+  appearance: none;
+  width: 100%;
+  padding: 0.5em 0.5em;
+  border: none;
+  border-bottom: 2px solid black;
+  background-color: transparent;
+  font: inherit;
+  font-weight: 600;
+  accent-color: var(--color-ft, c.$ft-black);
+
+  option {
+    padding: 0.5em 0.5em;
+  }
+}
+
+@include mobile {
+  .select {
+    font-size: 0.9em;
+  }
+}

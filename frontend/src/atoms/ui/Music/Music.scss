@@ -1,0 +1,38 @@
+@use '@/styles/_responsive.scss' as *;
+
+.music {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1rem;
+
+  svg {
+    width: 1.8em;
+    height: 1.4em;
+  }
+}
+
+.music.black {
+  color: black;
+  path {
+    stroke: black;
+  }
+}
+
+.music.white {
+  color: white;
+  path {
+    stroke: white;
+  }
+}
+
+@include mobile {
+  .music {
+    font-size: 0.8rem;
+
+    svg {
+      width: 1.5em;
+      height: 1.2em;
+    }
+  }
+}

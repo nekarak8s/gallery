@@ -1,0 +1,38 @@
+@use '@/styles/_colors.scss' as c;
+
+.profile-form {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2em;
+  width: min(350px, 80vw);
+  height: 13em;
+  padding: 3em 3em 2em;
+  font-size: 1rem;
+}
+
+.profile-form svg {
+  position: absolute;
+  top: 0;
+  right: 0;
+  // transform: rotate(90deg);
+}
+
+.profile-form h2 {
+  color: transparent;
+  margin: 0.5em 0em 0.5em;
+  font-weight: 800;
+  background: linear-gradient(
+    to right top,
+    var(--color-primary, c.$primary),
+    var(--color-secondary, c.$secondary)
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+}
+
+.profile-form__loading {
+  position: fixed;
+  inset: 0 0 0 0;
+}

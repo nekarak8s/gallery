@@ -1,0 +1,28 @@
+#root {
+  height: 100%;
+  min-height: 100vh;
+}
+
+.transparent {
+  opacity: 0 !important;
+}
+
+.opaque {
+  opacity: 1 !important;
+}
+
+.hidden {
+  visibility: hidden !important;
+}
+
+.visible {
+  visibility: visible !important;
+}
+
+.none {
+  display: none !important;
+}
+
+.block {
+  display: block !important;
+}

@@ -4,6 +4,7 @@ import com.nekarak8s.gallery.data.dto.ApiResponse;
 import com.nekarak8s.gallery.data.dto.gallery.*;
 import com.nekarak8s.gallery.data.entity.place.Place;
 import com.nekarak8s.gallery.exception.CustomException;
+import com.nekarak8s.gallery.kafka.dto.MemberEvent;
 import com.nekarak8s.gallery.service.GalleryService;
 import com.nekarak8s.gallery.validation.NoWhitespace;
 import com.nekarak8s.gallery.validation.NumberOfCharacters;
@@ -191,4 +192,13 @@ public class GalleryController {
                 .build();
     }
 
+    @PostMapping("/chain")
+    public ResponseEntity<Void> handleGalleryByType(@RequestBody MemberEvent memberEvent) {
+        log.info("memberEvent: {}",memberEvent);
+
+        if (memberEvent.getType().equals("delete")) {
+            galleryService.deleteAllGallery(memberEvent.getMemberId());
+        }
+        return ResponseEntity.ok().build();
+    }
 }

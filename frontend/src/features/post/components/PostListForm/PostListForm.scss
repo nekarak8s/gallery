@@ -1,0 +1,15 @@
+@use '@/styles/_responsive.scss' as *;
+
+.post-list-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5em;
+  width: 100%;
+  font-size: 1rem;
+}
+
+@include tablet {
+  .post-list-form {
+    gap: 2em;
+  }
+}

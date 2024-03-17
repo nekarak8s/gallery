@@ -1,0 +1,12 @@
+.eslintrc.js
+webpack.*.js
+
+dist
+public
+coverage
+
+**/.git
+**/.svn
+**/.hg
+**/node_modules
+**/assets/* 

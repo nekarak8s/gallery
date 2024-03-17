@@ -3,7 +3,9 @@ package com.nekarak8s.post.controller;
 import com.nekarak8s.post.data.dto.request.PostModifyRequest;
 import com.nekarak8s.post.data.dto.response.ApiResponse;
 import com.nekarak8s.post.exception.CustomException;
+import com.nekarak8s.post.kafka.dto.GalleryEvent;
 import com.nekarak8s.post.service.PostService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -49,7 +51,7 @@ public class PostController {
      * @throws CustomException
      */
     @PatchMapping("list/{galleryId}")
-    public ResponseEntity<?> updatePosts(@ModelAttribute PostModifyRequest request,
+    public ResponseEntity<?> updatePosts(@Valid @ModelAttribute PostModifyRequest request,
                                          @PathVariable(value = "galleryId") Long galleryId) throws CustomException, IOException {
         log.debug("request : {}", request);
         log.debug("게시물 목록 수정 요청옴 : {}", request.getPosts());
@@ -59,6 +61,19 @@ public class PostController {
                 .message("게시물 목록 수정 성공")
                 .build();
         return ResponseEntity.ok(apiResponse);
+    }
+
+    @PostMapping("/chain")
+    public ResponseEntity<Void> handlePostsByType(@RequestBody GalleryEvent galleryEvent) throws CustomException{
+        log.info("galleryEvent: {}", galleryEvent);
+
+        if (galleryEvent.getType().equals("create")) {
+            postService.createPostByGallery(galleryEvent.getGalleryId(), 10);
+        } else if (galleryEvent.getType().equals("delete")) {
+            postService.deletePostByGallery(galleryEvent.getGalleryId());
+        }
+
+        return ResponseEntity.ok().build();
     }
 
     /**

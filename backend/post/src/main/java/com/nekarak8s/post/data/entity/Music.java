@@ -4,6 +4,9 @@ import com.nekarak8s.post.data.dto.request.MusicRequestDTO;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Getter
 @Setter
@@ -15,6 +18,9 @@ public class Music {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
+
+    @OneToMany(mappedBy = "music")
+    private List<Post> posts = new ArrayList<>();
 
     @Column(name = "title", nullable = false)
     private String title;

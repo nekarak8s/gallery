@@ -1,0 +1,38 @@
+@use '@/styles/_animations.scss' as a;
+@use '@/styles/_responsive.scss' as *;
+
+.loading {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 2px;
+  width: 100%;
+  min-height: 100%;
+  color: #aaaaaa;
+  font-size: 1rem;
+}
+
+.loading svg {
+  @include a.animation-rotate-clockwise('loading', 2.5s, 2, ease-in-out);
+  width: 4em;
+  height: 4em;
+}
+
+@include laptop {
+  .loading {
+    font-size: 0.9rem;
+  }
+}
+
+@include tablet {
+  .loading {
+    font-size: 0.8rem;
+  }
+}
+
+@include mobile {
+  .loading {
+    font-size: 0.7rem;
+  }
+}

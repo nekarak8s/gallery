@@ -1,0 +1,13 @@
+@use '@/styles/_z-index.scss' as *;
+
+.home {
+  font-size: 1rem;
+  --transition-time-home: 500ms;
+}
+
+.home__music {
+  @include z-index(modal);
+  position: fixed;
+  bottom: 1em;
+  left: 1em;
+}

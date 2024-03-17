@@ -1,0 +1,35 @@
+@use '@/styles/_colors.scss' as c;
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  box-sizing: border-box;
+  text-align: left;
+
+  caption {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+
+  thead {
+    border-bottom: 2px solid var(--color-ft, c.$ft-black);
+  }
+
+  tbody {
+    border-bottom: 2px solid var(--color-ft, c.$ft-black);
+  }
+
+  th {
+    padding: 0.75em 0.6em;
+    font-weight: 600;
+  }
+
+  tr {
+    border-bottom: 1px solid #ddd;
+  }
+
+  td {
+    padding: 0.75em 0.6em;
+  }
+}

@@ -1,0 +1,22 @@
+@use '@/styles/_responsive.scss' as *;
+
+.post-detail {
+  display: grid;
+  grid-template-columns: repeat(2, min(35vw, 400px));
+  grid-template-rows: minmax(0, 1fr);
+  gap: 1em;
+  max-height: 80vh;
+  height: 100%;
+  position: relative;
+  padding: 1em;
+  font-size: 1rem;
+}
+
+@include mobile {
+  .post-detail {
+    grid-template-columns: min(80vw, 600px);
+    grid-template-rows: repeat(2, auto);
+    padding: 1.5em 1em;
+    max-height: 100%;
+  }
+}

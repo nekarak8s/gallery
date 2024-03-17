@@ -1,0 +1,35 @@
+.gallery-canvas {
+  width: 100vw;
+  height: 100vh;
+
+  canvas {
+    width: 100% !important;
+    height: 100% !important;
+  }
+}
+
+.gallery-canvas__loading {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 1;
+  background-color: white;
+
+  &--enter {
+    opacity: 1;
+  }
+
+  &--leave {
+    opacity: 0;
+  }
+}
+
+.gallery-canvas__joystick {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 0 min(10%, 4em) min(12%, 5em) min(8%, 3em);
+}
