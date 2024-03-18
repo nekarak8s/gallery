@@ -15,13 +15,12 @@ import skyWebp from '@/assets/images/home-section-1/sky.png?format=webp'
 import Loading from '@/atoms/ui/Loading'
 import ScrollDown from '@/atoms/ui/ScrollDown'
 import StaticImage from '@/atoms/ui/StaticImage'
-import throttle from '@/libs/throttle'
 import toFrame from '@/libs/toFrame'
 import musicManager from '@/utils/musicManager'
 import './HomeSection1.scss'
 
 const TOTAL_IMAGE = 6
-const BACK_HEIGHT = 2 // * 100vh. background height
+const BACK_HEIGHT = 2 // * 100lvh. background height
 const SCROLL_OFFSET = 300 // px. fade start offset on scroll
 const ROTATION_DEGREE = 20 // deg. max rotation degree on mousemove
 
@@ -34,7 +33,7 @@ function HomeSection1() {
   useEffect(() => {
     const back = backRef.current!
 
-    back.style.setProperty('--height-back', `${BACK_HEIGHT * 100}vh`)
+    back.style.setProperty('--height-back', `${BACK_HEIGHT * 100}lvh`)
     back.style.setProperty('--back-min-height', `${BACK_HEIGHT * 600}px`)
   }, [])
 
@@ -129,7 +128,7 @@ function HomeSection1() {
       })
     }
 
-    const optimizedHandleMouseMove = throttle(handleMousemove, 16)
+    const optimizedHandleMouseMove = toFrame(handleMousemove)
 
     window.addEventListener('mousemove', optimizedHandleMouseMove)
     return () => {
@@ -216,7 +215,7 @@ function HomeSection1() {
               <StaticImage
                 imgSrc={cloud1Img}
                 webpSrc={cloud1Webp}
-                sizes="(max-width: 720px) 110vw, (max-width: 1080px) 75vw, 65vw"
+                sizes="(max-width: 720px) 110dvw, (max-width: 1080px) 75dvw, 65dvw"
                 alt="높고 가까운 구름"
                 loading="eager"
                 onLoad={handleImageLoad}
@@ -231,7 +230,7 @@ function HomeSection1() {
               <StaticImage
                 imgSrc={cloud2Img}
                 webpSrc={cloud2Webp}
-                sizes="(max-width: 720px) 110vw, (max-width: 1080px) 75vw, 65vw"
+                sizes="(max-width: 720px) 110dvw, (max-width: 1080px) 75dvw, 65dvw"
                 alt="중간 높이의 가까운 구름"
                 loading="eager"
                 onLoad={handleImageLoad}
@@ -246,7 +245,7 @@ function HomeSection1() {
               <StaticImage
                 imgSrc={cloud3Img}
                 webpSrc={cloud3Webp}
-                sizes="(max-width: 720px) 70vw, (max-width: 1080px) 50vw, 40vw"
+                sizes="(max-width: 720px) 70dvw, (max-width: 1080px) 50dvw, 40dvw"
                 alt="낮고 먼 구름"
                 loading="eager"
                 onLoad={handleImageLoad}
@@ -262,7 +261,7 @@ function HomeSection1() {
                 imgSrc={islandImg}
                 webpSrc={islandWebp}
                 alt="멀리 있는 섬"
-                sizes="(max-width: 720px) 110vw, (max-width: 1080px) 80vw, 30vw"
+                sizes="(max-width: 720px) 110dvw, (max-width: 1080px) 80dvw, 30dvw"
                 onLoad={handleImageLoad}
               />
             </div> */}
@@ -276,7 +275,7 @@ function HomeSection1() {
                 <StaticImage
                   imgSrc={oceanImg}
                   webpSrc={oceanWebp}
-                  sizes="(max-width: 720px) 200vw, (max-width: 1080px) 150vw, 120vw"
+                  sizes="(max-width: 720px) 200dvw, (max-width: 1080px) 150dvw, 120dvw"
                   alt="일렁이는 수평선의 푸른 바다"
                   loading="eager"
                   onLoad={handleImageLoad}
@@ -304,7 +303,7 @@ function HomeSection1() {
                 imgSrc={galleryImg}
                 webpSrc={galleryWebp}
                 alt="바로 앞에 보이는 갤러리 테라스 바닥 일부"
-                sizes="(max-width: 720px) 300vw, (max-width: 1080px) 200vw, 100vw"
+                sizes="(max-width: 720px) 300dvw, (max-width: 1080px) 200dvw, 100dvw"
                 loading="eager"
                 onLoad={handleImageLoad}
               />

@@ -22,7 +22,7 @@ const StaticImage: React.FC<Props> = ({
   alt,
   width = '100%',
   height = '100%',
-  sizes = '(max-width: 1200px) 100vw, 1201px',
+  sizes = '(max-width: 1200px) 100dvw, 1201px',
   loading = 'lazy',
   onLoad,
 }) => {

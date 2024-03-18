@@ -21,7 +21,7 @@
   justify-content: center;
   align-items: center;
   gap: 3em;
-  width: clamp(800px, 64vw, 960px);
+  width: clamp(800px, 64dvw, 960px);
   min-height: 500px;
   padding: 2.5em 2em;
   background-color: var(--color-bg, c.$bg-white);
@@ -77,8 +77,8 @@
 
 @include tablet {
   .gallery-cover__content {
-    width: 75vw;
-    min-height: 52.5vw;
+    width: 75dvw;
+    min-height: 52.5dvw;
 
     h1 {
       font-size: 1.8em;
@@ -92,8 +92,8 @@
 @include mobile {
   .gallery-cover__content {
     gap: 1em;
-    width: 85vw;
-    min-height: 70vw;
+    width: 85dvw;
+    min-height: 70dvw;
     padding: 1em 1em;
 
     h1 {
