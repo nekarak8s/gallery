@@ -24,7 +24,7 @@ const StaticVideo = ({
   width = '100%',
   height = '100%',
   ariaLabel = '',
-  playsInline = false,
+  playsInline = true,
   onLoad,
 }: StaticVideoProps) => {
   const containerRef = useRef<HTMLDivElement>(null)
