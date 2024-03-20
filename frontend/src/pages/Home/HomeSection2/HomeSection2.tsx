@@ -253,13 +253,13 @@ function HomeSection2() {
             </div>
           </div>
           <div
-            className="hs2-card"
+            className="hs2-card three-D"
             data-posx="-0.1"
             data-posy="2.7"
             data-speedy="0.9"
             style={{ zIndex: 4 }}
           >
-            <div className="hs2-card__item">
+            <div className="hs2-card__item three-D">
               <MediaCard
                 alt="엄마와 딸 팔뚝 위에 바디페인팅"
                 imgSrc={narrowImg3}
@@ -295,13 +295,13 @@ function HomeSection2() {
             </div>
           </div>
           <div
-            className="hs2-card"
+            className="hs2-card three-D"
             data-posx="0.32"
             data-posy="3.3"
             data-speedy="0.9"
             style={{ zIndex: 3 }}
           >
-            <div className="hs2-card__item">
+            <div className="hs2-card__item three-D">
               <MediaCard
                 alt="두 잔의 라떼 아트"
                 imgSrc={narrowImg5}

@@ -27,9 +27,14 @@ const Music: React.FC<Props> = ({ src, title, id = 'audio', color = 'black' }) =
   }
 
   return (
-    <button className={`music ${color}`} onClick={handleClick} aria-label={title}>
+    <button
+      className={`music ${color}`}
+      onClick={handleClick}
+      aria-label={title}
+      data-cursor-scale={CURSOR_SCALE}
+    >
       <MusicIcon />
-      <span data-cursor-scale={CURSOR_SCALE}>{title}</span>
+      <span>{title}</span>
       <audio id={id} src={src} loop></audio>
     </button>
   )
