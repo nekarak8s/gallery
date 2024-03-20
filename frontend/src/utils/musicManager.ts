@@ -1,6 +1,6 @@
 class MusicManager {
+  isPlaying: boolean = false
   private audio: HTMLAudioElement | null = null
-  private isPlaying: boolean = false
   private MAX_VOLUME: number = 1
 
   constructor() {}

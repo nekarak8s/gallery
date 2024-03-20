@@ -5,24 +5,66 @@
   align-items: center;
   gap: 10px;
   font-size: 1rem;
+}
 
-  svg {
-    width: 1.8em;
-    height: 1.4em;
+.music__bar {
+  display: flex;
+  justify-content: space-between;
+  width: 1.7em;
+  height: 0.9em;
+  overflow: hidden;
+
+  span {
+    width: 0.28em;
+    height: 100%;
+    transform: translateY(80%);
+  }
+}
+
+@for $i from 1 through 5 {
+  .music__bar.playing > span:nth-child(#{$i}) {
+    animation: music-bar-animation
+      #{($i * 10 % 3 + 1) *
+      0.8}s
+      ease-in-out
+      #{($i * 10 % 3) *
+      0.01}s
+      infinite;
+  }
+}
+
+@keyframes music-bar-animation {
+  0% {
+    transform: translateY(80%);
+  }
+  10% {
+    transform: translateY(100%);
+  }
+  60% {
+    transform: translateY(0%);
+  }
+  100% {
+    transform: translateY(80%);
   }
 }
 
 .music.black {
   color: black;
-  path {
-    stroke: black;
+
+  .music__bar {
+    span {
+      background-color: black;
+    }
   }
 }
 
 .music.white {
   color: white;
-  path {
-    stroke: white;
+
+  .music__bar {
+    span {
+      background-color: white;
+    }
   }
 }
 

@@ -1,5 +1,4 @@
-import React, { useEffect } from 'react'
-import MusicIcon from '@/assets/svgs/music.svg'
+import React, { useEffect, useRef } from 'react'
 import { CURSOR_SCALE } from '@/constants'
 import musicManager from '@/utils/musicManager'
 import './Music.scss'
@@ -22,8 +21,21 @@ const Music: React.FC<Props> = ({ src, title, id = 'audio', color = 'black' }) =
   /**
    * Toggle the audio
    */
+
+  const musicBarRef = useRef<HTMLDivElement>(null)
+
   const handleClick = function toggleAudio() {
     musicManager.toggleAudio()
+
+    const musicBar = musicBarRef.current
+    if (!musicBar) return
+
+    // toggle the class
+    if (musicManager.isPlaying) {
+      musicBar.classList.add('playing')
+    } else {
+      musicBar.classList.remove('playing')
+    }
   }
 
   return (
@@ -33,7 +45,13 @@ const Music: React.FC<Props> = ({ src, title, id = 'audio', color = 'black' }) =
       aria-label={title}
       data-cursor-scale={CURSOR_SCALE}
     >
-      <MusicIcon />
+      <div className="music__bar playing" ref={musicBarRef}>
+        <span />
+        <span />
+        <span />
+        <span />
+        <span />
+      </div>
       <span>{title}</span>
       <audio id={id} src={src} loop></audio>
     </button>
