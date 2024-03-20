@@ -22,14 +22,19 @@
 }
 
 @for $i from 1 through 5 {
-  .music__bar.playing > span:nth-child(#{$i}) {
+  .music__bar > span:nth-child(#{$i}) {
+    opacity: #{($i * 8 % 3) * 0.2 + 0.6};
     animation: music-bar-animation
-      #{($i * 10 % 3 + 1) *
+      #{($i * 9 % 4 + 1) *
       0.8}s
       ease-in-out
-      #{($i * 10 % 3) *
-      0.01}s
+      #{($i * 8 % 3) *
+      0.1}s
       infinite;
+  }
+
+  .music__bar.stop > span:nth-child(#{$i}) {
+    animation-play-state: paused;
   }
 }
 
