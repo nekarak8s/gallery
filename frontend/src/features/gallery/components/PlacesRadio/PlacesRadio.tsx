@@ -80,6 +80,7 @@ const PlacesRadio = ({ placeList, defaultChecked }: PlaceRadioProps) => {
       label.style.transform = `translateX(-${index * 100}%)`
     })
 
+    //  Bug : Click radio button after the slide animation is ended, otherwise the slides are positioned inadequately
     setTimeout(() => {
       labels[index].click()
     }, 300)

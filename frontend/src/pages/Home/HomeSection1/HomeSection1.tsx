@@ -20,7 +20,7 @@ import musicManager from '@/utils/musicManager'
 import './HomeSection1.scss'
 
 const TOTAL_IMAGE = 6
-const BACK_HEIGHT = 2 // * 100vh. background height
+const BACK_HEIGHT = 2 // * 100lvh. background height
 const SCROLL_OFFSET = 300 // px. fade start offset on scroll
 const ROTATION_DEGREE = 20 // deg. max rotation degree on mousemove
 
@@ -33,7 +33,7 @@ function HomeSection1() {
   useEffect(() => {
     const back = backRef.current!
 
-    back.style.setProperty('--height-back', `${BACK_HEIGHT * 100}vh`)
+    back.style.setProperty('--height-back', `${BACK_HEIGHT * 100}lvh`)
     back.style.setProperty('--back-min-height', `${BACK_HEIGHT * 600}px`)
   }, [])
 
@@ -109,21 +109,20 @@ function HomeSection1() {
       // Set distance values from the mouse position
       const xValue = e.clientX - window.innerWidth / 2
       const yValue = e.clientY - window.innerHeight / 2
-      const rValue = (xValue / (window.innerWidth / 2)) * ROTATION_DEGREE
+      // const rValue = (xValue / (window.innerWidth / 2)) * ROTATION_DEGREE
 
       // Move interactive elements
       interactEles.forEach((el) => {
         // Get factors from the element
         const speedx = Number(el.dataset.speedx)
         const speedy = Number(el.dataset.speedy)
-        const speedr = Number(el.dataset.speedr)
+        // const speedr = Number(el.dataset.speedr)
 
         // Move the element
         el.style.transform = `
-        rotateY(${rValue * speedr}deg)
         translate(
-          calc(-50% + ${xValue * speedx}px),
-          calc(-50% + ${yValue * speedy}px)
+          calc(-50% - ${xValue * speedx}px),
+          calc(-50% - ${yValue * speedy}px)
           )
         `
       })
@@ -153,7 +152,7 @@ function HomeSection1() {
     let scrollStart = 0
     let scrollEnd = 0
     const init = function initiateHS1ScrollData() {
-      scrollStart = window.pageYOffset + back.getBoundingClientRect().top
+      scrollStart = window.scrollY + back.getBoundingClientRect().top
       scrollEnd = scrollStart + back.offsetHeight - main.offsetHeight
     }
 
@@ -216,7 +215,7 @@ function HomeSection1() {
               <StaticImage
                 imgSrc={cloud1Img}
                 webpSrc={cloud1Webp}
-                sizes="(max-width: 720px) 110vw, (max-width: 1080px) 75vw, 65vw"
+                sizes="(max-width: 720px) 110dvw, (max-width: 1080px) 75dvw, 65dvw"
                 alt="높고 가까운 구름"
                 loading="eager"
                 onLoad={handleImageLoad}
@@ -231,7 +230,7 @@ function HomeSection1() {
               <StaticImage
                 imgSrc={cloud2Img}
                 webpSrc={cloud2Webp}
-                sizes="(max-width: 720px) 110vw, (max-width: 1080px) 75vw, 65vw"
+                sizes="(max-width: 720px) 110dvw, (max-width: 1080px) 75dvw, 65dvw"
                 alt="중간 높이의 가까운 구름"
                 loading="eager"
                 onLoad={handleImageLoad}
@@ -246,7 +245,7 @@ function HomeSection1() {
               <StaticImage
                 imgSrc={cloud3Img}
                 webpSrc={cloud3Webp}
-                sizes="(max-width: 720px) 70vw, (max-width: 1080px) 50vw, 40vw"
+                sizes="(max-width: 720px) 70dvw, (max-width: 1080px) 50dvw, 40dvw"
                 alt="낮고 먼 구름"
                 loading="eager"
                 onLoad={handleImageLoad}
@@ -262,7 +261,7 @@ function HomeSection1() {
                 imgSrc={islandImg}
                 webpSrc={islandWebp}
                 alt="멀리 있는 섬"
-                sizes="(max-width: 720px) 110vw, (max-width: 1080px) 80vw, 30vw"
+                sizes="(max-width: 720px) 110dvw, (max-width: 1080px) 80dvw, 30dvw"
                 onLoad={handleImageLoad}
               />
             </div> */}
@@ -276,7 +275,7 @@ function HomeSection1() {
                 <StaticImage
                   imgSrc={oceanImg}
                   webpSrc={oceanWebp}
-                  sizes="(max-width: 720px) 200vw, (max-width: 1080px) 150vw, 120vw"
+                  sizes="(max-width: 720px) 200dvw, (max-width: 1080px) 150dvw, 120dvw"
                   alt="일렁이는 수평선의 푸른 바다"
                   loading="eager"
                   onLoad={handleImageLoad}
@@ -298,13 +297,13 @@ function HomeSection1() {
               className="hs1-interact__gallery"
               data-speedx="0.16"
               data-speedy="0.12"
-              data-speedr="0"
+              data-speedr="0.1"
             >
               <StaticImage
                 imgSrc={galleryImg}
                 webpSrc={galleryWebp}
                 alt="바로 앞에 보이는 갤러리 테라스 바닥 일부"
-                sizes="(max-width: 720px) 300vw, (max-width: 1080px) 200vw, 100vw"
+                sizes="(max-width: 720px) 300dvw, (max-width: 1080px) 200dvw, 100dvw"
                 loading="eager"
                 onLoad={handleImageLoad}
               />

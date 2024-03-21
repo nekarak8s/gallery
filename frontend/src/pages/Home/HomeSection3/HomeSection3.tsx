@@ -10,10 +10,10 @@ import Button3D from '@/atoms/ui/Button3D'
 import StaticImage from '@/atoms/ui/StaticImage'
 import StaticVideo from '@/atoms/ui/StaticVideo'
 import { CURSOR_SCALE } from '@/constants'
-import toFrame from '@/libs/toFrame'
 import './HomeSection3.scss'
+import throttle from '@/libs/throttle'
 
-const BACK_HEIGHT = 3 // * 100vh
+const BACK_HEIGHT = 3 // * 100lvh
 const SCROLL_OFFSET = 300 // px.
 
 function HomeSection3() {
@@ -25,7 +25,7 @@ function HomeSection3() {
   useEffect(() => {
     const back = backRef.current!
 
-    back.style.setProperty('--height-back', `calc(${BACK_HEIGHT * 100}vh + ${SCROLL_OFFSET}px)`)
+    back.style.setProperty('--height-back', `calc(${BACK_HEIGHT * 100}lvh + ${SCROLL_OFFSET}px)`)
     back.style.setProperty('--min-height-back', `calc(${BACK_HEIGHT * 600}px + ${SCROLL_OFFSET}px)`)
   }, [])
 
@@ -69,14 +69,14 @@ function HomeSection3() {
     let scrollEnd = 0
     const init = function setInitialPositionData2() {
       // Initiate scroll data
-      scrollStart = window.pageYOffset + back.getBoundingClientRect().top
+      scrollStart = window.scrollY + back.getBoundingClientRect().top
       scrollEnd = scrollStart + back.offsetHeight - main.offsetHeight
 
       // Initiate art work position
       const posx = Number(work.dataset.posx)
       const posy = Number(work.dataset.posy)
-      work.style.right = `${-100 * posx}vw`
-      work.style.top = `${100 * posy}vh`
+      work.style.right = `${-100 * posx}dvw`
+      work.style.top = `${100 * posy}lvh`
     }
 
     // Handle Scroll
@@ -89,7 +89,7 @@ function HomeSection3() {
       // Move art work
       const factor = (scrollTop - scrollStart) / (scrollEnd - SCROLL_OFFSET - scrollStart)
       work.style.transform = `
-        translateY(calc(-50% - ${(factor > 1 ? 1 : factor) * 85}vh))
+        translateY(calc(-50% - ${(factor > 1 ? 1 : factor) * 85}lvh))
       `
 
       if (scrollTop < scrollEnd - SCROLL_OFFSET) {
@@ -125,7 +125,7 @@ function HomeSection3() {
 
     init()
 
-    const optimizedHandleScroll = toFrame(handleScroll)
+    const optimizedHandleScroll = throttle(handleScroll, 16)
 
     window.addEventListener('resize', init)
     window.addEventListener('scroll', optimizedHandleScroll, { passive: true })
@@ -180,7 +180,7 @@ function HomeSection3() {
       `
     }
 
-    const optimizedHandleMousemove = toFrame(handleMousemove)
+    const optimizedHandleMousemove = throttle(handleMousemove, 16)
 
     const handleMouseEnter = function startArtWorkTilt() {
       if (!isMousemove.current) return

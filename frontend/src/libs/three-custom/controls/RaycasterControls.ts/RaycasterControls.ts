@@ -1,7 +1,10 @@
-import { Vector2, Raycaster } from 'three'
+import * as THREE from 'three'
 import './RaycasterControls.scss'
+import { acceleratedRaycast } from 'three-mesh-bvh'
 
-const _canvasOrigin = new Vector2(0, 0)
+const _canvasOrigin = new THREE.Vector2(0, 0)
+
+THREE.Mesh.prototype.raycast = acceleratedRaycast
 
 export class RaycasterControls {
   // arguments
@@ -9,7 +12,7 @@ export class RaycasterControls {
   camera: THREE.Camera
 
   // iternals
-  #raycaster: Raycaster = new Raycaster()
+  #raycaster = new THREE.Raycaster()
 
   // API
   enabled: boolean = true
@@ -27,10 +30,12 @@ export class RaycasterControls {
     const _onKeyDown = this.onKeyDown.bind(this)
     window.addEventListener('keydown', _onKeyDown)
 
-    // Add raycaster visual target
+    // Add visual target(+) of raycaster
     const target = document.createElement('div')
     target.id = 'target'
     this.canvas.parentNode!.insertBefore(target, canvas.nextSibling)
+
+    this.#raycaster.firstHitOnly = true
 
     // Set dispose function: Release resources
     this.dispose = () => {

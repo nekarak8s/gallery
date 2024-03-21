@@ -5,10 +5,14 @@
 .navbar-layout {
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: fit-content minmax(100vh, 1fr) fit-content;
+  grid-template-rows: auto minmax(0, 1fr) auto;
   background-color: var(--color-bg, c.$bg-white);
   height: 100%;
   width: 100%;
-  max-width: 100vw;
-  min-height: 100vh;
+  max-width: 100dvw;
+  min-height: 100lvh;
+
+  > main {
+    min-height: 100lvh;
+  }
 }

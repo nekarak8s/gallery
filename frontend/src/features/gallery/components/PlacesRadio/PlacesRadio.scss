@@ -4,7 +4,7 @@
 .places-radio {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   position: relative;
   width: 100%;
   aspect-ratio: 10/6;
@@ -19,19 +19,19 @@
     color: var(--color-ft, c.$ft-black);
   }
 
-  &__left {
-    position: absolute;
-    left: 0;
-    top: 50%;
-    transform: translate(0%, -20%);
-  }
+  // &__left {
+  //   position: absolute;
+  //   left: 0;
+  //   top: 50%;
+  //   transform: translate(0%, -20%);
+  // }
 
-  &__right {
-    position: absolute;
-    right: 0;
-    top: 50%;
-    transform: translate(0%, -20%);
-  }
+  // &__right {
+  //   position: absolute;
+  //   right: 0;
+  //   top: 50%;
+  //   transform: translate(0%, -20%);
+  // }
 }
 
 .places-radio__container {

@@ -1,4 +1,4 @@
-import { MouseEventHandler, useEffect, useMemo, useRef, useState } from 'react'
+import { MouseEventHandler, useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { GalleryData } from '../../types'
 import GalleryUpdateForm from '../GalleryUpdateForm'
@@ -68,16 +68,11 @@ const GalleryItem = ({ gallery }: GalleryItemProps) => {
   const buttonsRef = useRef<HTMLUListElement>(null)
   const contentRef = useRef<HTMLDivElement>(null)
 
-  const date = useMemo(() => {
-    return gallery.createdDate.split(' ')[0]
-  }, [gallery.createdDate])
-
   useEffect(() => {
     const item = itemRef.current!
     const buttons = buttonsRef.current!.querySelectorAll('button')
     const content = contentRef.current!
 
-    const total = gallery.content.length
     let index = 0
     let typingInterval: NodeJS.Timeout | null = null
 
@@ -118,14 +113,12 @@ const GalleryItem = ({ gallery }: GalleryItemProps) => {
       })
       typingInterval && clearInterval(typingInterval)
     }
-  }, [])
+  }, [gallery])
 
   return (
     <>
       <article tabIndex={0} className="gallery-item" ref={itemRef}>
-        <h2 className="gallery-item__title" data-cursor-scale={CURSOR_SCALE}>
-          {gallery.name}
-        </h2>
+        <h2 className="gallery-item__title">{gallery.name}</h2>
         <ul className="gallery-item__icons" ref={buttonsRef} data-cursor-scale={CURSOR_SCALE}>
           <li>
             <button
@@ -155,7 +148,7 @@ const GalleryItem = ({ gallery }: GalleryItemProps) => {
             </button>
           </li>
         </ul>
-        <div className="gallery-item__content" data-cursor-scale={CURSOR_SCALE}>
+        <div className="gallery-item__content">
           <div ref={contentRef}></div>
           <p>{gallery.content}</p>
         </div>

@@ -1,5 +1,6 @@
 import { ChangeEvent, useMemo, useRef, useState } from 'react'
 import { PostData } from '../../types'
+import DragIcon from '@/assets/svgs/drag.svg'
 import Checkbox from '@/atoms/form/Checkbox'
 import File from '@/atoms/form/File'
 import Select from '@/atoms/form/Select'
@@ -9,8 +10,8 @@ import Button from '@/atoms/ui/Button'
 import Modal from '@/atoms/ui/Modal'
 import { CURSOR_SCALE } from '@/constants'
 import MusicSearch from '@/features/music/components/MusicSearch'
-import './PostItemForm.scss'
 import { MusicData } from '@/features/music/types'
+import './PostItemForm.scss'
 
 type PostItemFormProps = {
   post: PostData
@@ -18,6 +19,8 @@ type PostItemFormProps = {
 }
 
 const PostItemForm = ({ post, index }: PostItemFormProps) => {
+  // const isMobile = useMobile()
+
   /**
    * Open / Close the card
    */
@@ -90,10 +93,14 @@ const PostItemForm = ({ post, index }: PostItemFormProps) => {
           className={`post-item-form__header ${isActive || 'inactive'}`}
           tabIndex={0}
           onClick={toggleCard}
-          data-cursor-sclae={CURSOR_SCALE}
         >
           <input type="hidden" name={`posts[${index}].postId`} value={post.postId} />
           <input type="hidden" name={`posts[${index}].order`} value={index + 1} />
+          {false && (
+            <div className="post-item-form__drag" data-cursor-scale={CURSOR_SCALE}>
+              <DragIcon />
+            </div>
+          )}
           <div className="post-item-form__order-title">
             <span className="post-item-form__toggle">&#9654;</span>
             <span>{index + 1}번</span>

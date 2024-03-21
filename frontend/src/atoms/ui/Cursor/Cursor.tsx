@@ -24,11 +24,12 @@ function Cursor() {
       cursor.style.transform = `translate3d(${cursorX}px, ${cursorY}px, 0)`
 
       // Scale custom cursor
-      const target = e.target
-      if (!(target instanceof HTMLElement)) return
-
-      const scale = target.getAttribute('data-cursor-scale') // "3" | "" | null
-      cursorChild.style.setProperty('--cursor-scale', scale ? scale : '1')
+      const targets = document.querySelectorAll(':hover')
+      for (let i = 0; i < targets.length; i++) {
+        const scale = targets[i].getAttribute('data-cursor-scale') // "3" | "" | null
+        cursorChild.style.setProperty('--cursor-scale', scale ? scale : '1')
+        if (scale) break
+      }
     }
 
     const mouseout = function hideCustomCursor() {

@@ -1,8 +1,11 @@
 import * as THREE from 'three'
+import { acceleratedRaycast } from 'three-mesh-bvh'
 
 const _downDirection = new THREE.Vector3(0, -1, 0)
 const _groundOffset = 0.3
 const _floatPrecision = 0.001
+
+THREE.Mesh.prototype.raycast = acceleratedRaycast
 
 export class KeypadControls {
   // arguments
@@ -27,8 +30,6 @@ export class KeypadControls {
   // rotation variables
   #lookDirection = new THREE.Vector3()
   #spherical = new THREE.Spherical()
-  #target = new THREE.Vector3()
-  #lon: number = 0
 
   // jump variables
   #isJump: boolean = false
@@ -55,6 +56,9 @@ export class KeypadControls {
     this.gravity = gravity
     this.jumpForce = jumpForce
     this.maxFallSpeed = maxFallSpeed
+
+    this.#raycaster.far = 10
+    this.#raycaster.firstHitOnly = true
 
     // Add event listener
     const _onKeyDown = this.onKeyDown.bind(this)
@@ -213,7 +217,6 @@ export class KeypadControls {
 
     this.#lookDirection.set(0, 0, -1).applyQuaternion(quaternion)
     this.#spherical.setFromVector3(this.#lookDirection)
-    this.#lon = THREE.MathUtils.radToDeg(this.#spherical.theta)
 
     this.#isJump = false
     this.#floatDuration = 0

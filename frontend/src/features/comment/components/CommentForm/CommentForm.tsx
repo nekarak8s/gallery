@@ -63,7 +63,7 @@ const CommentForm = ({ postId, user, onSuccess, onError }: CommentFormProps) => 
           </>
         ) : (
           <>
-            <Text readOnly={true} label="감상문을 작성하세요" name="content" initialValue="" />
+            <Text disabled={true} label="먼저 로그인 하세요" name="content" initialValue="" />
             <Button type="button" text="로그인" onClick={() => setIsLoginOpen(true)} />
           </>
         )}

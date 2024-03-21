@@ -1,6 +1,9 @@
 import { Body, Box, Quaternion, Vec3, World } from 'cannon-es'
 import * as THREE from 'three'
 import * as BufferGeometryUtils from 'three/examples/jsm/utils/BufferGeometryUtils.js'
+import { MeshBVH, acceleratedRaycast } from 'three-mesh-bvh'
+
+THREE.Mesh.prototype.raycast = acceleratedRaycast
 
 type TextureProps = {
   textureLoader: THREE.TextureLoader
@@ -92,6 +95,9 @@ export class Walls {
     geometries.forEach((geometry) => {
       geometry.dispose()
     })
+
+    // three-mesh-bvh
+    geometry.boundsTree = new MeshBVH(geometry)
 
     // Load Textures
     if (info.texture) {

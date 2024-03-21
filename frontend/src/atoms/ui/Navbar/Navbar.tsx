@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import { NavLink } from 'react-router-dom'
 import { routes } from '@/App'
 import SearchIcon from '@/assets/svgs/magnify.svg'

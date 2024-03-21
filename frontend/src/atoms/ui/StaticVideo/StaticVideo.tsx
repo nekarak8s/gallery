@@ -11,6 +11,7 @@ interface StaticVideoProps {
   width?: string
   height?: string
   ariaLabel?: string
+  playsInline?: boolean
   onLoad?: () => void
 }
 
@@ -23,6 +24,7 @@ const StaticVideo = ({
   width = '100%',
   height = '100%',
   ariaLabel = '',
+  playsInline = true,
   onLoad,
 }: StaticVideoProps) => {
   const containerRef = useRef<HTMLDivElement>(null)
@@ -41,6 +43,7 @@ const StaticVideo = ({
         autoPlay={autoPlay}
         aria-label={ariaLabel}
         style={{ width, height }}
+        playsInline={playsInline}
         onLoadedData={handleLoad}
       >
         <source src={webmSrc} type="video/webm" media="(min-width: 1024px)" />

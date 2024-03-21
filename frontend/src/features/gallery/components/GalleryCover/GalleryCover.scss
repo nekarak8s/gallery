@@ -21,10 +21,9 @@
   justify-content: center;
   align-items: center;
   gap: 3em;
-  width: clamp(800px, 64vw, 960px);
-  height: clamp(400px, 36vw, 540px);
-  max-height: 90vh;
-  padding: 1em 2em;
+  width: clamp(800px, 64dvw, 960px);
+  min-height: 500px;
+  padding: 2.5em 2em;
   background-color: var(--color-bg, c.$bg-white);
   box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.3);
 
@@ -64,7 +63,7 @@
 @include laptop {
   .gallery-cover__content {
     width: 800px;
-    height: 450px;
+    min-height: 450px;
     gap: 2em;
 
     h1 {
@@ -78,14 +77,14 @@
 
 @include tablet {
   .gallery-cover__content {
-    width: 70vw;
-    height: 52.5vw;
+    width: 75dvw;
+    min-height: 52.5dvw;
 
     h1 {
-      font-size: 4vw;
+      font-size: 1.8em;
     }
     p {
-      font-size: 2vw;
+      font-size: 1.2em;
     }
   }
 }
@@ -93,15 +92,15 @@
 @include mobile {
   .gallery-cover__content {
     gap: 1em;
-    width: 85vw;
-    height: 64vw;
+    width: 85dvw;
+    min-height: 70dvw;
     padding: 1em 1em;
 
     h1 {
-      font-size: 5vw;
+      font-size: 1.4em;
     }
     p {
-      font-size: 3vw;
+      font-size: 0.8em;
     }
   }
 }

@@ -6,7 +6,7 @@
 }
 
 .home__music {
-  @include z-index(modal);
+  // @include z-index(modal);
   position: fixed;
   bottom: 1em;
   left: 1em;

@@ -2,21 +2,22 @@
 
 .post-detail {
   display: grid;
-  grid-template-columns: repeat(2, min(35vw, 400px));
+  grid-template-columns: repeat(2, min(35dvw, 400px));
   grid-template-rows: minmax(0, 1fr);
   gap: 1em;
-  max-height: 80vh;
   height: 100%;
-  position: relative;
-  padding: 1em 1em 1em 0.8em;
+  max-height: 80lvh;
+  padding: 1em 1em 1em 0.6em;
   font-size: 1rem;
+  overflow: auto;
 }
 
 @include mobile {
   .post-detail {
-    grid-template-columns: min(75vw, 600px);
+    width: min(800px, 90dvw);
+    grid-template-columns: 1fr;
     grid-template-rows: repeat(2, auto);
-    padding: 1.5em 1em;
-    max-height: 100%;
+    padding: 1.2em 1em;
+    gap: 2em;
   }
 }

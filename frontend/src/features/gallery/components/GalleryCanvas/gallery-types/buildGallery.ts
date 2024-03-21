@@ -1,5 +1,5 @@
 import * as THREE from 'three'
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
+import { acceleratedRaycast } from 'three-mesh-bvh'
 import {
   CEILING_DATA,
   EDGES_DATA,
@@ -23,10 +23,11 @@ import { Wall } from '@/libs/three-custom/items/Wall'
 import { Walls } from '@/libs/three-custom/items/Walls'
 import { WaterItem } from '@/libs/three-custom/items/Water'
 
+THREE.Mesh.prototype.raycast = acceleratedRaycast
+
 const buildGallery = (props: GalleryTypeProps) => {
   // Create Loaders
   const textureLoader = new THREE.TextureLoader(props.loadingManager)
-  const gltfLoader = new GLTFLoader(props.loadingManager)
 
   // Array for managing resources in dispose function
   const lights: THREE.Light[] = []

@@ -4,7 +4,7 @@
 @use '@/styles/_z-index.scss' as *;
 
 .hs1-back {
-  height: var(--height-back, 200vh);
+  height: var(--height-back, 200lvh);
   min-height: var(--min-height-back, 1200px);
   position: relative;
 }
@@ -13,11 +13,9 @@
   overflow: hidden;
   position: sticky;
   top: 0;
-  width: 100vw;
-  height: 100vh;
+  width: 100dvw;
+  height: 100lvh;
   min-height: 600px;
-  perspective: 100px;
-  transform-style: preserve-3d;
 }
 
 .hs1-fade {
@@ -180,7 +178,7 @@
     left: calc(50% - 15%);
     transform: translate(-50%, -50%);
     color: c.$ft-white;
-    font-size: 10vw;
+    font-size: 10dvw;
     font-weight: 700;
     opacity: 0;
 
@@ -208,8 +206,8 @@
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
+  width: 100dvw;
+  height: 100lvh;
   transition:
     opacity var(--fade-time) ease-out,
     transform var(--fade-time) ease-out;
@@ -221,7 +219,7 @@
     flex-direction: column;
     align-items: center;
     text-align: center;
-    font-size: 10vw;
+    font-size: 10dvw;
 
     h1 {
       color: rgb(0, 0, 0);
@@ -294,7 +292,7 @@
     &__logo {
       top: calc(50% + 5%);
       left: calc(50% - 15%);
-      font-size: 12vw;
+      font-size: 12dvw;
     }
 
     &__gallery {
@@ -307,7 +305,7 @@
 
   .hs1-cover {
     &__phrase {
-      font-size: 11vw;
+      font-size: 11dvw;
 
       h2 {
         font-size: 0.4em;
@@ -351,7 +349,7 @@
     &__logo {
       top: calc(50% + 12%);
       left: calc(50% - 15%);
-      font-size: 15vw;
+      font-size: 15dvw;
     }
 
     &__gallery {
@@ -363,7 +361,7 @@
 
   .hs1-cover {
     &__phrase {
-      font-size: 12vw;
+      font-size: 12dvw;
 
       h1 {
         margin-top: 0.6em;
@@ -412,7 +410,7 @@
     &__logo {
       top: calc(50% + 13%);
       left: calc(50% - 15%);
-      font-size: 18vw;
+      font-size: 18dvw;
     }
 
     &__gallery {
@@ -424,7 +422,7 @@
 
   .hs1-cover {
     &__phrase {
-      font-size: 14vw;
+      font-size: 14dvw;
 
       h1 {
         margin-top: 0.9em;

@@ -3,7 +3,7 @@
 @use '@/styles/_animations.scss' as a;
 
 .hs3-back {
-  height: var(--height-back, calc(400vh + 200px));
+  height: var(--height-back, calc(400lvh + 200px));
   min-height: var(--min-height-back, calc(1800px + 200px));
   position: relative;
 }
@@ -13,8 +13,8 @@
   position: sticky;
   left: 0;
   top: 0;
-  width: 100vw;
-  height: 100vh;
+  width: 100dvw;
+  height: 100lvh;
   min-height: 600px;
   color: var(--color, rgb(255, 93, 52));
   transition: color var(--transition-time-home) ease-in-out;
@@ -145,8 +145,8 @@
   overflow: hidden;
   position: absolute;
   z-index: 3;
-  top: 150vh;
-  right: 20vw;
+  top: 150lvh;
+  right: 20dvw;
   transform: translateY(-50%);
   transform-style: preserve-3d;
   perspective: 2000px;
@@ -194,8 +194,8 @@ $FRAME_COLOR: rgb(44, 5, 5);
 
 .hs3-video {
   position: relative;
-  width: clamp(190px, 28vw, 280px);
-  height: clamp(253px, 37.3vw, 373px);
+  width: clamp(190px, 28dvw, 280px);
+  height: clamp(253px, 37.3dvw, 373px);
   transform-style: preserve-3d;
   perspective: 20000px;
   overflow: visible;
@@ -342,14 +342,14 @@ $FRAME_COLOR: rgb(44, 5, 5);
   }
 
   .hs3-phrase {
-    font-size: 6vw;
+    font-size: 6dvw;
     top: 20%;
   }
 
   .hs3-button {
     top: 32%;
     left: 10%;
-    font-size: 4.5vw;
+    font-size: 4.5dvw;
   }
 
   .hs3-work__label {

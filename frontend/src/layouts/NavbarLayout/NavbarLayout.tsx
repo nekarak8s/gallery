@@ -21,7 +21,9 @@ const NavbarLayout = () => {
   return (
     <div className="navbar-layout">
       <Navbar whitePathname={WHITE_PATHNAME} isLogin={isLogin} />
-      <Outlet />
+      <main>
+        <Outlet />
+      </main>
       <Footer />
     </div>
   )

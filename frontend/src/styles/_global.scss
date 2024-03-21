@@ -41,6 +41,10 @@ body {
   display: none;
 }
 
+*:not(p) {
+  user-select: none;
+}
+
 a {
   color: inherit;
   text-decoration: none;
