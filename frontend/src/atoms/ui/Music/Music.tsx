@@ -32,9 +32,9 @@ const Music: React.FC<Props> = ({ src, title, id = 'audio', color = 'black' }) =
 
     // toggle the class
     if (musicManager.isPlaying) {
-      musicBar.classList.add('playing')
+      musicBar.classList.remove('stop')
     } else {
-      musicBar.classList.remove('playing')
+      musicBar.classList.add('stop')
     }
   }
 
@@ -45,7 +45,7 @@ const Music: React.FC<Props> = ({ src, title, id = 'audio', color = 'black' }) =
       aria-label={title}
       data-cursor-scale={CURSOR_SCALE}
     >
-      <div className="music__bar playing" ref={musicBarRef}>
+      <div className="music__bar" ref={musicBarRef}>
         <span />
         <span />
         <span />
