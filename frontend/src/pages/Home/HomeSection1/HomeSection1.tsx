@@ -15,6 +15,7 @@ import skyWebp from '@/assets/images/home-section-1/sky.png?format=webp'
 import Loading from '@/atoms/ui/Loading'
 import ScrollDown from '@/atoms/ui/ScrollDown'
 import StaticImage from '@/atoms/ui/StaticImage'
+import useMobile from '@/hooks/useMobile'
 import toFrame from '@/libs/toFrame'
 import musicManager from '@/utils/musicManager'
 import './HomeSection1.scss'
@@ -25,6 +26,8 @@ const SCROLL_OFFSET = 300 // px. fade start offset on scroll
 const ROTATION_DEGREE = 20 // deg. max rotation degree on mousemove
 
 function HomeSection1() {
+  const isMobile = useMobile()
+
   /**
    * Set the background height
    */
@@ -280,7 +283,7 @@ function HomeSection1() {
                   loading="eager"
                   onLoad={handleImageLoad}
                 />
-                <OceanFilter />
+                {!isMobile && <OceanFilter />}
               </div>
             </div>
             <div

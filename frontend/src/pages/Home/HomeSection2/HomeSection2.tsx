@@ -34,12 +34,15 @@ import wideVid2 from '@/assets/videos/home-video-2.mp4'
 import wideWebm2 from '@/assets/videos/home-video-2.webm'
 import narrowVid1 from '@/assets/videos/home-video-3.mp4'
 import narrowWebm1 from '@/assets/videos/home-video-3.webm'
+import useMobile from '@/hooks/useMobile'
 import toFrame from '@/libs/toFrame'
 import './HomeSection2.scss'
 
 const BACK_HEIGHT = 6 // * 100lvh. background height
 
 function HomeSection2() {
+  const isMobile = useMobile()
+
   /**
    * Set the background height
    */
@@ -131,7 +134,7 @@ function HomeSection2() {
 
   return (
     <div className="hs2-back" ref={backRef}>
-      <div className="hs2-main" ref={mainRef}>
+      <div className={`hs2-main ${isMobile ? '' : 'smooth'}`} ref={mainRef}>
         <div className="hs2-phrase" ref={phraseRef}>
           <p data-speedy="0" style={{ zIndex: 8 }}>
             하루 수백 장의 사진을 찍고
@@ -191,7 +194,7 @@ function HomeSection2() {
           <div
             className="hs2-card three-D"
             data-posx="-0.2"
-            data-posy="4.4"
+            data-posy="4.8"
             data-speedy="1.07"
             style={{ zIndex: 4 }}
           >

@@ -10,13 +10,16 @@ import Button3D from '@/atoms/ui/Button3D'
 import StaticImage from '@/atoms/ui/StaticImage'
 import StaticVideo from '@/atoms/ui/StaticVideo'
 import { CURSOR_SCALE } from '@/constants'
-import './HomeSection3.scss'
+import useMobile from '@/hooks/useMobile'
 import throttle from '@/libs/throttle'
+import './HomeSection3.scss'
 
 const BACK_HEIGHT = 3 // * 100lvh
 const SCROLL_OFFSET = 300 // px.
 
 function HomeSection3() {
+  const isMobile = useMobile()
+
   /**
    * Set the background height
    */
@@ -205,7 +208,7 @@ function HomeSection3() {
 
   return (
     <div className="hs3-back" ref={backRef}>
-      <div className="hs3-main" ref={mainRef}>
+      <div className={`hs3-main ${isMobile ? '' : 'smooth'}`} ref={mainRef}>
         <div className="hs3-main__back">
           <StaticImage imgSrc={wallImg} webpSrc={wallWebp} alt="하얀 벽 배경" loading="lazy" />
         </div>

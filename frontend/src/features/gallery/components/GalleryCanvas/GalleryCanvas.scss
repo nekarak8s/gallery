@@ -1,8 +1,11 @@
 .gallery-canvas {
-  width: 100dvw;
-  height: 100lvh;
+  width: 100lvw;
+  height: 100dvh;
 
   canvas {
+    position: fixed;
+    left: 0;
+    right: 0;
     width: 100% !important;
     height: 100% !important;
   }
@@ -31,5 +34,5 @@
   bottom: 0;
   left: 0;
   width: 100%;
-  padding: 0 min(10%, 4em) min(12%, 5em) min(8%, 3em);
+  padding: 0 min(7%, 2em) min(15%, 5em) min(10%, 3em);
 }
