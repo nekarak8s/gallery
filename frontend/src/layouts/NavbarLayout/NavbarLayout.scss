@@ -9,10 +9,10 @@
   background-color: var(--color-bg, c.$bg-white);
   height: 100%;
   width: 100%;
-  max-width: 100dvw;
-  min-height: 100lvh;
+  max-width: 100vw;
+  min-height: 100vh;
 
   > main {
-    min-height: 100lvh;
+    min-height: 100vh;
   }
 }

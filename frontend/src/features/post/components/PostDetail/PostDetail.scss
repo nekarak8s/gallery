@@ -2,11 +2,11 @@
 
 .post-detail {
   display: grid;
-  grid-template-columns: repeat(2, min(35dvw, 400px));
+  grid-template-columns: repeat(2, min(35vw, 400px));
   grid-template-rows: minmax(0, 1fr);
   gap: 1em;
   height: 100%;
-  max-height: 80lvh;
+  max-height: 80vh;
   padding: 1em 1em 1em 0.6em;
   font-size: 1rem;
   overflow: auto;
@@ -14,7 +14,7 @@
 
 @include mobile {
   .post-detail {
-    width: min(800px, 90dvw);
+    width: min(800px, 90vw);
     grid-template-columns: 1fr;
     grid-template-rows: repeat(2, auto);
     padding: 1.2em 1em;

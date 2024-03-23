@@ -14,7 +14,7 @@ import useMobile from '@/hooks/useMobile'
 import throttle from '@/libs/throttle'
 import './HomeSection3.scss'
 
-const BACK_HEIGHT = 3 // * 100lvh
+const BACK_HEIGHT = 3 // * 100vh
 const SCROLL_OFFSET = 300 // px.
 
 function HomeSection3() {
@@ -28,7 +28,7 @@ function HomeSection3() {
   useEffect(() => {
     const back = backRef.current!
 
-    back.style.setProperty('--height-back', `calc(${BACK_HEIGHT * 100}lvh + ${SCROLL_OFFSET}px)`)
+    back.style.setProperty('--height-back', `calc(${BACK_HEIGHT * 100}vh + ${SCROLL_OFFSET}px)`)
     back.style.setProperty('--min-height-back', `calc(${BACK_HEIGHT * 600}px + ${SCROLL_OFFSET}px)`)
   }, [])
 
@@ -78,8 +78,8 @@ function HomeSection3() {
       // Initiate art work position
       const posx = Number(work.dataset.posx)
       const posy = Number(work.dataset.posy)
-      work.style.right = `${-100 * posx}dvw`
-      work.style.top = `${100 * posy}lvh`
+      work.style.right = `${-100 * posx}vw`
+      work.style.top = `${100 * posy}vh`
     }
 
     // Handle Scroll
@@ -92,7 +92,7 @@ function HomeSection3() {
       // Move art work
       const factor = (scrollTop - scrollStart) / (scrollEnd - SCROLL_OFFSET - scrollStart)
       work.style.transform = `
-        translateY(calc(-50% - ${(factor > 1 ? 1 : factor) * 85}lvh))
+        translateY(calc(-50% - ${(factor > 1 ? 1 : factor) * 85}vh))
       `
 
       if (scrollTop < scrollEnd - SCROLL_OFFSET) {

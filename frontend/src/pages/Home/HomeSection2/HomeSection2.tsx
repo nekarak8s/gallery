@@ -38,7 +38,7 @@ import useMobile from '@/hooks/useMobile'
 import toFrame from '@/libs/toFrame'
 import './HomeSection2.scss'
 
-const BACK_HEIGHT = 6 // * 100lvh. background height
+const BACK_HEIGHT = 6 // * 100vh. background height
 
 function HomeSection2() {
   const isMobile = useMobile()
@@ -51,7 +51,7 @@ function HomeSection2() {
   useEffect(() => {
     const back = backRef.current!
 
-    back.style.setProperty('--height-back', `${BACK_HEIGHT * 100}lvh`)
+    back.style.setProperty('--height-back', `${BACK_HEIGHT * 100}vh`)
     back.style.setProperty('--min-height-back', `${BACK_HEIGHT * 600}px`)
   }, [])
 
@@ -85,11 +85,11 @@ function HomeSection2() {
         const posx = Number(el.dataset.posx)
         const posy = Number(el.dataset.posy)
         if (posx < 0) {
-          el.style.right = `${-100 * posx}dvw`
+          el.style.right = `${-100 * posx}vw`
         } else {
-          el.style.left = `${100 * posx}dvw`
+          el.style.left = `${100 * posx}vw`
         }
-        el.style.top = `${100 * posy}lvh`
+        el.style.top = `${100 * posy}vh`
       })
     }
 
@@ -111,7 +111,7 @@ function HomeSection2() {
       cardEles.forEach((el) => {
         const speedy = Number(el.dataset.speedy)
         el.style.transform = `translateY(
-          calc(-50% - ${factor * (BACK_HEIGHT * 100 - 100) * speedy}lvh)
+          calc(-50% - ${factor * (BACK_HEIGHT * 100 - 100) * speedy}vh)
           )`
 
         // Open the card
@@ -160,9 +160,9 @@ function HomeSection2() {
                 alt="바다로 여행을 떠나는 클립"
                 vidSrc={wideVid1}
                 webmSrc={wideWebm1}
-                width="clamp(230px, 40dvw, 500px)"
-                height="clamp(173px, 30dvw, 375px)"
-                sizes="(max-width: 650px) 230px, (max-width: 1250px) 40dvw, 500px"
+                width="clamp(230px, 40vw, 500px)"
+                height="clamp(173px, 30vw, 375px)"
+                sizes="(max-width: 650px) 230px, (max-width: 1250px) 40vw, 500px"
                 description="Trip to the ocean"
                 depth={5}
                 date="2012.10.09"
@@ -182,9 +182,9 @@ function HomeSection2() {
                 alt="기차 타고 캠핑하다가 노 젓는 클립"
                 vidSrc={wideVid2}
                 webmSrc={wideWebm2}
-                width="clamp(230px, 40dvw, 500px)"
-                height="clamp(173px, 30dvw, 375px)"
-                sizes="(max-width: 650px) 230px, (max-width: 1250px) 40dvw, 500px"
+                width="clamp(230px, 40vw, 500px)"
+                height="clamp(173px, 30vw, 375px)"
+                sizes="(max-width: 650px) 230px, (max-width: 1250px) 40vw, 500px"
                 description="Rainy day travel"
                 depth={5}
                 date="2021.05.21"
@@ -204,9 +204,9 @@ function HomeSection2() {
                 alt="축구복 시착하고 강아지가 일어서는 클립"
                 vidSrc={narrowVid1}
                 webmSrc={narrowWebm1}
-                width="clamp(188px, 25dvw, 375px)"
-                height="clamp(250px, 33.3dvw, 500px)"
-                sizes="(max-width: 750px) 188px, (max-width: 1500px) 15dvw, 375px"
+                width="clamp(188px, 25vw, 375px)"
+                height="clamp(250px, 33.3vw, 500px)"
+                sizes="(max-width: 750px) 188px, (max-width: 1500px) 15vw, 375px"
                 description="Just clips"
                 depth={4}
                 date="2017.03.28"
@@ -225,9 +225,9 @@ function HomeSection2() {
                 alt="햇빛드는 카페 테라스"
                 imgSrc={narrowImg1}
                 webpSrc={narrowWebp1}
-                width="clamp(150px, 20dvw, 300px)"
-                height="clamp(200px, 26.7dvw, 400px)"
-                sizes="(max-width: 750px) 150px, (max-width: 1500px) 20dvw, 300px"
+                width="clamp(150px, 20vw, 300px)"
+                height="clamp(200px, 26.7vw, 400px)"
+                sizes="(max-width: 750px) 150px, (max-width: 1500px) 20vw, 300px"
                 description="Cafeteria"
                 depth={2}
                 date="2022.03.07"
@@ -246,9 +246,9 @@ function HomeSection2() {
                 alt="야자수 뒤의 핑크빛 하늘"
                 imgSrc={narrowImg2}
                 webpSrc={narrowWebp2}
-                width="clamp(113px, 15dvw, 225px)"
-                height="clamp(151px, 20dvw, 300px)"
-                sizes="(max-width: 750px) 113px, (max-width: 1500px) 15dvw, 225px"
+                width="clamp(113px, 15vw, 225px)"
+                height="clamp(151px, 20vw, 300px)"
+                sizes="(max-width: 750px) 113px, (max-width: 1500px) 15vw, 225px"
                 description="Pink Sky"
                 depth={1}
                 date="2019.10.21"
@@ -267,9 +267,9 @@ function HomeSection2() {
                 alt="엄마와 딸 팔뚝 위에 바디페인팅"
                 imgSrc={narrowImg3}
                 webpSrc={narrowWebp3}
-                width="clamp(188px, 25dvw, 375px)"
-                height="clamp(250px, 33.3dvw, 500px)"
-                sizes="(max-width: 750px) 188px, (max-width: 1500px) 15dvw, 375px"
+                width="clamp(188px, 25vw, 375px)"
+                height="clamp(250px, 33.3vw, 500px)"
+                sizes="(max-width: 750px) 188px, (max-width: 1500px) 15vw, 375px"
                 description="Mom & Daughter"
                 depth={4}
                 date="2023.08.05"
@@ -288,9 +288,9 @@ function HomeSection2() {
                 alt="눈 덮인 지붕"
                 imgSrc={narrowImg4}
                 webpSrc={narrowWebp4}
-                width="clamp(151px, 20dvw, 300px)"
-                height="clamp(201px, 26.7dvw, 400px)"
-                sizes="(max-width: 750px) 151px, (max-width: 1500px) 20dvw, 300px"
+                width="clamp(151px, 20vw, 300px)"
+                height="clamp(201px, 26.7vw, 400px)"
+                sizes="(max-width: 750px) 151px, (max-width: 1500px) 20vw, 300px"
                 description="snow doesn't melt"
                 depth={2}
                 date="2021.09.12"
@@ -309,9 +309,9 @@ function HomeSection2() {
                 alt="두 잔의 라떼 아트"
                 imgSrc={narrowImg5}
                 webpSrc={narrowWebp5}
-                width="clamp(166px, 22dvw, 330px)"
-                height="clamp(215px, 29.3dvw, 440px)"
-                sizes="(max-width: 750px) 166px, (max-width: 1500px) 22dvw, 330px"
+                width="clamp(166px, 22vw, 330px)"
+                height="clamp(215px, 29.3vw, 440px)"
+                sizes="(max-width: 750px) 166px, (max-width: 1500px) 22vw, 330px"
                 description="Coffee in Japan"
                 depth={3}
                 date="2023.04.22"
@@ -330,9 +330,9 @@ function HomeSection2() {
                 alt="강아지 포스터"
                 imgSrc={narrowImg6}
                 webpSrc={narrowWebp6}
-                width="clamp(226px, 30dvw, 450px)"
-                height="clamp(301px, 40dvw, 600px)"
-                sizes="(max-width: 750px) 226px, (max-width: 1500px) 30dvw, 450px"
+                width="clamp(226px, 30vw, 450px)"
+                height="clamp(301px, 40vw, 600px)"
+                sizes="(max-width: 750px) 226px, (max-width: 1500px) 30vw, 450px"
                 description="The Dog Poster"
                 depth={5}
                 date="2019.10.21"
@@ -351,9 +351,9 @@ function HomeSection2() {
                 alt="색연필 묶음"
                 imgSrc={narrowImg7}
                 webpSrc={narrowWebp7}
-                width="clamp(113px, 15dvw, 225px)"
-                height="clamp(151px, 20dvw, 300px)"
-                sizes="(max-width: 750px) 113px, (max-width: 1500px) 15dvw, 225px"
+                width="clamp(113px, 15vw, 225px)"
+                height="clamp(151px, 20vw, 300px)"
+                sizes="(max-width: 750px) 113px, (max-width: 1500px) 15vw, 225px"
                 description="Colors"
                 depth={1}
                 date="2023.05.08"
@@ -372,9 +372,9 @@ function HomeSection2() {
                 alt="노을이 지는 바다"
                 imgSrc={wideImg1}
                 webpSrc={wideWebp1}
-                width="clamp(103px, 18dvw, 225px)"
-                height="clamp(77px, 11dvw, 113px)"
-                sizes="(max-width: 650px) 103px, (max-width: 1250px) 18dvw, 225px"
+                width="clamp(103px, 18vw, 225px)"
+                height="clamp(77px, 11vw, 113px)"
+                sizes="(max-width: 650px) 103px, (max-width: 1250px) 18vw, 225px"
                 description="Suset & Sea"
                 depth={1}
                 date="2020.09.01"
@@ -393,9 +393,9 @@ function HomeSection2() {
                 alt="패러글라이딩 의상을 입은 가족"
                 imgSrc={wideImg2}
                 webpSrc={wideWebp2}
-                width="clamp(287px, 50dvw, 500px)"
-                height="clamp(215px, 37.5dvw, 375px)"
-                sizes="(max-width: 650px) 287px, (max-width: 1250px) 50dvw, 500px"
+                width="clamp(287px, 50vw, 500px)"
+                height="clamp(215px, 37.5vw, 375px)"
+                sizes="(max-width: 650px) 287px, (max-width: 1250px) 50vw, 500px"
                 description="My loving family"
                 depth={7}
                 date="2020.07.27"
@@ -414,9 +414,9 @@ function HomeSection2() {
                 alt="담요 위에서 잠자는 고양이"
                 imgSrc={wideImg3}
                 webpSrc={wideWebp3}
-                width="clamp(114px, 20dvw, 250px)"
-                height="clamp(86px, 15dvw, 188px)"
-                sizes="(max-width: 650px) 114px, (max-width: 1250px) 20dvw, 250px"
+                width="clamp(114px, 20vw, 250px)"
+                height="clamp(86px, 15vw, 188px)"
+                sizes="(max-width: 650px) 114px, (max-width: 1250px) 20vw, 250px"
                 description="Sleeping cat"
                 depth={2}
                 date="2019.10.21"
@@ -435,9 +435,9 @@ function HomeSection2() {
                 alt="비행기에서 내려다 본 구름"
                 imgSrc={wideImg4}
                 webpSrc={wideWebp4}
-                width="clamp(103px, 18dvw, 225px)"
-                height="clamp(77px, 11dvw, 113px)"
-                sizes="(max-width: 650px) 103px, (max-width: 1250px) 18dvw, 225px"
+                width="clamp(103px, 18vw, 225px)"
+                height="clamp(77px, 11vw, 113px)"
+                sizes="(max-width: 650px) 103px, (max-width: 1250px) 18vw, 225px"
                 description="Cloud Ocean"
                 depth={1}
                 date="2021.01.03"
@@ -456,9 +456,9 @@ function HomeSection2() {
                 alt="페퍼로니 피자"
                 imgSrc={wideImg5}
                 webpSrc={wideWebp5}
-                width="clamp(103px, 18dvw, 225px)"
-                height="clamp(77px, 11dvw, 113px)"
-                sizes="(max-width: 650px) 103px, (max-width: 1250px) 18dvw, 225px"
+                width="clamp(103px, 18vw, 225px)"
+                height="clamp(77px, 11vw, 113px)"
+                sizes="(max-width: 650px) 103px, (max-width: 1250px) 18vw, 225px"
                 description="Yummy Pizza"
                 depth={1}
                 date="2019.10.21"
@@ -477,9 +477,9 @@ function HomeSection2() {
                 alt="바다 위에 떠다니는 배"
                 imgSrc={wideImg6}
                 webpSrc={wideWebp6}
-                width="clamp(173px, 30dvw, 375px)"
-                height="clamp(130px, 22.5dvw, 281px)"
-                sizes="(max-width: 650px) 173px, (max-width: 1250px) 30dvw, 375px"
+                width="clamp(173px, 30vw, 375px)"
+                height="clamp(130px, 22.5vw, 281px)"
+                sizes="(max-width: 650px) 173px, (max-width: 1250px) 30vw, 375px"
                 description="Busan Ocean"
                 depth={3}
                 date="2017.11.09"
@@ -499,9 +499,9 @@ function HomeSection2() {
                 alt="The cloud poster"
                 imgSrc={posterImg}
                 webpSrc={posterWebp}
-                width="clamp(226px, 40dvw, 500px)"
-                height="clamp(301px, 53dvw, 667px)"
-                sizes="(max-width: 452px) 226px, (max-width: 1250px) 40dvw, 500px"
+                width="clamp(226px, 40vw, 500px)"
+                height="clamp(301px, 53vw, 667px)"
+                sizes="(max-width: 452px) 226px, (max-width: 1250px) 40vw, 500px"
                 description="The cloud poster"
                 depth={10}
                 date="2019.10.21"

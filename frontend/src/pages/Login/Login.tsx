@@ -21,7 +21,7 @@ const Login = () => {
           imgSrc={imgSrc}
           width="23em"
           alt="해변가 파도"
-          sizes="(max-width: 750px) 0px, (max-width: 1500px) 50dvw, 750px"
+          sizes="(max-width: 750px) 0px, (max-width: 1500px) 50vw, 750px"
         />
         <LoginForm />
       </div>
