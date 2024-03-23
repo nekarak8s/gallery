@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import GalleryNavbar from './GalleryNavbar'
 import galleryBgm from '@/assets/audios/MapleStory-Pantheon.mp3'
@@ -72,33 +72,15 @@ const Gallery = () => {
   }
 
   /**
-   * Stat.js: check frame per second for deveopment
+   * Disable scroll
    */
-  const animationRef = useRef<number | null>(null)
-
   useEffect(() => {
-    /* eslint-disable */
-    if (process.env.NODE_ENV === 'production') return
-
-    const Stats = require('stats-js')
-    const stats = new Stats()
-    stats.showPanel(0) // 0: fps, 1: ms, 2: mb, 3+: custom
-    document.body.appendChild(stats.dom)
-
-    function animate() {
-      stats.begin()
-      // monitored code goes here
-      stats.end()
-      animationRef.current = requestAnimationFrame(animate)
-    }
-
-    animationRef.current = requestAnimationFrame(animate)
+    const body = document.body
+    body.style.overflow = 'hidden'
 
     return () => {
-      document.body.removeChild(stats.dom)
-      animationRef.current && cancelAnimationFrame(animationRef.current)
+      body.style.overflow = 'auto'
     }
-    /* eslint-enable */
   }, [])
 
   if (isGalleryError || isPostError) return
