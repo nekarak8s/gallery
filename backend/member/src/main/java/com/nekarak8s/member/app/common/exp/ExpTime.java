@@ -1,4 +1,4 @@
-package com.nekarak8s.member.app.common;
+package com.nekarak8s.member.app.common.exp;
 
 public enum ExpTime {
     SECONDS_PER_HOUR(60 * 60),

@@ -1,4 +1,4 @@
-package com.nekarak8s.member.app.common;
+package com.nekarak8s.member.app.common.role;
 
 public enum Role {
     ROLE_USER("ROLE_USER"),

@@ -1,6 +1,6 @@
 package com.nekarak8s.member.app.service.impl;
 
-import com.nekarak8s.member.app.common.GAError;
+import com.nekarak8s.member.app.common.enums.GAError;
 import com.nekarak8s.member.app.data.dto.request.MemberModifyDTO;
 import com.nekarak8s.member.app.data.dto.response.LoginResponse;
 import com.nekarak8s.member.app.data.dto.response.MemberDTO;

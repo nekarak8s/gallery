@@ -1,4 +1,4 @@
-package com.nekarak8s.member.app.common;
+package com.nekarak8s.member.app.common.enums;
 
 import org.springframework.http.HttpStatus;
 

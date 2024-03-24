@@ -1,7 +1,7 @@
 package com.nekarak8s.member.app.data.dto.response;
 
 import com.nekarak8s.member.app.data.entity.Member;
-import com.nekarak8s.member.app.common.Role;
+import com.nekarak8s.member.app.common.role.Role;
 import lombok.Builder;
 import lombok.Data;
 

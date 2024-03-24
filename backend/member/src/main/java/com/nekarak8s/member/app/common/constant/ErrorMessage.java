@@ -1,4 +1,6 @@
-package com.nekarak8s.member.app.common;
+package com.nekarak8s.member.app.common.constant;
+
+import com.nekarak8s.member.app.common.enums.GAError;
 
 public class ErrorMessage {
     public static final GAError INVALID_PARAMETER = GAError.INVALID_PARAMETER;

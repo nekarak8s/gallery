@@ -1,6 +1,6 @@
 package com.nekarak8s.member.app.data.entity;
 
-import com.nekarak8s.member.app.common.Role;
+import com.nekarak8s.member.app.common.role.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

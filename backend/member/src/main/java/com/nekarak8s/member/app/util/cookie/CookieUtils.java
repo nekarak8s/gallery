@@ -1,6 +1,6 @@
 package com.nekarak8s.member.app.util.cookie;
 
-import com.nekarak8s.member.app.common.ExpTime;
+import com.nekarak8s.member.app.common.exp.ExpTime;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
