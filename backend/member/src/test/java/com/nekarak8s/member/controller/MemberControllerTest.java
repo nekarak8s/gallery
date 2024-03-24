@@ -1,11 +1,12 @@
 package com.nekarak8s.member.controller;
 
-import com.nekarak8s.member.redis.service.TokenService;
-import com.nekarak8s.member.service.AuthService;
-import com.nekarak8s.member.service.MemberService;
-import com.nekarak8s.member.util.cookie.CookieUtils;
+import com.nekarak8s.member.app.controller.MemberController;
+import com.nekarak8s.member.app.redis.service.TokenService;
+import com.nekarak8s.member.app.service.AuthService;
+import com.nekarak8s.member.app.service.MemberService;
+import com.nekarak8s.member.app.util.cookie.CookieUtils;
 import com.nekarak8s.member.util.nickname.NicknameUtils;
-import com.nekarak8s.member.util.param.ParamUtils;
+import com.nekarak8s.member.app.util.param.ParamUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
