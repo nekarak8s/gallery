@@ -67,7 +67,6 @@ public class NicknameService {
         int randomNumber = random.nextInt(uppderBound - lowerBound);
 
         StringBuffer sb = new StringBuffer();
-
         return sb.append(nickname)
                 .append(randomNumber)
                 .toString();
