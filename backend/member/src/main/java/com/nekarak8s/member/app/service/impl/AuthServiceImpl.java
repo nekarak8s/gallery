@@ -1,134 +1,92 @@
 package com.nekarak8s.member.app.service.impl;
 
+import com.nekarak8s.member.app.service.dto.GoogleValue;
+import com.nekarak8s.member.app.service.dto.KakaoValue;
+import com.nekarak8s.member.app.service.dto.SocialMemberInfo;
+import com.nekarak8s.member.app.service.strategy.LoginStrategy;
+import com.nekarak8s.member.app.service.strategy.impl.GoogleLoginStrategy;
+import com.nekarak8s.member.app.service.strategy.impl.KakaoLoginStrategy;
 import com.nekarak8s.member.base.exception.CustomException;
 import com.nekarak8s.member.app.service.AuthService;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.*;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponentsBuilder;
-
-import java.net.URI;
-import java.util.Map;
 
 @Slf4j
 @RequiredArgsConstructor
 @Service
 public class AuthServiceImpl implements AuthService {
-    @Value("${kakao.client-id}")
-    private String clientId;
-    @Value("${kakao.redirect-uri}")
-    private String redirectUri;
-
-    private static final String KAKAO_TOKEN_REQUEST_URL = "https://kauth.kakao.com/oauth/token";
-    private static final String KAKAO_USER_INFO_URL = "https://kapi.kakao.com/v2/user/me";
-
-    // util
+    private static LoginContext loginContext;
     private final RestTemplate restTemplate;
+    private final KakaoValue kakaoValue;
+    private final GoogleValue googleValue;
 
-    /**
-     * 소셜 로그인 리다이렉트 URL 생성
-     * @return URL
-     */
     @Override
-    public String getAuthorizationUrl() {
-        StringBuffer sb = new StringBuffer();
-        return sb.append("https://kauth.kakao.com/oauth/authorize?")
-                .append("client_id=")
-                .append(clientId)
-                .append("&redirect_uri=")
-                .append(redirectUri)
-                .append("&response_type=code")
-                .toString();
+    public String getAuthorizationUrl(String provider) throws CustomException {
+        loginContext = LoginContext.create(provider);
+        lookupStrategy(loginContext);
+        return loginContext.getAuthorizationUrl();
     }
 
-    /**
-     * 소셜 로그인 엑세스 토큰 반환
-     * @param code
-     * @return token
-     */
+    private void lookupStrategy(LoginContext context) throws CustomException {
+        switch (context.getProvider()) {
+            case "kakao": {
+                context.setStrategy(new KakaoLoginStrategy(kakaoValue, restTemplate));
+                break;
+            }
+            case "google": {
+                context.setStrategy(new GoogleLoginStrategy(googleValue, restTemplate));
+                break;
+            }
+            default: {
+                log.warn("지원하지 않는 소셜 로그인");
+                throw new CustomException(HttpStatus.BAD_REQUEST, "GM004", "지원하지 않는 소셜 로그인입니다");
+            }
+        }
+    }
+
     @Override
-    public String getAccessToken(String code) throws CustomException {
-        URI tokenURI = buildTokenURI(code);
-        
-        try {
-            ResponseEntity<Map> response = restTemplate.getForEntity(tokenURI, Map.class);
-            return extractAccessToken(response.getBody());
-        } catch (HttpClientErrorException e) {
-            handleHttpClientErrorException(e);
-        } catch (Exception e) {
-            handleGeneralException(e);
+    public String getAccessToken(String provider, String code) throws CustomException {
+        loginContext = LoginContext.create(provider);
+        lookupStrategy(loginContext);
+        return loginContext.getAccessToken(code);
+    }
+
+    @Override
+    public SocialMemberInfo getMemberInfo(String provider, String token) throws CustomException {
+        loginContext = LoginContext.create(provider);
+        lookupStrategy(loginContext);
+        return loginContext.getMemberInfo(token);
+    }
+
+    @Data
+    private static class LoginContext {
+        private LoginStrategy strategy;
+        private String provider;
+
+        public static LoginContext create(String provider) {
+            LoginContext context = new LoginContext();
+            context.setProvider(provider);
+            return context;
         }
 
-        throw new CustomException(HttpStatus.INTERNAL_SERVER_ERROR, "GA001", "액세스 토큰을 가져오는 데 실패했습니다");
-    }
+        public void setStrategy(LoginStrategy strategy) {
+            this.strategy = strategy;
+        }
 
-    private URI buildTokenURI(String code) {
-        return UriComponentsBuilder.fromHttpUrl(KAKAO_TOKEN_REQUEST_URL)
-                .queryParam("grant_type", "authorization_code")
-                .queryParam("code", code)
-                .queryParam("client_id", clientId)
-                .queryParam("redirect_uri", redirectUri)
-                .build()
-                .toUri();
-    }
+        public String getAuthorizationUrl() {
+            return strategy.getAuthorizationUrl();
+        }
 
-    private void handleHttpClientErrorException(HttpClientErrorException e) throws CustomException {
-        log.debug("유효하지 않은 인가코드");
-        throw new CustomException(HttpStatus.BAD_REQUEST, "GA005", "유효하지 않은 인가 코드");
-    }
+        public String getAccessToken(String code) throws CustomException {
+            return strategy.getAccessToken(code);
+        }
 
-    private void handleGeneralException(Exception e) throws CustomException {
-        log.debug("서버 에러");
-        throw new CustomException(HttpStatus.INTERNAL_SERVER_ERROR, "GA001", "서버 에러");
-    }
-
-    private String extractAccessToken(Map<String, Object> responseBody) {
-        return (String) responseBody.get("access_token");
-    }
-
-    /**
-     * 소셜 로그인 닉네임 조회
-     * @param token
-     * @return
-     */
-    @Override
-    public String getOAuthNickname(String token) {
-        Map kakaoUserInfo = getOAuthMemberInfo(token);
-        Map kakaoAccount = (Map) kakaoUserInfo.get("kakao_account");
-        Map kakaoProfile = (Map) kakaoAccount.get("profile");
-        return (String) kakaoProfile.get("nickname");
-    }
-
-    /**
-     * 소셜 로그인 아이디 조회
-     * @param token
-     * @return
-     */
-    @Override
-    public long getOAuthId(String token) {
-        Map kakaoUserInfo = getOAuthMemberInfo(token);
-        return (long) kakaoUserInfo.get("id");
-    }
-
-    private Map getOAuthMemberInfo(String token) {
-        HttpHeaders headers = createKakaoOAuthHeaders(token);
-        ResponseEntity<Map> response = restTemplate.exchange(
-                KAKAO_USER_INFO_URL,
-                HttpMethod.GET,
-                new HttpEntity<>(headers),
-                Map.class);
-
-        return response.getBody();
-    }
-
-    private HttpHeaders createKakaoOAuthHeaders(String token) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setBearerAuth(token);
-        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-        return headers;
+        public SocialMemberInfo getMemberInfo(String token) {
+            return strategy.getMemberInfo(token);
+        }
     }
 }
