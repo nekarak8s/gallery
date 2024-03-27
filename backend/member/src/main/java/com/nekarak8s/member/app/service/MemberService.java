@@ -13,7 +13,7 @@ import java.util.Map;
 @Service
 public interface MemberService {
 
-    LoginResponse checkAndJoinMember(String code) throws CustomException;
+    LoginResponse checkAndJoinMember(String provider, String code) throws CustomException;
 
     MemberDTO findMemberById(long memberId) throws CustomException;
 

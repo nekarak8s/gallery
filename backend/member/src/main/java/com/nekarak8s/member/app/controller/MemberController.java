@@ -40,8 +40,7 @@ public class MemberController {
     // OAuth 리다이렉트
     @PostMapping("/login")
     public ResponseEntity<?> redirect(@Valid @NotNull @RequestParam String type) throws CustomException {
-        paramUtils.checkSupportedSocialLoginType(type);
-        String authorizationUrl = authService.getAuthorizationUrl();
+        String authorizationUrl = authService.getAuthorizationUrl(type);
         return ResponseEntity.ok(createApiResponse("리다이렉트 URL 발급 성공", authorizationUrl));
     }
 
@@ -50,8 +49,7 @@ public class MemberController {
     public ResponseEntity<?> getToken(HttpServletResponse response,
                                       @Valid @NotNull @RequestParam(value = "type") String type,
                                       @Valid @NotNull @RequestParam(value = "code") String code) throws CustomException{
-        paramUtils.checkSupportedSocialLoginType(type);
-        LoginResponse loginResponse = memberService.checkAndJoinMember(code);
+        LoginResponse loginResponse = memberService.checkAndJoinMember(type, code);
         cookieUtils.addCookie(response, loginResponse.getAccessToken());
         return ResponseEntity.ok(createApiResponse("로그인 성공", loginResponse));
     }
@@ -88,11 +86,6 @@ public class MemberController {
     @PostMapping("/logout")
     public ResponseEntity<?> logout(@RequestHeader(value = "X-Access-Token", required = false) String token,
                                     @RequestHeader(value = "X-Access-Token-Exp", required = false) long expTime) {
-        /*
-         * 1. 토큰을 넘겨 받는다.
-         * 2. 토큰을 블랙 리스트에 담는다. (redis)
-         * 3. 이후 요청이 오면, API Gateway 에서 블랙 리스트 검사
-         */
         jwtUtils.expireToken(token, jwtUtils.getTtl(expTime));
         return ResponseEntity.ok(createApiResponse("로그아웃 되었습니다"));
     }
