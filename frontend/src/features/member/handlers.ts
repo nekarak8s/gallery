@@ -12,9 +12,7 @@ export const memberHandlers = [
     // make response
     return HttpResponse.json(
       {
-        data:
-          (((process.env.REACT_APP_API_BASE_URL as string) +
-            process.env.REACT_APP_BASE_URL) as string) + '/oauth/kakao',
+        data: (process.env.REACT_APP_BASE_URL as string) + `/oauth/${type}`,
       },
       { status: 200 }
     )
