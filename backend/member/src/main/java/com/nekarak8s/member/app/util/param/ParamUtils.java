@@ -15,7 +15,6 @@ import static com.nekarak8s.member.app.common.constant.ErrorMessage.*;
 @Slf4j
 @RequiredArgsConstructor
 public class ParamUtils {
-
     private final MemberService memberService;
 
     public void checkNicknameRegex(String nickname) throws CustomException {
@@ -23,13 +22,6 @@ public class ParamUtils {
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(nickname);
         if (!matcher.matches()) throw new CustomException(INVALID_PARAMETER.getHttpStatus(), INVALID_PARAMETER.getCode(), INVALID_NICKNAME_MESSAGE);
-    }
-
-    // 소셜 로그인 Provider 체크
-    public void checkSupportedSocialLoginType(String type) throws CustomException {
-        if (!type.equalsIgnoreCase("kakao") && !type.equalsIgnoreCase("google")) {
-            throw new CustomException(INVALID_PARAMETER.getHttpStatus(), INVALID_PARAMETER.getCode(), INVALID_SOCIAL_LOGIN_TYPE_MESSAGE);
-        }
     }
 
     public void validateNickname(String nickname) throws CustomException {
