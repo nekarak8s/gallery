@@ -107,8 +107,8 @@ export const galleryHandlers = [
     await delay()
 
     const data = galleryData
-    if (Math.random() < 0) {
-      data.place.placeId = 2
+    if (Math.random() < 1) {
+      data.place.placeId = 3
     }
 
     return HttpResponse.json({ data: data }, { status: 200 })

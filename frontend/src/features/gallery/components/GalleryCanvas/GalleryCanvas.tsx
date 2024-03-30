@@ -3,6 +3,7 @@ import * as THREE from 'three'
 import buildGallery from './gallery-types/buildGallery'
 import buildGreenary from './gallery-types/buildGreenary'
 import './GalleryCanvas.scss'
+import buildHexagon from './gallery-types/buildHexagon'
 import { GalleryData, GalleryTypeProps, GalleryTypeReturns } from '../../types'
 import CSSTransition from '@/atoms/ui/CSSTransition'
 import Joystick from '@/atoms/ui/Joystick'
@@ -27,6 +28,7 @@ type GalleryCanvasProps = {
 const CANVAS_TYPE: Record<number, (kwargs: GalleryTypeProps) => GalleryTypeReturns> = {
   1: buildGreenary,
   2: buildGallery,
+  3: buildHexagon,
 }
 
 const GalleryCanvas = ({ gallery, postList }: GalleryCanvasProps) => {

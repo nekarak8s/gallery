@@ -10,9 +10,7 @@ import GalleryCanvas from '@/features/gallery/components/GalleryCanvas'
 import GalleryCover from '@/features/gallery/components/GalleryCover'
 import { useGalleryQuery } from '@/features/gallery/services'
 import { usePostListQuery } from '@/features/post/services'
-import useMobile from '@/hooks/useMobile'
 import musicManager from '@/utils/musicManager'
-import toastManager from '@/utils/toastManager'
 import './Gallery.scss'
 
 const MUSIC_TYPE = [
@@ -24,6 +22,10 @@ const MUSIC_TYPE = [
   {
     src: galleryBgm,
     title: 'MapleStory - Phantheon (ver. Piano)',
+  },
+  {
+    src: greenaryBgm,
+    title: 'MapleStory - Raindrop Flower (ver. Piano)',
   },
 ]
 
@@ -43,21 +45,6 @@ const Gallery = () => {
     isLoading: isPostLoading,
     isError: isPostError,
   } = usePostListQuery(parseInt(galleryId as string))
-
-  /**
-   * Recommend page rotation
-   */
-  const isMobile = useMobile()
-
-  useEffect(() => {
-    // rotate page
-    if (isMobile) {
-      toastManager.addToast('info', '가로모드로 더욱 쾌적하게 플레이할 수 있습니다', 6000)
-    }
-
-    // Reset
-    return () => {}
-  }, [isMobile])
 
   /**
    * Handle click enter button
