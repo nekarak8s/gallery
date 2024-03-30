@@ -17,8 +17,8 @@ public class CookieUtils {
         cookie.setSecure(false); // https 사용시 true 로 변경
         cookie.setMaxAge(8 * ExpTime.SECONDS_PER_HOUR.getValue());
         cookie.setPath("/");
-        cookie.setHttpOnly(false); // dev
-        //cookie.setHttpOnly(true); // prod
+//        cookie.setHttpOnly(false); // dev
+        cookie.setHttpOnly(true); // prod
         response.addCookie(cookie);
     }
 }
