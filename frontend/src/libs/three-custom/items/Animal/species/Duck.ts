@@ -55,6 +55,8 @@ export class Duck {
     const walk = mixer.clipAction(glb.animations[17])
     const swim = mixer.clipAction(glb.animations[16])
 
+    console.log(idle)
+
     return new Duck({ object, mixer, idle, walk, swim, height: 0.4 })
   }
 }

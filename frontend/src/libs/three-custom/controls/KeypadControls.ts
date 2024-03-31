@@ -1,76 +1,87 @@
 import * as THREE from 'three'
 import { acceleratedRaycast } from 'three-mesh-bvh'
+import { IPlayer } from '../items/Player/Player'
 
 const _downDirection = new THREE.Vector3(0, -1, 0)
 const _groundOffset = 0.3
-const _floatPrecision = 0.001
+const MOVE_SPEED_FACTOR = 5
+const ROTATE_SPEED_FACTOR = 0.6
 
 THREE.Mesh.prototype.raycast = acceleratedRaycast
 
 export class KeypadControls {
   // arguments
-  canvas: HTMLCanvasElement
+  scene: THREE.Scene
   camera: THREE.Camera
-  height: number
   gravity: number
   jumpForce: number
   maxFallSpeed: number
-
-  // internals
-  #raycaster = new THREE.Raycaster()
-
-  #movementSpeed: number = 1
-  #moveForwardRatio: number = 0
-  #moveBackwardRatio: number = 0
-
-  #lookSpeed: number = 1
-  #lookRightRatio: number = 0
-  #lookLeftRatio: number = 0
-
-  // rotation variables
-  #lookDirection = new THREE.Vector3()
-  #spherical = new THREE.Spherical()
-
-  // jump variables
-  #isJump: boolean = false
-  #floatDuration: number = 0
 
   // API
   enabled: boolean = true
   obstacles: THREE.Object3D<THREE.Object3DEventMap>[] = [] // Array for obstacle meshes
   floors: THREE.Object3D<THREE.Object3DEventMap>[] = [] // Array for floor meshes
-
   dispose: () => void
 
-  constructor(
-    canvas: HTMLCanvasElement,
-    camera: THREE.Camera,
-    height: number = 1.6,
-    gravity: number = 10,
-    jumpForce: number = 10,
-    maxFallSpeed: number = 7
-  ) {
-    this.canvas = canvas
+  // camera & character group
+  #group: THREE.Group = new THREE.Group()
+  #cameraOffset: THREE.Vector3 = new THREE.Vector3(0, 4, -6)
+
+  // character
+  #character: IPlayer | null = null
+  activeAction: THREE.AnimationAction | null = null
+
+  // raycasting
+  #raycaster = new THREE.Raycaster()
+
+  // movement variables
+  #lookDirection = new THREE.Vector3()
+
+  #moveSpeed: number = 1
+  #moveForwardRatio: number = 0
+  #moveBackwardRatio: number = 0
+
+  #rotateSpeed: number = 1
+  #rotateRightRatio: number = 0
+  #rotateLeftRatio: number = 0
+
+  // falling variables
+  #isJump: boolean = false
+  #isFloating: boolean = false
+  #floatingDuration: number = 0
+
+  constructor(scene: THREE.Scene, camera: THREE.Camera, gravity: number = 10, jumpForce: number = 10, maxFallSpeed: number = 7) {
+    this.scene = scene
     this.camera = camera
-    this.height = height
     this.gravity = gravity
     this.jumpForce = jumpForce
     this.maxFallSpeed = maxFallSpeed
 
+    // Make a group
+    this.scene.add(this.#group)
+    this.scene.remove(this.camera)
+    this.camera.position.copy(this.#cameraOffset)
+    this.#group.add(this.camera)
+    this.camera.lookAt(new THREE.Vector3(0, 3, 0).add(this.#group.position))
+
+    // Limit the raycaster distance
     this.#raycaster.far = 10
     this.#raycaster.firstHitOnly = true
+
+    // Set the orientation of the camera
+    this.setOrientation()
 
     // Add event listener
     const _onKeyDown = this.onKeyDown.bind(this)
     const _onKeyUp = this.onKeyUp.bind(this)
-
     window.addEventListener('keydown', _onKeyDown)
     window.addEventListener('keyup', _onKeyUp)
 
-    this.setOrientation()
-
     // Set dispose function: Release resources
     this.dispose = () => {
+      this.#group.remove(this.camera)
+      this.#character && this.#group.remove(this.#character.object)
+      this.scene.remove(this.#group)
       window.removeEventListener('keydown', _onKeyDown)
       window.removeEventListener('keyup', _onKeyUp)
     }
@@ -100,22 +111,20 @@ export class KeypadControls {
       case 'ArrowRight':
       case 'KeyD':
         event.preventDefault()
-        this.#lookLeftRatio = 0
-        this.#lookRightRatio = 1
+        this.#rotateLeftRatio = 0
+        this.#rotateRightRatio = 1
         break
 
       case 'ArrowLeft':
       case 'KeyA':
         event.preventDefault()
-        this.#lookLeftRatio = 1
-        this.#lookRightRatio = 0
+        this.#rotateLeftRatio = 1
+        this.#rotateRightRatio = 0
         break
 
       case 'AltLeft':
         event.preventDefault()
-        if (this.#floatDuration === 0) {
-          this.#isJump = true
-        }
+        this.jump()
         break
     }
   }
@@ -137,27 +146,22 @@ export class KeypadControls {
 
       case 'ArrowRight':
       case 'KeyD':
-        this.#lookRightRatio = 0
+        this.#rotateRightRatio = 0
         break
 
       case 'ArrowLeft':
       case 'KeyA':
-        this.#lookLeftRatio = 0
+        this.#rotateLeftRatio = 0
         break
     }
   }
-  /**
-   * Set movement speed
-   */
-  set movementSpeed(speed: number) {
-    if (speed > 0) this.#movementSpeed = speed
-    else this.#movementSpeed = 1.6
+
+  set moveSpeed(speed: number) {
+    if (speed > 0) this.#moveSpeed = speed
+    else this.#moveSpeed = 1.6
   }
 
-  /**
-   * Set movement speed ratio
-   */
-  set movementSpeedRatio(speed: number) {
+  set moveSpeedRatio(speed: number) {
     if (speed > 1) {
       this.#moveForwardRatio = 1
       this.#moveBackwardRatio = 0
@@ -173,60 +177,66 @@ export class KeypadControls {
     }
   }
 
-  /**
-   * Set lookSpeed
-   */
-  set lookSpeed(speed: number) {
-    if (speed > 0) this.#lookSpeed = speed
-    else this.#lookSpeed = 1.5
+  set rotateSpeed(speed: number) {
+    if (speed > 0) this.#rotateSpeed = speed
+    else this.#rotateSpeed = 1.5
   }
 
-  /**
-   * Set lookSpeedRatio
-   */
-  set lookSpeedRatio(speed: number) {
+  set rotateSpeedRatio(speed: number) {
     if (speed > 1) {
-      this.#lookRightRatio = 1
-      this.#lookLeftRatio = 0
+      this.#rotateRightRatio = 1
+      this.#rotateLeftRatio = 0
     } else if (speed > 0) {
-      this.#lookRightRatio = speed
-      this.#lookLeftRatio = 0
+      this.#rotateRightRatio = speed
+      this.#rotateLeftRatio = 0
     } else if (speed < -1) {
-      this.#lookRightRatio = 0
-      this.#lookLeftRatio = 1
+      this.#rotateRightRatio = 0
+      this.#rotateLeftRatio = 1
     } else {
-      this.#lookRightRatio = 0
-      this.#lookLeftRatio = -speed
+      this.#rotateRightRatio = 0
+      this.#rotateLeftRatio = -speed
     }
   }
 
-  /**
-   * Jump
-   */
-  jump() {
-    if (this.#floatDuration === 0) {
-      this.#isJump = true
+  set character(character: IPlayer) {
+    if (this.#character) {
+      this.#group.remove(this.#character.object)
     }
+
+    this.#character = character
+    this.#group.add(this.#character.object)
+
+    this.#character.actions.jump.setLoop(THREE.LoopRepeat, 1)
+    this.#character.actions.jump.clampWhenFinished = true
+    this.#character.mixer.addEventListener('finished', (e) => {
+      if (e.action === this.#character?.actions.jump) {
+        this.#isJump = false
+      }
+    })
+  }
+
+  /**
+   * Set camera offset
+   */
+  set cameraOffset(offset: THREE.Vector3) {
+    this.#cameraOffset.copy(offset)
+    this.camera.position.copy(this.#cameraOffset)
   }
 
   /**
    * Set camera orientation of rotation
    */
   setOrientation() {
-    const quaternion = this.camera.quaternion
-
-    this.#lookDirection.set(0, 0, -1).applyQuaternion(quaternion)
-    this.#spherical.setFromVector3(this.#lookDirection)
-
-    this.#isJump = false
-    this.#floatDuration = 0
+    this.#group.getWorldDirection(this.#lookDirection)
+    this.#isFloating = false
+    this.#floatingDuration = 0
   }
 
   /**
    * Set camera position
    */
   setPosition(x: number, y: number, z: number) {
-    this.camera.position.set(x, y, z)
+    this.#group.position.set(x, y, z)
     this.setOrientation()
   }
 
@@ -234,76 +244,87 @@ export class KeypadControls {
    * Set camera rotation
    */
   setQuaternion(x: number, y: number, z: number) {
-    this.camera.rotation.set(x, y, z)
+    this.#group.rotation.set(x, y, z)
     this.setOrientation()
+  }
+
+  /**
+   * animations
+   */
+
+  fadeToAction(action: THREE.AnimationAction, duration: number = 0.5) {
+    const previousAction = this.activeAction
+    this.activeAction = action
+
+    if (previousAction !== this.activeAction) {
+      previousAction && previousAction.fadeOut(duration)
+      this.activeAction.reset().setEffectiveTimeScale(1).setEffectiveWeight(1).fadeIn(duration).play()
+    }
+  }
+
+  /**
+   * Jump
+   */
+  jump() {
+    this.#isJump = true
   }
 
   /**
    * Move camera tagging along with cannon body
    */
   update(delta: number) {
-    if (!this.enabled) return
+    if (!this.enabled || !this.#character) return
 
-    // Rotate camera
-    const actualLookSpeed =
-      delta * this.#lookSpeed * (this.#lookLeftRatio - this.#lookRightRatio) * 0.6
-    this.camera.rotateY(actualLookSpeed)
+    // Rotate group
+    const actualRotateSpeed = delta * this.#rotateSpeed * (this.#rotateLeftRatio - this.#rotateRightRatio) * ROTATE_SPEED_FACTOR
+    this.#group.rotateY(actualRotateSpeed)
 
-    // Move camera forward / backward
-    let actualMoveSpeed =
-      delta * this.#movementSpeed * (this.#moveForwardRatio - this.#moveBackwardRatio) * 5
-
-    // Stop by obstacle
+    // Move group detecting obstacles
     let intersects
-    this.camera.getWorldDirection(this.#lookDirection)
-    if (actualMoveSpeed > 0) {
-      // front obstacle
-      this.#raycaster.set(this.camera.position, this.#lookDirection)
-      intersects = this.#raycaster.intersectObjects(this.obstacles)
-      if (intersects.length && intersects[0].distance < 1) {
-        actualMoveSpeed = 0
-      }
-    } else {
-      // backward obstacle
-      this.#raycaster.set(this.camera.position, this.#lookDirection.negate())
-      intersects = this.#raycaster.intersectObjects(this.obstacles)
-      if (intersects.length && intersects[0].distance < 1) {
-        actualMoveSpeed = 0
+    let actualMoveSpeed = 0
+    if (this.#moveForwardRatio || this.#moveBackwardRatio) {
+      actualMoveSpeed = delta * this.#moveSpeed * (this.#moveForwardRatio - this.#moveBackwardRatio) * MOVE_SPEED_FACTOR
+      this.#character.object.getWorldDirection(this.#lookDirection) // update rotateDriection which the camera is rotateings
+      if (actualMoveSpeed < 0) this.#lookDirection.negate()
+      for (const point of [0, this.#character.size.height * (this.#isJump ? 0.5 : 1) - 0.4]) {
+        this.#raycaster.set(new THREE.Vector3(0, this.#character.size.height - point, 0).add(this.#group.position), this.#lookDirection)
+        intersects = this.#raycaster.intersectObjects(this.obstacles)
+        if (intersects.length && intersects[0].distance < 0.5) {
+          actualMoveSpeed = 0
+          break
+        }
       }
     }
-    this.camera.translateZ(-actualMoveSpeed)
+    this.#group.translateZ(actualMoveSpeed)
 
-    // Position the camera on the floor
-    this.#raycaster.set(this.camera.position, _downDirection)
+    // Position vertically
+    this.#raycaster.set(new THREE.Vector3(0, this.#character.size.height, 0).add(this.#group.position), _downDirection)
     intersects = this.#raycaster.intersectObjects(this.floors)
-
-    // Calculate fallspeed (including jumping)
-    let fallspeed =
-      this.gravity * this.#floatDuration ** 2 * 10 - (this.#isJump ? this.jumpForce : 0)
-    if (fallspeed > this.maxFallSpeed) fallspeed = this.maxFallSpeed // max fall speed
-
-    // Just falling
-    if (intersects.length === 0) {
-      this.#floatDuration += delta
-      this.camera.position.y -= delta * fallspeed
-      return
+    if (intersects.length && intersects[0].distance < this.#character.size.height + 1) {
+      // grounded
+      this.#isFloating = false
+      this.#floatingDuration = 0
+      this.#group.position.y += this.#character.size.height - intersects[0].distance
+    } else {
+      // falling
+      this.#isFloating = true
+      this.#floatingDuration += delta
+      const fallspeed = Math.min(this.gravity * this.#floatingDuration ** 2 * 10, this.maxFallSpeed)
+      this.#group.position.y -= delta * fallspeed
     }
 
-    // Ground
-    const distance = intersects[0].distance
-    if (distance < this.height && this.#floatDuration) {
-      // just grounded
-      this.#isJump = false
-      this.#floatDuration = 0
-      this.camera.position.y += this.height - distance
-    } else if (distance < this.height + _groundOffset && !this.#isJump) {
-      // just jumped
-      this.#floatDuration = 0
-      this.camera.position.y += this.height - distance
+    // Animation Update
+    this.#character.mixer.update(delta)
+    if (this.#isJump) {
+      this.fadeToAction(this.#character.actions.jump)
+    } else if (this.#isFloating) {
+      this.fadeToAction(this.#character.actions.fall)
+    } else if (!actualMoveSpeed) {
+      this.fadeToAction(this.#character.actions.idle)
+    } else if (actualMoveSpeed > 0) {
+      this.fadeToAction(this.#character.actions.run)
     } else {
-      // others
-      this.#floatDuration += delta
-      this.camera.position.y -= delta * fallspeed
+      this.fadeToAction(this.#character.actions.runBackward)
     }
   }
 }
