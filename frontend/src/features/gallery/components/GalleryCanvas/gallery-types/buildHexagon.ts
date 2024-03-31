@@ -1,6 +1,7 @@
 import * as THREE from 'three'
 import { GLTF, GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
-import { acceleratedRaycast } from 'three-mesh-bvh'
+import { degToRad } from 'three/src/math/MathUtils'
+import { MeshBVH, acceleratedRaycast } from 'three-mesh-bvh'
 import { FRAMES_DATA } from './greenaryData'
 import nx from '@/assets/cubemaps/clear_sky/nx.png'
 import ny from '@/assets/cubemaps/clear_sky/ny.png'
@@ -10,6 +11,7 @@ import py from '@/assets/cubemaps/clear_sky/py.png'
 import pz from '@/assets/cubemaps/clear_sky/pz.png'
 import hexagonGlb from '@/assets/glbs/free_low_poly_game_assets.glb'
 import { GalleryTypeProps } from '@/features/gallery/types'
+import { Floor } from '@/libs/three-custom/items/Floor'
 import { PostFrames } from '@/libs/three-custom/items/PostFrames'
 
 THREE.Mesh.prototype.raycast = acceleratedRaycast
@@ -57,23 +59,33 @@ const buildHexagon = (props: GalleryTypeProps) => {
   const items: ThreeItem[] = []
 
   // Greeneary floor
-  const greenary = Greenary.build(props.scene, gltfLoader).then((greenary) => {
-    // props.controls.floors.push(greenary.terrain)
-    // props.controls.obstacles.push(greenary.edges)
-    // props.controls.obstacles.push(greenary.trees)
+  const hexagon = Hexagon.build(props.scene, gltfLoader).then((hexagon) => {
+    props.controls.floors.push(hexagon.terrain)
+    props.controls.obstacles.push(hexagon.terrain)
 
-    // props.rayControls.rayItems.push(greenary.terrain)
-    // props.rayControls.rayItems.push(greenary.trees)
+    props.rayControls.rayItems.push(hexagon.terrain)
 
-    // // Set camera position & rotation by controls
-    // props.controls.setPosition(25.1, 5, 25.1)
-    // props.controls.setQuaternion(0, degToRad(-135), 0)
+    // Set camera position & rotation by controls
+    props.controls.setPosition(25.1, 50, 25.1)
+    props.controls.setQuaternion(0, degToRad(0), 0)
 
-    // directLight.target = greenary.terrain
+    directLight.target = hexagon.terrain
 
-    items.push(greenary)
-    return greenary
+    items.push(hexagon)
+    return hexagon
   })
+
+  const ocean = new Floor({
+    container: props.scene,
+    color: 0x7abfff,
+    isPlane: true,
+    width: 10000,
+    depth: 10000,
+    x: -500,
+    y: 0.5,
+    z: -500,
+  })
+  items.push(ocean)
 
   // Create PostFrames
   const frames = new PostFrames({
@@ -114,20 +126,38 @@ const buildHexagon = (props: GalleryTypeProps) => {
 
 export default buildHexagon
 
-type GreenaryProps = {
+type HexagonProps = {
   container: THREE.Mesh | THREE.Scene
+  terrain: THREE.Object3D
+  animation: THREE.AnimationClip
 }
 
-export class Greenary {
-  type: string = 'greenary'
+export class Hexagon {
+  type: string = 'hexagon'
+  terrain: THREE.Object3D
+  mixer: THREE.AnimationMixer
+  update: (delta: number) => void
   dispose: () => void
 
-  constructor(props: GreenaryProps) {
+  constructor(props: HexagonProps) {
     if (!props) {
       throw new Error("Cannot be called directly. Uses static 'build' method")
     }
 
-    this.dispose = () => {}
+    this.terrain = props.terrain
+    props.container.add(this.terrain)
+
+    this.mixer = new THREE.AnimationMixer(props.terrain)
+    const idle = this.mixer.clipAction(props.animation)
+
+    idle.play()
+    this.update = (delta: number) => {
+      this.mixer.update(delta)
+    }
+
+    this.dispose = () => {
+      props.container.remove(this.terrain)
+    }
   }
 
   // Construct asynchronously
@@ -137,17 +167,20 @@ export class Greenary {
       gltfLoader.load(hexagonGlb, (glb) => resolve(glb), undefined, reject)
     })
 
-    console.log('hexagon', glb)
-
+    console.log('glb', glb)
     // Extract glbs
-    // const trees = glb.scene.children[4]
-    // trees.traverse((obj) => {
-    //   if (obj instanceof THREE.Mesh) {
-    //     obj.castShadow = true
-    //     obj.receiveShadow = true
-    //     obj.geometry.boundsTree = new MeshBVH(obj.geometry) // eslint-disable-line
-    //   }
-    // })
+
+    const animation = glb.animations[0]
+    const terrain = glb.scene.children[0]
+    terrain.scale.set(7, 7, 7)
+
+    terrain.traverse((obj) => {
+      if (obj instanceof THREE.Mesh) {
+        obj.castShadow = true
+        obj.receiveShadow = true
+        obj.geometry.boundsTree = new MeshBVH(obj.geometry) // eslint-disable-line
+      }
+    })
     // const edges = glb.scene.children[3]
     // const ocean = glb.scene.children[2]
     // const lake = glb.scene.children[1]
@@ -157,6 +190,6 @@ export class Greenary {
     // }
     // terrain.receiveShadow = true
 
-    return new Greenary({ container })
+    return new Hexagon({ container, terrain, animation })
   }
 }

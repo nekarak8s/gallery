@@ -1,9 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import * as THREE from 'three'
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import buildGallery from './gallery-types/buildGallery'
 import buildGreenary from './gallery-types/buildGreenary'
-import './GalleryCanvas.scss'
-import buildHexagon from './gallery-types/buildHexagon'
 import { GalleryData, GalleryTypeProps, GalleryTypeReturns } from '../../types'
 import CSSTransition from '@/atoms/ui/CSSTransition'
 import Joystick from '@/atoms/ui/Joystick'
@@ -15,10 +14,12 @@ import useMobile from '@/hooks/useMobile'
 import { DefaultCamera } from '@/libs/three-custom/cameras/DefaultCamera'
 import { KeypadControls } from '@/libs/three-custom/controls/KeypadControls'
 import { RaycasterControls } from '@/libs/three-custom/controls/RaycasterControls.ts'
+import { MichelleBuilder } from '@/libs/three-custom/items/Player'
 import { FrameMesh } from '@/libs/three-custom/meshes/FrameMesh'
 import { DefaultRenderer } from '@/libs/three-custom/renderers/DefaultRenderer'
 import musicManager from '@/utils/musicManager'
 import toastManager from '@/utils/toastManager'
+import './GalleryCanvas.scss'
 
 type GalleryCanvasProps = {
   gallery: GalleryData
@@ -28,7 +29,6 @@ type GalleryCanvasProps = {
 const CANVAS_TYPE: Record<number, (kwargs: GalleryTypeProps) => GalleryTypeReturns> = {
   1: buildGreenary,
   2: buildGallery,
-  3: buildHexagon,
 }
 
 const GalleryCanvas = ({ gallery, postList }: GalleryCanvasProps) => {
@@ -72,7 +72,7 @@ const GalleryCanvas = ({ gallery, postList }: GalleryCanvasProps) => {
     const camera = new DefaultCamera({ canvas })
     scene.add(camera)
 
-    // // Capture camera
+    // Capture camera
     // const camera2 = new THREE.OrthographicCamera(
     //   canvas.offsetWidth / -2,
     //   canvas.offsetWidth / 2,
@@ -83,19 +83,27 @@ const GalleryCanvas = ({ gallery, postList }: GalleryCanvasProps) => {
     // )
     // camera2.position.set(-40, 90, -40)
     // camera2.lookAt(54, 0, 54)
-    // camera2.zoom = 5
+    // camera2.zoom = 10
     // camera2.updateProjectionMatrix()
     // scene.add(camera2)
 
     // Main controls
-    const controls = new KeypadControls(canvas, camera, 1.6)
+    const controls = new KeypadControls(scene, camera, 1.6)
+    MichelleBuilder.build(new GLTFLoader(loadingManager))
+      .then((michelle) => {
+        controls.character = michelle
+      })
+      .catch((err) => {
+        console.error(err)
+      })
+
     controlsRef.current = controls
 
     // Raycaster controls
     const rayControls = new RaycasterControls(canvas, camera)
     rayControls.raycast = (item) => {
       if (item.object instanceof FrameMesh) {
-        if (item.distance > 10) toastManager.addToast('error', '앨범이 너무 멀리 있습니다')
+        if (item.distance > 20) toastManager.addToast('error', '앨범이 너무 멀리 있습니다')
         else {
           setSelectedPostIdx(item.object.index)
           musicManager.muteAudio()
@@ -179,8 +187,8 @@ const GalleryCanvas = ({ gallery, postList }: GalleryCanvasProps) => {
   const joystickControl = useCallback((x: number, y: number) => {
     if (!controlsRef.current) return
 
-    controlsRef.current.lookSpeedRatio = x
-    controlsRef.current.movementSpeedRatio = -y
+    controlsRef.current.rotateSpeedRatio = x
+    controlsRef.current.moveSpeedRatio = -y
   }, [])
 
   const joystickShoot = useCallback(() => {
@@ -198,12 +206,7 @@ const GalleryCanvas = ({ gallery, postList }: GalleryCanvasProps) => {
   return (
     <div className="gallery-canvas">
       <canvas ref={canvasRef} />
-      <CSSTransition
-        className="gallery-canvas__loading"
-        isShow={requiredCount !== loadedCount}
-        duration={1000}
-        timingFunction="ease-in-out"
-      >
+      <CSSTransition className="gallery-canvas__loading" isShow={requiredCount !== loadedCount} duration={1000} timingFunction="ease-in-out">
         <Loading />
       </CSSTransition>
       <Modal

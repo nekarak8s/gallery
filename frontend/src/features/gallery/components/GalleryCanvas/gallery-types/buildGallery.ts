@@ -1,14 +1,7 @@
 import * as THREE from 'three'
+import { degToRad } from 'three/src/math/MathUtils'
 import { acceleratedRaycast } from 'three-mesh-bvh'
-import {
-  CEILING_DATA,
-  EDGES_DATA,
-  FLOORS_DATA,
-  FRAMES_DATA,
-  GLASS_FLOORS_DATA,
-  GLASS_WALL,
-  WALLS_DATA,
-} from './galleryData'
+import { CEILING_DATA, EDGES_DATA, FLOORS_DATA, FRAMES_DATA, GLASS_FLOORS_DATA, GLASS_WALL, WALLS_DATA } from './galleryData'
 import wallBaseImg from '@/assets/textures/concrete/Concrete_019_BaseColor.jpg'
 import floorBaseImg from '@/assets/textures/granite/Granite_001_COLOR.jpg'
 import { GalleryTypeProps } from '@/features/gallery/types'
@@ -100,6 +93,7 @@ const buildGallery = (props: GalleryTypeProps) => {
 
   // Set camera position
   props.controls.setPosition(35, 15, 62)
+  props.controls.setQuaternion(0, degToRad(180), 0)
 
   // Create ceiling
   const ceiling = new Ceiling({

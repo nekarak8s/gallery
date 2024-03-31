@@ -108,7 +108,7 @@ export const galleryHandlers = [
 
     const data = galleryData
     if (Math.random() < 1) {
-      data.place.placeId = 3
+      data.place.placeId = 1
     }
 
     return HttpResponse.json({ data: data }, { status: 200 })

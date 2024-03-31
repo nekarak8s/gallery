@@ -122,8 +122,8 @@ const buildGreenary = (props: GalleryTypeProps) => {
     props.rayControls.rayItems.push(greenary.trees)
 
     // Set camera position & rotation by controls
-    props.controls.setPosition(25.1, 5, 25.1)
-    props.controls.setQuaternion(0, degToRad(-135), 0)
+    props.controls.setPosition(27.1, 5, 27.1)
+    props.controls.setQuaternion(0, degToRad(40), 0)
 
     directLight.target = greenary.terrain
 
