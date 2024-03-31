@@ -134,7 +134,7 @@ const Joystick = ({ control, shoot, jump }: JoystickProps) => {
         lastTouch.clientY > shootInfo.top &&
         lastTouch.clientY < shootInfo.bottom
       ) {
-        shoot && shoot()
+        shoot && setTimeout(shoot, 0)
         return
       }
 

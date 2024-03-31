@@ -12,10 +12,10 @@ import pz from '@/assets/cubemaps/clear_sky/pz.png'
 import greenaryGlb from '@/assets/glbs/greenary-set-done.glb'
 import { GalleryTypeProps } from '@/features/gallery/types'
 import { getRandom } from '@/libs/math'
-import Animal from '@/libs/three-custom/items/Animal'
-import { Duck } from '@/libs/three-custom/items/Animal/species/Duck'
-import { Fox } from '@/libs/three-custom/items/Animal/species/Fox'
-import { Sheep } from '@/libs/three-custom/items/Animal/species/Sheep'
+import { IAnimal } from '@/libs/three-custom/items/Animal/Animal'
+import { DuckFactory } from '@/libs/three-custom/items/Animal/species/Duck'
+import { FoxFactory } from '@/libs/three-custom/items/Animal/species/Fox'
+import { SheepFactory } from '@/libs/three-custom/items/Animal/species/Sheep'
 import { PostFrames } from '@/libs/three-custom/items/PostFrames'
 
 THREE.Mesh.prototype.raycast = acceleratedRaycast
@@ -52,64 +52,63 @@ const buildGreenary = (props: GalleryTypeProps) => {
 
   // Light Helper : Development
   if (process.env.NODE_ENV !== 'production') {
-    import('three').then(({ CameraHelper }) => {
-      props.scene.add(new CameraHelper(directLight.shadow.camera))
-    })
+    import('three')
+      .then(({ CameraHelper }) => {
+        props.scene.add(new CameraHelper(directLight.shadow.camera))
+      })
+      .catch((err) => console.error(err))
   }
 
   /**
    * Meshes
    */
   const items: ThreeItem[] = []
-  const animals: Promise<Animal>[] = []
+  const animals: Promise<IAnimal>[] = []
 
   // fox
   FOX_DATA.forEach((foxData) => {
-    const fox = Fox.build(gltfLoader).then((fox) => {
-      const animal = new Animal({
-        species: fox,
-        container: props.scene,
-        x: foxData.x,
-        y: foxData.y,
-        z: foxData.z,
-        rotationY: getRandom(0, 3),
-      })
-      items.push(animal)
-      return animal
+    const fox = new FoxFactory().addAnimal({
+      scene: props.scene,
+      gltfLoader,
+      position: { x: foxData.x, y: foxData.y, z: foxData.z },
+      rotation: { x: 0, y: degToRad(getRandom(0, 3)), z: 0 },
     })
     animals.push(fox)
+    fox
+      .then((ani) => {
+        items.push(ani)
+      })
+      .catch((err) => console.error(err))
   })
 
   SHEEP_DATA.forEach((sheepData) => {
-    const sheep = Sheep.build(gltfLoader).then((sheep) => {
-      const animal = new Animal({
-        species: sheep,
-        container: props.scene,
-        x: sheepData.x,
-        y: sheepData.y,
-        z: sheepData.z,
-        rotationY: getRandom(0, 3),
-      })
-      items.push(animal)
-      return animal
+    const sheep = new SheepFactory().addAnimal({
+      scene: props.scene,
+      gltfLoader,
+      position: { x: sheepData.x, y: sheepData.y, z: sheepData.z },
+      rotation: { x: 0, y: degToRad(getRandom(0, 3)), z: 0 },
     })
     animals.push(sheep)
+    sheep
+      .then((ani) => {
+        items.push(ani)
+      })
+      .catch((err) => console.error(err))
   })
 
   DUCK_DATA.forEach((duckData) => {
-    const duck = Duck.build(gltfLoader).then((duck) => {
-      const animal = new Animal({
-        species: duck,
-        container: props.scene,
-        x: duckData.x,
-        y: duckData.y,
-        z: duckData.z,
-        rotationY: getRandom(0, 3),
-      })
-      items.push(animal)
-      return animal
+    const duck = new DuckFactory().addAnimal({
+      scene: props.scene,
+      gltfLoader,
+      position: { x: duckData.x, y: duckData.y, z: duckData.z },
+      rotation: { x: 0, y: degToRad(getRandom(0, 3)), z: 0 },
     })
     animals.push(duck)
+    duck
+      .then((ani) => {
+        items.push(ani)
+      })
+      .catch((err) => console.error(err))
   })
 
   // Greeneary floor
@@ -122,15 +121,19 @@ const buildGreenary = (props: GalleryTypeProps) => {
     props.rayControls.rayItems.push(greenary.trees)
 
     // Set camera position & rotation by controls
-    props.controls.setPosition(27.1, 5, 27.1)
+    props.controls.setPosition(27.1, 10, 27.1)
     props.controls.setQuaternion(0, degToRad(40), 0)
 
     directLight.target = greenary.terrain
 
     animals.forEach((animal) => {
-      animal.then((ani) => ani.floors.push(greenary.terrain))
-      animal.then((ani) => ani.obstacles.push(greenary.edges))
-      animal.then((ani) => ani.obstacles.push(greenary.trees))
+      animal
+        .then((ani) => {
+          ani.floors.push(greenary.terrain)
+          ani.obstacles.push(greenary.edges)
+          ani.obstacles.push(greenary.trees)
+        })
+        .catch((err) => console.error(err))
     })
 
     items.push(greenary)

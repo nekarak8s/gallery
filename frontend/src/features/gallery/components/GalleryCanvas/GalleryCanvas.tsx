@@ -89,6 +89,7 @@ const GalleryCanvas = ({ gallery, postList }: GalleryCanvasProps) => {
 
     // Main controls
     const controls = new KeypadControls(scene, camera, 1.6)
+    controls.enabled = false
     MichelleBuilder.build(new GLTFLoader(loadingManager))
       .then((michelle) => {
         controls.character = michelle
@@ -180,26 +181,36 @@ const GalleryCanvas = ({ gallery, postList }: GalleryCanvasProps) => {
   }, [gallery, postList])
 
   /**
+   *
+   */
+  useEffect(() => {
+    if (!controlsRef.current) return
+
+    if (requiredCount === loadedCount) {
+      controlsRef.current.enabled = true
+    } else {
+      controlsRef.current.enabled = false
+    }
+  }, [requiredCount, loadedCount])
+
+  /**
    * Use Joystick if it's Mobile
    */
   const isMobile = useMobile()
 
   const joystickControl = useCallback((x: number, y: number) => {
     if (!controlsRef.current) return
-
     controlsRef.current.rotateSpeedRatio = x
     controlsRef.current.moveSpeedRatio = -y
   }, [])
 
   const joystickShoot = useCallback(() => {
     if (!rayControlsRef.current) return
-
     rayControlsRef.current.shoot()
   }, [])
 
   const joystickJump = useCallback(() => {
     if (!controlsRef.current) return
-
     controlsRef.current.jump()
   }, [])
 
@@ -208,6 +219,7 @@ const GalleryCanvas = ({ gallery, postList }: GalleryCanvasProps) => {
       <canvas ref={canvasRef} />
       <CSSTransition className="gallery-canvas__loading" isShow={requiredCount !== loadedCount} duration={1000} timingFunction="ease-in-out">
         <Loading />
+        <span className="gallery-canvas__percentage">{(loadedCount / requiredCount) * 100}%</span>
       </CSSTransition>
       <Modal
         isOpen={selectedPostIdx !== null}

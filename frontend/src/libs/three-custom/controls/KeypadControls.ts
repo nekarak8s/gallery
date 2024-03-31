@@ -29,7 +29,7 @@ export class KeypadControls {
 
   // character
   #character: IPlayer | null = null
-  activeAction: THREE.AnimationAction | null = null
+  #activeAction: THREE.AnimationAction | null = null
 
   // raycasting
   #raycaster = new THREE.Raycaster()
@@ -253,12 +253,12 @@ export class KeypadControls {
    */
 
   fadeToAction(action: THREE.AnimationAction, duration: number = 0.5) {
-    const previousAction = this.activeAction
-    this.activeAction = action
+    const previousAction = this.#activeAction
+    this.#activeAction = action
 
-    if (previousAction !== this.activeAction) {
+    if (previousAction !== this.#activeAction) {
       previousAction && previousAction.fadeOut(duration)
-      this.activeAction.reset().setEffectiveTimeScale(1).setEffectiveWeight(1).fadeIn(duration).play()
+      this.#activeAction.reset().setEffectiveTimeScale(1).setEffectiveWeight(1).fadeIn(duration).play()
     }
   }
 
