@@ -1,39 +1,10 @@
 import * as THREE from 'three'
 import { GLTF, GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
+import { Animal } from '../Animal'
+import { AnimalFactory } from '../AnimalFactory'
 import sheepGlb from '@/assets/glbs/sheep.glb'
 
-type SheepProps = {
-  object: THREE.Object3D
-  mixer: THREE.AnimationMixer
-  idle: THREE.AnimationAction
-  walk: THREE.AnimationAction
-  swim: THREE.AnimationAction
-  height: number
-}
-
-export class Sheep {
-  type: string = 'sheep'
-  object: THREE.Object3D
-  mixer: THREE.AnimationMixer
-  idle: THREE.AnimationAction
-  walk: THREE.AnimationAction
-  swim: THREE.AnimationAction
-  height: number
-
-  constructor(props: SheepProps) {
-    if (!props) {
-      throw new Error("Cannot be called directly. Uses static 'build' method")
-    }
-
-    this.object = props.object
-    this.mixer = props.mixer
-    this.idle = props.idle
-    this.walk = props.walk
-    this.swim = props.swim
-    this.height = props.height
-  }
-
-  // Construct asynchronously
+class SheepBuilder {
   static async build(gltfLoader: GLTFLoader) {
     // Load GLTF
     const glb: GLTF = await new Promise((resolve, reject) => {
@@ -55,6 +26,31 @@ export class Sheep {
     const walk = mixer.clipAction(glb.animations[17])
     const swim = mixer.clipAction(glb.animations[16])
 
-    return new Sheep({ object, mixer, idle, walk, swim, height: 1.2 })
+    // Extract size
+    const box = new THREE.Box3().setFromObject(object)
+    const { x: width, y: height, z: depth } = box.getSize(new THREE.Vector3())
+
+    return new Animal({
+      object,
+      mixer,
+      actions: { idle, walk, swim },
+      size: { width, height, depth },
+    })
+  }
+}
+
+export class SheepFactory extends AnimalFactory {
+  static instance: SheepFactory | null = null
+
+  constructor() {
+    if (!SheepFactory.instance) {
+      super()
+      SheepFactory.instance = this
+    }
+    return SheepFactory.instance
+  }
+
+  createAnimal(gltfLoader: GLTFLoader) {
+    return SheepBuilder.build(gltfLoader)
   }
 }
