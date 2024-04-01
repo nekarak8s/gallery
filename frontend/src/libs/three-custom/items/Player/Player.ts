@@ -13,4 +13,5 @@ export interface IPlayer {
     height: number
     depth: number
   }
+  dispose: () => void
 }

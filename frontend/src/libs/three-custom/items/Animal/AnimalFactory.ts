@@ -2,6 +2,7 @@ import * as THREE from 'three'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import { acceleratedRaycast } from 'three-mesh-bvh'
 import { IAnimal } from './Animal'
+import { disposeObject } from '../../utils/disposeObject'
 
 THREE.Mesh.prototype.raycast = acceleratedRaycast
 
@@ -40,6 +41,7 @@ export abstract class AnimalFactory implements IAnimalFactory {
     const originalDispose = animal.dispose.bind(animal)
     animal.dispose = () => {
       props.scene.remove(animal.species.object)
+      disposeObject(animal.species.object)
       originalDispose()
     }
 

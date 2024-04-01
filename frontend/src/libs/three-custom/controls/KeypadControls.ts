@@ -79,9 +79,13 @@ export class KeypadControls {
 
     // Set dispose function: Release resources
     this.dispose = () => {
-      this.#group.remove(this.camera)
-      this.#character && this.#group.remove(this.#character.object)
       this.scene.remove(this.#group)
+      this.#group.remove(this.camera)
+      if (this.#character) {
+        this.#group.remove(this.#character.object)
+        this.#character.dispose()
+      }
+
       window.removeEventListener('keydown', _onKeyDown)
       window.removeEventListener('keyup', _onKeyUp)
     }
@@ -201,6 +205,7 @@ export class KeypadControls {
   set character(character: IPlayer) {
     if (this.#character) {
       this.#group.remove(this.#character.object)
+      this.#character.dispose()
     }
 
     this.#character = character
@@ -213,6 +218,10 @@ export class KeypadControls {
         this.#isJump = false
       }
     })
+  }
+
+  get chracter() {
+    return this.#character
   }
 
   /**
@@ -266,6 +275,7 @@ export class KeypadControls {
    * Jump
    */
   jump() {
+    if (this.#isFloating) return
     this.#isJump = true
   }
 
@@ -282,14 +292,15 @@ export class KeypadControls {
     // Move group detecting obstacles
     let intersects
     let actualMoveSpeed = 0
+
     if (this.#moveForwardRatio || this.#moveBackwardRatio) {
+      this.#group.getWorldDirection(this.#lookDirection) // update rotateDriection which the camera is rotateings
       actualMoveSpeed = delta * this.#moveSpeed * (this.#moveForwardRatio - this.#moveBackwardRatio) * MOVE_SPEED_FACTOR
-      this.#character.object.getWorldDirection(this.#lookDirection) // update rotateDriection which the camera is rotateings
       if (actualMoveSpeed < 0) this.#lookDirection.negate()
       for (const point of [0, this.#character.size.height * (this.#isJump ? 0.5 : 1) - 0.4]) {
         this.#raycaster.set(new THREE.Vector3(0, this.#character.size.height - point, 0).add(this.#group.position), this.#lookDirection)
         intersects = this.#raycaster.intersectObjects(this.obstacles)
-        if (intersects.length && intersects[0].distance < 0.5) {
+        if (intersects.length && intersects[0].distance < 1) {
           actualMoveSpeed = 0
           break
         }
@@ -319,12 +330,12 @@ export class KeypadControls {
       this.fadeToAction(this.#character.actions.jump)
     } else if (this.#isFloating) {
       this.fadeToAction(this.#character.actions.fall)
-    } else if (!actualMoveSpeed) {
-      this.fadeToAction(this.#character.actions.idle)
-    } else if (actualMoveSpeed > 0) {
+    } else if (this.#moveForwardRatio > this.#moveBackwardRatio) {
       this.fadeToAction(this.#character.actions.run)
-    } else {
+    } else if (this.#moveForwardRatio < this.#moveBackwardRatio) {
       this.fadeToAction(this.#character.actions.runBackward)
+    } else {
+      this.fadeToAction(this.#character.actions.idle)
     }
   }
 }
