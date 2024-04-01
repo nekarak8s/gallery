@@ -80,6 +80,8 @@ const Joystick = ({ control, shoot, jump }: JoystickProps) => {
      * Handle touch move
      */
     const handleTouchmove = function tracking(e: TouchEvent) {
+      e.preventDefault()
+
       if (!isTracking.current) return
 
       const lastTouch = e.changedTouches[e.changedTouches.length - 1]
@@ -132,7 +134,7 @@ const Joystick = ({ control, shoot, jump }: JoystickProps) => {
         lastTouch.clientY > shootInfo.top &&
         lastTouch.clientY < shootInfo.bottom
       ) {
-        shoot && shoot()
+        shoot && setTimeout(shoot, 0)
         return
       }
 

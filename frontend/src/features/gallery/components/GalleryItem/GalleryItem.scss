@@ -141,8 +141,8 @@
 .gallery-item__update {
   position: fixed;
   z-index: 99;
-  width: 90dvw;
-  height: 100lvh;
+  width: 90vw;
+  height: 100vh;
   top: 0;
   right: 0;
   background-color: purple;
@@ -171,6 +171,6 @@
 
 @include mobile {
   .gallery-item {
-    font-size: 3dvw;
+    font-size: 3vw;
   }
 }

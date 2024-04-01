@@ -1,39 +1,10 @@
 import * as THREE from 'three'
 import { GLTF, GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
+import { Animal } from '../Animal'
+import { AnimalFactory } from '../AnimalFactory'
 import duckGlb from '@/assets/glbs/duck.glb'
 
-type DuckProps = {
-  object: THREE.Object3D
-  mixer: THREE.AnimationMixer
-  idle: THREE.AnimationAction
-  walk: THREE.AnimationAction
-  swim: THREE.AnimationAction
-  height: number
-}
-
-export class Duck {
-  type: string = 'duck'
-  object: THREE.Object3D
-  mixer: THREE.AnimationMixer
-  idle: THREE.AnimationAction
-  walk: THREE.AnimationAction
-  swim: THREE.AnimationAction
-  height: number
-
-  constructor(props: DuckProps) {
-    if (!props) {
-      throw new Error("Cannot be called directly. Uses static 'build' method")
-    }
-
-    this.object = props.object
-    this.mixer = props.mixer
-    this.idle = props.idle
-    this.walk = props.walk
-    this.swim = props.swim
-    this.height = props.height
-  }
-
-  // Construct asynchronously
+class DuckBuilder {
   static async build(gltfLoader: GLTFLoader) {
     // Load GLTF
     const glb: GLTF = await new Promise((resolve, reject) => {
@@ -42,7 +13,7 @@ export class Duck {
 
     // Extract mesh
     const object = glb.scene.children[0]
-    object.scale.multiplyScalar(1.9)
+    object.scale.multiplyScalar(1.5)
     object.traverse((obj) => {
       obj.castShadow = true
       obj.receiveShadow = true
@@ -55,6 +26,31 @@ export class Duck {
     const walk = mixer.clipAction(glb.animations[17])
     const swim = mixer.clipAction(glb.animations[16])
 
-    return new Duck({ object, mixer, idle, walk, swim, height: 0.4 })
+    // Extract size
+    const box = new THREE.Box3().setFromObject(object)
+    const { x: width, y: height, z: depth } = box.getSize(new THREE.Vector3())
+
+    return new Animal({
+      object,
+      mixer,
+      actions: { idle, walk, swim },
+      size: { width, height, depth },
+    })
+  }
+}
+
+export class DuckFactory extends AnimalFactory {
+  static instance: DuckFactory | null = null
+
+  constructor() {
+    if (!DuckFactory.instance) {
+      super()
+      DuckFactory.instance = this
+    }
+    return DuckFactory.instance
+  }
+
+  createAnimal(gltfLoader: GLTFLoader) {
+    return DuckBuilder.build(gltfLoader)
   }
 }

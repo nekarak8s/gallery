@@ -3,7 +3,7 @@
 
 .hs2-back {
   position: relative;
-  height: var(--background-height, 600lvh);
+  height: var(--background-height, 600vh);
   min-height: var(--min-height-back, 3600px);
 }
 
@@ -12,14 +12,20 @@
   position: sticky;
   left: 0;
   top: 0;
-  width: 100dvw;
-  height: 100lvh;
+  width: 100vw;
+  height: 100vh;
   min-height: 600px;
   color: var(--color, rgb(255, 93, 52));
   background-color: var(--background-color, rgb(122, 200, 219));
   transition:
     color var(--transition-time-home) ease-in-out,
     background-color var(--transition-time-home) ease-in-out;
+
+  &.smooth {
+    .hs2-card {
+      transition: transform 2000ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+  }
 }
 
 .hs2-phrase {
@@ -45,7 +51,6 @@
   // https://coder-coder.com/z-index-isnt-working/
   position: absolute;
   font-size: 2rem;
-  transition: transform 2000ms cubic-bezier(0.16, 1, 0.3, 1);
 
   &.three-D {
     transform-style: preserve-3d;
@@ -68,7 +73,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 30dvw;
+    width: 30vw;
     min-width: 100px;
     padding: 0 1em;
     background-color: var(--background-color, rgb(122, 200, 219));
@@ -78,7 +83,7 @@
   }
 
   &__blank {
-    width: 60dvw;
+    width: 60vw;
   }
 }
 
@@ -126,11 +131,11 @@
 
 @include mobile {
   .hs2-phrase {
-    font-size: 6dvw;
+    font-size: 6vw;
   }
 
   .hs2-card {
-    font-size: 2dvw;
+    font-size: 2vw;
 
     &__item {
       border-bottom: 2px solid var(--color, rgb(255, 93, 52));

@@ -25,9 +25,10 @@ function Navbar({ whitePathname, isLogin }: NavbarProps) {
 
     // Watch scroll position
     let prevScrollY = window.scrollY
+
     const handleScroll = () => {
       const curScrollY = window.scrollY
-      if (prevScrollY > curScrollY) {
+      if (curScrollY < 1 || prevScrollY > curScrollY) {
         navbar.classList.remove('hide')
       } else {
         navbar.classList.add('hide')

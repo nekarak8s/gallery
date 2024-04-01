@@ -15,7 +15,7 @@ function LoginForm() {
   const { mutate: login } = useLogin()
 
   const handleClick = function saveUrlLogin(type: string) {
-    window.sessionStorage.setItem('login-pathname', location.pathname)
+    window.sessionStorage.setItem('login-pathname', location.pathname) // 로그인 후 리다이렉트 결정 : OAuth.tsx
     login(type)
   }
 
@@ -39,14 +39,10 @@ function LoginForm() {
           </Button3D>
         </li>
         <li>
-          <Button3D
-            onClick={() => handleClick('google')}
-            ariaLabel="구글 이메일로 로그인하기"
-            disabled={true}
-          >
+          <Button3D onClick={() => handleClick('google')} ariaLabel="구글 이메일로 로그인하기">
             <div className="login-form__menu-item">
               <GoogleLogo />
-              <p>구글 이메일로 탑승</p>
+              <p data-cursor-scale={CURSOR_SCALE}>구글 이메일로 탑승</p>
             </div>
           </Button3D>
         </li>

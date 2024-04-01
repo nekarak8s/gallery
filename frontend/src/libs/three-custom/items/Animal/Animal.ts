@@ -2,136 +2,122 @@ import * as THREE from 'three'
 import { acceleratedRaycast } from 'three-mesh-bvh'
 import { getRandom } from '@/libs/math'
 
-type Species = {
-  type: string
+THREE.Mesh.prototype.raycast = acceleratedRaycast
+
+export interface ISpecies {
   object: THREE.Object3D
   mixer: THREE.AnimationMixer
-  idle: THREE.AnimationAction
-  walk: THREE.AnimationAction
-  swim: THREE.AnimationAction
-  height: number
+  actions: {
+    idle: THREE.AnimationAction
+    walk: THREE.AnimationAction
+    swim: THREE.AnimationAction
+  }
+  size: {
+    width: number
+    height: number
+    depth: number
+  }
 }
 
-type AnimalProps = {
-  species: Species
-  container: THREE.Mesh | THREE.Scene
-  x: number
-  y: number
-  z: number
-  rotationY: number
+export interface IAnimal {
+  species: ISpecies
+  floors: THREE.Object3D[]
+  obstacles: THREE.Object3D[]
+  update: (delta: number) => void
+  dispose: () => void
 }
 
 const _downDirection = new THREE.Vector3(0, -1, 0)
 
-THREE.Mesh.prototype.raycast = acceleratedRaycast
-
-export default class Animal {
-  type: string = 'trees'
-  species: Species
-  mixer: THREE.AnimationMixer
+export class Animal implements IAnimal {
+  species: ISpecies
   floors: THREE.Object3D[] = [] // Array for floor meshes
   obstacles: THREE.Object3D[] = [] // Array for floor meshes
-  height: number
-  dispose: () => void
 
+  // raycasting
   #raycaster = new THREE.Raycaster()
   #lookDirection = new THREE.Vector3()
+  #throttleTime = Date.now()
 
-  #movementSpeed: number = 1
-  #lookSpeed: number = 3
+  // movement variables
+  movementSpeed: number = 1
+  rotateSpeed: number = 3
+
+  pausingPeriod: number = 5
+  walkingPeriod: number = 7
+  rotatingPeriod: number = 0.5
+
+  #pausingTime: number = 0
+  #walkingTime: number = 0
+  #rotatingTime: number = 0
 
   #status: 'pause' | 'walk' | 'turn' | 'swim'
+  #activeAction: THREE.AnimationAction
 
-  pausingPeriod = 5
-  pausingTime = 0
+  constructor(props: ISpecies) {
+    this.species = props
 
-  walkingPeriod = 7
-  walkingTime = 0
+    // Set idle animation
+    this.#status = 'pause'
+    this.species.actions.idle.play()
+    this.#activeAction = this.species.actions.idle
 
-  rotatingPeriod = 0.5
-  rotatingTime = 0
-
-  #lateTime = Date.now()
-
-  constructor(info: AnimalProps) {
-    /**
-     * Load GLTF
-     */
-    info.species.object.position.set(info.x, info.y, info.z)
-    info.species.object.rotateY(info.rotationY)
-    info.container.add(info.species.object)
-    this.species = info.species
-    this.mixer = info.species.mixer
-    this.#status = 'walk'
-    this.species.walk.play()
-
-    this.height = info.species.height
-
+    // Set raycaster
     this.#raycaster.far = 5
     this.#raycaster.firstHitOnly = true
+  }
 
-    /**
-     *  Dispose function: release resources
-     */
-    this.dispose = () => {
-      info.container.remove(this.species.object)
+  /**
+   * animations
+   */
+
+  fadeToAction(action: THREE.AnimationAction, duration: number = 0.5) {
+    const previousAction = this.#activeAction
+    this.#activeAction = action
+
+    if (previousAction !== this.#activeAction) {
+      previousAction && previousAction.fadeOut(duration)
+      this.#activeAction.reset().setEffectiveTimeScale(1).setEffectiveWeight(1).fadeIn(duration).play()
     }
   }
 
   pause() {
     this.#status = 'pause'
-    this.pausingTime = 0
+    this.#pausingTime = 0
     this.pausingPeriod = getRandom(3, 7)
-
-    this.species.walk.stop()
-    this.species.idle.play()
+    this.fadeToAction(this.species.actions.idle)
   }
 
   walk() {
     this.#status = 'walk'
-    this.walkingTime = 0
+    this.#walkingTime = 0
     this.walkingPeriod = getRandom(8, 12)
-
-    this.species.idle.stop()
-    this.species.walk.play()
-    this.species.swim.stop()
+    this.fadeToAction(this.species.actions.walk)
   }
 
   turn() {
     this.#status = 'turn'
-    this.rotatingTime = 0
+    this.#rotatingTime = 0
     this.rotatingPeriod = getRandom(0.1, 0.3)
-
-    this.species.walk.stop()
-    this.species.idle.play()
-    this.species.swim.stop()
+    this.fadeToAction(this.species.actions.idle)
   }
 
   swim() {
     this.#status = 'swim'
-    this.species.walk.stop()
-    this.species.idle.stop()
-    this.species.swim.play()
+    this.fadeToAction(this.species.actions.swim)
   }
 
   update(delta: number) {
     // Animation
-    this.mixer.update(delta)
+    this.species.mixer.update(delta)
 
-    this.#raycaster.set(
-      new THREE.Vector3(0, this.height / 2, 0).add(this.species.object.position),
-      _downDirection
-    )
+    // Position vertically
+    this.#raycaster.set(new THREE.Vector3(0, this.species.size.height / 2, 0).add(this.species.object.position), _downDirection)
     let intersects = this.#raycaster.intersectObjects(this.floors)
-    if (!intersects[0]) return
-
-    // Position on the floor
-    const distance = intersects[0].distance
-    this.species.object.position.y -= distance - this.height / 2
-
-    // normal vector 와 (0, 1, 0) 사이 각도 체크)
-    // const worldNormal = intersects[0].normal!.clone() // intersects[0].normal을 변경하지 않도록 복제합니다.
-    // worldNormal.applyMatrix4(intersects[0].object.matrixWorld)
+    if (intersects.length) {
+      const distance = intersects[0].distance
+      this.species.object.position.y += this.species.size.height / 2 - distance
+    }
 
     // Swim
     if (this.#status === 'swim') {
@@ -142,19 +128,19 @@ export default class Animal {
 
     // Pause
     if (this.#status === 'pause') {
-      this.pausingTime += delta
+      this.#pausingTime += delta
 
-      if (this.pausingTime > this.pausingPeriod) this.walk()
+      if (this.#pausingTime > this.pausingPeriod) this.walk()
       return
     }
 
     // Rotate
     if (this.#status === 'turn') {
-      this.rotatingTime += delta
-      const actualLookSpeed = delta * this.#lookSpeed
+      this.#rotatingTime += delta
+      const actualLookSpeed = delta * this.rotateSpeed
       this.species.object.rotateY(actualLookSpeed)
 
-      if (this.rotatingTime > this.rotatingPeriod) {
+      if (this.#rotatingTime > this.rotatingPeriod) {
         this.species.object.position.y > -0.8 ? this.walk() : this.swim()
       }
       return
@@ -162,10 +148,10 @@ export default class Animal {
 
     // Walk
     if (this.#status === 'walk') {
-      this.walkingTime += delta
+      this.#walkingTime += delta
 
       // pause or turn
-      if (this.walkingTime > this.walkingPeriod) {
+      if (this.#walkingTime > this.walkingPeriod) {
         getRandom(0, 1) < 0.5 ? this.pause() : this.turn()
         return
       }
@@ -179,12 +165,12 @@ export default class Animal {
     }
 
     // obstacle
-    if (Date.now() > this.#lateTime + 200) {
+    if (Date.now() > this.#throttleTime + 200) {
       this.species.object.getWorldDirection(this.#lookDirection)
       this.#raycaster.set(this.species.object.position, this.#lookDirection)
       intersects = this.#raycaster.intersectObjects(this.obstacles)
 
-      this.#lateTime = Date.now()
+      this.#throttleTime = Date.now()
       if (intersects.length > 0 && intersects[0].distance < 0.5) {
         this.turn()
         return
@@ -192,7 +178,9 @@ export default class Animal {
     }
 
     // move forward
-    const actualMoveSpeed = this.#movementSpeed * delta
+    const actualMoveSpeed = this.movementSpeed * delta
     this.species.object.translateZ(actualMoveSpeed)
   }
+
+  dispose() {}
 }

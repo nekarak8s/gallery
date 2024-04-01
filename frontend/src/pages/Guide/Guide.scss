@@ -3,8 +3,8 @@
 @use '@/styles/_colors.scss' as c;
 
 .guide {
-  width: 100dvw;
-  height: 600lvh;
+  width: 100vw;
+  height: 600vh;
   color: var(--ft-color-reverse, c.$ft-white);
   font-size: 1rem;
   text-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
@@ -14,12 +14,12 @@
   position: sticky;
   top: 0;
   left: 0;
-  width: 100dvw;
-  height: 100lvh;
+  width: 100vw;
+  height: 100vh;
 
   > canvas {
-    width: 100dvw !important;
-    height: 100lvh !important;
+    width: 100% !important;
+    height: 100% !important;
   }
 }
 
@@ -36,8 +36,8 @@
     justify-content: center;
     gap: 1em;
     position: relative;
-    height: 100lvh;
-    width: 100dvw;
+    height: 100vh;
+    width: 100vw;
     padding: 10%;
     background-color: transparent;
     text-align: start;
@@ -85,8 +85,8 @@
   position: fixed;
   top: 0;
   bottom: 0;
-  width: 100dvw;
-  height: 100lvh;
+  width: 100vw;
+  height: 100vh;
   background-color: var(--color-bg, c.$bg-white);
   opacity: 1;
 
@@ -98,7 +98,7 @@
 @include tablet {
   .guide__sections {
     > section {
-      padding: 15lvh 5dvw;
+      padding: 15vh 5vw;
       align-items: center;
       justify-content: flex-end;
 
@@ -123,7 +123,7 @@
 
 @include mobile {
   .guide {
-    font-size: 3dvw;
+    font-size: 3vw;
   }
 
   .guide__sections {
