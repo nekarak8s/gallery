@@ -1,7 +1,10 @@
 import * as THREE from 'three'
 import { GLTF, GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import { IPlayer } from '../Player'
-import michelleGlb from '@/assets/glbs/players/michelle-not.glb'
+import michelleGlb from '@/assets/glbs/players/michelle.glb'
+import { disposeObject } from '@/libs/three-custom/utils/disposeObject'
+
+const SCALE = 1.5
 
 class Michelle implements IPlayer {
   object: THREE.Object3D
@@ -19,11 +22,15 @@ class Michelle implements IPlayer {
     depth: number
   }
 
-  constructor(props: IPlayer) {
+  constructor(props: Omit<IPlayer, 'dispose'>) {
     this.object = props.object
     this.mixer = props.mixer
     this.actions = props.actions
     this.size = props.size
+  }
+
+  dispose() {
+    disposeObject(this.object)
   }
 }
 
@@ -38,8 +45,7 @@ export class MichelleBuilder {
 
     // Extract mesh
     const object = glb.scene.children[0]
-    object.scale.set(0.015, 0.015, 0.015)
-    object.rotateX(-Math.PI / 2)
+    object.scale.multiplyScalar(SCALE)
     object.traverse((obj) => {
       obj.castShadow = true
       obj.receiveShadow = true
@@ -47,21 +53,18 @@ export class MichelleBuilder {
 
     // Extract animations
     const mixer = new THREE.AnimationMixer(object)
-    const runBackward = mixer.clipAction(glb.animations[4])
+    mixer.timeScale = 1.2
+    const idle = mixer.clipAction(glb.animations[4])
     const run = mixer.clipAction(glb.animations[3])
-    const jump = mixer.clipAction(glb.animations[2])
-    const idle = mixer.clipAction(glb.animations[1])
+    const runBackward = mixer.clipAction(glb.animations[2])
+    const jump = mixer.clipAction(glb.animations[1])
     const fall = mixer.clipAction(glb.animations[0])
-
-    // Extract size
-    const box = new THREE.Box3().setFromObject(object)
-    const { x: width, y: height, z: depth } = box.getSize(new THREE.Vector3())
 
     return new Michelle({
       object,
       mixer,
       actions: { idle, run, runBackward, jump, fall },
-      size: { width, height, depth },
+      size: { width: 0.73, height: 1.67, depth: 0.21 },
     })
   }
 }

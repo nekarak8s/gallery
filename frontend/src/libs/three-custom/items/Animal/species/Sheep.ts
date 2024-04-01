@@ -13,7 +13,7 @@ class SheepBuilder {
 
     // Extract mesh
     const object = glb.scene.children[0]
-    object.scale.multiplyScalar(2)
+    object.scale.multiplyScalar(1.5)
     object.traverse((obj) => {
       obj.castShadow = true
       obj.receiveShadow = true

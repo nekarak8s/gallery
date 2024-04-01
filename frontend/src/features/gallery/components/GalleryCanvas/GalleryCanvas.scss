@@ -1,4 +1,5 @@
 @use '@/styles/_colors.scss' as c;
+@use '@/styles/_z-index.scss' as *;
 
 .gallery-canvas {
   width: 100lvw;
@@ -11,6 +12,24 @@
     width: 100% !important;
     height: 100% !important;
   }
+}
+
+.gallery-canvas__percentage {
+  position: fixed;
+  top: 60%;
+  left: 50%;
+  color: var(--color-bg-subtle, c.$bg-gray);
+  font-size: 1.5rem;
+  font-weight: 600;
+  transform: translate(-50%, -50%);
+}
+
+.gallery-canvas__joystick {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 0 min(7%, 2em) min(15%, 5em) min(10%, 3em);
 }
 
 .gallery-canvas__loading {
@@ -31,20 +50,15 @@
   }
 }
 
-.gallery-canvas__percentage {
+.gallery-canvas__cover {
+  @include z-index(top);
   position: fixed;
-  top: 60%;
-  left: 50%;
-  color: var(--color-bg-subtle, c.$bg-gray);
-  font-size: 1.5rem;
-  font-weight: 600;
-  transform: translate(-50%, -50%);
-}
-
-.gallery-canvas__joystick {
-  position: absolute;
-  bottom: 0;
+  top: 0;
   left: 0;
   width: 100%;
-  padding: 0 min(7%, 2em) min(15%, 5em) min(10%, 3em);
+  height: 100%;
+
+  &--leave {
+    opacity: 0;
+  }
 }
