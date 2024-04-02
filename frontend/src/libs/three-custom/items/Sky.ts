@@ -1,40 +1,44 @@
 import * as THREE from 'three'
 import { Sky } from 'three/examples/jsm/objects/Sky.js'
+import { IItem } from './Item'
+import { ItemFactory } from './ItemFactory'
+import { disposeObject } from '../utils/disposeObject'
 
 type SkyArgs = {
-  scene: THREE.Scene
   size: number
 }
-
-export class SkyItem {
-  type: string = 'sky'
-  mesh: Sky
-  dispose: () => void
+export class SkyItem implements IItem {
+  object: Sky
 
   constructor(info: SkyArgs) {
-    this.mesh = new Sky()
-    this.mesh.scale.setScalar(1000)
-    this.mesh.name = 'sky'
-    info.scene.add(this.mesh)
+    this.object = new Sky()
+    this.object.scale.setScalar(info.size)
+    this.object.name = 'sky'
+  }
 
-    /**
-     *  Dispose function: release reusources
-     */
-    this.dispose = () => {
-      // Dispose material
-      this.mesh.material.dispose()
-
-      // Dispose geometry
-      this.mesh.geometry.dispose()
-
-      // Dispose mesh
-      info.scene.remove(this.mesh)
-    }
+  dispose() {
+    disposeObject(this.object)
   }
 
   /*eslint-disable */
   setSunPosition(sun: THREE.Vector3) {
-    this.mesh.material.uniforms['sunPosition'].value.copy(sun)
+    this.object.material.uniforms['sunPosition'].value.copy(sun)
   }
   /*eslint-enable */
+}
+
+export default class SkyFactory extends ItemFactory {
+  static instance: SkyFactory | null = null
+
+  constructor() {
+    if (!SkyFactory.instance) {
+      super()
+      SkyFactory.instance = this
+    }
+    return SkyFactory.instance
+  }
+
+  createItem(args: SkyArgs) {
+    return new SkyItem(args)
+  }
 }

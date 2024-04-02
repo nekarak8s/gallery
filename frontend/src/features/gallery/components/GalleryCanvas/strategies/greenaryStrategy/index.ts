@@ -16,7 +16,8 @@ import { IAnimal } from '@/libs/three-custom/items/Animal/Animal'
 import { DuckFactory } from '@/libs/three-custom/items/Animal/species/Duck'
 import { FoxFactory } from '@/libs/three-custom/items/Animal/species/Fox'
 import { SheepFactory } from '@/libs/three-custom/items/Animal/species/Sheep'
-import { PostFrames } from '@/libs/three-custom/items/PostFrames'
+import PostFramesFactory from '@/libs/three-custom/items/PostFrames'
+import { disposeObject } from '@/libs/three-custom/utils/disposeObject'
 
 THREE.Mesh.prototype.raycast = acceleratedRaycast
 
@@ -149,14 +150,15 @@ export default class GreenaryStrategy implements IGalleryStrategy {
     })
 
     // Create PostFrames
-    const frames = new PostFrames({
+    const frames = new PostFramesFactory().addItem({
       container: props.scene,
-      textureLoader,
+      textureLoader: textureLoader,
       postList: props.postList,
       framesData: FRAMES_DATA,
+      isAnimation: true,
     })
     this.items.push(frames)
-    this.targets.push(...frames.meshes)
+    this.targets.push(...frames.objects)
   }
 
   update(delta: number) {
@@ -168,10 +170,16 @@ export default class GreenaryStrategy implements IGalleryStrategy {
   dispose() {
     this.lights.forEach((light) => {
       this.scene && this.scene.remove(light)
-      light.dispose()
+      disposeObject(light)
     })
     this.items.forEach((item) => {
       item.dispose && item.dispose()
     })
+    this.targets = []
+    this.obstacles = []
+    this.floors = []
+    this.items = []
+    this.lights = []
+    this.animals = []
   }
 }

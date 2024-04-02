@@ -2,7 +2,7 @@ import * as THREE from 'three'
 import { GLTF, GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import { Animal } from '../Animal'
 import { AnimalFactory } from '../AnimalFactory'
-import sheepGlb from '@/assets/glbs/sheep.glb'
+import sheepGlb from '@/assets/glbs/animals/sheep.glb'
 
 class SheepBuilder {
   static async build(gltfLoader: GLTFLoader) {

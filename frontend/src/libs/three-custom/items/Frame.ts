@@ -1,6 +1,7 @@
 import * as THREE from 'three'
-import { Stuff, StuffArgs } from './Stuff'
-import { FrameMesh } from '../meshes/FrameMesh'
+import { IItem } from './Item'
+import { ItemFactory } from './ItemFactory'
+import { disposeObject } from '../utils/disposeObject'
 
 type TextureProps = {
   textureLoader: THREE.TextureLoader
@@ -24,36 +25,31 @@ type SpotLightProps = {
   decay?: number
 }
 
-type FrameArgs = StuffArgs & {
-  container: THREE.Scene | THREE.Mesh
-  order: number
+type FrameArgs = {
   texture?: TextureProps
   color?: THREE.ColorRepresentation
   spotLight?: SpotLightProps
-  isUpdate?: boolean
+  x?: number
+  y?: number
+  z?: number
+  width?: number
+  height?: number
+  depth?: number
+  rotationX?: number
+  rotationY?: number
+  rotationZ?: number
 }
 
-export class Frame extends Stuff {
-  type: string = 'frame'
-  mesh: THREE.Mesh
-  spotLight?: THREE.SpotLight
+export class Frame implements IItem {
+  object: THREE.Mesh
+  spotLight: THREE.SpotLight | null = null
   textures: Record<string, THREE.Texture> = {}
-  dispose: () => void
-  update: (delta: number) => void
-  isUpdate = true
 
   constructor(info: FrameArgs) {
-    super(info)
+    // Create Geometry
+    const geometry = new THREE.BoxGeometry(info.width, info.height, info.depth)
 
-    // Whether enable update function
-    if (typeof info.isUpdate === 'boolean') {
-      this.isUpdate = info.isUpdate
-    }
-
-    // Geometry
-    const geometry = new THREE.BoxGeometry(this.width, this.height, this.depth)
-
-    // Textures
+    // Load Textures
     if (info.texture) {
       if (info.texture.normalImg) {
         this.textures['normalTex'] = info.texture.textureLoader.load(info.texture.normalImg)
@@ -78,7 +74,7 @@ export class Frame extends Stuff {
       this.textures['baseTex'] = info.texture.textureLoader.load(info.texture.baseImg)
     }
 
-    // Material
+    // Select material based on the texture sources
     const material = info.texture?.roughImg
       ? new THREE.MeshStandardMaterial({
           color: info.color,
@@ -94,17 +90,14 @@ export class Frame extends Stuff {
           aoMap: this.textures['ambientTex'] || undefined,
         })
 
-    // Mesh
-    this.mesh = new FrameMesh(geometry, material, info.order)
-    this.mesh.position.set(this.x, this.y, this.z)
-    this.mesh.rotation.set(this.rotationX, this.rotationY, this.rotationZ)
-    this.mesh.receiveShadow = true
-    this.mesh.castShadow = true
-    this.mesh.name = this.name || this.type
+    // Create mesh
+    this.object = new THREE.Mesh(geometry, material)
+    this.object.position.set(info.x || 0, info.y || 0, info.z || 0)
+    this.object.rotation.set(info.rotationX || 0, info.rotationY || 0, info.rotationZ || 0)
+    this.object.receiveShadow = true
+    this.object.castShadow = true
 
-    info.container.add(this.mesh)
-
-    // Light
+    // Add spot light
     if (info.spotLight && info.width) {
       this.spotLight = new THREE.SpotLight(
         info.spotLight.color || 0xffffe6,
@@ -119,51 +112,30 @@ export class Frame extends Stuff {
         info.spotLight.lightOffsetY || info.width,
         info.spotLight.lightOffsetZ || info.width
       )
-      this.spotLight.target = this.mesh
+      this.spotLight.target = this.object
       this.spotLight.castShadow = true
-
-      this.mesh.add(this.spotLight)
+      this.object.add(this.spotLight)
     }
+  }
+  dispose() {
+    disposeObject(this.object)
+    this.spotLight && disposeObject(this.spotLight)
+    this.textures = {}
+  }
+}
 
-    /**
-     *  Dispose function: release resources
-     */
-    this.dispose = () => {
-      // Dispose light
-      if (this.spotLight) {
-        this.mesh.remove(this.spotLight)
-        this.spotLight.dispose()
-      }
+export default class FrameFactory extends ItemFactory {
+  static instance: FrameFactory | null = null
 
-      // Dispose mesh
-      info.container.remove(this.mesh)
-
-      // Dispose geometry
-      this.mesh.geometry.dispose()
-
-      // Dispose material
-      if (this.mesh.material instanceof Array) {
-        this.mesh.material.forEach((material) => {
-          material.dispose()
-        })
-      } else {
-        this.mesh.material.dispose()
-      }
-
-      // Dispose textures
-      for (const key in this.textures) {
-        const texture = this.textures[key]
-        texture.dispose()
-      }
+  constructor() {
+    if (!FrameFactory.instance) {
+      super()
+      FrameFactory.instance = this
     }
+    return FrameFactory.instance
+  }
 
-    /**
-     *  Update function: animation
-     */
-    this.update = (delta: number) => {
-      if (!this.isUpdate) return
-
-      this.mesh.rotation.y += delta
-    }
+  createItem(args: FrameArgs) {
+    return new Frame(args)
   }
 }
