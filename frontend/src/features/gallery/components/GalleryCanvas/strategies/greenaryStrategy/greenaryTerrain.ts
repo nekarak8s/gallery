@@ -1,7 +1,7 @@
 import * as THREE from 'three'
 import { GLTF, GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import { MeshBVH } from 'three-mesh-bvh'
-import greenaryGlb from '@/assets/glbs/greenary-set-done.glb'
+import greenaryGlb from '@/assets/glbs/terrains/greenary.glb'
 import { disposeObject } from '@/libs/three-custom/utils/disposeObject'
 
 type GreenaryProps = {
@@ -60,24 +60,23 @@ export class Greenary {
       gltfLoader.load(greenaryGlb, (glb) => resolve(glb), undefined, reject)
     })
 
+    glb.scene.traverse((obj) => {
+      if (obj instanceof THREE.Mesh) {
+        obj.geometry.boundsTree = new MeshBVH(obj.geometry) // eslint-disable-line
+      }
+    })
     // Extract glbs
     const trees = glb.scene.children[4]
     trees.traverse((obj) => {
-      if (obj instanceof THREE.Mesh) {
-        obj.castShadow = true
-        obj.receiveShadow = true
-        obj.geometry.boundsTree = new MeshBVH(obj.geometry) // eslint-disable-line
-      }
+      obj.castShadow = true
+      obj.receiveShadow = true
     })
     const edges = glb.scene.children[3]
     const ocean = glb.scene.children[2]
     const lake = glb.scene.children[1]
     const terrain = glb.scene.children[0]
     terrain.traverse((obj) => {
-      if (obj instanceof THREE.Mesh) {
-        obj.geometry.boundsTree = new MeshBVH(obj.geometry) // eslint-disable-line
-        obj.receiveShadow = true
-      }
+      obj.receiveShadow = true
     })
 
     return new Greenary({ scene, objects: { terrain, lake, ocean, edges, trees } })

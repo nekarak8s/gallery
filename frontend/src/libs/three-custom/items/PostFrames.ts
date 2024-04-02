@@ -1,5 +1,7 @@
 import * as THREE from 'three'
-import { FrameMesh } from '../meshes/FrameMesh'
+import { IItems } from './Item'
+import { ItemsFactory } from './ItemFactory'
+import { disposeObject } from '../utils/disposeObject'
 import { PostData } from '@/features/post/types'
 
 type SpotLightProps = {
@@ -28,46 +30,43 @@ type FrameData = {
 
 export type PostFramesArgs = {
   postList: PostData[]
-  container: THREE.Mesh | THREE.Scene
-  color?: THREE.ColorRepresentation
   framesData: FrameData[]
   textureLoader: THREE.TextureLoader
+  color?: THREE.ColorRepresentation
   normalImg?: string
   ambientImg?: string
   roughImg?: string
   repeatX?: number
   repeatY?: number
   spotLight?: SpotLightProps
+  isAnimation?: boolean
 }
 
-export class PostFrames {
-  type: string = 'floors'
-  meshes: THREE.Mesh[] = []
-  textureSource: Record<string, THREE.Texture> = {}
-  textures: THREE.Texture[] = []
-  spotLights: THREE.SpotLight[] = []
-
-  dispose: () => void
-  update: (delta: number) => void
+export class PostFrames implements IItems {
+  objects: THREE.Mesh[] = []
+  lights: THREE.Light[] = []
+  textures: Record<string, THREE.Texture> = {}
+  isAnimation: boolean
 
   constructor(info: PostFramesArgs) {
+    this.isAnimation = info.isAnimation || false
+
     // Load Textures
     if (info.normalImg) {
-      this.textureSource['normalTex'] = info.textureLoader.load(info.normalImg)
+      this.textures['normalTex'] = info.textureLoader.load(info.normalImg)
     }
     if (info.roughImg) {
-      this.textureSource['roughTex'] = info.textureLoader.load(info.roughImg)
+      this.textures['roughTex'] = info.textureLoader.load(info.roughImg)
     }
     if (info.ambientImg) {
-      this.textureSource['ambientTex'] = info.textureLoader.load(info.ambientImg)
+      this.textures['ambientTex'] = info.textureLoader.load(info.ambientImg)
     }
 
-    for (const key in this.textureSource) {
-      this.textureSource[key].wrapS = THREE.RepeatWrapping
-      this.textureSource[key].wrapT = THREE.RepeatWrapping
-
-      this.textureSource[key].repeat.x = info.repeatX || 1
-      this.textureSource[key].repeat.y = info.repeatY || 1
+    for (const key in this.textures) {
+      this.textures[key].wrapS = THREE.RepeatWrapping
+      this.textures[key].wrapT = THREE.RepeatWrapping
+      this.textures[key].repeat.x = info.repeatX || 1
+      this.textures[key].repeat.y = info.repeatY || 1
     }
 
     info.framesData.forEach((frameData, idx) => {
@@ -78,40 +77,37 @@ export class PostFrames {
 
       // Base image texture
       const baseTex = info.textureLoader.load(info.postList[idx].imageURL)
-      this.textures.push(baseTex)
 
-      // Material
+      // Select Material based on the texture sources
       const material = info.roughImg
         ? new THREE.MeshStandardMaterial({
             color: info.color,
             map: baseTex,
-            normalMap: this.textureSource['normalTex'] || undefined,
-            aoMap: this.textureSource['ambientTex'] || undefined,
-            roughnessMap: this.textureSource['roughTex'] || undefined,
+            normalMap: this.textures['normalTex'] || undefined,
+            aoMap: this.textures['ambientTex'] || undefined,
+            roughnessMap: this.textures['roughTex'] || undefined,
           })
         : new THREE.MeshLambertMaterial({
             color: info.color,
             map: baseTex,
-            normalMap: this.textureSource['normalTex'] || undefined,
-            aoMap: this.textureSource['ambientTex'] || undefined,
+            normalMap: this.textures['normalTex'] || undefined,
+            aoMap: this.textures['ambientTex'] || undefined,
           })
 
-      // Adjust position (pivot : left top)
-      const rotationX = frameData.rotationX || 0
-      const rotationY = frameData.rotationY || 0
-      const rotationZ = frameData.rotationZ || 0
+      // Create Object
+      const object = new THREE.Mesh(geometry, material)
+      object.position.set(frameData.x, frameData.y, frameData.z)
+      object.rotation.set(frameData.rotationX || 0, frameData.rotationY || 0, frameData.rotationZ || 0)
+      object.castShadow = true
+      object.receiveShadow = true
+      object.name = 'frame'
 
-      const mesh = new FrameMesh(geometry, material, idx)
-      mesh.position.set(frameData.x, frameData.y, frameData.z)
-      mesh.rotation.set(rotationX, rotationY, rotationZ)
-      mesh.castShadow = true
-      mesh.receiveShadow = true
-      mesh.name = 'frame'
+      // Post data -> raycaster controls
+      object.userData.isPost = true
+      object.userData.idx = idx
+      this.objects.push(object)
 
-      this.meshes.push(mesh)
-      info.container.add(mesh)
-
-      // Light
+      // Add SpotLight
       if (info.spotLight && frameData.width) {
         const spotLight = new THREE.SpotLight(
           info.spotLight.color || 0xffffe6,
@@ -126,57 +122,49 @@ export class PostFrames {
           info.spotLight.lightOffsetY || frameData.width,
           info.spotLight.lightOffsetZ || frameData.width
         )
-        spotLight.target = mesh
+        spotLight.target = object
         spotLight.castShadow = true
 
-        mesh.add(spotLight)
-        this.spotLights.push(spotLight)
+        object.add(spotLight)
+        this.lights.push(spotLight)
       }
     })
+  }
 
-    /**
-     *  Dispose function: release resources
-     */
-    this.dispose = () => {
-      // Dispose lights
-      this.spotLights.forEach((spotLight) => {
-        spotLight.dispose()
-      })
+  update = (delta: number) => {
+    if (!this.isAnimation) return
+    this.objects.forEach((object) => {
+      object.rotation.y += delta
+    })
+  }
 
-      // Dispose mesh & material & geometry
-      this.meshes.forEach((mesh) => {
-        mesh.geometry
-        if (mesh.material instanceof Array) {
-          mesh.material.forEach((material) => {
-            material.dispose()
-          })
-        } else {
-          mesh.material.dispose()
-        }
+  dispose = () => {
+    this.lights.forEach((light) => {
+      disposeObject(light)
+    })
 
-        mesh.geometry.dispose()
+    this.objects.forEach((object) => {
+      disposeObject(object)
+    })
 
-        info.container.remove(mesh)
-      })
+    this.objects = []
+    this.lights = []
+    this.textures = {}
+  }
+}
 
-      // Dispose textures
-      for (const key in this.textureSource) {
-        const texture = this.textureSource[key]
-        texture.dispose()
-      }
+export default class PostFramesFactory extends ItemsFactory {
+  static instance: PostFramesFactory | null = null
 
-      this.textures.forEach((texture) => {
-        texture.dispose()
-      })
+  constructor() {
+    if (!PostFramesFactory.instance) {
+      super()
+      PostFramesFactory.instance = this
     }
+    return PostFramesFactory.instance
+  }
 
-    /**
-     *  Update function: animation
-     */
-    this.update = (delta: number) => {
-      this.meshes.forEach((mesh) => {
-        mesh.rotation.y += delta
-      })
-    }
+  createItem(args: PostFramesArgs) {
+    return new PostFrames(args)
   }
 }

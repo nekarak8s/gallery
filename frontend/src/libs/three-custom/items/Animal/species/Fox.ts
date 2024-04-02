@@ -2,7 +2,7 @@ import * as THREE from 'three'
 import { GLTF, GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import { Animal } from '../Animal'
 import { AnimalFactory } from '../AnimalFactory'
-import foxGlb from '@/assets/glbs/fox.glb'
+import foxGlb from '@/assets/glbs/animals/fox.glb'
 
 class FoxBuilder {
   static async build(gltfLoader: GLTFLoader) {

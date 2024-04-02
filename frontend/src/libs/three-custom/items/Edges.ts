@@ -1,6 +1,8 @@
-import { Body, Box, Quaternion, Vec3, World } from 'cannon-es'
 import * as THREE from 'three'
 import * as BufferGeometryUtils from 'three/examples/jsm/utils/BufferGeometryUtils.js'
+import { IItem } from './Item'
+import { ItemFactory } from './ItemFactory'
+import { disposeObject } from '../utils/disposeObject'
 
 type EdgeData = {
   x: number
@@ -15,17 +17,11 @@ type EdgeData = {
 }
 
 export type EdgesArgs = {
-  container: THREE.Mesh | THREE.Scene
-  world?: World
   edgesData: EdgeData[]
 }
 
-export class Edges {
-  type: string = 'edges'
-  mesh: THREE.Mesh
-  cannonBodies: Body[] = []
-
-  dispose: () => void
+export class Edges implements IItem {
+  object: THREE.Mesh
 
   constructor(info: EdgesArgs) {
     const geometries: THREE.BoxGeometry[] = []
@@ -45,27 +41,6 @@ export class Edges {
       geometry.translate(edgeData.x, edgeData.y, edgeData.z)
 
       geometries.push(geometry)
-
-      // Cannon body
-      if (info.world) {
-        const cannonBody = new Body({
-          mass: 0,
-          position: new Vec3(edgeData.x, edgeData.y, edgeData.z),
-          shape: new Box(new Vec3(edgeData.width / 2, edgeData.height / 2, edgeData.depth / 2)),
-        })
-
-        const quaternionX = new Quaternion()
-        const quaternionY = new Quaternion()
-        const quaternionZ = new Quaternion()
-        quaternionX.setFromAxisAngle(new Vec3(1, 0, 0), rotationX)
-        quaternionY.setFromAxisAngle(new Vec3(0, 1, 0), rotationY)
-        quaternionZ.setFromAxisAngle(new Vec3(0, 0, 1), rotationZ)
-
-        cannonBody.quaternion.copy(quaternionX.mult(quaternionY).mult(quaternionZ))
-
-        this.cannonBodies.push(cannonBody)
-        info.world.addBody(cannonBody)
-      }
     })
 
     // Merge geometry
@@ -81,35 +56,27 @@ export class Edges {
       transparent: true,
     })
 
-    // Create mesh
-    this.mesh = new THREE.Mesh(geometry, material)
-    this.mesh.name = 'edge'
+    // Create object
+    this.object = new THREE.Mesh(geometry, material)
+  }
 
-    info.container.add(this.mesh)
+  dispose() {
+    disposeObject(this.object)
+  }
+}
 
-    /**
-     *  Dispose function: release resources
-     */
-    this.dispose = () => {
-      // Dispose cannon bodies
-      if (info.world) {
-        this.cannonBodies.forEach((cannonBody) => {
-          info.world!.removeBody(cannonBody)
-        })
-      }
+export default class EdgesFactory extends ItemFactory {
+  static instance: EdgesFactory | null = null
 
-      // Dispose mesh & material & geometry
-      if (this.mesh.material instanceof Array) {
-        this.mesh.material.forEach((material) => {
-          material.dispose()
-        })
-      } else {
-        this.mesh.material.dispose()
-      }
-
-      this.mesh.geometry.dispose()
-
-      info.container.remove(this.mesh)
+  constructor() {
+    if (!EdgesFactory.instance) {
+      super()
+      EdgesFactory.instance = this
     }
+    return EdgesFactory.instance
+  }
+
+  createItem(args: EdgesArgs) {
+    return new Edges(args)
   }
 }
