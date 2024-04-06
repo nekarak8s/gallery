@@ -1,0 +1,1 @@
+.gallery{display:grid;grid-template-columns:1fr;grid-template-rows:1fr;height:100vh;position:relative;width:100lvw}.gallery__music{bottom:1em;left:1em;position:fixed;z-index:999}.gallery__navbar{left:0;position:fixed;top:0;width:100%;z-index:100}
