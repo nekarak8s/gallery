@@ -44,7 +44,6 @@ const ExampleGallery = () => {
     if (!gallery) return
 
     gallery.place.placeId = placeId
-    console.log(gallery)
     setPlaceId(placeId)
   }
 

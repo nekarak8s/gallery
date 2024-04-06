@@ -39,7 +39,6 @@ const Modal = ({ children, isOpen, onClose }: PropsWithChildren<ModalProps>) => 
     window.addEventListener('keydown', handleKeyDown)
 
     return () => {
-      console.log('modal-close')
       back.removeEventListener('click', handleClick)
       window.removeEventListener('keydown', handleKeyDown)
     }
