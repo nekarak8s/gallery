@@ -4,6 +4,7 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import { IGalleryStrategy } from './strategies'
 import GalleryStrategy from './strategies/galleryStrategy'
 import GreenaryStrategy from './strategies/greenaryStrategy'
+import KyotoStrategy from './strategies/kyotoStartegy'
 import { GalleryData } from '../../types'
 import GalleryCover from '../GalleryCover'
 import CSSTransition from '@/atoms/ui/CSSTransition'
@@ -17,7 +18,6 @@ import { DefaultCamera } from '@/libs/three-custom/cameras/DefaultCamera'
 import { KeypadControls } from '@/libs/three-custom/controls/KeypadControls'
 import { RaycasterControls } from '@/libs/three-custom/controls/RaycasterControls.ts'
 import { MichelleBuilder } from '@/libs/three-custom/items/Player'
-import { FrameMesh } from '@/libs/three-custom/meshes/FrameMesh'
 import { DefaultRenderer } from '@/libs/three-custom/renderers/DefaultRenderer'
 import musicManager from '@/utils/musicManager'
 import toastManager from '@/utils/toastManager'
@@ -31,6 +31,7 @@ type GalleryCanvasProps = {
 const STRATEGY_TYPE: Record<number, IGalleryStrategy> = {
   1: new GreenaryStrategy(),
   2: new GalleryStrategy(),
+  3: new KyotoStrategy(),
 }
 
 const GalleryCanvas = ({ gallery, postList }: GalleryCanvasProps) => {
@@ -62,7 +63,7 @@ const GalleryCanvas = ({ gallery, postList }: GalleryCanvasProps) => {
     if (loadedCount === requiredCount && isClicked.current) {
       setTimeout(() => {
         keypadControlsRef.current!.enabled = true
-      }, 500)
+      }, 100)
     }
   }, [loadedCount, requiredCount])
 
@@ -128,10 +129,10 @@ const GalleryCanvas = ({ gallery, postList }: GalleryCanvasProps) => {
     const rayControls = new RaycasterControls(canvas, camera)
     rayControlsRef.current = rayControls
     rayControls.raycast = (item) => {
-      if (!(item.object instanceof FrameMesh)) return
+      if (!item.object.userData.isPost) return
       if (item.distance > 15) toastManager.addToast('error', '앨범이 너무 멀리 있습니다')
       else {
-        setSelectedPostIdx(item.object.index)
+        setSelectedPostIdx(item.object.userData.idx as number)
         musicManager.muteAudio()
         keypadControls.enabled = false
       }
@@ -210,6 +211,7 @@ const GalleryCanvas = ({ gallery, postList }: GalleryCanvasProps) => {
     return () => {
       setIsCoverShow(true)
       isClicked.current = false
+      keypadControlsRef.current!.enabled = false
       setRequiredCount(0)
       setLoadedCount(0)
       strategy.dispose()
@@ -257,9 +259,8 @@ const GalleryCanvas = ({ gallery, postList }: GalleryCanvasProps) => {
           <Joystick control={joystickControl} shoot={joystickShoot} jump={joystickJump} />
         </div>
       )}
-      <CSSTransition className="gallery-canvas__loading" isShow={requiredCount !== loadedCount} duration={1300} timingFunction="ease-in-out">
+      <CSSTransition className="gallery-canvas__loading" isShow={requiredCount !== loadedCount} duration={1000} timingFunction="ease-in-out">
         <Loading />
-        <span className="gallery-canvas__percentage">{(loadedCount / requiredCount) * 100}%</span>
       </CSSTransition>
       <CSSTransition className="gallery-canvas__cover" isShow={isCoverShow} duration={1000}>
         <GalleryCover gallery={gallery} onClickEnter={onClickEnter} />

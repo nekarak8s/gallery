@@ -1,0 +1,22 @@
+@use '@/styles/_colors.scss' as c;
+
+.gallery-selection {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+  background-color: var(--color-bg, c.$bg-white);
+}
+
+.gallery-selection__list {
+  display: flex;
+  gap: 50px;
+  font-size: 2rem;
+  font-weight: 600;
+
+  button {
+    width: 200px;
+    aspect-ratio: 2/3;
+  }
+}

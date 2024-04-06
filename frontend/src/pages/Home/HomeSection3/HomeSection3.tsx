@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react'
+import { routes } from '@/App'
 import labelImg from '@/assets/images/home-section-3/white-label.jpg?format=jpg'
 import labelWebp from '@/assets/images/home-section-3/white-label.jpg?format=webp'
 import wallImg from '@/assets/images/home-section-3/white-wall.jpg?format=jpg'
@@ -231,7 +232,7 @@ function HomeSection3() {
         </div>
 
         <div className="hs3-button" ref={buttonRef}>
-          <Button3D ariaLabel="3D 전시회 체험하기" to={'/gallery/1'} color="blue">
+          <Button3D ariaLabel="3D 전시회 체험하기" to={routes['Example'].path} color="blue">
             <p data-cursor-scale={CURSOR_SCALE}>체험하기</p>
           </Button3D>
         </div>

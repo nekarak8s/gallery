@@ -11,20 +11,23 @@ import floorBaseImg from '@/assets/textures/granite/Granite_001_COLOR.jpg'
 import floorNormImg from '@/assets/textures/granite/Granite_001_NORM.jpg'
 import floorAmbientImg from '@/assets/textures/granite/Granite_001_OCC.jpg'
 import { getSunColor, getSunIntensity, getSunPosition } from '@/libs/sun'
-import { Floor } from '@/libs/three-custom/items/Floor'
-import { Frame } from '@/libs/three-custom/items/Frame'
-import { SkyItem } from '@/libs/three-custom/items/Sky'
-import { Walls } from '@/libs/three-custom/items/Walls'
-import { WaterItem } from '@/libs/three-custom/items/Water'
+import FloorsFactory from '@/libs/three-custom/items/Floors'
+import FrameFactory, { Frame } from '@/libs/three-custom/items/Frame'
+import OceanFactory, { OceanItem } from '@/libs/three-custom/items/Ocean'
+import SkyFactory, { SkyItem } from '@/libs/three-custom/items/Sky'
+import WallsFactory from '@/libs/three-custom/items/Walls'
+import { disposeObject } from '@/libs/three-custom/utils/disposeObject'
 
-const FLOOR_DATA = {
-  x: 0,
-  y: 2,
-  z: 0,
-  width: 20,
-  height: 40,
-  depth: 40,
-}
+const FLOOR_DATA = [
+  {
+    x: 0,
+    y: 2,
+    z: 0,
+    width: 20,
+    height: 40,
+    depth: 40,
+  },
+]
 
 const WALLS_DATA = [
   {
@@ -128,44 +131,39 @@ export function buildArchitect(props: buildArchitectProps): ThreeItem {
    * Meshes
    */
   // Create sky
-  const sky = new SkyItem({
-    scene: props.scene,
+  const sky = new SkyFactory().addItem({
+    container: props.scene,
     size: 20000,
-  })
+  }) as SkyItem
   items.push(sky)
 
   // Create water
-  const water = new WaterItem({
+  const water = new OceanFactory().addItem({
     container: props.scene,
     textureLoader,
     width: 10000,
     depth: 10000,
-  })
+  }) as OceanItem
   items.push(water)
 
   // Create Floor
-  const floor = new Floor({
+  const floor = new FloorsFactory().addItem({
     container: props.scene,
     color: 0x686868,
-    x: FLOOR_DATA.x,
-    y: FLOOR_DATA.y,
-    z: FLOOR_DATA.z,
-    width: FLOOR_DATA.width,
-    height: FLOOR_DATA.height,
-    depth: FLOOR_DATA.depth,
+    floorsData: FLOOR_DATA,
     texture: {
       textureLoader,
       baseImg: floorBaseImg,
       ambientImg: floorAmbientImg,
       normalImg: floorNormImg,
-      repeatX: FLOOR_DATA.width / 3,
-      repeatY: FLOOR_DATA.depth / 3,
+      repeatX: FLOOR_DATA[0].width / 3,
+      repeatY: FLOOR_DATA[0].depth / 3,
     },
   })
   items.push(floor)
 
   // Create Walls
-  const walls = new Walls({
+  const walls = new WallsFactory().addItem({
     container: props.scene,
     wallsData: WALLS_DATA,
     repeatX: 15 / 6,
@@ -181,8 +179,7 @@ export function buildArchitect(props: buildArchitectProps): ThreeItem {
 
   // Create Frames
   FRAMES_DATA.forEach((frame_data, index) => {
-    const frame = new Frame({
-      order: index,
+    const frame = new FrameFactory().addItem({
       container: props.scene,
       x: frame_data.x,
       y: frame_data.y,
@@ -269,9 +266,13 @@ export function buildArchitect(props: buildArchitectProps): ThreeItem {
 
   // Light Helper : Development
   if (process.env.NODE_ENV !== 'production') {
-    import('three').then(({ CameraHelper }) => {
-      props.scene.add(new CameraHelper(directLight.shadow.camera))
-    })
+    import('three')
+      .then(({ CameraHelper }) => {
+        props.scene.add(new CameraHelper(directLight.shadow.camera))
+      })
+      .catch((err) => {
+        console.error(err)
+      })
   }
 
   /**
@@ -289,7 +290,7 @@ export function buildArchitect(props: buildArchitectProps): ThreeItem {
     lightInterval && clearInterval(lightInterval)
     lights.forEach((light) => {
       props.scene.remove(light)
-      light.dispose()
+      disposeObject(light)
     })
     items.forEach((item) => {
       item.dispose && item.dispose()

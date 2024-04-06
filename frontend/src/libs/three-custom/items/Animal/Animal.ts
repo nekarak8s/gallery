@@ -1,5 +1,6 @@
 import * as THREE from 'three'
 import { acceleratedRaycast } from 'three-mesh-bvh'
+import { disposeObject } from '../../utils/disposeObject'
 import { getRandom } from '@/libs/math'
 
 THREE.Mesh.prototype.raycast = acceleratedRaycast
@@ -171,7 +172,7 @@ export class Animal implements IAnimal {
       intersects = this.#raycaster.intersectObjects(this.obstacles)
 
       this.#throttleTime = Date.now()
-      if (intersects.length > 0 && intersects[0].distance < 0.5) {
+      if (intersects.length > 0 && intersects[0].distance < 1) {
         this.turn()
         return
       }
@@ -182,5 +183,7 @@ export class Animal implements IAnimal {
     this.species.object.translateZ(actualMoveSpeed)
   }
 
-  dispose() {}
+  dispose() {
+    disposeObject(this.species.object)
+  }
 }

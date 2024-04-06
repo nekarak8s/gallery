@@ -14,18 +14,14 @@ export class DefaultCamera extends PerspectiveCamera {
   constructor(info: DefaultCameraProps) {
     super(
       info.fov || 45,
-      info.canvas
-        ? info.canvas.offsetWidth / info.canvas.offsetHeight
-        : window.innerWidth / window.innerHeight,
-      info.near || 0.01,
+      info.canvas ? info.canvas.offsetWidth / info.canvas.offsetHeight : window.innerWidth / window.innerHeight,
+      info.near || 1,
       info.far || 1000
     )
     this.canvas = info.canvas
   }
 
   setDefaultAspect() {
-    this.aspect = this.canvas
-      ? this.canvas.offsetWidth / this.canvas.offsetHeight
-      : window.innerWidth / window.innerHeight
+    this.aspect = this.canvas ? this.canvas.offsetWidth / this.canvas.offsetHeight : window.innerWidth / window.innerHeight
   }
 }

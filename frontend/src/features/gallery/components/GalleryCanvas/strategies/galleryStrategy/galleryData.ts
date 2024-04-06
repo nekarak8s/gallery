@@ -181,24 +181,28 @@ export const WALLS_DATA = [
   },
 ]
 
-export const GLASS_WALL = {
-  x: 31.52,
-  y: 2,
-  z: 11.15,
-  width: 20.66,
-  height: 9.5,
-  depth: 0.2,
-  rotationY: degToRad(-25),
-}
+export const GLASS_WALL = [
+  {
+    x: 31.52,
+    y: 2,
+    z: 11.15,
+    width: 20.66,
+    height: 9.5,
+    depth: 0.2,
+    rotationY: degToRad(-25),
+  },
+]
 
-export const CEILING_DATA = {
-  x: 32.4,
-  y: 7.5,
-  z: 33.03,
-  width: 6,
-  height: 0.2,
-  depth: 11,
-}
+export const CEILING_DATA = [
+  {
+    x: 32.4,
+    y: 7.5,
+    z: 33.03,
+    width: 6,
+    height: 0.2,
+    depth: 11,
+  },
+]
 
 export const PLANT_DATA = [
   // lef top

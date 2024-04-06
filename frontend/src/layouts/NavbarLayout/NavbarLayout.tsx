@@ -1,4 +1,4 @@
-import { Outlet, useLocation } from 'react-router-dom'
+import { Outlet } from 'react-router-dom'
 import Footer from '@/atoms/ui/Footer'
 import Navbar from '@/atoms/ui/Navbar/Navbar'
 import { useLoginStore } from '@/stores/auth.store'
@@ -15,7 +15,6 @@ const NavbarLayout = () => {
   /**
    * Read hooks
    */
-  const location = useLocation() // navbar color
   const isLogin = useLoginStore((state) => state.isLogin())
 
   return (

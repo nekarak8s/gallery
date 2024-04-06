@@ -1,4 +1,5 @@
 import * as THREE from 'three'
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import { degToRad } from 'three/src/math/MathUtils'
 import { acceleratedRaycast } from 'three-mesh-bvh'
 import { CEILING_DATA, EDGES_DATA, FLOORS_DATA, FRAMES_DATA, GLASS_FLOORS_DATA, GLASS_WALL, WALLS_DATA } from './galleryData'
@@ -6,14 +7,14 @@ import { IGalleryStrategy, TGalleryStrategyProps } from '..'
 import wallBaseImg from '@/assets/textures/concrete/Concrete_019_BaseColor.jpg'
 import floorBaseImg from '@/assets/textures/granite/Granite_001_COLOR.jpg'
 import { getSunColor, getSunIntensity, getSunPosition } from '@/libs/sun'
-import { Ceiling } from '@/libs/three-custom/items/Ceiling'
-import { Edges } from '@/libs/three-custom/items/Edges'
-import { Floor } from '@/libs/three-custom/items/Floor'
-import { PostFrames } from '@/libs/three-custom/items/PostFrames'
-import { SkyItem } from '@/libs/three-custom/items/Sky'
-import { Wall } from '@/libs/three-custom/items/Wall'
-import { Walls } from '@/libs/three-custom/items/Walls'
-import { WaterItem } from '@/libs/three-custom/items/Water'
+import CeilingsFactory from '@/libs/three-custom/items/Ceilings'
+import EdgesFactory from '@/libs/three-custom/items/Edges'
+import FloorsFactory from '@/libs/three-custom/items/Floors'
+import OceanFactory, { OceanItem } from '@/libs/three-custom/items/Ocean'
+import PostFramesFactory, { PostFrames } from '@/libs/three-custom/items/PostFrames'
+import SkyFactory, { SkyItem } from '@/libs/three-custom/items/Sky'
+import WallsFactory from '@/libs/three-custom/items/Walls'
+import { disposeObject } from '@/libs/three-custom/utils/disposeObject'
 
 THREE.Mesh.prototype.raycast = acceleratedRaycast
 
@@ -28,7 +29,6 @@ export default class GalleryStrategy implements IGalleryStrategy {
   // interal arrays
   items: ThreeItem[] = []
   lights: THREE.Light[] = []
-  water: WaterItem | null = null
   lightInterval: NodeJS.Timeout | null = null
 
   // single-tone
@@ -49,6 +49,7 @@ export default class GalleryStrategy implements IGalleryStrategy {
     this.scene = props.scene
 
     // Create Loaders
+    const gltfLoader = new GLTFLoader(props.loadingManager)
     const textureLoader = new THREE.TextureLoader(props.loadingManager)
 
     // Set control orientation
@@ -60,85 +61,66 @@ export default class GalleryStrategy implements IGalleryStrategy {
      */
 
     // Create sky
-    const sky = new SkyItem({
-      scene: props.scene,
+    const sky = new SkyFactory().addItem({
+      container: props.scene,
       size: 2000,
-    })
+    }) as SkyItem
     this.items.push(sky)
 
-    // Create water
-    const water = new WaterItem({
+    // Create ocean
+    const ocean = new OceanFactory().addItem({
       container: props.scene,
       textureLoader,
       width: 1000,
       depth: 1000,
-      distortionScale: 3,
-    })
-    this.items.push(water)
-    this.water = water
+      distortionScale: 1,
+    }) as OceanItem
+    this.items.push(ocean)
 
     // Create Floors
-    FLOORS_DATA.forEach((floorData) => {
-      const floor = new Floor({
-        container: props.scene,
-        color: 0x686868,
-        x: floorData.x,
-        y: floorData.y,
-        z: floorData.z,
-        width: floorData.width,
-        height: floorData.height,
-        depth: floorData.depth,
-        texture: {
-          textureLoader,
-          baseImg: floorBaseImg,
-          // normalImg: floorNormImg,
-          repeatX: floorData.width / 3,
-          repeatY: floorData.depth / 3,
-        },
-      })
-      this.items.push(floor)
-      this.floors.push(floor.mesh)
+    const floors = new FloorsFactory().addItem({
+      color: 0x686868,
+      container: props.scene,
+      floorsData: FLOORS_DATA,
+      textureLoader,
+      floorBaseImg,
+      texture: {
+        textureLoader,
+        baseImg: floorBaseImg,
+        repeatX: FLOORS_DATA[0].width / 3,
+        repeatY: FLOORS_DATA[0].depth / 3,
+      },
     })
+    this.items.push(floors)
+    this.floors.push(floors.object)
 
-    GLASS_FLOORS_DATA.forEach((glassFloorData) => {
-      const glassFloor = new Floor({
-        container: props.scene,
-        color: 0xffffff,
-        x: glassFloorData.x,
-        y: glassFloorData.y,
-        z: glassFloorData.z,
-        width: glassFloorData.width,
-        height: glassFloorData.height,
-        depth: glassFloorData.depth,
-        transparent: true,
-        opacity: 0.4,
-      })
-      this.items.push(glassFloor)
-      this.floors.push(glassFloor.mesh)
-    })
-
-    // Create ceiling
-    const ceiling = new Ceiling({
+    const glassFloors = new FloorsFactory().addItem({
       container: props.scene,
       color: 0xffffff,
-      x: CEILING_DATA.x,
-      y: CEILING_DATA.y,
-      z: CEILING_DATA.z,
-      width: CEILING_DATA.width,
-      height: CEILING_DATA.height,
-      depth: CEILING_DATA.depth,
+      floorsData: GLASS_FLOORS_DATA,
+      transparent: true,
+      opacity: 0.4,
+    })
+    this.items.push(glassFloors)
+    this.floors.push(glassFloors.object)
+
+    // Create ceiling
+    const ceiling = new CeilingsFactory().addItem({
+      container: props.scene,
+      color: 0xffffff,
+      ceilingsData: CEILING_DATA,
       texture: {
         textureLoader,
         baseImg: wallBaseImg,
         // normalImg: wallNormImg,
-        repeatX: CEILING_DATA.width / 10,
-        repeatY: CEILING_DATA.depth / 10,
+        repeatX: CEILING_DATA[0].width / 10,
+        repeatY: CEILING_DATA[0].depth / 10,
       },
     })
     this.items.push(ceiling)
 
     // Create walls
-    const walls = new Walls({
+    const walls = new WallsFactory().addItem({
       container: props.scene,
       wallsData: WALLS_DATA,
       repeatX: 10 / 10,
@@ -150,33 +132,40 @@ export default class GalleryStrategy implements IGalleryStrategy {
       },
     })
     this.items.push(walls)
-    this.targets.push(walls.mesh)
-    this.obstacles.push(walls.mesh)
+    this.targets.push(walls.object)
+    this.obstacles.push(walls.object)
 
-    const glassWall = new Wall({
+    const glassWall = new WallsFactory().addItem({
       container: props.scene,
       color: 0xffffff,
-      x: GLASS_WALL.x,
-      y: GLASS_WALL.y,
-      z: GLASS_WALL.z,
-      width: GLASS_WALL.width,
-      height: GLASS_WALL.height,
-      depth: GLASS_WALL.depth,
-      rotationY: GLASS_WALL.rotationY,
+      wallsData: GLASS_WALL,
       transparent: true,
       opacity: 0.2,
     })
     this.items.push(glassWall)
-    this.targets.push(glassWall.mesh)
-    this.obstacles.push(glassWall.mesh)
+    this.targets.push(glassWall.object)
+    this.obstacles.push(glassWall.object)
 
     // Create edges
-    const edges = new Edges({
+    const edges = new EdgesFactory().addItem({
       container: props.scene,
       edgesData: EDGES_DATA,
     })
     this.items.push(edges)
-    this.obstacles.push(edges.mesh)
+    this.obstacles.push(edges.object)
+
+    // Create Mango Tree
+    // const mangoTree = await new MangoTreeFactory().addItem({
+    //   gltfLoader,
+    //   container: props.scene,
+    //   x: 29,
+    //   y: 2,
+    //   z: 18,
+    //   scale: 2,
+    // })
+    // this.items.push(mangoTree)
+    // this.obstacles.push(mangoTree.object)
+    // console.log('glb', mangoTree.object)
 
     /**
      * Lights
@@ -196,10 +185,10 @@ export default class GalleryStrategy implements IGalleryStrategy {
     const phiEle = THREE.MathUtils.degToRad(elevation * 3)
     const theta = THREE.MathUtils.degToRad(azimuth - 25)
 
-    // Set on the sky & water
+    // Set on the sky & ocean
     sun.setFromSphericalCoords(1, phi, theta)
     sky.setSunPosition(sun)
-    water.setSunDirection(sun)
+    ocean.setSunDirection(sun)
 
     // Ambient light
     const ambientLight = new THREE.AmbientLight(0xffffff, sunLightIntensity * 0.8)
@@ -229,7 +218,7 @@ export default class GalleryStrategy implements IGalleryStrategy {
 
       sun.setFromSphericalCoords(1, phi, theta)
       sky.setSunPosition(sun)
-      water.setSunDirection(sun)
+      ocean.setSunDirection(sun)
 
       const sunLightIntensity = getSunIntensity(date)
       const sunLightColor = new THREE.Color(getSunColor(date))
@@ -243,17 +232,18 @@ export default class GalleryStrategy implements IGalleryStrategy {
       // update light of frame
       this.items.forEach((item) => {
         if (item instanceof PostFrames) {
-          item.spotLights.forEach((spotLight) => {
-            spotLight.intensity = 3 * (1 - sunLightIntensity) + 5
+          item.lights.forEach((light) => {
+            light.intensity = 3 * (1 - sunLightIntensity) + 5
           })
         }
       })
     }, 60 * 1000)
+    this.lightInterval = lightInterval
 
     // Create PostFrames
-    const frames = new PostFrames({
+    const frames = new PostFramesFactory().addItem({
       container: props.scene,
-      textureLoader,
+      textureLoader: textureLoader,
       postList: props.postList,
       framesData: FRAMES_DATA,
       spotLight: {
@@ -261,21 +251,29 @@ export default class GalleryStrategy implements IGalleryStrategy {
       },
     })
     this.items.push(frames)
-    this.targets.push(...frames.meshes)
+    this.targets.push(...frames.objects)
   }
 
   update(delta: number) {
-    this.water?.update()
+    this.items.forEach((item) => {
+      item.update && item.update(delta)
+    })
   }
 
   dispose() {
     this.lightInterval && clearInterval(this.lightInterval)
     this.lights.forEach((light) => {
       this.scene && this.scene.remove(light)
-      light.dispose()
+      disposeObject(light)
     })
     this.items.forEach((item) => {
       item.dispose && item.dispose()
     })
+    this.lightInterval = null
+    this.targets = []
+    this.obstacles = []
+    this.floors = []
+    this.items = []
+    this.lights = []
   }
 }

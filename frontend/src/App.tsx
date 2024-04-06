@@ -1,6 +1,7 @@
 import { Suspense, lazy } from 'react'
 import { Routes, Route } from 'react-router-dom'
 import Fallback from './atoms/ui/Fallback'
+import ExampleGallery from './pages/ExampleGallery'
 import Cursor from '@/atoms/ui/Cursor'
 import useMobile from '@/hooks/useMobile'
 import NavbarLayout from '@/layouts/NavbarLayout'
@@ -27,6 +28,7 @@ const navbarRoutes: Record<string, RouteElement> = {
 const plainRoutes: Record<string, RouteElement> = {
   OAuth: { path: '/oauth/:type', element: <OAuth /> },
   Gallery: { path: '/gallery/:galleryId', element: <Gallery /> },
+  Example: { path: '/gallery/example', element: <ExampleGallery /> },
 }
 
 export const routes = { ...plainRoutes, ...navbarRoutes }

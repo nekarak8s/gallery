@@ -3,9 +3,16 @@ import { acceleratedRaycast } from 'three-mesh-bvh'
 import { IPlayer } from '../items/Player/Player'
 
 const _downDirection = new THREE.Vector3(0, -1, 0)
-const _groundOffset = 0.3
+
 const MOVE_SPEED_FACTOR = 5
 const ROTATE_SPEED_FACTOR = 0.6
+
+const FLOOR_PASS_THRESHOLD = 0.4
+const OBSTACLE_DETECT_DISTANCE = 1
+const FALL_ANIMATION_HEIGHT = 0.8
+
+const CAMERA_OFFSET = new THREE.Vector3(0, 3, -4)
+const CAMERA_LOOK_AT = new THREE.Vector3(0, 2.5, 2)
 
 THREE.Mesh.prototype.raycast = acceleratedRaycast
 
@@ -25,7 +32,7 @@ export class KeypadControls {
 
   // camera & character group
   #group: THREE.Group = new THREE.Group()
-  #cameraOffset: THREE.Vector3 = new THREE.Vector3(0, 4, -6)
+  #cameraOffset: THREE.Vector3 = CAMERA_OFFSET
 
   // character
   #character: IPlayer | null = null
@@ -33,6 +40,7 @@ export class KeypadControls {
 
   // raycasting
   #raycaster = new THREE.Raycaster()
+  #numRaycasters: number = 2
 
   // movement variables
   #lookDirection = new THREE.Vector3()
@@ -62,10 +70,10 @@ export class KeypadControls {
     this.scene.remove(this.camera)
     this.camera.position.copy(this.#cameraOffset)
     this.#group.add(this.camera)
-    this.camera.lookAt(new THREE.Vector3(0, 3, 0).add(this.#group.position))
+    this.camera.lookAt(CAMERA_LOOK_AT.add(this.#group.position))
 
     // Limit the raycaster distance
-    this.#raycaster.far = 10
+    this.#raycaster.far = 20
     this.#raycaster.firstHitOnly = true
 
     // Set the orientation of the camera
@@ -232,6 +240,15 @@ export class KeypadControls {
     this.camera.position.copy(this.#cameraOffset)
   }
 
+  set numRaycasters(num: number) {
+    if (num < 2) return
+    this.#numRaycasters = num
+  }
+
+  resetNumRaycasters() {
+    this.#numRaycasters = 2
+  }
+
   /**
    * Set camera orientation of rotation
    */
@@ -297,10 +314,11 @@ export class KeypadControls {
       this.#group.getWorldDirection(this.#lookDirection) // update rotateDriection which the camera is rotateings
       actualMoveSpeed = delta * this.#moveSpeed * (this.#moveForwardRatio - this.#moveBackwardRatio) * MOVE_SPEED_FACTOR
       if (actualMoveSpeed < 0) this.#lookDirection.negate()
-      for (const point of [0, this.#character.size.height * (this.#isJump ? 0.5 : 1) - 0.4]) {
-        this.#raycaster.set(new THREE.Vector3(0, this.#character.size.height - point, 0).add(this.#group.position), this.#lookDirection)
+      for (let i = 0; i < this.#numRaycasters; i++) {
+        const length = ((this.#character.size.height * (this.#isJump ? 0.5 : 1) - FLOOR_PASS_THRESHOLD) * i) / (this.#numRaycasters - 1)
+        this.#raycaster.set(new THREE.Vector3(0, this.#character.size.height - length, 0).add(this.#group.position), this.#lookDirection)
         intersects = this.#raycaster.intersectObjects(this.obstacles)
-        if (intersects.length && intersects[0].distance < 1) {
+        if (intersects.length && intersects[0].distance < OBSTACLE_DETECT_DISTANCE) {
           actualMoveSpeed = 0
           break
         }
@@ -311,14 +329,16 @@ export class KeypadControls {
     // Position vertically
     this.#raycaster.set(new THREE.Vector3(0, this.#character.size.height, 0).add(this.#group.position), _downDirection)
     intersects = this.#raycaster.intersectObjects(this.floors)
-    if (intersects.length && intersects[0].distance < this.#character.size.height + 1) {
+    if (intersects.length && intersects[0].distance < this.#character.size.height) {
       // grounded
       this.#isFloating = false
       this.#floatingDuration = 0
-      this.#group.position.y += this.#character.size.height - intersects[0].distance
+      this.#group.position.y += Math.min(this.#character.size.height - intersects[0].distance, 2 * delta)
     } else {
       // falling
-      this.#isFloating = true
+      if (!intersects.length || intersects[0].distance > this.#character.size.height + FALL_ANIMATION_HEIGHT) {
+        this.#isFloating = true
+      }
       this.#floatingDuration += delta
       const fallspeed = Math.min(this.gravity * this.#floatingDuration ** 2 * 10, this.maxFallSpeed)
       this.#group.position.y -= delta * fallspeed

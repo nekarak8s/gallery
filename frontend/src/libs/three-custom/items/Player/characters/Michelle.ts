@@ -1,7 +1,9 @@
 import * as THREE from 'three'
 import { GLTF, GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import { IPlayer } from '../Player'
-import michelleGlb from '@/assets/glbs/players/michelle.glb'
+import michelleGlb from '@/assets/glbs/players/michelle-meshopt.glb'
+import { MeshoptDecoder } from '@/libs/three-custom/decoder/MeshoptDecoder'
+import { toLambert } from '@/libs/three-custom/utils/changeMaterial'
 import { disposeObject } from '@/libs/three-custom/utils/disposeObject'
 
 const SCALE = 1.5
@@ -37,8 +39,10 @@ class Michelle implements IPlayer {
 // Builder Pattern: Asynchronously construct an object
 export class MichelleBuilder {
   static async build(gltfLoader: GLTFLoader): Promise<Michelle> {
-    // Load GLTF
+    // Set MeshoptDecoder
+    gltfLoader.setMeshoptDecoder(MeshoptDecoder)
 
+    // Load GLTF
     const glb: GLTF = await new Promise((resolve, reject) => {
       gltfLoader.load(michelleGlb, (glb) => resolve(glb), undefined, reject)
     })
@@ -47,8 +51,12 @@ export class MichelleBuilder {
     const object = glb.scene.children[0]
     object.scale.multiplyScalar(SCALE)
     object.traverse((obj) => {
-      obj.castShadow = true
-      obj.receiveShadow = true
+      if (obj instanceof THREE.Mesh) {
+        // StandardMaterial -> MeshLambertMaterial
+        toLambert(obj) // eslint-disable-line
+        obj.castShadow = true
+        obj.receiveShadow = true
+      }
     })
 
     // Extract animations

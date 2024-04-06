@@ -3,6 +3,7 @@ import gsap from 'gsap'
 import * as THREE from 'three'
 import { degToRad } from 'three/src/math/MathUtils'
 import { buildArchitect } from './buildArchitect'
+import { routes } from '@/App'
 import Button from '@/atoms/ui/Button'
 import CSSTransition from '@/atoms/ui/CSSTransition'
 import Loading from '@/atoms/ui/Loading'
@@ -78,18 +79,10 @@ const Guide = () => {
     const camera = new DefaultCamera({ canvas, fov: 30, near: 2, far: 20000 })
     camera.rotation.order = 'YXZ'
     if (window.innerWidth < MOBILE_WIDTH) {
-      camera.position.set(
-        CAMERA_MOBILE_ORDERS[0].position.x,
-        CAMERA_MOBILE_ORDERS[0].position.y,
-        CAMERA_MOBILE_ORDERS[0].position.z
-      )
+      camera.position.set(CAMERA_MOBILE_ORDERS[0].position.x, CAMERA_MOBILE_ORDERS[0].position.y, CAMERA_MOBILE_ORDERS[0].position.z)
       camera.rotation.set(CAMERA_MOBILE_ORDERS[0].rotation.x, CAMERA_MOBILE_ORDERS[0].rotation.y, 0)
     } else {
-      camera.position.set(
-        CAMERA_ORDERS[0].position.x,
-        CAMERA_ORDERS[0].position.y,
-        CAMERA_ORDERS[0].position.z
-      )
+      camera.position.set(CAMERA_ORDERS[0].position.x, CAMERA_ORDERS[0].position.y, CAMERA_ORDERS[0].position.z)
       camera.rotation.set(CAMERA_ORDERS[0].rotation.x, CAMERA_ORDERS[0].rotation.y, 0)
     }
     cameraRef.current = camera
@@ -215,31 +208,25 @@ const Guide = () => {
           </section>
           <section>
             <h2>로그인 해주세요</h2>
-            <p>
-              더 갤러리는 안전하고 간편한 소셜 로그인을 이용합니다. 본인 인증만 진행할 뿐 어떠한
-              권한도 받아오지 않습니다.
-            </p>
+            <p>더 갤러리는 안전하고 간편한 소셜 로그인을 이용합니다. 본인 인증만 진행할 뿐 어떠한 권한도 받아오지 않습니다.</p>
           </section>
           <section>
             <h2>전시회를 생성하세요</h2>
             <p>
-              마이페이지에 접속하여 [ + ] 카드를 클릭하면 새로운 전시회를 생성할 수 있습니다.
-              전시회의 기본 정보를 입력하고 손쉽게 전시회를 개최해보세요.
+              마이페이지에 접속하여 [ + ] 카드를 클릭하면 새로운 전시회를 생성할 수 있습니다. 전시회의 기본 정보를 입력하고 손쉽게 전시회를
+              개최해보세요.
             </p>
           </section>
           <section>
             <h2>작품을 등록하세요</h2>
             <p>
-              생성한 전시회의 수정 버튼을 클릭하면 작품 목록을 업데이트할 수 있습니다. 작품마다
-              제목과 설명글을 기입하고, 어울리는 노래도 선택해보세요.
+              생성한 전시회의 수정 버튼을 클릭하면 작품 목록을 업데이트할 수 있습니다. 작품마다 제목과 설명글을 기입하고, 어울리는 노래도
+              선택해보세요.
             </p>
           </section>
           <section>
             <h2>전시회에 입장하세요</h2>
-            <p>
-              입장 버튼을 눌러 전시회에 방문할 수 있습니다. 액자를 조준해서 맞추면 작품에 대한
-              감상을 남길 수 있습니다.
-            </p>
+            <p>입장 버튼을 눌러 전시회에 방문할 수 있습니다. 액자를 조준해서 맞추면 작품에 대한 감상을 남길 수 있습니다.</p>
           </section>
           <section>
             <h1>
@@ -247,22 +234,11 @@ const Guide = () => {
               <br />
               친구들을 초대하세요
             </h1>
-            <Button
-              text="체험하기"
-              ariaLabel="3D 전시회 체험하기"
-              to={'/gallery/1'}
-              isTransparent={true}
-              direction="center"
-            ></Button>
+            <Button text="체험하기" ariaLabel="3D 전시회 체험하기" to={routes['Example'].path} isTransparent={true} direction="center"></Button>
           </section>
         </div>
       </div>
-      <CSSTransition
-        className="guide__loading"
-        isShow={isDefaultTime || requiredCount !== loadedCount}
-        duration={1000}
-        timingFunction="ease-in-out"
-      >
+      <CSSTransition className="guide__loading" isShow={isDefaultTime || requiredCount !== loadedCount} duration={1000} timingFunction="ease-in-out">
         <Loading />
       </CSSTransition>
     </div>
