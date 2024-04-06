@@ -32,7 +32,7 @@ class FoxBuilder {
       object,
       mixer,
       actions: { idle, walk, swim },
-      size: { width: 0.3 & DUCK_SCALE, height: 0.8 * DUCK_SCALE, depth: 1.2 * DUCK_SCALE },
+      size: { width: 0.3 & DUCK_SCALE, height: 0.3 * DUCK_SCALE, depth: 0.4 * DUCK_SCALE },
     })
   }
 }

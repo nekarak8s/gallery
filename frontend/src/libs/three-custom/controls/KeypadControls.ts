@@ -40,7 +40,7 @@ export class KeypadControls {
 
   // raycasting
   #raycaster = new THREE.Raycaster()
-  #numRaycasters: number = 1
+  #numRaycasters: number = 2
 
   // movement variables
   #lookDirection = new THREE.Vector3()
@@ -73,7 +73,7 @@ export class KeypadControls {
     this.camera.lookAt(CAMERA_LOOK_AT.add(this.#group.position))
 
     // Limit the raycaster distance
-    this.#raycaster.far = 10
+    this.#raycaster.far = 20
     this.#raycaster.firstHitOnly = true
 
     // Set the orientation of the camera
@@ -241,7 +241,7 @@ export class KeypadControls {
   }
 
   set numRaycasters(num: number) {
-    if (num < 1) return
+    if (num < 2) return
     this.#numRaycasters = num
   }
 

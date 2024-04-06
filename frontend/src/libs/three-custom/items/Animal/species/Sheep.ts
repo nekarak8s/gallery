@@ -32,7 +32,7 @@ class SheepBuilder {
       object,
       mixer,
       actions: { idle, walk, swim },
-      size: { width: 0.3 * SHEEP_SCALE, height: 0.8 * SHEEP_SCALE, depth: 0.55 * SHEEP_SCALE },
+      size: { width: 0.2 * SHEEP_SCALE, height: 0.2 * SHEEP_SCALE, depth: 0.3 * SHEEP_SCALE },
     })
   }
 }

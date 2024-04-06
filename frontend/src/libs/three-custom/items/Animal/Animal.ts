@@ -172,7 +172,7 @@ export class Animal implements IAnimal {
       intersects = this.#raycaster.intersectObjects(this.obstacles)
 
       this.#throttleTime = Date.now()
-      if (intersects.length > 0 && intersects[0].distance < 0.5) {
+      if (intersects.length > 0 && intersects[0].distance < 1) {
         this.turn()
         return
       }

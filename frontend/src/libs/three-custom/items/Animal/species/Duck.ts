@@ -32,7 +32,7 @@ class DuckBuilder {
       object,
       mixer,
       actions: { idle, walk, swim },
-      size: { width: 0.8 * DUCK_SCALE, height: 0.7 * DUCK_SCALE, depth: 0.7 * DUCK_SCALE },
+      size: { width: 0.2 * DUCK_SCALE, height: 0.1 * DUCK_SCALE, depth: 0.2 * DUCK_SCALE },
     })
   }
 }
