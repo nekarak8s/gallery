@@ -1,8 +1,7 @@
 import * as THREE from 'three'
-import { Water } from 'three/examples/jsm/objects/Water.js'
+import { Water } from 'three/examples/jsm/objects/Water2.js'
 import { IItem } from './Item'
 import { ItemFactory } from './ItemFactory'
-import waterNomals from '@/assets/textures/water/waternormals.jpg'
 import { disposeObject } from '@/libs/three-custom/utils/disposeObject'
 
 type WaterArgs = {
@@ -12,8 +11,10 @@ type WaterArgs = {
   x?: number
   y?: number
   z?: number
-  color?: THREE.ColorRepresentation | undefined
-  distortionScale?: number | undefined
+  color?: THREE.ColorRepresentation
+  scale?: number
+  flowX: number
+  flowY: number
   isFog?: boolean
 }
 
@@ -25,22 +26,13 @@ export class WaterItem implements IItem {
     // Create geometry
     const geometry = new THREE.PlaneGeometry(info.width, info.depth)
 
-    // Load texture
-    this.texture = info.textureLoader.load(waterNomals, function (texture) {
-      texture.wrapS = texture.wrapT = THREE.RepeatWrapping
-    })
-
     // Create object
     this.object = new Water(geometry, {
       textureWidth: 512,
       textureHeight: 512,
-      waterNormals: this.texture,
-      alpha: 1,
-      sunDirection: new THREE.Vector3(),
-      sunColor: 0xffffff,
-      waterColor: info.color || 0x000f0f,
-      distortionScale: info.distortionScale || 3.7,
-      fog: info.isFog || false,
+      color: info.color || 0xffffff,
+      flowDirection: new THREE.Vector2(info.flowX || 1, info.flowY || 1),
+      scale: info.scale || 1,
     })
 
     // Set the object position
@@ -49,7 +41,7 @@ export class WaterItem implements IItem {
   }
 
   update() {
-    this.object.material.uniforms['time'].value += 1.0 / 60.0
+    // this.object.material.uniforms['time'].value += 1.0 / 60.0
   }
 
   dispose() {

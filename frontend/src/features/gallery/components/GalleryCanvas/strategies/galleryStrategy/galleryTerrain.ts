@@ -2,6 +2,7 @@ import * as THREE from 'three'
 import { GLTF, GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import { MeshBVH } from 'three-mesh-bvh'
 import galleryGlb from '@/assets/glbs/terrains/gallery.glb'
+import { toLambert } from '@/libs/three-custom/utils/changeMaterial'
 import { disposeObject } from '@/libs/three-custom/utils/disposeObject'
 
 type GalleryProps = {
@@ -55,14 +56,16 @@ export class Gallery {
 
     glb.scene.traverse((obj) => {
       if (obj instanceof THREE.Mesh) {
+        toLambert(obj) // eslint-disable-line
         obj.geometry.boundsTree = new MeshBVH(obj.geometry) // eslint-disable-line
       }
     })
+
     // Extract glbs
     const floor = glb.scene.children[4]
     floor.traverse((obj) => {
       if (obj instanceof THREE.Mesh) {
-        obj.castShadow = true
+        // obj.castShadow = true
         obj.receiveShadow = true
       }
     })

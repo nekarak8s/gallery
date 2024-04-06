@@ -63,11 +63,7 @@ const Footer = () => {
             </li>
           </ul>
         </address>
-        <button
-          className="footer__icon-text"
-          onClick={() => setIsCopyOpen(true)}
-          data-cursor-scale={CURSOR_SCALE}
-        >
+        <button className="footer__icon-text" onClick={() => setIsCopyOpen(true)} data-cursor-scale={CURSOR_SCALE}>
           <FileIcon /> 외부 저작권 표기
         </button>
         <p>Copyright © 2023 이병호 & 이찬희, 외부 저작권 빼고 마음대로 사용가능</p>
@@ -92,11 +88,7 @@ const Footer = () => {
               <tr>
                 <th scope="row">폰트</th>
                 <td>
-                  <A
-                    href="https://www.youtube.com/watch?v=tFcJsB-pekY"
-                    title="프리텐다드 글꼴"
-                    target="_blank"
-                  >
+                  <A href="https://www.youtube.com/watch?v=tFcJsB-pekY" title="프리텐다드 글꼴" target="_blank">
                     Pretendard, orioncactus
                   </A>
                 </td>
@@ -109,11 +101,7 @@ const Footer = () => {
               <tr>
                 <th scope="row">홈 BGM</th>
                 <td>
-                  <A
-                    href="https://www.youtube.com/watch?v=tFcJsB-pekY"
-                    title="Youtube 메이플스토리 리스항구 피아노 커버"
-                    target="_blank"
-                  >
+                  <A href="https://www.youtube.com/watch?v=tFcJsB-pekY" title="Youtube 메이플스토리 리스항구 피아노 커버" target="_blank">
                     Above the Treetops, Pair Piano
                   </A>
                 </td>
@@ -122,11 +110,7 @@ const Footer = () => {
               <tr>
                 <th scope="row">초원 BGM</th>
                 <td>
-                  <A
-                    href="https://www.youtube.com/watch?v=YhQnBDHCMk4"
-                    title="Youtube 메이플스토리 수련의 숲 피아노 커버"
-                    target="_blank"
-                  >
+                  <A href="https://www.youtube.com/watch?v=YhQnBDHCMk4" title="Youtube 메이플스토리 수련의 숲 피아노 커버" target="_blank">
                     Raindrop Flower, Pair Piano
                   </A>
                 </td>
@@ -135,15 +119,33 @@ const Footer = () => {
               <tr>
                 <th scope="row">갤러리 BGM</th>
                 <td>
-                  <A
-                    href="https://www.youtube.com/watch?v=JOT0auAGc_U"
-                    title="Youtube 메이플스토리 판테온 피아노 커버"
-                    target="_blank"
-                  >
+                  <A href="https://www.youtube.com/watch?v=JOT0auAGc_U" title="Youtube 메이플스토리 판테온 피아노 커버" target="_blank">
                     Pantheon, Pair Piano
                   </A>
                 </td>
                 <td> </td>
+              </tr>
+              <tr>
+                <th scope="row">교토 BGM</th>
+                <td>
+                  <A href="https://soundcloud.com/user-356546060/colorful-flowers" title="Soundcloud,Tokyo Music Walker" target="_blank">
+                    Colorful Flowers, Tokyo Music Walker
+                  </A>
+                </td>
+                <td>CC BY 3.0 DEED</td>
+              </tr>
+              <tr>
+                <th scope="row">교토 3D 맵</th>
+                <td>
+                  <A
+                    href="https://sketchfab.com/3d-models/tanabata-evening-kyoto-inspired-city-scene-04dc9402b74d43ef86c4795311c0e4bb"
+                    title="Sketchfab, Mathias Tossens"
+                    target="_blank"
+                  >
+                    Tanabata evening, Mathias Tossens
+                  </A>
+                </td>
+                <td>CC Atribution</td>
               </tr>
             </tbody>
           </Table>

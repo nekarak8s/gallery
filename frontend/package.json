@@ -121,7 +121,6 @@
   },
   "lint-staged": {
     "*.{ts,tsx}": [
-      "npx eslint --fix",
       "npx prettier --write"
     ],
     "*.{css,scss}": [

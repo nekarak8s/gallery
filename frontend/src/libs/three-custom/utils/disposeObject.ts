@@ -18,14 +18,23 @@ export const disposeObject = (object: THREE.Object3D) => {
           if (value instanceof THREE.Texture) {
             value.dispose()
           }
-          // eslint-disable-next-line
-          obj.material[key] = null
+          obj.material[key] = null // eslint-disable-line
         })
         obj.material = null
       }
     } else if (obj instanceof THREE.Light) {
       // Dispose light
       obj.dispose()
+    }
+  })
+}
+
+export const disposeMaterial = (material: THREE.Material) => {
+  material.dispose()
+  // Dispose textures
+  Object.entries(material).forEach(([key, value]) => {
+    if (value instanceof THREE.Texture) {
+      value.dispose()
     }
   })
 }

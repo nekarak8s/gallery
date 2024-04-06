@@ -10,3 +10,5 @@ coverage
 **/.hg
 **/node_modules
 **/assets/* 
+
+src/**/*.js

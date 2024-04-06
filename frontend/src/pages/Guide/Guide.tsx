@@ -3,6 +3,7 @@ import gsap from 'gsap'
 import * as THREE from 'three'
 import { degToRad } from 'three/src/math/MathUtils'
 import { buildArchitect } from './buildArchitect'
+import { routes } from '@/App'
 import Button from '@/atoms/ui/Button'
 import CSSTransition from '@/atoms/ui/CSSTransition'
 import Loading from '@/atoms/ui/Loading'
@@ -233,7 +234,7 @@ const Guide = () => {
               <br />
               친구들을 초대하세요
             </h1>
-            <Button text="체험하기" ariaLabel="3D 전시회 체험하기" to={'/gallery/1'} isTransparent={true} direction="center"></Button>
+            <Button text="체험하기" ariaLabel="3D 전시회 체험하기" to={routes['Example'].path} isTransparent={true} direction="center"></Button>
           </section>
         </div>
       </div>
