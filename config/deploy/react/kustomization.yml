@@ -6,4 +6,4 @@ resources:
 
 images:
 - name: byongho/gallery-react
-  newTag: 8778c732bcf2fc0d6a2782def9c3c9c727166d1b
+  newTag: c67912e14f9fe2f239cfe1b0ccb7ce5b16692149
