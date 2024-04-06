@@ -29,6 +29,7 @@ export abstract class ItemFactory implements IItemFactory {
         obj.geometry.boundsTree = new MeshBVH(obj.geometry) // eslint-disable-line
       }
     })
+
     // Post process 2 : add the item to the container
     props.container.add(item.object)
 

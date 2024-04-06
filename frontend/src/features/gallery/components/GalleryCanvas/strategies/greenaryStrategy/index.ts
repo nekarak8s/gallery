@@ -44,7 +44,7 @@ export default class GreenaryStrategy implements IGalleryStrategy {
     GreenaryStrategy.instance = this
   }
 
-  build(props: TGalleryStrategyProps) {
+  async build(props: TGalleryStrategyProps) {
     // Reset the scene
     this.dispose()
 
@@ -64,28 +64,22 @@ export default class GreenaryStrategy implements IGalleryStrategy {
     props.scene.background = cubeTextureLoader.load([px, nx, py, ny, pz, nz])
 
     // terrain
-    const greenary = Greenary.build(props.scene, gltfLoader).then((greenary) => {
-      this.floors.push(greenary.objects.terrain)
-      this.targets.push(greenary.objects.terrain)
-      this.targets.push(greenary.objects.trees)
-      this.obstacles.push(greenary.objects.edges)
-      this.obstacles.push(greenary.objects.trees)
-
-      directLight.target = greenary.objects.terrain
-
-      this.animals.forEach((animal) => {
-        animal
-          .then((animal) => {
-            animal.floors.push(greenary.objects.terrain)
-            animal.obstacles.push(greenary.objects.edges)
-            animal.obstacles.push(greenary.objects.trees)
-          })
-          .catch((err) => console.error(err))
-      })
-
-      this.items.push(greenary)
-      return greenary
+    const greenary = await Greenary.build(props.scene, gltfLoader)
+    this.floors.push(greenary.objects.terrain)
+    this.targets.push(greenary.objects.terrain)
+    this.targets.push(greenary.objects.trees)
+    this.obstacles.push(greenary.objects.edges)
+    this.obstacles.push(greenary.objects.trees)
+    this.animals.forEach((animal) => {
+      animal
+        .then((animal) => {
+          animal.floors.push(greenary.objects.terrain)
+          animal.obstacles.push(greenary.objects.edges)
+          animal.obstacles.push(greenary.objects.trees)
+        })
+        .catch((err) => console.error(err))
     })
+    this.items.push(greenary)
 
     // Ambient light
     const ambientLight = new THREE.AmbientLight('white', 0.8)
@@ -100,6 +94,7 @@ export default class GreenaryStrategy implements IGalleryStrategy {
     directLight.shadow.camera.top = 60
     directLight.shadow.camera.bottom = -100
     directLight.castShadow = true
+    directLight.target = greenary.objects.terrain
     props.scene.add(directLight)
     this.lights.push(directLight)
 

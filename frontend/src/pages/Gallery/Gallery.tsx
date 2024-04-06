@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom'
 import GalleryNavbar from './GalleryNavbar'
 import galleryBgm from '@/assets/audios/MapleStory-Pantheon.mp3'
 import greenaryBgm from '@/assets/audios/MapleStory-Raindrop-Flower.mp3'
+import kyotoBgm from '@/assets/audios/Tokyo-Music-Walker-Colorful-Flowers.mp3'
 import Fallback from '@/atoms/ui/Fallback'
 import Music from '@/atoms/ui/Music'
 import GalleryCanvas from '@/features/gallery/components/GalleryCanvas'
@@ -21,8 +22,8 @@ const MUSIC_TYPE = [
     title: 'MapleStory - Phantheon (ver. Piano)',
   },
   {
-    src: greenaryBgm,
-    title: 'MapleStory - Raindrop Flower (ver. Piano)',
+    src: kyotoBgm,
+    title: 'Tokyo Music Walker - Colorful Flowers',
   },
 ]
 

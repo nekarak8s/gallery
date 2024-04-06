@@ -13,9 +13,9 @@ import floorAmbientImg from '@/assets/textures/granite/Granite_001_OCC.jpg'
 import { getSunColor, getSunIntensity, getSunPosition } from '@/libs/sun'
 import FloorsFactory from '@/libs/three-custom/items/Floors'
 import FrameFactory, { Frame } from '@/libs/three-custom/items/Frame'
+import OceanFactory, { OceanItem } from '@/libs/three-custom/items/Ocean'
 import SkyFactory, { SkyItem } from '@/libs/three-custom/items/Sky'
 import WallsFactory from '@/libs/three-custom/items/Walls'
-import WaterFactory, { WaterItem } from '@/libs/three-custom/items/Water'
 import { disposeObject } from '@/libs/three-custom/utils/disposeObject'
 
 const FLOOR_DATA = [
@@ -138,12 +138,12 @@ export function buildArchitect(props: buildArchitectProps): ThreeItem {
   items.push(sky)
 
   // Create water
-  const water = new WaterFactory().addItem({
+  const water = new OceanFactory().addItem({
     container: props.scene,
     textureLoader,
     width: 10000,
     depth: 10000,
-  }) as WaterItem
+  }) as OceanItem
   items.push(water)
 
   // Create Floor

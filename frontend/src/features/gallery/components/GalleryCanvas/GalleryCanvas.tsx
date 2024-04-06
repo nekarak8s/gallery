@@ -4,6 +4,7 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import { IGalleryStrategy } from './strategies'
 import GalleryStrategy from './strategies/galleryStrategy'
 import GreenaryStrategy from './strategies/greenaryStrategy'
+import KyotoStrategy from './strategies/kyotoStartegy'
 import { GalleryData } from '../../types'
 import GalleryCover from '../GalleryCover'
 import CSSTransition from '@/atoms/ui/CSSTransition'
@@ -30,6 +31,7 @@ type GalleryCanvasProps = {
 const STRATEGY_TYPE: Record<number, IGalleryStrategy> = {
   1: new GreenaryStrategy(),
   2: new GalleryStrategy(),
+  3: new KyotoStrategy(),
 }
 
 const GalleryCanvas = ({ gallery, postList }: GalleryCanvasProps) => {

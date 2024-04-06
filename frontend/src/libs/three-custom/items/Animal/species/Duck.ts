@@ -2,7 +2,9 @@ import * as THREE from 'three'
 import { GLTF, GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import { Animal } from '../Animal'
 import { AnimalFactory } from '../AnimalFactory'
-import duckGlb from '@/assets/glbs/animals/duck.glb'
+import duckGlb from '@/assets/glbs/animals/duck-meshopt.glb'
+
+const DUCK_SCALE = 1.5
 
 class DuckBuilder {
   static async build(gltfLoader: GLTFLoader) {
@@ -13,7 +15,7 @@ class DuckBuilder {
 
     // Extract mesh
     const object = glb.scene.children[0]
-    object.scale.multiplyScalar(1.5)
+    object.scale.multiplyScalar(DUCK_SCALE)
     object.traverse((obj) => {
       obj.castShadow = true
       obj.receiveShadow = true
@@ -26,15 +28,11 @@ class DuckBuilder {
     const walk = mixer.clipAction(glb.animations[17])
     const swim = mixer.clipAction(glb.animations[16])
 
-    // Extract size
-    const box = new THREE.Box3().setFromObject(object)
-    const { x: width, y: height, z: depth } = box.getSize(new THREE.Vector3())
-
     return new Animal({
       object,
       mixer,
       actions: { idle, walk, swim },
-      size: { width, height, depth },
+      size: { width: 0.8 * DUCK_SCALE, height: 0.7 * DUCK_SCALE, depth: 0.7 * DUCK_SCALE },
     })
   }
 }
