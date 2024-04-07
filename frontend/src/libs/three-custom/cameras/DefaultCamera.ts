@@ -16,12 +16,16 @@ export class DefaultCamera extends PerspectiveCamera {
       info.fov || 45,
       info.canvas ? info.canvas.offsetWidth / info.canvas.offsetHeight : window.innerWidth / window.innerHeight,
       info.near || 1,
-      info.far || 1000
+      info.far || 500
     )
     this.canvas = info.canvas
   }
 
   setDefaultAspect() {
     this.aspect = this.canvas ? this.canvas.offsetWidth / this.canvas.offsetHeight : window.innerWidth / window.innerHeight
+  }
+
+  resetFov() {
+    this.fov = 45
   }
 }

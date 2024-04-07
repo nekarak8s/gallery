@@ -73,6 +73,7 @@ const GalleryCanvas = ({ gallery, postList }: GalleryCanvasProps) => {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const sceneRef = useRef<THREE.Scene | null>(null)
   const rendererRef = useRef<THREE.WebGLRenderer | null>(null)
+  const cameraRef = useRef<DefaultCamera | null>(null)
   const loadingManagerRef = useRef<THREE.LoadingManager | null>(null)
   const keypadControlsRef = useRef<KeypadControls | null>(null)
   const rayControlsRef = useRef<RaycasterControls | null>(null)
@@ -109,6 +110,7 @@ const GalleryCanvas = ({ gallery, postList }: GalleryCanvasProps) => {
 
     // Camera
     const camera = new DefaultCamera({ canvas })
+    cameraRef.current = camera
     scene.add(camera)
 
     // Keypad controls
@@ -198,6 +200,7 @@ const GalleryCanvas = ({ gallery, postList }: GalleryCanvasProps) => {
     // Build the strategy
     strategy.build({
       scene: sceneRef.current!,
+      camera: cameraRef.current!,
       controls: keypadControlsRef.current!,
       loadingManager: loadingManagerRef.current!,
       postList,
@@ -239,6 +242,15 @@ const GalleryCanvas = ({ gallery, postList }: GalleryCanvasProps) => {
     keypadControlsRef.current.jump()
   }, [])
 
+  /**
+   * Notice for Kyotomap
+   */
+  useEffect(() => {
+    if (gallery.place.placeId === 3 && !isMobile) {
+      toastManager.addToast('info', '프레임이 끊길 경우 화면 크기를 줄여주세요', 8000)
+      toastManager.addToast('info', '이 갤러리는 렌더링 성능 개선 중입니다.', 8000)
+    }
+  }, [gallery, isMobile])
   return (
     <div className="gallery-canvas">
       <canvas ref={canvasRef} />
