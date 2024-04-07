@@ -68,17 +68,19 @@ const ExampleGallery = () => {
       <CSSTransition isShow={placeId == null} className="example-gallery__selection" duration={500}>
         <GallerySelection onSelect={selectGallery} />
       </CSSTransition>
-      <CSSTransition isShow={placeId !== null} className="example-gallery__gallery" duration={500}>
-        <div className="example-gallery__music">
-          <Music id="gallery-audio" src={MUSIC_TYPE[gallery.place.placeId].src} title={MUSIC_TYPE[gallery.place.placeId].title} color="white" />
+      {placeId && (
+        <div className="example-gallery__gallery">
+          <div className="example-gallery__music">
+            <Music id="gallery-audio" src={MUSIC_TYPE[gallery.place.placeId].src} title={MUSIC_TYPE[gallery.place.placeId].title} color="white" />
+          </div>
+          <div className="example-gallery__navbar">
+            <GalleryNavbar />
+          </div>
+          <div className="example-gallery__canvas">
+            <GalleryCanvas gallery={gallery} postList={postList} />
+          </div>
         </div>
-        <div className="example-gallery__navbar">
-          <GalleryNavbar />
-        </div>
-        <div className="example-gallery__canvas">
-          <GalleryCanvas gallery={gallery} postList={postList} />
-        </div>
-      </CSSTransition>
+      )}
     </div>
   )
 }

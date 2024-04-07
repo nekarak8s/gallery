@@ -123,16 +123,23 @@ export const placeItemData: PlaceData = {
 export const placeListData: PlaceData[] = [
   {
     placeId: 1,
-    name: '공간1',
+    name: '초원',
     maximumFrameNumber: 10,
-    twoDimensionImageUri: 'https://source.unsplash.com/random/300×300',
-    threeDimensionImageUri: 'https://source.unsplash.com/random/300×300',
+    twoDimensionImageUri: 'https://source.unsplash.com/random/300×300?greenary',
+    threeDimensionImageUri: 'https://source.unsplash.com/random/300×300?greenary',
   },
   {
     placeId: 2,
-    name: '공간2',
+    name: '갤러리',
     maximumFrameNumber: 10,
-    twoDimensionImageUri: 'https://source.unsplash.com/random/400×400',
-    threeDimensionImageUri: 'https://source.unsplash.com/random/400×400',
+    twoDimensionImageUri: 'https://source.unsplash.com/random/300×300?gallery',
+    threeDimensionImageUri: 'https://source.unsplash.com/random/300×300?gallery',
+  },
+  {
+    placeId: 3,
+    name: '교토',
+    maximumFrameNumber: 10,
+    twoDimensionImageUri: 'https://source.unsplash.com/random/300×300?kyoto',
+    threeDimensionImageUri: 'https://source.unsplash.com/random/300×300?kyoto',
   },
 ]

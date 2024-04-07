@@ -6,7 +6,7 @@ THREE.Mesh.prototype.raycast = acceleratedRaycast
 
 type ItemFactoryProps = {
   container: THREE.Scene | THREE.Object3D
-  [prop: string]: any // allow other properties
+  [prop: string]: unknown // allow other properties
 }
 
 export interface IItemFactory {

@@ -96,8 +96,13 @@
   align-items: flex-end;
   width: 18em;
 
+  input[type='text'] {
+    font-size: 1.2em;
+  }
+
   select {
     width: 5em;
+    font-size: 1em;
   }
 }
 
