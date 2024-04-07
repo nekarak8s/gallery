@@ -81,18 +81,18 @@ export default class KyotoStrategy implements IGalleryStrategy {
 
     // Directional Light
     const directLight = new THREE.DirectionalLight(0xda9000, 2.2)
-    directLight.position.set(-100, 110, -8.65)
-    directLight.shadow.camera.left = -80
-    directLight.shadow.camera.right = 80
-    directLight.shadow.camera.top = 80
-    directLight.shadow.camera.bottom = -80
+    directLight.position.set(-50, 30, 20)
     directLight.castShadow = true
     directLight.target = kyoto.objects.terrain
     props.scene.add(directLight)
     this.lights.push(directLight)
 
-    // Create water
-    const water = new OceanFactory().addItem({
+    // add light helper
+    const lightHelper = new THREE.DirectionalLightHelper(directLight)
+    props.scene.add(lightHelper)
+
+    // Create ocean
+    const ocean = new OceanFactory().addItem({
       container: props.scene,
       color: 0xaa1212,
       width: 1000,
@@ -100,8 +100,8 @@ export default class KyotoStrategy implements IGalleryStrategy {
       y: 2,
       textureLoader: textureLoader,
     })
-    this.items.push(water)
-    this.floors.push(water.object)
+    this.items.push(ocean)
+    this.floors.push(ocean.object)
 
     // Create PostFrames
     const frames = new PostFramesFactory().addItem({

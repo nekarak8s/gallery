@@ -37,20 +37,20 @@ const GalleryItem = ({ gallery }: GalleryItemProps) => {
     e.stopPropagation()
 
     // 1. Use web share api
-    if (navigator.canShare()) {
-      navigator.share({
-        title: `${gallery.name}`,
-        text: `${gallery.name} 전시회에 초대합니다`,
-        url: `${window.location.protocol}://${window.location.hostname}:${window.location.port}${process.env.REACT_APP_BASE_URL}/gallery/${gallery.galleryId}`,
-      })
+    if (navigator.share) {
+      navigator
+        .share({
+          title: `${gallery.name}`,
+          text: `${gallery.name} 전시회에 초대합니다`,
+          url: `${window.location.protocol}://${window.location.host}${process.env.REACT_APP_BASE_URL}/gallery/${gallery.galleryId}`,
+        })
+        .catch(() => {})
       return
     }
 
     // 2. Use clipboard api
     navigator.clipboard
-      .writeText(
-        `${window.location.protocol}://${window.location.hostname}:${window.location.port}${process.env.REACT_APP_BASE_URL}/gallery/${gallery.galleryId}`
-      )
+      .writeText(`${window.location.protocol}://${window.location.host}${process.env.REACT_APP_BASE_URL}/gallery/${gallery.galleryId}`)
       .then(() => {
         toastManager.addToast('success', '클립보드에 복사되었습니다')
       })
@@ -121,29 +121,17 @@ const GalleryItem = ({ gallery }: GalleryItemProps) => {
         <h2 className="gallery-item__title">{gallery.name}</h2>
         <ul className="gallery-item__icons" ref={buttonsRef} data-cursor-scale={CURSOR_SCALE}>
           <li>
-            <button
-              data-cursor-scale={CURSOR_SCALE}
-              aria-label={`${gallery.name} 갤러리 입장`}
-              onClick={handleEnterClick}
-            >
+            <button data-cursor-scale={CURSOR_SCALE} aria-label={`${gallery.name} 갤러리 입장`} onClick={handleEnterClick}>
               <EnterIcon />
             </button>
           </li>
           <li>
-            <button
-              data-cursor-scale={CURSOR_SCALE}
-              aria-label={`${gallery.name} 갤러리 공유`}
-              onClick={handleShareClick}
-            >
+            <button data-cursor-scale={CURSOR_SCALE} aria-label={`${gallery.name} 갤러리 공유`} onClick={handleShareClick}>
               <ShareIcon />
             </button>
           </li>
           <li>
-            <button
-              data-cursor-scale={CURSOR_SCALE}
-              aria-label={`${gallery.name} 갤러리 수정`}
-              onClick={() => setIsUpdateShow(true)}
-            >
+            <button data-cursor-scale={CURSOR_SCALE} aria-label={`${gallery.name} 갤러리 수정`} onClick={() => setIsUpdateShow(true)}>
               <EditIcon />
             </button>
           </li>
@@ -152,9 +140,7 @@ const GalleryItem = ({ gallery }: GalleryItemProps) => {
           <div ref={contentRef}></div>
           <p>{gallery.content}</p>
         </div>
-        <time className="gallery-item__date">
-          {new Date(gallery.createdDate).toLocaleDateString()}
-        </time>
+        <time className="gallery-item__date">{new Date(gallery.createdDate).toLocaleDateString()}</time>
         <div className="gallery-item__borders">
           <div />
           <div />

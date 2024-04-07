@@ -48,14 +48,15 @@
   left: 0;
   width: 100%;
   height: 100%;
-  opacity: 0;
+  animation: exmaple-gallery__gallery--enter 0.5s forwards;
+}
 
-  &--enter {
-    display: block;
-    opacity: 1;
+@keyframes exmaple-gallery__gallery--enter {
+  0% {
+    opacity: 0;
   }
 
-  &--leave {
-    opacity: 0;
+  100% {
+    opacity: 1;
   }
 }

@@ -45,7 +45,7 @@ const GallerySearch = ({ isShow, onClose }: GallerySearchProps) => {
       </div>
       <div className="gallery-search__search" ref={focusRef}>
         <div className="gallery-search__search-bar">
-          <Text label="" name="query" initialValue="" onChange={(e) => setQuery(e.target.value)} />
+          <Text label="갤러리 검색" name="query" initialValue="" onChange={(e) => setQuery(e.target.value)} />
           <Select name="type" onChange={(e) => setType(e.target.value)}>
             <option selected value="all">
               전체
@@ -54,22 +54,12 @@ const GallerySearch = ({ isShow, onClose }: GallerySearchProps) => {
             <option value="author">작가</option>
           </Select>
         </div>
-        <button
-          className="gallery-search__close"
-          data-cursor-scale={CURSOR_SCALE}
-          onClick={onClose}
-        >
+        <button className="gallery-search__close" data-cursor-scale={CURSOR_SCALE} onClick={onClose}>
           <span data-cursor-scale={CURSOR_SCALE} />
           <span data-cursor-scale={CURSOR_SCALE} />
         </button>
         <div className="gallery-search__list">
-          {isFetching ? (
-            <Loading />
-          ) : (
-            galleryList?.map((gallery) => (
-              <GallerySearchItem key={gallery.galleryId} gallery={gallery} />
-            ))
-          )}
+          {isFetching ? <Loading /> : galleryList?.map((gallery) => <GallerySearchItem key={gallery.galleryId} gallery={gallery} />)}
         </div>
       </div>
     </CSSTransition>
