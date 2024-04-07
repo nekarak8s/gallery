@@ -23,7 +23,7 @@ function GallerySelection({ onSelect }: GallerySelectionProps) {
             <Button3D onClick={() => onSelect(place.placeId)} ariaLabel={`${place.name} 타입 갤러리`}>
               <div className="gallery-selection__button">
                 <img src={place.threeDimensionImageUri} alt={`${place.name} 3D 이미지`} />
-                {place.name}
+                <span>{place.name}</span>
               </div>
             </Button3D>
           </li>
