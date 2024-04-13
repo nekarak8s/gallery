@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState, useCallback } from 'react'
+import { useTranslation } from 'react-i18next'
 import OceanFilter from './OceanFilter'
 import cloud1Img from '@/assets/images/home-section-1/cloud-1.png?format=png'
 import cloud1Webp from '@/assets/images/home-section-1/cloud-1.png?format=webp'
@@ -16,7 +17,7 @@ import Loading from '@/atoms/ui/Loading'
 import ScrollDown from '@/atoms/ui/ScrollDown'
 import StaticImage from '@/atoms/ui/StaticImage'
 import useMobile from '@/hooks/useMobile'
-import toFrame from '@/libs/toFrame'
+import toFrame from '@/utils/toFrame'
 import musicManager from '@/utils/musicManager'
 import './HomeSection1.scss'
 
@@ -26,6 +27,7 @@ const SCROLL_OFFSET = 300 // px. fade start offset on scroll
 const ROTATION_DEGREE = 20 // deg. max rotation degree on mousemove
 
 function HomeSection1() {
+  const { t } = useTranslation()
   const isMobile = useMobile()
 
   /**
@@ -201,20 +203,9 @@ function HomeSection1() {
           </div>
           <div className="hs1-interact" ref={interactRef}>
             <div className="hs1-interact__sky" data-speedx="0" data-speedy="0" data-speedr="0">
-              <StaticImage
-                imgSrc={skyImg}
-                webpSrc={skyWebp}
-                alt="푸른 하늘"
-                loading="eager"
-                onLoad={handleImageLoad}
-              />
+              <StaticImage imgSrc={skyImg} webpSrc={skyWebp} alt="푸른 하늘" loading="eager" onLoad={handleImageLoad} />
             </div>
-            <div
-              className="hs1-interact__cloud-1"
-              data-speedx="0.07"
-              data-speedy="0.05"
-              data-speedr="0.03"
-            >
+            <div className="hs1-interact__cloud-1" data-speedx="0.07" data-speedy="0.05" data-speedr="0.03">
               <StaticImage
                 imgSrc={cloud1Img}
                 webpSrc={cloud1Webp}
@@ -224,12 +215,7 @@ function HomeSection1() {
                 onLoad={handleImageLoad}
               />
             </div>
-            <div
-              className="hs1-interact__cloud-2"
-              data-speedx="0.08"
-              data-speedy="0.06"
-              data-speedr="0.05"
-            >
+            <div className="hs1-interact__cloud-2" data-speedx="0.08" data-speedy="0.06" data-speedr="0.05">
               <StaticImage
                 imgSrc={cloud2Img}
                 webpSrc={cloud2Webp}
@@ -239,12 +225,7 @@ function HomeSection1() {
                 onLoad={handleImageLoad}
               />
             </div>
-            <div
-              className="hs1-interact__cloud-3"
-              data-speedx="0.05"
-              data-speedy="0.03"
-              data-speedr="0.02"
-            >
+            <div className="hs1-interact__cloud-3" data-speedx="0.05" data-speedy="0.03" data-speedr="0.02">
               <StaticImage
                 imgSrc={cloud3Img}
                 webpSrc={cloud3Webp}
@@ -268,12 +249,7 @@ function HomeSection1() {
                 onLoad={handleImageLoad}
               />
             </div> */}
-            <div
-              className="hs1-interact__ocean"
-              data-speedx="0.07"
-              data-speedy="0.08"
-              data-speedr="0.09"
-            >
+            <div className="hs1-interact__ocean" data-speedx="0.07" data-speedy="0.08" data-speedr="0.09">
               <div className="hs1-interact__ocean-filter">
                 <StaticImage
                   imgSrc={oceanImg}
@@ -286,22 +262,11 @@ function HomeSection1() {
                 {!isMobile && <OceanFilter />}
               </div>
             </div>
-            <div
-              ref={logoRef}
-              className="hs1-interact__logo"
-              data-speedx="0.25"
-              data-speedy="0.05"
-              data-speedr="0.1"
-            >
+            <div ref={logoRef} className="hs1-interact__logo" data-speedx="0.25" data-speedy="0.05" data-speedr="0.1">
               <span>The</span>
               <span>Gallery</span>
             </div>
-            <div
-              className="hs1-interact__gallery"
-              data-speedx="0.16"
-              data-speedy="0.12"
-              data-speedr="0.1"
-            >
+            <div className="hs1-interact__gallery" data-speedx="0.16" data-speedy="0.12" data-speedr="0.1">
               <StaticImage
                 imgSrc={galleryImg}
                 webpSrc={galleryWebp}
@@ -319,9 +284,9 @@ function HomeSection1() {
         {imagesLoaded >= TOTAL_IMAGE ? (
           <div className="hs1-cover__phrase">
             <h1 tabIndex={0} onKeyDown={handleClick}>
-              환영합니다
+              {t('home.greeting')}
             </h1>
-            <h2>클릭하면 배경음악이 재생됩니다</h2>
+            <h2>{t('home.notice')}</h2>
           </div>
         ) : (
           <div className="hs1-cover__loading">

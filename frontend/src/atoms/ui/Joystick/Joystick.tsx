@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react'
 import BowIcon from '@/assets/svgs/bow.svg'
 import JumpIcon from '@/assets/svgs/jump.svg'
-import toFrame from '@/libs/toFrame'
+import toFrame from '@/utils/toFrame'
 import './Joystick.scss'
 
 type JoystickProps = {

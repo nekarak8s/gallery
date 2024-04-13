@@ -10,6 +10,7 @@ import nz from '@/assets/cubemaps/sunset_sky/nz.png'
 import px from '@/assets/cubemaps/sunset_sky/px.png'
 import py from '@/assets/cubemaps/sunset_sky/py.png'
 import pz from '@/assets/cubemaps/sunset_sky/pz.png'
+import { DefaultCamera } from '@/libs/three-custom/cameras/DefaultCamera'
 import { KeypadControls } from '@/libs/three-custom/controls/KeypadControls'
 import OceanFactory from '@/libs/three-custom/items/Ocean'
 import PostFramesFactory from '@/libs/three-custom/items/PostFrames'
@@ -25,6 +26,7 @@ export default class KyotoStrategy implements IGalleryStrategy {
   // props
   scene: THREE.Scene | null = null
   controls: KeypadControls | null = null
+  camera: DefaultCamera | null = null
 
   // interal arrays
   items: ThreeItem[] = []
@@ -47,6 +49,10 @@ export default class KyotoStrategy implements IGalleryStrategy {
     // Set the scene
     this.scene = props.scene
     this.controls = props.controls
+    this.camera = props.camera
+
+    // Set the camrea fov
+    this.camera.fov = 40
 
     // Create Loaders
     const textureLoader = new THREE.TextureLoader(props.loadingManager)
@@ -122,6 +128,8 @@ export default class KyotoStrategy implements IGalleryStrategy {
   }
 
   dispose() {
+    this.camera && this.camera.resetFov()
+    this.controls && this.controls.resetNumRaycasters()
     this.lights.forEach((light) => {
       this.scene && this.scene.remove(light)
       disposeObject(light)
@@ -129,7 +137,6 @@ export default class KyotoStrategy implements IGalleryStrategy {
     this.items.forEach((item) => {
       item.dispose && item.dispose()
     })
-    this.controls && this.controls.resetNumRaycasters()
     this.targets = []
     this.obstacles = []
     this.floors = []

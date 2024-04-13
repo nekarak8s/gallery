@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react'
+import { useTranslation } from 'react-i18next'
 import { routes } from '@/App'
 import labelImg from '@/assets/images/home-section-3/white-label.jpg?format=jpg'
 import labelWebp from '@/assets/images/home-section-3/white-label.jpg?format=webp'
@@ -12,13 +13,14 @@ import StaticImage from '@/atoms/ui/StaticImage'
 import StaticVideo from '@/atoms/ui/StaticVideo'
 import { CURSOR_SCALE } from '@/constants'
 import useMobile from '@/hooks/useMobile'
-import throttle from '@/libs/throttle'
+import throttle from '@/utils/throttle'
 import './HomeSection3.scss'
 
 const BACK_HEIGHT = 3 // * 100vh
 const SCROLL_OFFSET = 300 // px.
 
 function HomeSection3() {
+  const { t } = useTranslation()
   const isMobile = useMobile()
 
   /**
@@ -220,20 +222,20 @@ function HomeSection3() {
         </div>
         <div className="hs3-phrase" ref={phraseRef}>
           <div>
-            <p>스쳐가는 사진들 속에서</p>
-            <p>추억할 순간을 붙잡아 이름짓고</p>
-            <p>당신의 작품을 만들어 주세요</p>
+            <p>{t('home.section3.phrase1')}</p>
+            <p>{t('home.section3.phrase2')}</p>
+            <p>{t('home.section3.phrase3')}</p>
           </div>
           <div>
-            <p>더 갤러리가</p>
-            <p>오직 당신만을 위한</p>
-            <p>3D 전시회를 준비했습니다</p>
+            <p>{t('home.section3.phrase4')}</p>
+            <p>{t('home.section3.phrase5')}</p>
+            <p>{t('home.section3.phrase6')}</p>
           </div>
         </div>
 
         <div className="hs3-button" ref={buttonRef}>
           <Button3D ariaLabel="3D 전시회 체험하기" to={routes['Example'].path} color="blue">
-            <p data-cursor-scale={CURSOR_SCALE}>체험하기</p>
+            <p data-cursor-scale={CURSOR_SCALE}>{t('buttons.experience')}</p>
           </Button3D>
         </div>
 
@@ -254,8 +256,8 @@ function HomeSection3() {
           <div className="hs3-work__label" ref={labelRef}>
             <StaticImage imgSrc={labelImg} webpSrc={labelWebp} sizes="200px" alt="작품 라벨" />
             <div className="hs3-work__label--phrase">
-              <p>작품명</p>
-              <p>마우스를 올리세요</p>
+              <p>{t('home.section3.workTitle')}</p>
+              <p>{t('home.section3.workDescription')}</p>
             </div>
           </div>
         </div>

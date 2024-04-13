@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react'
 import { NavLink } from 'react-router-dom'
 import { GallerySearchItemData } from '../../types'
 import { CURSOR_SCALE } from '@/constants'
-import throttle from '@/libs/throttle'
+import throttle from '@/utils/throttle'
 import './GallerySearchItem.scss'
 
 type GallerySearchItemProps = {

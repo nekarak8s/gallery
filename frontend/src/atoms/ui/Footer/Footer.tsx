@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import A from '../A'
 import Modal from '../Modal'
 import Table from '../Table/Table'
@@ -9,16 +10,17 @@ import { CURSOR_SCALE } from '@/constants'
 import './Footer.scss'
 
 const Footer = () => {
+  const { t } = useTranslation()
   const [isCopyOpen, setIsCopyOpen] = useState(false) // is copyright modal open
 
   return (
     <>
       <footer className="footer">
-        <p>더 갤러리 : 당신만의 3D 전시회</p>
+        <p>{t('footer.summarize')}</p>
         <address>
           <ul>
             <li>
-              이병호.&nbsp;&nbsp;
+              {t('footer.byongho')}.&nbsp;&nbsp;
               <A
                 href="https://github.com/Byongho96"
                 title="이병호 깃헙"
@@ -40,7 +42,7 @@ const Footer = () => {
               </A>
             </li>
             <li>
-              이찬희.&nbsp;&nbsp;
+              {t('footer.chanhee')}.&nbsp;&nbsp;
               <A
                 href="https://github.com/chancehee"
                 title="이찬희 깃헙"
@@ -64,9 +66,9 @@ const Footer = () => {
           </ul>
         </address>
         <button className="footer__icon-text" onClick={() => setIsCopyOpen(true)} data-cursor-scale={CURSOR_SCALE}>
-          <FileIcon /> 외부 저작권 표기
+          <FileIcon /> {t('footer.externalCopyright')}
         </button>
-        <p>Copyright © 2023 이병호 & 이찬희, 외부 저작권 빼고 마음대로 사용가능</p>
+        <p> {t('footer.copyright')}</p>
       </footer>
       {/* Copyright modal */}
       <Modal
@@ -80,13 +82,13 @@ const Footer = () => {
             <thead>
               <tr>
                 <th></th>
-                <th scope="column">저작물, 저작자</th>
-                <th scope="column">라이선스</th>
+                <th scope="column">{t('copyright.column1')}</th>
+                <th scope="column">{t('copyright.column2')}</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <th scope="row">폰트</th>
+                <th scope="row">{t('copyright.row1')}</th>
                 <td>
                   <A href="https://www.youtube.com/watch?v=tFcJsB-pekY" title="프리텐다드 글꼴" target="_blank">
                     Pretendard, orioncactus
@@ -94,12 +96,12 @@ const Footer = () => {
                 </td>
                 <td>
                   <A href="https://openfontlicense.org/" title="SIL 라이선스" target="_blank">
-                    SIL 오픈 폰트
+                    SIL Open Font
                   </A>
                 </td>
               </tr>
               <tr>
-                <th scope="row">홈 BGM</th>
+                <th scope="row">{t('copyright.row2')}</th>
                 <td>
                   <A href="https://www.youtube.com/watch?v=tFcJsB-pekY" title="Youtube 메이플스토리 리스항구 피아노 커버" target="_blank">
                     Above the Treetops, Pair Piano
@@ -108,7 +110,7 @@ const Footer = () => {
                 <td> </td>
               </tr>
               <tr>
-                <th scope="row">초원 BGM</th>
+                <th scope="row">{t('copyright.row3')}</th>
                 <td>
                   <A href="https://www.youtube.com/watch?v=YhQnBDHCMk4" title="Youtube 메이플스토리 수련의 숲 피아노 커버" target="_blank">
                     Raindrop Flower, Pair Piano
@@ -117,7 +119,7 @@ const Footer = () => {
                 <td> </td>
               </tr>
               <tr>
-                <th scope="row">갤러리 BGM</th>
+                <th scope="row">{t('copyright.row4')}</th>
                 <td>
                   <A href="https://www.youtube.com/watch?v=JOT0auAGc_U" title="Youtube 메이플스토리 판테온 피아노 커버" target="_blank">
                     Pantheon, Pair Piano
@@ -126,7 +128,7 @@ const Footer = () => {
                 <td> </td>
               </tr>
               <tr>
-                <th scope="row">교토 BGM</th>
+                <th scope="row">{t('copyright.row5')}</th>
                 <td>
                   <A href="https://soundcloud.com/user-356546060/colorful-flowers" title="Soundcloud,Tokyo Music Walker" target="_blank">
                     Colorful Flowers, Tokyo Music Walker
@@ -135,7 +137,7 @@ const Footer = () => {
                 <td>CC BY 3.0 DEED</td>
               </tr>
               <tr>
-                <th scope="row">교토 3D 맵</th>
+                <th scope="row">{t('copyright.row6')}</th>
                 <td>
                   <A
                     href="https://sketchfab.com/3d-models/tanabata-evening-kyoto-inspired-city-scene-04dc9402b74d43ef86c4795311c0e4bb"

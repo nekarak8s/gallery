@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useSearchGalleryQuery } from '../../services'
 import GallerySearchItem from '../GallerySearchItem'
 import CircleIcon from '@/assets/svgs/circle.svg'
@@ -17,6 +18,8 @@ type GallerySearchProps = {
 }
 
 const GallerySearch = ({ isShow, onClose }: GallerySearchProps) => {
+  const { t } = useTranslation()
+
   /**
    * Toggle Search
    */
@@ -45,13 +48,13 @@ const GallerySearch = ({ isShow, onClose }: GallerySearchProps) => {
       </div>
       <div className="gallery-search__search" ref={focusRef}>
         <div className="gallery-search__search-bar">
-          <Text label="갤러리 검색" name="query" initialValue="" onChange={(e) => setQuery(e.target.value)} />
+          <Text label={t('inputs.searchGallery')} name="query" initialValue="" onChange={(e) => setQuery(e.target.value)} />
           <Select name="type" onChange={(e) => setType(e.target.value)}>
             <option selected value="all">
-              전체
+              {t('gallerySearch.all')}
             </option>
-            <option value="title">제목</option>
-            <option value="author">작가</option>
+            <option value="title">{t('gallerySearch.title')}</option>
+            <option value="author">{t('gallerySearch.author')}</option>
           </Select>
         </div>
         <button className="gallery-search__close" data-cursor-scale={CURSOR_SCALE} onClick={onClose}>

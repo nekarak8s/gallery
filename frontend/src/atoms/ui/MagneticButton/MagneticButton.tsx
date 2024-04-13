@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react'
 import { NavLink } from 'react-router-dom'
 import gsap, { Elastic } from 'gsap'
-import throttle from '@/libs/throttle'
+import throttle from '@/utils/throttle'
 import './MagneticButton.scss'
 
 interface Props {
@@ -12,13 +12,7 @@ interface Props {
   color?: 'primary' | 'black' | 'white'
 }
 
-const MagneticButton: React.FC<Props> = ({
-  text,
-  ariaLabel,
-  to = '',
-  size = 'md',
-  color = 'primary',
-}: Props) => {
+const MagneticButton: React.FC<Props> = ({ text, ariaLabel, to = '', size = 'md', color = 'primary' }: Props) => {
   const buttonRef = useRef<HTMLAnchorElement>(null)
   const buttonTextRef = useRef<HTMLElement>(null)
 
@@ -65,12 +59,7 @@ const MagneticButton: React.FC<Props> = ({
     }
   }, [])
   return (
-    <NavLink
-      className={`magnetic-button ${size} ${color}`}
-      to={to}
-      title={ariaLabel}
-      ref={buttonRef}
-    >
+    <NavLink className={`magnetic-button ${size} ${color}`} to={to} title={ariaLabel} ref={buttonRef}>
       <span className="magnetic-button__text" ref={buttonTextRef}>
         {text}
       </span>

@@ -1,0 +1,49 @@
+@use '@/styles/_colors.scss' as c;
+
+.locale {
+  position: relative;
+
+  .locale__option:nth-child(1) {
+    font-weight: 600;
+  }
+
+  .locale__option:nth-child(2) {
+    font-weight: 400;
+  }
+
+  input {
+    display: none;
+  }
+}
+
+.locale__slider {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 47%;
+  height: 0.1em;
+  border-radius: 1px;
+  background-color: var(--color-ft, c.$ft-black);
+  transition: transform 0.3s ease-in-out;
+}
+
+.locale.white {
+  .locale__slider {
+    background-color: var(--color-ft-reverse, c.$ft-white);
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
+  }
+}
+
+.locale.on {
+  .locale__option:nth-child(1) {
+    font-weight: 400;
+  }
+
+  .locale__option:nth-child(2) {
+    font-weight: 600;
+  }
+
+  .locale__slider {
+    transform: translateX(115%);
+  }
+}

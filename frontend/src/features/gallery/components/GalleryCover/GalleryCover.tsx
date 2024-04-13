@@ -1,7 +1,8 @@
-import React, { MouseEventHandler, useEffect, useRef } from 'react'
+import { MouseEventHandler, useEffect, useRef } from 'react'
+import { useTranslation } from 'react-i18next'
 import { GalleryData } from '../../types'
 import Button from '@/atoms/ui/Button'
-import toFrame from '@/libs/toFrame'
+import toFrame from '@/utils/toFrame'
 import './GalleryCover.scss'
 
 type GalleryCoverProps = {
@@ -10,6 +11,8 @@ type GalleryCoverProps = {
 }
 
 const GalleryCover = ({ gallery, onClickEnter }: GalleryCoverProps) => {
+  const { t } = useTranslation()
+
   /**
    * Handle Mousemove Event
    * 1. Tilt content
@@ -63,7 +66,7 @@ const GalleryCover = ({ gallery, onClickEnter }: GalleryCoverProps) => {
       <article className="gallery-cover__content" ref={contentRef}>
         <h1>{gallery.name}</h1>
         <p>{gallery.content}</p>
-        <Button text="입장하기" onClick={onClickEnter} direction="center" />
+        <Button text={t('buttons.enter')} onClick={onClickEnter} direction="center" />
         <div className="gallery-cover__content--light" ref={contentLightRef} />
       </article>
       <div className="gallery-cover__back" />

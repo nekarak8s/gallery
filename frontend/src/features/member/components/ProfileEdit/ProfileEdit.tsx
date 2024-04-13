@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { useLogout } from '../../services'
 import WithdrawlForm from '../WithdrawlForm'
@@ -12,6 +13,7 @@ import ProfileForm from '@/features/member/components/ProfileForm'
 import './ProfileEdit.scss'
 
 const ProfileEdit = () => {
+  const { t } = useTranslation()
   const navigate = useNavigate()
 
   /**
@@ -68,22 +70,12 @@ const ProfileEdit = () => {
           <KebabIcon />
         </div>
       </Button3D>
-      <CSSTransition
-        className="profile-edit__menu"
-        isShow={isButtonsShow}
-        duration={200}
-        timingFunction="ease-in-out"
-      >
-        <Button
-          ariaLabel="정보수정"
-          text="닉네임 수정"
-          direction="right"
-          onClick={() => setIsUpdateOpen(true)}
-        />
-        <Button ariaLabel="로그아웃" text="로그아웃" direction="center" onClick={handleLogout} />
+      <CSSTransition className="profile-edit__menu" isShow={isButtonsShow} duration={200} timingFunction="ease-in-out">
+        <Button ariaLabel="닉네임 수정" text={t('buttons.nickname')} direction="right" onClick={() => setIsUpdateOpen(true)} />
+        <Button ariaLabel="로그아웃" text={t('buttons.logout')} direction="center" onClick={handleLogout} />
         <Button
           ariaLabel="회원탈퇴"
-          text="회원탈퇴"
+          text={t('buttons.withdraw')}
           direction="bottom"
           color="red"
           onClick={() => setIsWithdrawlOpen(true)}

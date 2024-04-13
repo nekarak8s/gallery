@@ -8,6 +8,7 @@ type FileProps = {
   className?: string
   name: string
   accept: string
+  placeholder?: string
   uploadBtnText?: string
   resetBtnText?: string
   onChange?: ChangeEventHandler<HTMLInputElement> | undefined
@@ -19,6 +20,7 @@ const File = ({
   className,
   name,
   accept,
+  placeholder = '선택된 파일 없음',
   uploadBtnText = '업로드',
   resetBtnText = '취소',
   onChange,
@@ -52,6 +54,7 @@ const File = ({
         accept={accept}
         onChange={onChange}
         data-cursor-scale={CURSOR_SCALE}
+        placeholder={placeholder}
       />
       <div className="file__buttons">
         <Button text={uploadBtnText} onClick={handleClick} size="sm" />

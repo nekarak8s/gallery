@@ -1,12 +1,14 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
+import { useTranslation } from 'react-i18next'
 import { NavLink } from 'react-router-dom'
+import Locale from '../Locale'
 import { routes } from '@/App'
 import SearchIcon from '@/assets/svgs/magnify.svg'
 import Modal from '@/atoms/ui/Modal'
 import { CURSOR_SCALE } from '@/constants'
 import GallerySearch from '@/features/gallery/components/GallerySearch'
 import LoginForm from '@/features/member/components/LoginForm'
-import throttle from '@/libs/throttle'
+import throttle from '@/utils/throttle'
 import './Navbar.scss'
 
 type NavbarProps = {
@@ -15,6 +17,8 @@ type NavbarProps = {
 }
 
 function Navbar({ whitePathname, isLogin }: NavbarProps) {
+  const { t, i18n } = useTranslation()
+
   /**
    * Scroll responsive navbar
    */
@@ -86,28 +90,15 @@ function Navbar({ whitePathname, isLogin }: NavbarProps) {
 
     navbar.classList.remove('hide')
   }, [])
-
   return (
     <>
-      <nav
-        className={`navbar ${whitePathname.includes(location.pathname) ? 'white' : ''}`}
-        ref={navbarRef}
-      >
-        <NavLink
-          to={routes['Home'].path}
-          onFocus={showNavbar}
-          data-cursor-scale={CURSOR_SCALE}
-          title={'홈 페이지'}
-        >
-          The Gallery
+      <nav className={`navbar ${whitePathname.includes(location.pathname) ? 'white' : ''}`} ref={navbarRef}>
+        <NavLink to={routes['Home'].path} onFocus={showNavbar} data-cursor-scale={CURSOR_SCALE} title={'홈 페이지'}>
+          {t('navbar.logo')}
         </NavLink>
         <ul className="navbar__menu" ref={menuRef}>
           <li>
-            <button
-              onClick={handleSearchClick}
-              data-cursor-scale={CURSOR_SCALE}
-              aria-label="갤러리 검색"
-            >
+            <button onClick={handleSearchClick} data-cursor-scale={CURSOR_SCALE} aria-label="갤러리 검색">
               <SearchIcon />
             </button>
           </li>
@@ -119,7 +110,7 @@ function Navbar({ whitePathname, isLogin }: NavbarProps) {
               onClick={handleToggleClick}
               title="가이드 페이지"
             >
-              Guide
+              {t('navbar.guide')}
             </NavLink>
           </li>
           {process.env.REACT_APP_BASE_URL !== '/gallery' &&
@@ -132,17 +123,13 @@ function Navbar({ whitePathname, isLogin }: NavbarProps) {
                   onClick={handleToggleClick}
                   title="마이페이지"
                 >
-                  MyPage
+                  {t('navbar.mypage')}
                 </NavLink>
               </li>
             ) : (
               <li>
-                <button
-                  onClick={handleLoginClick}
-                  onFocus={showNavbar}
-                  data-cursor-scale={CURSOR_SCALE}
-                >
-                  Login
+                <button onClick={handleLoginClick} onFocus={showNavbar} data-cursor-scale={CURSOR_SCALE}>
+                  {t('navbar.login')}
                 </button>
               </li>
             ))}
@@ -155,10 +142,13 @@ function Navbar({ whitePathname, isLogin }: NavbarProps) {
                 onClick={handleToggleClick}
                 title="마이페이지"
               >
-                MyPage
+                {t('navbar.mypage')}
               </NavLink>
             </li>
           )}
+          <li>
+            <Locale isWhite={whitePathname.includes(location.pathname)} />
+          </li>
         </ul>
         <button
           className="navbar__toggle"

@@ -1,0 +1,18 @@
+{
+  "buttons": {
+    "experience": "체험하기",
+    "withdraw": "회원 탈퇴",
+    "logout": "로그아웃",
+    "nickname": "닉네임 수정",
+    "edit": "수정하기",
+    "open": "개관하기",
+    "delete": "삭제하기",
+    "upload": "업로드",
+    "cancel": "취소",
+    "select": "선택하기",
+    "selectMusic": "음악 선택",
+    "enter": "입장하기",
+    "login": "로그인",
+    "write": "작성"
+  }
+}
