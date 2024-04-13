@@ -30,6 +30,6 @@ public class GallerySearchController {
       @RequestParam(defaultValue = "0") int page,
       @RequestParam(defaultValue = "100") int size) throws CustomException {
     Page<GallerySearchResponse> list = service.getSearchGallery(type, query, page, size);
-    return ResponseEntity.ok(createApiResponse("갤러리 검색을 성공했습니다", list));
+    return ResponseEntity.ok(createApiResponse("갤러리 검색을 성공했습니다", list.getContent()));
   }
 }
