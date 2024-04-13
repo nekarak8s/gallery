@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import gsap from 'gsap'
 import * as THREE from 'three'
 import { degToRad } from 'three/src/math/MathUtils'
@@ -10,7 +11,7 @@ import Loading from '@/atoms/ui/Loading'
 import ScrollDown from '@/atoms/ui/ScrollDown'
 import { DefaultCamera } from '@/libs/three-custom/cameras/DefaultCamera'
 import { DefaultRenderer } from '@/libs/three-custom/renderers/DefaultRenderer'
-import toFrame from '@/libs/toFrame'
+import toFrame from '@/utils/toFrame'
 import './Guide.scss'
 
 const CAMERA_ORDERS = [
@@ -32,10 +33,11 @@ const CAMERA_MOBILE_ORDERS = [
 ]
 
 const MOBILE_WIDTH = 992
-
 const DEFAULT_LOADING_TIME = 1000
 
 const Guide = () => {
+  const { t } = useTranslation()
+
   /**
    * Initial loading cover time
    */
@@ -198,43 +200,43 @@ const Guide = () => {
         <div className="guide__sections" ref={sectionsRef}>
           <section>
             <h1>
-              더 갤러리 속성 강의에 오신
+              {t('guide.intro1')}
               <br />
-              여러분 환영합니다
+              {t('guide.intro2')}
             </h1>
             <div className="guide__scroll">
               <ScrollDown />
             </div>
           </section>
           <section>
-            <h2>로그인 해주세요</h2>
-            <p>더 갤러리는 안전하고 간편한 소셜 로그인을 이용합니다. 본인 인증만 진행할 뿐 어떠한 권한도 받아오지 않습니다.</p>
+            <h2>{t('guide.step1.title')}</h2>
+            <p>{t('guide.step1.content')}</p>
           </section>
           <section>
-            <h2>전시회를 생성하세요</h2>
-            <p>
-              마이페이지에 접속하여 [ + ] 카드를 클릭하면 새로운 전시회를 생성할 수 있습니다. 전시회의 기본 정보를 입력하고 손쉽게 전시회를
-              개최해보세요.
-            </p>
+            <h2>{t('guide.step2.title')}</h2>
+            <p>{t('guide.step2.content')}</p>
           </section>
           <section>
-            <h2>작품을 등록하세요</h2>
-            <p>
-              생성한 전시회의 수정 버튼을 클릭하면 작품 목록을 업데이트할 수 있습니다. 작품마다 제목과 설명글을 기입하고, 어울리는 노래도
-              선택해보세요.
-            </p>
+            <h2>{t('guide.step3.title')}</h2>
+            <p>{t('guide.step3.content')}</p>
           </section>
           <section>
-            <h2>전시회에 입장하세요</h2>
-            <p>입장 버튼을 눌러 전시회에 방문할 수 있습니다. 액자를 조준해서 맞추면 작품에 대한 감상을 남길 수 있습니다.</p>
+            <h2>{t('guide.step4.title')}</h2>
+            <p>{t('guide.step4.content')}</p>{' '}
           </section>
           <section>
             <h1>
-              지금 바로 전시회를 열고
+              {t('guide.outro1')}
               <br />
-              친구들을 초대하세요
+              {t('guide.outro2')}
             </h1>
-            <Button text="체험하기" ariaLabel="3D 전시회 체험하기" to={routes['Example'].path} isTransparent={true} direction="center"></Button>
+            <Button
+              text={t('buttons.experience')}
+              ariaLabel="3D 전시회 체험하기"
+              to={routes['Example'].path}
+              isTransparent={true}
+              direction="center"
+            ></Button>
           </section>
         </div>
       </div>

@@ -14,10 +14,12 @@
 
 @include mobile {
   .post-detail {
-    width: min(800px, 90vw);
-    grid-template-columns: 1fr;
-    grid-template-rows: repeat(2, auto);
-    padding: 1.2em 1em;
-    gap: 2em;
+    width: min(800px, 85vw);
+    height: 70vh;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: repeat(2, max-content);
+    padding: 0.8em 0.6em;
+    gap: 1em;
+    overflow: auto;
   }
 }

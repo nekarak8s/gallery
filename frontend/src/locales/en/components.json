@@ -1,0 +1,58 @@
+{
+  "navbar": {
+    "logo": "The Gallery",
+    "guide": "Guide",
+    "login": "Login",
+    "mypage": "MyPage"
+  },
+  "locale": {
+    "ko": "KO",
+    "en": "EN"
+  },
+  "footer": {
+    "summarize": "The Gallery: 3D Exihibitions for you",
+    "byongho": "Byongho Lee",
+    "chanhee": "Chanhee Lee",
+    "externalCopyright": "External Copyright",
+    "copyright": "Copyright © 2023 Byongho & Chanhee, Free to use except external sources"
+  },
+  "copyright": {
+    "column1": "Work, Author",
+    "column2": "License",
+    "row1": "Font",
+    "row2": "Home BGM",
+    "row3": "Greenary BGM",
+    "row4": "Gallery BGM",
+    "row5": "Kyoto BGM",
+    "row6": "Kyoto Map"
+  },
+  "login": {
+    "title": "The Gallery is departing",
+    "kakao": "Boarding with Kakao",
+    "google": "Boarding with Google",
+    "description": "Safely login with OAuth"
+  },
+  "withdraw": {
+    "title": "Type your nickname \"{{nickname}}\" exactly"
+  },
+  "updatePost": {
+    "display": "On display",
+    "storage": "In storage",
+    "noMusic": "No music",
+    "uploadWork": "Upload your work",
+    "order": "No. {{order}}"
+  },
+  "galleryNav": {
+    "goBack": "Go back",
+    "manual": "Manual",
+    "move": "Move",
+    "rotate": "Rotate",
+    "jump": "Jump",
+    "shoot": "Shoot the frame"
+  },
+  "gallerySearch": {
+    "all": "All",
+    "title": "Title",
+    "author": "Author"
+  }
+}

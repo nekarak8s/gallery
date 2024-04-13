@@ -10,6 +10,7 @@
 
 .joystick__buttons {
   position: relative;
+  height: 100%;
 }
 
 .joystick__controller {
@@ -34,36 +35,27 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  position: absolute;
-  right: 90px;
-  bottom: -40px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   width: 60px;
   height: 60px;
-  border-radius: 50%;
-  background-color: rgba(57, 57, 57, 0.4);
-
-  svg {
-    width: 25px;
-    height: 25px;
-    color: var(--color-bg, c.$bg-white);
-  }
+  background-color: transparent;
 }
 
 .joystick__jump {
   display: flex;
   align-items: center;
   justify-content: center;
-  position: absolute;
-  right: 20px;
-  bottom: 20px;
   width: 60px;
   height: 60px;
   border-radius: 50%;
   background-color: rgba(57, 57, 57, 0.4);
 
   svg {
-    width: 25px;
-    height: 25px;
+    width: 40px;
+    height: 40px;
     color: var(--color-bg, c.$bg-white);
   }
 }

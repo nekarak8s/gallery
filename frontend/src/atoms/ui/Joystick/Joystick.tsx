@@ -1,7 +1,6 @@
 import { useEffect, useRef } from 'react'
-import BowIcon from '@/assets/svgs/bow.svg'
 import JumpIcon from '@/assets/svgs/jump.svg'
-import toFrame from '@/libs/toFrame'
+import toFrame from '@/utils/toFrame'
 import './Joystick.scss'
 
 type JoystickProps = {
@@ -180,14 +179,10 @@ const Joystick = ({ control, shoot, jump }: JoystickProps) => {
       <div className="joystick__controller" ref={joystickRef}>
         <div className="joystick__controller--core" ref={coreRef}></div>
       </div>
-      <div className="joystick__buttons">
-        <div className="joystick__shoot" ref={shootRef}>
-          <BowIcon />
-        </div>
-        <div className="joystick__jump" ref={jumpRef}>
-          <JumpIcon />
-        </div>
+      <div className="joystick__jump" ref={jumpRef}>
+        <JumpIcon />
       </div>
+      <div className="joystick__shoot" ref={shootRef}></div>
     </div>
   )
 }

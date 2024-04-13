@@ -1,10 +1,12 @@
-import BowIcon from '@/assets/svgs/bow.svg'
+import { useTranslation } from 'react-i18next'
 import JumpIcon from '@/assets/svgs/jump.svg'
 import useMobile from '@/hooks/useMobile'
 import './ControlNotice.scss'
 
 const ControlNotice = () => {
+  const { t } = useTranslation()
   const isMobile = useMobile()
+
   return (
     <div className="control-notice">
       {isMobile ? (
@@ -13,19 +15,20 @@ const ControlNotice = () => {
             <div className="control-notice__controller">
               <div></div>
             </div>
-            <p>컨트롤러로 이동</p>
+            <p> {t('galleryNav.move')}</p>
           </li>
           <li>
             <div className="control-notice__button">
               <JumpIcon />
             </div>
-            <p>버튼으로 점프</p>
+            <p> {t('galleryNav.jump')}</p>
           </li>
           <li>
-            <div className="control-notice__button">
-              <BowIcon />
+            <div className="control-notice__shoot">
+              <span />
+              <span />
             </div>
-            <p>버튼으로 앨범 조준</p>
+            <p> {t('galleryNav.shoot')}</p>
           </li>
         </ul>
       ) : (
@@ -33,23 +36,23 @@ const ControlNotice = () => {
           <li>
             <p>
               <kbd>&uarr;</kbd>&nbsp;
-              <kbd>&darr;</kbd> 키로 앞뒤 이동
+              <kbd>&darr;</kbd>&nbsp; : {t('galleryNav.move')}
             </p>
           </li>
           <li>
             <p>
               <kbd>&larr;</kbd>&nbsp;
-              <kbd>&rarr;</kbd> 키로 시선 회전
+              <kbd>&rarr;</kbd>&nbsp; : {t('galleryNav.rotate')}
             </p>
           </li>
           <li>
             <p>
-              <kbd>Ctrl</kbd>&nbsp; 키로 앨범 조준
+              <kbd>Ctrl</kbd>&nbsp; : {t('galleryNav.shoot')}
             </p>
           </li>
           <li>
             <p>
-              <kbd>Alt</kbd>&nbsp;/&nbsp;<kbd>Opt</kbd>&nbsp; 키로 점프
+              <kbd>Alt</kbd>&nbsp;/&nbsp;<kbd>Opt</kbd>&nbsp; : {t('galleryNav.jump')}
             </p>
           </li>
         </ul>

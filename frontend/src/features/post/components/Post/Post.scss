@@ -41,6 +41,7 @@
 @include tablet {
   .post {
     font-size: 0.9rem;
+    overflow: visible;
   }
 
   .post__description {

@@ -1,0 +1,49 @@
+{
+  "home": {
+    "greeting": "Welcome",
+    "notice": "Background music will play when clicked",
+    "section2": {
+      "phrase1": "We take hundreds of photos every day",
+      "phrase2": "Thousands of photos pile up daily",
+      "phrase3": "Most are forgotten without even realizing it"
+    },
+    "section3": {
+      "phrase1": "Capture memories from photos",
+      "phrase2": "Give them names",
+      "phrase3": "Create a unique masterpiece",
+      "phrase4": "The gallery has prepared",
+      "phrase5": "Special exhibitions for you",
+      "phrase6": "Take a look right away",
+      "workTitle": "Title",
+      "workDescription": "Hover the mouse"
+    }
+  },
+  "guide": {
+    "intro1": "Welcome to the tutorial",
+    "intro2": "How to use The Gallery",
+    "step1": {
+      "title": "Log in first",
+      "content": "The Gallery uses safe and convenient social login. We only proceed with authentication and do not obtain any additional permissions."
+    },
+    "step2": {
+      "title": "Create an exhibition",
+      "content": "In the workspace, click on the [ + ] card to create a new exhibition. Enter the basic information of the exhibition and easily open it."
+    },
+    "step3": {
+      "title": "Register your artwork",
+      "content": "Click the edit button of the created exhibition to update the list of artworks. Fill in the title and description for each artwork, and also choose a suitable song."
+    },
+    "step4": {
+      "title": "Enter the exhibition",
+      "content": "You can visit the exhibition by clicking the enter button. Aim at the frame to leave comments on the artwork."
+    },
+    "outro1": "Open the exhibition now",
+    "outro2": "Invite your friends"
+  },
+  "mypage": {
+    "title": "{{nickname}}'s workspace\nOperating for\n{{days}} days {{hours}}:{{minutes}}:{{seconds}}"
+  },
+  "gallery": {
+    "chooseType": "Choose the type of gallery you'd like to enter"
+  }
+}

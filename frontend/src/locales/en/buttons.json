@@ -1,0 +1,18 @@
+{
+  "buttons": {
+    "experience": "Experience",
+    "withdraw": "Withdraw",
+    "logout": "Logout",
+    "nickname": "Nickname",
+    "edit": "Edit",
+    "open": "Open",
+    "delete": "Delete",
+    "upload": "Upload",
+    "cancel": "Cancel",
+    "select": "Select",
+    "selectMusic": "Select Music",
+    "enter": "Enter",
+    "login": "Login",
+    "write": "Write"
+  }
+}

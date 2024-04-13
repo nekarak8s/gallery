@@ -1,4 +1,5 @@
 import { ChangeEvent, useMemo, useRef, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { PostData } from '../../types'
 import DragIcon from '@/assets/svgs/drag.svg'
 import Checkbox from '@/atoms/form/Checkbox'
@@ -19,7 +20,7 @@ type PostItemFormProps = {
 }
 
 const PostItemForm = ({ post, index }: PostItemFormProps) => {
-  // const isMobile = useMobile()
+  const { t } = useTranslation()
 
   /**
    * Open / Close the card
@@ -89,11 +90,7 @@ const PostItemForm = ({ post, index }: PostItemFormProps) => {
   return (
     <>
       <article className={`post-item-form`} ref={cardRef}>
-        <div
-          className={`post-item-form__header ${isActive || 'inactive'}`}
-          tabIndex={0}
-          onClick={toggleCard}
-        >
+        <div className={`post-item-form__header ${isActive || 'inactive'}`} tabIndex={0} onClick={toggleCard}>
           <input type="hidden" name={`posts[${index}].postId`} value={post.postId} />
           <input type="hidden" name={`posts[${index}].order`} value={index + 1} />
           {false && (
@@ -103,7 +100,7 @@ const PostItemForm = ({ post, index }: PostItemFormProps) => {
           )}
           <div className="post-item-form__order-title">
             <span className="post-item-form__toggle">&#9654;</span>
-            <span>{index + 1}번</span>
+            <span>{t('updatePost.order', { order: index + 1 })}</span>
             <span>|</span>
             <h2>{title}</h2>
           </div>
@@ -111,7 +108,7 @@ const PostItemForm = ({ post, index }: PostItemFormProps) => {
             name={`posts[${index}].isActive`}
             value="true"
             falseValue="false"
-            label={isActive ? '전시 중' : '보관 중'}
+            label={isActive ? t('updatePost.display') : t('updatePost.storage')}
             defaultChecked={post.isActive}
             onChange={handleIsActiveChange}
           />
@@ -121,6 +118,9 @@ const PostItemForm = ({ post, index }: PostItemFormProps) => {
           <File
             name={`posts[${index}].image`}
             accept="image/png, image/jpeg"
+            placeholder={t('updatePost.uploadWork')}
+            uploadBtnText={t('buttons.upload')}
+            resetBtnText={t('buttons.cancel')}
             onChange={handleFileChange}
             onReset={handleFileReset}
           />
@@ -131,23 +131,12 @@ const PostItemForm = ({ post, index }: PostItemFormProps) => {
                   {music.title} - {music.artist}
                 </option>
               )}
-              <option value="">노래 없음</option>
+              <option value="">{t('updatePost.noMusic')}</option>
             </Select>
-            <Button text="음악 선택" size="sm" onClick={() => setIsMusicOpen(true)} />
+            <Button text={t('buttons.selectMusic')} size="sm" onClick={() => setIsMusicOpen(true)} />
           </div>
-          <Text
-            label="제목"
-            name={`posts[${index}].title`}
-            initialValue={post.title}
-            onChange={handleChangeTitle}
-          />
-          <Textarea
-            label="설명"
-            name={`posts[${index}].content`}
-            initialValue={post.content}
-            height="4em"
-            maxLen={500}
-          />
+          <Text label={t('inputs.title')} name={`posts[${index}].title`} initialValue={post.title} onChange={handleChangeTitle} />
+          <Textarea label={t('inputs.description')} name={`posts[${index}].content`} initialValue={post.content} height="4em" maxLen={500} />
         </div>
       </article>
       {/* Music Select Modal */}

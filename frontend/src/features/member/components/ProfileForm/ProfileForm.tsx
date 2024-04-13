@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import { useUpdateUser } from '../../services'
 import { validateProfileForm } from '../../validators'
 import Form from '@/atoms/form/Form'
@@ -13,6 +14,7 @@ type ProfileFormProps = {
 }
 
 const ProfileForm = ({ onSuccess, onError }: ProfileFormProps) => {
+  const { t } = useTranslation()
   const { mutateAsync: update, isLoading } = useUpdateUser()
 
   const handleSubmit = function (e: React.FormEvent<HTMLFormElement>) {
@@ -42,8 +44,8 @@ const ProfileForm = ({ onSuccess, onError }: ProfileFormProps) => {
   return (
     <>
       <Form className="profile-form" onSubmit={handleSubmit}>
-        <Input label="닉네임" name="nickname" initialValue="" />
-        <Button type="submit" direction="left" ariaLabel="닉네임 수정" text="수정하기" />
+        <Input label={t('inputs.nickname')} name="nickname" initialValue="" />
+        <Button type="submit" direction="left" ariaLabel="닉네임 수정" text={t('buttons.edit')} />
       </Form>
       {isLoading && (
         <div className="profile-form__loading">

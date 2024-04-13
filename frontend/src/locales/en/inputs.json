@@ -1,0 +1,12 @@
+{
+  "inputs": {
+    "nickname": "Nickname",
+    "galleryName": "Gallery Name",
+    "galleryContent": "Gallery Description",
+    "title": "Title",
+    "description": "Description",
+    "searchGallery": "Search Gallery",
+    "loginFirst": "Login First",
+    "commentary": "Commentary"
+  }
+}

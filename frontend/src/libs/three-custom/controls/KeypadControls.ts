@@ -11,7 +11,7 @@ const FLOOR_PASS_THRESHOLD = 0.4
 const OBSTACLE_DETECT_DISTANCE = 1
 const FALL_ANIMATION_HEIGHT = 0.8
 
-const CAMERA_OFFSET = new THREE.Vector3(0, 3, -4)
+const CAMERA_OFFSET = new THREE.Vector3(0, 3.3, -4)
 const CAMERA_LOOK_AT = new THREE.Vector3(0, 2.5, 2)
 
 THREE.Mesh.prototype.raycast = acceleratedRaycast

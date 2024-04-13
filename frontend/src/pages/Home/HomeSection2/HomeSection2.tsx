@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react'
+import { useTranslation } from 'react-i18next'
 import MediaCard from './MediaCard'
 import posterImg from '@/assets/images/home-section-2/cloud-poster.jpg?format=jpg'
 import posterWebp from '@/assets/images/home-section-2/cloud-poster.jpg?format=webp'
@@ -35,12 +36,13 @@ import wideWebm2 from '@/assets/videos/home-video-2.webm'
 import narrowVid1 from '@/assets/videos/home-video-3.mp4'
 import narrowWebm1 from '@/assets/videos/home-video-3.webm'
 import useMobile from '@/hooks/useMobile'
-import toFrame from '@/libs/toFrame'
+import toFrame from '@/utils/toFrame'
 import './HomeSection2.scss'
 
 const BACK_HEIGHT = 6 // * 100vh. background height
 
 function HomeSection2() {
+  const { t } = useTranslation()
   const isMobile = useMobile()
 
   /**
@@ -137,23 +139,17 @@ function HomeSection2() {
       <div className={`hs2-main ${isMobile ? '' : 'smooth'}`} ref={mainRef}>
         <div className="hs2-phrase" ref={phraseRef}>
           <p data-speedy="0" style={{ zIndex: 8 }}>
-            하루 수백 장의 사진을 찍고
+            {t('home.section2.phrase1')}
           </p>
           <p data-speedy="0" style={{ zIndex: 2 }}>
-            하루 수백 장의 사진이 쌓여갑니다
+            {t('home.section2.phrase2')}
           </p>
           <p data-speedy="0" style={{ zIndex: 5 }}>
-            그렇게 우리를 스쳐 지나갑니다
+            {t('home.section2.phrase3')}
           </p>
         </div>
         <div ref={cardsRef}>
-          <div
-            className="hs2-card three-D"
-            data-posx="0.1"
-            data-posy="1.7"
-            data-speedy="1.1"
-            style={{ zIndex: 5 }}
-          >
+          <div className="hs2-card three-D" data-posx="0.1" data-posy="1.7" data-speedy="1.1" style={{ zIndex: 5 }}>
             <div className="hs2-card__item three-D">
               <MediaCard
                 type="video"
@@ -169,13 +165,7 @@ function HomeSection2() {
               />
             </div>
           </div>
-          <div
-            className="hs2-card three-D"
-            data-posx="0.15"
-            data-posy="3.3"
-            data-speedy="1.05"
-            style={{ zIndex: 5 }}
-          >
+          <div className="hs2-card three-D" data-posx="0.15" data-posy="3.3" data-speedy="1.05" style={{ zIndex: 5 }}>
             <div className="hs2-card__item three-D">
               <MediaCard
                 type="video"
@@ -191,13 +181,7 @@ function HomeSection2() {
               />
             </div>
           </div>
-          <div
-            className="hs2-card three-D"
-            data-posx="-0.2"
-            data-posy="4.8"
-            data-speedy="1.07"
-            style={{ zIndex: 4 }}
-          >
+          <div className="hs2-card three-D" data-posx="-0.2" data-posy="4.8" data-speedy="1.07" style={{ zIndex: 4 }}>
             <div className="hs2-card__item three-D">
               <MediaCard
                 type="video"
@@ -213,13 +197,7 @@ function HomeSection2() {
               />
             </div>
           </div>
-          <div
-            className="hs2-card"
-            data-posx="-0.01"
-            data-posy="1.5"
-            data-speedy="0.7"
-            style={{ zIndex: 2 }}
-          >
+          <div className="hs2-card" data-posx="-0.01" data-posy="1.5" data-speedy="0.7" style={{ zIndex: 2 }}>
             <div className="hs2-card__item">
               <MediaCard
                 alt="햇빛드는 카페 테라스"
@@ -234,13 +212,7 @@ function HomeSection2() {
               />
             </div>
           </div>
-          <div
-            className="hs2-card"
-            data-posx="-0.3"
-            data-posy="1.35"
-            data-speedy="0.6"
-            style={{ zIndex: 1 }}
-          >
+          <div className="hs2-card" data-posx="-0.3" data-posy="1.35" data-speedy="0.6" style={{ zIndex: 1 }}>
             <div className="hs2-card__item">
               <MediaCard
                 alt="야자수 뒤의 핑크빛 하늘"
@@ -255,13 +227,7 @@ function HomeSection2() {
               />
             </div>
           </div>
-          <div
-            className="hs2-card three-D"
-            data-posx="-0.1"
-            data-posy="2.7"
-            data-speedy="0.9"
-            style={{ zIndex: 4 }}
-          >
+          <div className="hs2-card three-D" data-posx="-0.1" data-posy="2.7" data-speedy="0.9" style={{ zIndex: 4 }}>
             <div className="hs2-card__item three-D">
               <MediaCard
                 alt="엄마와 딸 팔뚝 위에 바디페인팅"
@@ -276,13 +242,7 @@ function HomeSection2() {
               />
             </div>
           </div>
-          <div
-            className="hs2-card"
-            data-posx="0.1"
-            data-posy="2"
-            data-speedy="0.7"
-            style={{ zIndex: 2 }}
-          >
+          <div className="hs2-card" data-posx="0.1" data-posy="2" data-speedy="0.7" style={{ zIndex: 2 }}>
             <div className="hs2-card__item">
               <MediaCard
                 alt="눈 덮인 지붕"
@@ -297,13 +257,7 @@ function HomeSection2() {
               />
             </div>
           </div>
-          <div
-            className="hs2-card three-D"
-            data-posx="0.32"
-            data-posy="3.3"
-            data-speedy="0.9"
-            style={{ zIndex: 3 }}
-          >
+          <div className="hs2-card three-D" data-posx="0.32" data-posy="3.3" data-speedy="0.9" style={{ zIndex: 3 }}>
             <div className="hs2-card__item three-D">
               <MediaCard
                 alt="두 잔의 라떼 아트"
@@ -318,13 +272,7 @@ function HomeSection2() {
               />
             </div>
           </div>
-          <div
-            className="hs2-card three-D"
-            data-posx="0.1"
-            data-posy="4.8"
-            data-speedy="1.2"
-            style={{ zIndex: 5 }}
-          >
+          <div className="hs2-card three-D" data-posx="0.1" data-posy="4.8" data-speedy="1.2" style={{ zIndex: 5 }}>
             <div className="hs2-card__item three-D">
               <MediaCard
                 alt="강아지 포스터"
@@ -339,13 +287,7 @@ function HomeSection2() {
               />
             </div>
           </div>
-          <div
-            className="hs2-card"
-            data-posx="-0.03"
-            data-posy="2.6"
-            data-speedy="0.59"
-            style={{ zIndex: 1 }}
-          >
+          <div className="hs2-card" data-posx="-0.03" data-posy="2.6" data-speedy="0.59" style={{ zIndex: 1 }}>
             <div className="hs2-card__item">
               <MediaCard
                 alt="색연필 묶음"
@@ -360,13 +302,7 @@ function HomeSection2() {
               />
             </div>
           </div>
-          <div
-            className="hs2-card"
-            data-posx="0.25"
-            data-posy="1.4"
-            data-speedy="0.5"
-            style={{ zIndex: 1 }}
-          >
+          <div className="hs2-card" data-posx="0.25" data-posy="1.4" data-speedy="0.5" style={{ zIndex: 1 }}>
             <div className="hs2-card__item">
               <MediaCard
                 alt="노을이 지는 바다"
@@ -381,13 +317,7 @@ function HomeSection2() {
               />
             </div>
           </div>
-          <div
-            className="hs2-card three-D"
-            data-posx="-0.08"
-            data-posy="3.1"
-            data-speedy="1.25"
-            style={{ zIndex: 7 }}
-          >
+          <div className="hs2-card three-D" data-posx="-0.08" data-posy="3.1" data-speedy="1.25" style={{ zIndex: 7 }}>
             <div className="hs2-card__item three-D">
               <MediaCard
                 alt="패러글라이딩 의상을 입은 가족"
@@ -402,13 +332,7 @@ function HomeSection2() {
               />
             </div>
           </div>
-          <div
-            className="hs2-card"
-            data-posx="-0.2"
-            data-posy="2.2"
-            data-speedy="0.61"
-            style={{ zIndex: 2 }}
-          >
+          <div className="hs2-card" data-posx="-0.2" data-posy="2.2" data-speedy="0.61" style={{ zIndex: 2 }}>
             <div className="hs2-card__item">
               <MediaCard
                 alt="담요 위에서 잠자는 고양이"
@@ -423,13 +347,7 @@ function HomeSection2() {
               />
             </div>
           </div>
-          <div
-            className="hs2-card"
-            data-posx="0.07"
-            data-posy="2.1"
-            data-speedy="0.5"
-            style={{ zIndex: 1 }}
-          >
+          <div className="hs2-card" data-posx="0.07" data-posy="2.1" data-speedy="0.5" style={{ zIndex: 1 }}>
             <div className="hs2-card__item">
               <MediaCard
                 alt="비행기에서 내려다 본 구름"
@@ -444,13 +362,7 @@ function HomeSection2() {
               />
             </div>
           </div>
-          <div
-            className="hs2-card"
-            data-posx="0.4"
-            data-posy="2.3"
-            data-speedy="0.5"
-            style={{ zIndex: 1 }}
-          >
+          <div className="hs2-card" data-posx="0.4" data-posy="2.3" data-speedy="0.5" style={{ zIndex: 1 }}>
             <div className="hs2-card__item">
               <MediaCard
                 alt="페퍼로니 피자"
@@ -465,13 +377,7 @@ function HomeSection2() {
               />
             </div>
           </div>
-          <div
-            className="hs2-card"
-            data-posx="0.01"
-            data-posy="2.1"
-            data-speedy="0.9"
-            style={{ zIndex: 3 }}
-          >
+          <div className="hs2-card" data-posx="0.01" data-posy="2.1" data-speedy="0.9" style={{ zIndex: 3 }}>
             <div className="hs2-card__item">
               <MediaCard
                 alt="바다 위에 떠다니는 배"
@@ -486,13 +392,7 @@ function HomeSection2() {
               />
             </div>
           </div>
-          <div
-            className="hs2-card hs2-card--last"
-            data-posx="-0.001"
-            data-posy={BACK_HEIGHT - 0.9}
-            data-speedy="1"
-            style={{ zIndex: 10 }}
-          >
+          <div className="hs2-card hs2-card--last" data-posx="-0.001" data-posy={BACK_HEIGHT - 0.9} data-speedy="1" style={{ zIndex: 10 }}>
             <div className="hs2-card__item">
               <div className="hs2-card__blank"></div>
               <MediaCard
@@ -506,12 +406,7 @@ function HomeSection2() {
                 depth={10}
                 date="2019.10.21"
               />
-              <div className="hs2-card__phrase">
-                With the development of mobile devices, it is easy to take pictures, but the value
-                of a picture is decreasing. There are hundreds of pictures on the album, but most of
-                them are pictures that you don&apos;t even know when they were taken. When was the
-                last time you remembered with your friends while looking at the picture?
-              </div>
+              <div className="hs2-card__phrase"></div>
             </div>
           </div>
         </div>
