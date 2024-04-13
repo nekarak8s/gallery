@@ -97,7 +97,7 @@ public class GalleryController {
 
     // 갤러리 삭제
     @DeleteMapping("/{galleryId}")
-    public ResponseEntity<ApiResponse> deleteGallery(@RequestHeader(value = "X-Member-ID", required = false) long memberId,
+    public ResponseEntity<?> deleteGallery(@RequestHeader(value = "X-Member-ID", required = false) long memberId,
                                                      @PathVariable(value = "galleryId", required = false) long galleryId) {
         galleryService.deleteGallery(memberId, galleryId);
         return ResponseEntity.ok(createApiResponse("갤러리가 삭제되었습니다"));
