@@ -1,5 +1,4 @@
 import { useTranslation } from 'react-i18next'
-import BowIcon from '@/assets/svgs/bow.svg'
 import JumpIcon from '@/assets/svgs/jump.svg'
 import useMobile from '@/hooks/useMobile'
 import './ControlNotice.scss'
@@ -25,8 +24,9 @@ const ControlNotice = () => {
             <p> {t('galleryNav.jump')}</p>
           </li>
           <li>
-            <div className="control-notice__button">
-              <BowIcon />
+            <div className="control-notice__shoot">
+              <span />
+              <span />
             </div>
             <p> {t('galleryNav.shoot')}</p>
           </li>

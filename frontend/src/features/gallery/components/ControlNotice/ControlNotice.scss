@@ -50,9 +50,33 @@
   background-color: rgba(57, 57, 57, 0.4);
 
   svg {
-    width: 1em;
-    height: 1em;
+    width: 1.5em;
+    height: 1.5em;
     color: var(--color-bg, c.$bg-white);
+  }
+}
+
+.control-notice__shoot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  width: 2em;
+  height: 2em;
+
+  span {
+    width: 80%;
+    aspect-ratio: 8;
+    background-color: rgb(169, 169, 169);
+    border-radius: 5px;
+  }
+  span:nth-child(1) {
+  }
+  span:nth-child(2) {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(90deg);
   }
 }
 
