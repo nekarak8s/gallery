@@ -33,7 +33,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 0.5em;
+  gap: 0.7em;
   width: 100%;
   height: 100%;
   font-size: 3rem;
@@ -111,7 +111,7 @@
 
 @include laptop {
   .hs2-phrase {
-    font-size: 3rem;
+    font-size: 2.8rem;
   }
 
   .hs2-card {
@@ -121,7 +121,7 @@
 
 @include tablet {
   .hs2-phrase {
-    font-size: 2.5rem;
+    font-size: 2rem;
   }
 
   .hs2-card {
@@ -131,7 +131,7 @@
 
 @include mobile {
   .hs2-phrase {
-    font-size: 6vw;
+    font-size: 4vw;
   }
 
   .hs2-card {

@@ -1,0 +1,58 @@
+{
+  "navbar": {
+    "logo": "더 갤러리",
+    "guide": "가이드",
+    "login": "로그인",
+    "mypage": "작업실"
+  },
+  "locale": {
+    "ko": "한",
+    "en": "영"
+  },
+  "footer": {
+    "summarize": "더 갤러리: 당신만의 3D 전시회",
+    "byongho": "이병호",
+    "chanhee": "이찬희",
+    "externalCopyright": "외부 저작권 표기",
+    "copyright": "Copyright © 2023 이병호 & 이찬희, 외부 저작권 외 자유롭게 사용가능"
+  },
+  "copyright": {
+    "column1": "저작물, 저작자",
+    "column2": "라이선스",
+    "row1": "폰트",
+    "row2": "홈 음악",
+    "row3": "초원 음악",
+    "row4": "갤러리 음악",
+    "row5": "교토 음악",
+    "row6": "교토 맵"
+  },
+  "login": {
+    "title": "더 갤러리 호가 출발합니다",
+    "kakao": "카카오 아이디로 탑승",
+    "google": "구글 이메일로 탑승",
+    "description": "소셜 미디어로 안전하게 로그인하세요"
+  },
+  "withdraw": {
+    "title": "본인의 닉네임 \"{{nickname}}\"을 입력하세요"
+  },
+  "updatePost": {
+    "display": "전시 중",
+    "storage": "보관 중",
+    "noMusic": "노래 없음",
+    "uploadWork": "작품을 업로드하세요",
+    "order": "{{order}} 번"
+  },
+  "galleryNav": {
+    "goBack": "뒤로가기",
+    "manual": "조작법",
+    "move": "캐릭터 이동",
+    "rotate": "캐릭터 회전",
+    "shoot": "액자 조준",
+    "jump": "점프"
+  },
+  "gallerySearch": {
+    "all": "전체",
+    "title": "제목",
+    "author": "작가"
+  }
+}

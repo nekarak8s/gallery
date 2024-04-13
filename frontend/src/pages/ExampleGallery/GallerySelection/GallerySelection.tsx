@@ -1,13 +1,15 @@
+import { useTranslation } from 'react-i18next'
 import Button3D from '@/atoms/ui/Button3D'
-import './GallerySelection.scss'
 import Loading from '@/atoms/ui/Loading'
 import { usePlaceListQuery } from '@/features/gallery/services'
+import './GallerySelection.scss'
 
 type GallerySelectionProps = {
   onSelect: (galleryId: number) => void
 }
 
 function GallerySelection({ onSelect }: GallerySelectionProps) {
+  const { t } = useTranslation()
   const { data: placeList, isLoading, isError } = usePlaceListQuery()
 
   if (isError) return
@@ -16,7 +18,7 @@ function GallerySelection({ onSelect }: GallerySelectionProps) {
 
   return (
     <div className="gallery-selection">
-      <h2 className="gallery-selection__title">입장하실 갤러리의 타입을 선택하세요</h2>
+      <h2 className="gallery-selection__title">{t('gallery.chooseType')}</h2>
       <ul className="gallery-selection__list">
         {placeList?.map((place) => (
           <li key={place.placeId}>

@@ -5,17 +5,18 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: linear-gradient(
-    to top,
-    var(--color-primary, c.$primary),
-    var(--color-secondary, c.$secondary)
-  );
+  background: linear-gradient(to top, var(--color-primary, c.$primary), var(--color-secondary, c.$secondary));
   background-clip: text;
   -webkit-background-clip: text;
   color: transparent;
-  font-size: 6rem;
+  font-size: 5.5rem;
   font-weight: 600;
-  line-height: 120%;
+  line-height: 130%;
+  text-align: center;
+
+  span {
+    white-space: pre-wrap;
+  }
 }
 
 @include laptop {

@@ -97,7 +97,7 @@
 
   .navbar__menu {
     display: grid;
-    grid-template-rows: repeat(3, 0fr);
+    grid-template-rows: repeat(4, 0fr);
     align-self: stretch;
     align-items: stretch;
     gap: 0;
@@ -109,12 +109,12 @@
       padding: 0 0.5em 0 0;
       overflow: hidden;
       text-align: end;
-      line-height: 170%;
+      line-height: 200%;
     }
   }
 
   .navbar__menu.open {
-    grid-template-rows: repeat(3, 1fr);
+    grid-template-rows: repeat(4, 1fr);
     margin: 1em 0 0 0;
   }
 

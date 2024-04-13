@@ -16,13 +16,16 @@
 .gallery-selection__title {
   display: flex;
   gap: 100px;
+  max-width: 90%;
   font-size: 2rem;
   font-weight: 600;
+  text-align: center;
+  line-height: 150%;
 }
 
 .gallery-selection__list {
   display: grid;
-  grid-template-columns: repeat(3, minmax(20%, auto));
+  grid-template-columns: repeat(3, 30%);
   align-items: center;
   gap: 100px;
   width: 80%;
@@ -83,7 +86,7 @@
 
   .gallery-selection__list {
     width: 85%;
-    grid-template-columns: repeat(auto-fit, minmax(40%, auto));
+    grid-template-columns: repeat(auto-fit, 45%);
     gap: 25px;
   }
 

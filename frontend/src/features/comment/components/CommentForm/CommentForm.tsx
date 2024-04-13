@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useCreateComment } from '../../services'
 import { validateCommentCreateForm } from '../../validators'
 import Form from '@/atoms/form/Form'
@@ -18,6 +19,8 @@ type CommentFormProps = {
 }
 
 const CommentForm = ({ postId, user, onSuccess, onError }: CommentFormProps) => {
+  const { t } = useTranslation()
+
   /**
    * Create comment
    */
@@ -58,13 +61,13 @@ const CommentForm = ({ postId, user, onSuccess, onError }: CommentFormProps) => 
         <input type="hidden" name="postId" value={postId} />
         {user ? (
           <>
-            <Text label="감상문" name="content" initialValue="" />
-            <Button type="submit" text="생성" />
+            <Text label={t('inputs.commentary')} name="content" initialValue="" />
+            <Button type="submit" text={t('buttons.write')} />
           </>
         ) : (
           <>
-            <Text disabled={true} label="먼저 로그인 하세요" name="content" initialValue="" />
-            <Button type="button" text="로그인" onClick={() => setIsLoginOpen(true)} />
+            <Text disabled={true} label={t('inputs.loginFirst')} name="content" initialValue="" />
+            <Button type="button" text={t('buttons.login')} onClick={() => setIsLoginOpen(true)} />
           </>
         )}
       </Form>

@@ -242,15 +242,6 @@ const GalleryCanvas = ({ gallery, postList }: GalleryCanvasProps) => {
     keypadControlsRef.current.jump()
   }, [])
 
-  /**
-   * Notice for Kyotomap
-   */
-  useEffect(() => {
-    if (gallery.place.placeId === 3 && !isMobile) {
-      toastManager.addToast('info', '프레임이 끊길 경우 화면 크기를 줄여주세요', 8000)
-      toastManager.addToast('info', '이 갤러리는 렌더링 성능 개선 중입니다.', 8000)
-    }
-  }, [gallery, isMobile])
   return (
     <div className="gallery-canvas">
       <canvas ref={canvasRef} />

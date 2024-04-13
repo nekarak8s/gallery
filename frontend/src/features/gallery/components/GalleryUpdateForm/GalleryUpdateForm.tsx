@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useGalleryQuery, usePlaceListQuery, useUpdateGallery } from '../../services'
 import { validateUpdateGalleryForm } from '../../validators'
 import GalleryDeleteForm from '../GalleryDeleteForm'
@@ -22,30 +23,22 @@ type GalleryDetailFormProps = {
 }
 
 const GalleryUpdateForm = ({ galleryId, onSuccess, onError }: GalleryDetailFormProps) => {
+  const { t } = useTranslation()
+
   /**
    * Get data
    */
-  const {
-    data: gallery,
-    isLoading: isGalleryLoading,
-    isError: isGalleryError,
-  } = useGalleryQuery(galleryId)
+  const { data: gallery, isLoading: isGalleryLoading, isError: isGalleryError } = useGalleryQuery(galleryId)
   const { data: placeList, isLoading: isPlaceLoading, isError: isPlaceError } = usePlaceListQuery()
-  const {
-    data: postList,
-    isLoading: isPostLoding,
-    isError: isPostError,
-  } = usePostListQuery(galleryId)
+  const { data: postList, isLoading: isPostLoding, isError: isPostError } = usePostListQuery(galleryId)
 
   /**
    * Handle submit
    * 1. Update gallery
    * 2. Update post list
    */
-  const { mutateAsync: updateGallery, isLoading: isUpdateGalleryLoading } =
-    useUpdateGallery(galleryId)
-  const { mutateAsync: updatePostList, isLoading: isUpdatePostLoading } =
-    useUpdatePostList(galleryId)
+  const { mutateAsync: updateGallery, isLoading: isUpdateGalleryLoading } = useUpdateGallery(galleryId)
+  const { mutateAsync: updatePostList, isLoading: isUpdatePostLoading } = useUpdatePostList(galleryId)
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -108,18 +101,13 @@ const GalleryUpdateForm = ({ galleryId, onSuccess, onError }: GalleryDetailFormP
   return (
     <>
       <Form className="gallery-update-form" onSubmit={handleSubmit}>
-        <Text label="전시회 이름" name="name" initialValue={gallery.name} />
-        <Textarea label="소개글" name="content" maxLen={500} initialValue={gallery.content} />
+        <Text label={t('inputs.galleryName')} name="name" initialValue={gallery.name} />
+        <Textarea label={t('inputs.galleryContent')} name="content" maxLen={500} initialValue={gallery.content} />
         <PlacesRadio placeList={placeList} defaultChecked={gallery.place.placeId} />
         <PostListForm postList={postList} />
         <div className="gallery-update-form__buttons">
-          <Button type="submit" direction="center" ariaLabel="전시회 생성" text="수정하기" />
-          <Button
-            color="red"
-            ariaLabel="전시회 삭제"
-            text="삭제하기"
-            onClick={() => setIsDeleteOpen(true)}
-          />
+          <Button type="submit" direction="center" ariaLabel="전시회 수정" text={t('buttons.edit')} />
+          <Button color="red" ariaLabel="전시회 삭제" text={t('buttons.delete')} onClick={() => setIsDeleteOpen(true)} />
         </div>
       </Form>
       {(isUpdateGalleryLoading || isUpdatePostLoading) && (
@@ -129,11 +117,7 @@ const GalleryUpdateForm = ({ galleryId, onSuccess, onError }: GalleryDetailFormP
       )}
       {isDeleteOpen && (
         <Modal isOpen={isDeleteOpen} onClose={() => setIsDeleteOpen(false)}>
-          <GalleryDeleteForm
-            galleryId={galleryId}
-            onSuccess={onDeleteSuccess}
-            onError={onDeleteError}
-          />
+          <GalleryDeleteForm galleryId={galleryId} onSuccess={onDeleteSuccess} onError={onDeleteError} />
         </Modal>
       )}
     </>

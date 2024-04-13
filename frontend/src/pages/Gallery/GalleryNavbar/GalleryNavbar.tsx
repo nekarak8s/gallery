@@ -1,10 +1,12 @@
+import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
-import './GalleryNavbar.scss'
 import { routes } from '@/App'
 import { CURSOR_SCALE } from '@/constants'
 import ControlNotice from '@/features/gallery/components/ControlNotice'
+import './GalleryNavbar.scss'
 
 const GalleryNavbar = () => {
+  const { t } = useTranslation()
   const navigate = useNavigate()
 
   /**
@@ -34,12 +36,8 @@ const GalleryNavbar = () => {
     <nav className="gallery-navbar">
       <ul>
         <li>
-          <button
-            data-cursor-scale={CURSOR_SCALE}
-            onClick={handleClick}
-            aria-label="페이지 뒤로가기"
-          >
-            뒤로가기
+          <button data-cursor-scale={CURSOR_SCALE} onClick={handleClick} aria-label="페이지 뒤로가기">
+            {t('galleryNav.goBack')}
           </button>
         </li>
         <li className="gallery-navbar__notice">
@@ -48,7 +46,7 @@ const GalleryNavbar = () => {
             aria-label="
           조작법 열기"
           >
-            조작법
+            {t('galleryNav.manual')}
           </button>
           <ControlNotice />
         </li>

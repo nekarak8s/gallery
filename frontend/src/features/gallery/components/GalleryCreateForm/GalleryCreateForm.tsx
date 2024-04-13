@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import { useCreateGallery, usePlaceListQuery } from '../../services'
 import { validateGalleryForm } from '../../validators'
 import PlacesRadio from '../PlacesRadio'
@@ -15,6 +16,7 @@ type GalleryFormProps = {
 }
 
 const GalleryCreateForm = ({ onSuccess, onError }: GalleryFormProps) => {
+  const { t } = useTranslation()
   const { data: placeList, isLoading: isPlaceLoading, isError: isPlaceError } = usePlaceListQuery()
 
   /**
@@ -53,10 +55,10 @@ const GalleryCreateForm = ({ onSuccess, onError }: GalleryFormProps) => {
   return (
     <>
       <Form className="gallery-create-form" onSubmit={handleSubmit}>
-        <Text label="전시회 이름" name="name" initialValue="" />
-        <Textarea label="소개글" name="content" initialValue="" maxLen={150} />
+        <Text label={t('inputs.galleryName')} name="name" initialValue="" />
+        <Textarea label={t('inputs.galleryContent')} name="content" initialValue="" maxLen={150} />
         <PlacesRadio placeList={placeList} showSelected={false} />
-        <Button type="submit" direction="left" ariaLabel="전시회 생성" text="전시회 개관" />
+        <Button type="submit" direction="left" ariaLabel="전시회 생성" text={t('buttons.open')} />
       </Form>
       {isCreateLoading && (
         <div className="gallery-create-form__loading">

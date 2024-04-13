@@ -1,9 +1,9 @@
-import React from 'react'
 import { BrowserRouter } from 'react-router-dom'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { createRoot } from 'react-dom/client'
 import App from '@/App'
+import './locales/i18next'
 
 // React Query
 const queryClient = new QueryClient({
@@ -59,9 +59,7 @@ enableMocking()
   .then(() => {
     createRoot(rootElement).render(
       <QueryClientProvider client={queryClient}>
-        <BrowserRouter
-          basename={process.env.REACT_APP_BASE_URL ? process.env.REACT_APP_BASE_URL : ''}
-        >
+        <BrowserRouter basename={process.env.REACT_APP_BASE_URL ? process.env.REACT_APP_BASE_URL : ''}>
           <App />
         </BrowserRouter>
         <ReactQueryDevtools initialIsOpen={false} />
