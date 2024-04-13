@@ -36,7 +36,4 @@ public interface GalleryService {
 
     // 회원탈퇴 -> 모든 갤러리 삭제
     void deleteAllGallery(long memberId);
-
-    // 갤러리 검색 (by Query)
-    List<GallerySearchResponse> searchGalleryList(String type, String query) throws CustomException;
 }
