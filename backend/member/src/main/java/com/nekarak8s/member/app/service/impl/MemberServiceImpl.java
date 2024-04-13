@@ -106,6 +106,7 @@ public class MemberServiceImpl implements MemberService{
         member.setNickname(newNickname);
         member.setIsDeleted(false);
         member.setDeletedDate(null);
+        member.setCreatedDate(LocalDateTime.now());
         member.setLastDate(LocalDateTime.now());
         memberRepository.save(member);
         nicknameService.saveNicknameInRedis(newNickname, member.getMemberId());
@@ -126,6 +127,7 @@ public class MemberServiceImpl implements MemberService{
     public MemberDTO findMemberById(long memberId) throws CustomException {
         Member member = memberRepository.findByMemberIdAndIsDeletedFalse(memberId)
                 .orElseThrow(() -> new CustomException(RESOURCE_NOT_FOUND.getHttpStatus(), RESOURCE_NOT_FOUND.getCode(), "사용자 정보가 없습니다"));
+        member.setCreatedDate(member.getCreatedDate().plusMinutes(540));
         return MemberDTO.toDTO(member);
     }
 

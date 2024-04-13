@@ -5,7 +5,6 @@ import com.nekarak8s.gallery.app.data.dto.request.GalleryCreateRequest;
 import com.nekarak8s.gallery.app.data.dto.request.GalleryModifyRequest;
 import com.nekarak8s.gallery.app.data.dto.response.GalleryCreateResponse;
 import com.nekarak8s.gallery.app.data.dto.response.GalleryInfoResponse;
-import com.nekarak8s.gallery.app.data.dto.response.GallerySearchResponse;
 import com.nekarak8s.gallery.app.data.entity.place.Place;
 import com.nekarak8s.gallery.base.exception.CustomException;
 import com.nekarak8s.gallery.app.data.dto.event.MemberEvent;
@@ -102,15 +101,6 @@ public class GalleryController {
                                                      @PathVariable(value = "galleryId", required = false) long galleryId) {
         galleryService.deleteGallery(memberId, galleryId);
         return ResponseEntity.ok(createApiResponse("갤러리가 삭제되었습니다"));
-    }
-
-    // 갤러리 검색 (all | title | author)
-    @GetMapping("/search")
-    public ResponseEntity<?> searchGalleryListByCondition(
-                                                            @RequestParam(value = "type") String type,
-                                                            @RequestParam(value = "query") String query) throws CustomException {
-        List<GallerySearchResponse> list = galleryService.searchGalleryList(type, query);
-        return ResponseEntity.ok(createApiResponse("갤러리 검색을 성공했습니다", list));
     }
 
     @PostMapping("/chain")
