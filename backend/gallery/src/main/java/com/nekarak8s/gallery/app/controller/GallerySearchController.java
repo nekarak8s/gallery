@@ -25,8 +25,8 @@ public class GallerySearchController {
   // 검색어 기반 갤러리 조회 (all | author | title)
   @GetMapping("/search")
   public ResponseEntity<?> searchGalleryListByCondition(
-      @RequestParam(value = "type") String type,
-      @RequestParam(value = "query") String query,
+      @RequestParam(value = "type", defaultValue = "all") String type,
+      @RequestParam(value = "query", defaultValue = "") String query,
       @RequestParam(defaultValue = "0") int page,
       @RequestParam(defaultValue = "100") int size) throws CustomException {
     Page<GallerySearchResponse> list = service.getSearchGallery(type, query, page, size);
