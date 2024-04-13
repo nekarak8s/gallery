@@ -30,7 +30,7 @@
     "title": "The Gallery is departing",
     "kakao": "Boarding with Kakao",
     "google": "Boarding with Google",
-    "description": "Safely log in with social media"
+    "description": "Safely login with OAuth"
   },
   "withdraw": {
     "title": "Type your nickname \"{{nickname}}\" exactly"
