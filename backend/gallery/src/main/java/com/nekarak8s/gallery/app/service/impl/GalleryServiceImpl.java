@@ -3,7 +3,6 @@ package com.nekarak8s.gallery.app.service.impl;
 import com.nekarak8s.gallery.app.data.dto.request.GalleryCreateRequest;
 import com.nekarak8s.gallery.app.data.dto.response.GalleryInfoResponse;
 import com.nekarak8s.gallery.app.data.dto.request.GalleryModifyRequest;
-import com.nekarak8s.gallery.app.data.dto.response.GallerySearchResponse;
 import com.nekarak8s.gallery.app.data.entity.gallery.Gallery;
 import com.nekarak8s.gallery.app.data.entity.place.Place;
 import com.nekarak8s.gallery.app.data.repository.gallery.GalleryRepository;
@@ -11,7 +10,6 @@ import com.nekarak8s.gallery.app.data.repository.place.PlaceRepository;
 import com.nekarak8s.gallery.app.service.GalleryService;
 import com.nekarak8s.gallery.base.exception.CustomException;
 import com.nekarak8s.gallery.app.data.dto.event.GalleryEvent;
-import com.nekarak8s.gallery.app.util.MemberServiceAPI;
 import com.nekarak8s.gallery.app.util.PlaceUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,7 +30,6 @@ public class GalleryServiceImpl implements GalleryService {
     private final PlaceRepository       placeRepository;
     private final GalleryRepository     galleryRepository;
     private final PlaceUtil             placeUtil;
-    private final MemberServiceAPI      memberServiceAPI;
     private final RestTemplate          restTemplate;
 
     private final static String CREATE_TYPE = "create";
@@ -200,66 +197,5 @@ public class GalleryServiceImpl implements GalleryService {
     public void deleteAllGallery(long memberId) {
         galleryRepository.deleteAllByMemberId(memberId);
         // Todo : 갤러리 Id 리스트 Post 서버로 보내기 -> 연쇄 삭제
-    }
-
-
-    /**
-     * 조건에 따른 갤러리 정보 조회
-     *
-     * @param type          all(회원 닉네임 또는 갤러리 이름) | author(회원 닉네임) | title(갤러리 이름)
-     * @param query         검색하고자 하는 키워드
-     * @return
-     */
-    @Override
-    public List<GallerySearchResponse> searchGalleryList(String type, String query) throws CustomException {
-        PageRequest pageRequest = PageRequest.of(0, Integer.MAX_VALUE, Sort.by(Sort.Direction.DESC, "createdDate"));
-
-        Long memberId = memberServiceAPI.getMemberId(query);
-
-        switch (type) {
-            case "all":
-                return searchByAll(pageRequest, query, memberId).getContent();
-            case "author":
-                if (memberId == null) return Collections.emptyList();
-                return searchByAuthor(pageRequest, memberId).getContent();
-            case "title":
-                return searchByTitle(pageRequest, query).getContent();
-            default:
-                throw new CustomException(HttpStatus.BAD_REQUEST, "GG005", "지원하지 않는 검색 타입입니다 : " + type);
-        }
-    }
-
-    private Page<GallerySearchResponse> searchByAll(PageRequest pageRequest, String query, Long memberId) {
-        memberId = (memberId == null) ? -999L : memberId;
-        Page<GallerySearchResponse> results = galleryRepository.findByQueryByAll(pageRequest, query, memberId);
-        List<Long> memberIdList = memberServiceAPI.getMemberIdList(results.getContent()); // 조회 결과에서 회원 아이디 리스트 추출
-        Map<Long, String> map = memberServiceAPI.getMemberNicknameMap(memberIdList); // 닉네임 목록 조회
-        for (GallerySearchResponse dto : results.getContent()) {
-            long id = dto.getMemberId();
-            String nickname = map.get(id+"");
-            dto.setNickname(nickname);
-        }
-        return results;
-    }
-
-    private Page<GallerySearchResponse> searchByAuthor(PageRequest pageRequest, Long memberId) {
-        Page<GallerySearchResponse> results = galleryRepository.findByQueryByAuthor(pageRequest, memberId);
-        String nickname = memberServiceAPI.getMemberNickname(memberId);
-        for (GallerySearchResponse dto : results.getContent()) {
-            dto.setNickname(nickname);
-        }
-        return results;
-    }
-
-    private Page<GallerySearchResponse> searchByTitle(PageRequest pageRequest, String query) {
-        Page<GallerySearchResponse> results = galleryRepository.findByQueryByTitle(pageRequest, query);
-        List<Long> memberIdList = memberServiceAPI.getMemberIdList(results.getContent()); // 조회 결과에서 회원 아이디 리스트 추출
-        Map<Long, String> map = memberServiceAPI.getMemberNicknameMap(memberIdList); // 닉네임 목록 조회
-        for (GallerySearchResponse dto : results.getContent()) {
-            long id = dto.getMemberId();
-            String nickname = map.get(id+"");
-            dto.setNickname(nickname);
-        }
-        return results;
     }
 }

@@ -8,8 +8,7 @@ import lombok.Data;
 @Builder
 public class ApiResponse<T> {
     private String message;
-
-    @JsonInclude(JsonInclude.Include.NON_NULL) // 값이 null 이면, 제외
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private T data;
 
     public static <T> ApiResponse<T> createApiResponse(String message) {

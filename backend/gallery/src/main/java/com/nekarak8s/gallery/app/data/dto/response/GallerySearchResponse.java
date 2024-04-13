@@ -4,12 +4,14 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.ToString;
 
 import java.time.LocalDateTime;
 
 @Data
 @Builder
 @AllArgsConstructor
+@ToString
 public class GallerySearchResponse {
     private long galleryId;
     private String title;
