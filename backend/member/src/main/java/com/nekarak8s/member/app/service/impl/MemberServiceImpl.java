@@ -106,6 +106,7 @@ public class MemberServiceImpl implements MemberService{
         member.setNickname(newNickname);
         member.setIsDeleted(false);
         member.setDeletedDate(null);
+        member.setCreatedDate(LocalDateTime.now());
         member.setLastDate(LocalDateTime.now());
         memberRepository.save(member);
         nicknameService.saveNicknameInRedis(newNickname, member.getMemberId());
