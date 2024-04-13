@@ -4,6 +4,10 @@ body * {
   cursor: none;
 }
 
+body select {
+  cursor: pointer;
+}
+
 .cursor {
   @include z-index(cursor);
   position: fixed;

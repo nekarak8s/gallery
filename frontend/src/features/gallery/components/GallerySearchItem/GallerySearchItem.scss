@@ -2,13 +2,13 @@
 @use '@/styles/_colors.scss' as c;
 
 .gallery-search-item {
-  display: block;
+  display: inline-block;
   overflow: hidden;
   max-width: 30em;
   padding: 1em 1em;
   border-radius: 0.5em;
   font-size: 1.2rem;
-  box-shadow: 0 0 0 0 var(--color-bg-subtle, c.$bg-gray);
+  box-shadow: inset 0 0 7px 1px #c7d8f4;
   transition: box-shadow 300ms ease-in-out;
 
   article {

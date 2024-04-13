@@ -79,14 +79,17 @@
 }
 
 .gallery-search__search {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto minmax(0, 1fr);
+  justify-items: center;
   align-items: center;
-  gap: 2em;
+  gap: 1.2em;
   position: fixed;
   top: 2em;
   left: 50%;
   width: 100%;
+  max-height: 90vh;
   transform: translate(-50%);
 }
 
@@ -131,9 +134,12 @@
 }
 
 .gallery-search__list {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5em;
+  height: 100%;
+  overflow: auto;
+
+  > li {
+    margin-top: 0.5em;
+  }
 }
 
 @include laptop {
