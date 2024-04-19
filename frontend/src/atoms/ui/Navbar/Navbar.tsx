@@ -66,11 +66,11 @@ function Navbar({ whitePathname, isLogin }: NavbarProps) {
    * Close Modal when click outside (mobile)
    */
   useEffect(() => {
-    const handleOutsideClick = (e: MouseEvent) => {
-      const navbar = navbarRef.current!
-      const menu = menuRef.current!
-      const toggle = toggleRef.current!
+    const navbar = navbarRef.current!
+    const menu = menuRef.current!
+    const toggle = toggleRef.current!
 
+    const handleOutsideClick = (e: MouseEvent) => {
       if (!navbar.contains(e.target as Node)) {
         menu.classList.remove('open')
         toggle.classList.remove('open')

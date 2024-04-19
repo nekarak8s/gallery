@@ -5,11 +5,11 @@
   display: inline-block;
   overflow: hidden;
   width: 100%;
-  max-width: 30em;
+  max-width: 600px;
   padding: 1em 1em;
   border-radius: 0.5em;
   font-size: 1.2rem;
-  box-shadow: inset 0 0 7px 1px #c7d8f4;
+  box-shadow: 0 0 7px 1px #c7d8f4;
   transition: box-shadow 300ms ease-in-out;
 
   article {

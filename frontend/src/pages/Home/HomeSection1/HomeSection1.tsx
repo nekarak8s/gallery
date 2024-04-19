@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import OceanFilter from './OceanFilter'
 import cloud1Img from '@/assets/images/home-section-1/cloud-1.png?format=png'
@@ -45,7 +45,7 @@ function HomeSection1() {
   /**
    * Disable scroll on mount
    */
-  const disableScroll = () => window.scrollTo(0, 0)
+  const disableScroll = useCallback(() => window.scrollTo(0, 0), [])
 
   useEffect(() => {
     window.scrollTo(0, 0)
