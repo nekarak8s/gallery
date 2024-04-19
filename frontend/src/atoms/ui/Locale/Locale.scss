@@ -2,6 +2,7 @@
 
 .locale {
   position: relative;
+  display: inline-block;
 
   .locale__option:nth-child(1) {
     font-weight: 600;

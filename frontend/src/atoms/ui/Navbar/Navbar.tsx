@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { NavLink } from 'react-router-dom'
 import Locale from '../Locale'
@@ -41,8 +41,8 @@ function Navbar({ whitePathname, isLogin }: NavbarProps) {
     }
 
     const throttledHandleScroll = throttle(handleScroll, 16)
-
     window.addEventListener('scroll', throttledHandleScroll, { passive: true })
+
     return () => {
       window.removeEventListener('scroll', throttledHandleScroll)
     }
@@ -54,12 +54,34 @@ function Navbar({ whitePathname, isLogin }: NavbarProps) {
   const menuRef = useRef<HTMLUListElement>(null)
   const toggleRef = useRef<HTMLButtonElement>(null)
 
-  const handleToggleClick = useCallback(() => {
+  const handleToggleClick = () => {
     const menu = menuRef.current!
     const toggle = toggleRef.current!
 
     menu.classList.toggle('open')
     toggle.classList.toggle('open')
+  }
+
+  /**
+   * Close Modal when click outside (mobile)
+   */
+  useEffect(() => {
+    const handleOutsideClick = (e: MouseEvent) => {
+      const navbar = navbarRef.current!
+      const menu = menuRef.current!
+      const toggle = toggleRef.current!
+
+      if (!navbar.contains(e.target as Node)) {
+        menu.classList.remove('open')
+        toggle.classList.remove('open')
+      }
+    }
+
+    window.addEventListener('click', handleOutsideClick)
+
+    return () => {
+      window.removeEventListener('click', handleOutsideClick)
+    }
   }, [])
 
   /**
@@ -67,29 +89,29 @@ function Navbar({ whitePathname, isLogin }: NavbarProps) {
    */
   const [isSearchShow, setIsSearchShow] = useState(false)
 
-  const handleSearchClick = useCallback(() => {
+  const handleSearchClick = () => {
     setIsSearchShow(true)
     handleToggleClick()
-  }, [])
+  }
 
   /**
    * Toggle login modal
    */
   const [isLoginOpen, setIsLoginOpen] = useState(false)
 
-  const handleLoginClick = useCallback(() => {
+  const handleLoginClick = () => {
     setIsLoginOpen(true)
     handleToggleClick()
-  }, [])
+  }
 
   /**
-   * Show navbar for web accessibility
+   * Show navbar on focus for web accessibility
    */
-  const showNavbar = useCallback(() => {
+  const showNavbar = () => {
     const navbar = navbarRef.current!
 
     navbar.classList.remove('hide')
-  }, [])
+  }
   return (
     <>
       <nav className={`navbar ${whitePathname.includes(location.pathname) ? 'white' : ''}`} ref={navbarRef}>
