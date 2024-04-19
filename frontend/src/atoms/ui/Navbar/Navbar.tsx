@@ -94,7 +94,7 @@ function Navbar({ whitePathname, isLogin }: NavbarProps) {
     <>
       <nav className={`navbar ${whitePathname.includes(location.pathname) ? 'white' : ''}`} ref={navbarRef}>
         <NavLink to={routes['Home'].path} onFocus={showNavbar} data-cursor-scale={CURSOR_SCALE} title={'홈 페이지'}>
-          {t('navbar.logo')}
+          The Gallery
         </NavLink>
         <ul className="navbar__menu" ref={menuRef}>
           <li>

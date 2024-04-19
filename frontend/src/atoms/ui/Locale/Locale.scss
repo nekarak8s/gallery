@@ -10,15 +10,12 @@
   .locale__option:nth-child(2) {
     font-weight: 400;
   }
-
-  input {
-    display: none;
-  }
 }
 
-.locale__slider {
+.locale::after {
+  content: '';
   position: absolute;
-  bottom: 0;
+  bottom: -0.1em;
   left: 0;
   width: 47%;
   height: 0.09em;
@@ -28,7 +25,7 @@
 }
 
 .locale.white {
-  .locale__slider {
+  &::after {
     background-color: var(--color-ft-reverse, c.$ft-white);
     box-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
   }
@@ -43,7 +40,7 @@
     font-weight: 600;
   }
 
-  .locale__slider {
+  &::after {
     transform: translateX(115%);
   }
 }

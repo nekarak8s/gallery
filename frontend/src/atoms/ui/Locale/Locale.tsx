@@ -1,8 +1,8 @@
-import { ChangeEventHandler, useEffect, useRef } from 'react'
-import './Locale.scss'
+import { useEffect, useRef, MouseEventHandler } from 'react'
 import { useTranslation } from 'react-i18next'
 import { CURSOR_SCALE } from '@/constants'
 import i18n from '@/locales/i18next'
+import './Locale.scss'
 
 type LocaleProps = {
   isWhite: boolean
@@ -10,29 +10,30 @@ type LocaleProps = {
 
 function Locale({ isWhite }: LocaleProps) {
   const { t } = useTranslation()
-  const localeRef = useRef<HTMLLabelElement>(null)
+  const localeRef = useRef<HTMLButtonElement>(null)
 
   useEffect(() => {
     i18n.language === 'ko' && localeRef.current?.classList.remove('on')
     i18n.language === 'en' && localeRef.current?.classList.add('on')
   }, [])
 
-  const handleChange: ChangeEventHandler<HTMLInputElement> = (e) => {
-    if (localeRef.current) localeRef.current.classList.toggle('on')
+  const handleClick: MouseEventHandler<HTMLButtonElement> = (e) => {
+    const localeButton = localeRef.current
+    if (!localeButton) return
 
-    if (e.target.checked) {
+    if (i18n.language === 'ko') {
+      localeButton.classList.add('on')
       i18n.changeLanguage('en')
     } else {
+      localeButton.classList.remove('on')
       i18n.changeLanguage('ko')
     }
   }
   return (
-    <label className={`locale ${isWhite ? 'white' : ''}`} ref={localeRef} data-cursor-scale={CURSOR_SCALE}>
+    <button className={`locale ${isWhite ? 'white' : ''}`} ref={localeRef} onClick={handleClick} data-cursor-scale={CURSOR_SCALE}>
       <span className="locale__option">{t('locale.ko')}&nbsp;</span>
       <span className="locale__option">{t('locale.en')}</span>
-      <span className="locale__slider" />
-      <input type="checkbox" onChange={handleChange} />
-    </label>
+    </button>
   )
 }
 
