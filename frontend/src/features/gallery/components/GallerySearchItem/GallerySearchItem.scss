@@ -20,7 +20,7 @@
   }
 
   h2 {
-    font-size: 1.2em;
+    font-size: 1.3em;
     font-weight: 600;
   }
 
@@ -92,7 +92,7 @@
 
 @include mobile {
   .gallery-search-item {
-    padding: 1em 2em;
-    font-size: 0.8rem;
+    font-size: 3vw;
+    padding: 1.5em;
   }
 }
