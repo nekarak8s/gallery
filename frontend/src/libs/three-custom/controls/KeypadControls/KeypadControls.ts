@@ -1,7 +1,10 @@
 import * as THREE from 'three'
 import { acceleratedRaycast } from 'three-mesh-bvh'
-import { IPlayer } from '../items/Player/Player'
+import { IControls } from '..'
+import { IPlayer } from '../../items/Player/Player'
+import './KeypadControls.scss'
 
+const _canvasOrigin = new THREE.Vector2(0, 0)
 const _downDirection = new THREE.Vector3(0, -1, 0)
 
 const MOVE_SPEED_FACTOR = 5
@@ -16,8 +19,9 @@ const CAMERA_LOOK_AT = new THREE.Vector3(0, 2.5, 2)
 
 THREE.Mesh.prototype.raycast = acceleratedRaycast
 
-export class KeypadControls {
+export default class KeypadControls implements IControls {
   // arguments
+  canvas: HTMLCanvasElement
   scene: THREE.Scene
   camera: THREE.Camera
   gravity: number
@@ -28,6 +32,7 @@ export class KeypadControls {
   enabled: boolean = true
   obstacles: THREE.Object3D<THREE.Object3DEventMap>[] = [] // Array for obstacle meshes
   floors: THREE.Object3D<THREE.Object3DEventMap>[] = [] // Array for floor meshes
+  targets: THREE.Object3D<THREE.Object3DEventMap>[] = [] // Array for raycastering frames
   dispose: () => void
 
   // camera & character group
@@ -58,7 +63,19 @@ export class KeypadControls {
   #isFloating: boolean = false
   #floatingDuration: number = 0
 
-  constructor(scene: THREE.Scene, camera: THREE.Camera, gravity: number = 10, jumpForce: number = 10, maxFallSpeed: number = 7) {
+  // optional features
+  onControl?: () => unknown
+  onEsc?: () => unknown
+
+  constructor(
+    canvas: HTMLCanvasElement,
+    scene: THREE.Scene,
+    camera: THREE.Camera,
+    gravity: number = 10,
+    jumpForce: number = 10,
+    maxFallSpeed: number = 7
+  ) {
+    this.canvas = canvas
     this.scene = scene
     this.camera = camera
     this.gravity = gravity
@@ -77,7 +94,12 @@ export class KeypadControls {
     this.#raycaster.firstHitOnly = true
 
     // Set the orientation of the camera
-    this.setOrientation()
+    this.initOrientation()
+
+    // Add visual target(+) of raycaster
+    const target = document.createElement('div')
+    target.id = 'target'
+    this.canvas.parentNode!.insertBefore(target, canvas.nextSibling)
 
     // Add event listener
     const _onKeyDown = this.onKeyDown.bind(this)
@@ -93,6 +115,7 @@ export class KeypadControls {
         this.#group.remove(this.#character.object)
         this.#character.dispose()
       }
+      target.remove()
 
       window.removeEventListener('keydown', _onKeyDown)
       window.removeEventListener('keyup', _onKeyUp)
@@ -137,6 +160,11 @@ export class KeypadControls {
       case 'AltLeft':
         event.preventDefault()
         this.jump()
+        break
+
+      case 'ControlLeft':
+        event.preventDefault()
+        this.raycastTargets()
         break
     }
   }
@@ -232,14 +260,23 @@ export class KeypadControls {
     return this.#character
   }
 
-  /**
-   * Set camera offset
-   */
   set cameraOffset(offset: THREE.Vector3) {
     this.#cameraOffset.copy(offset)
     this.camera.position.copy(this.#cameraOffset)
   }
 
+  /**
+   * Raycast targets
+   */
+  raycastTargets() {
+    this.#raycaster.setFromCamera(_canvasOrigin, this.camera)
+    const intersects = this.#raycaster.intersectObjects(this.targets)
+    return intersects[0]
+  }
+
+  /**
+   * Character moving raycaster
+   */
   set numRaycasters(num: number) {
     if (num < 2) return
     this.#numRaycasters = num
@@ -250,34 +287,27 @@ export class KeypadControls {
   }
 
   /**
-   * Set camera orientation of rotation
+   * Set position & rotation
    */
-  setOrientation() {
+  initOrientation() {
     this.#group.getWorldDirection(this.#lookDirection)
     this.#isFloating = false
     this.#floatingDuration = 0
   }
 
-  /**
-   * Set camera position
-   */
   setPosition(x: number, y: number, z: number) {
     this.#group.position.set(x, y, z)
-    this.setOrientation()
+    this.initOrientation()
   }
 
-  /**
-   * Set camera rotation
-   */
   setQuaternion(x: number, y: number, z: number) {
     this.#group.rotation.set(x, y, z)
-    this.setOrientation()
+    this.initOrientation()
   }
 
   /**
-   * animations
+   * Animation
    */
-
   fadeToAction(action: THREE.AnimationAction, duration: number = 0.5) {
     const previousAction = this.#activeAction
     this.#activeAction = action
@@ -288,16 +318,13 @@ export class KeypadControls {
     }
   }
 
-  /**
-   * Jump
-   */
   jump() {
     if (this.#isFloating) return
     this.#isJump = true
   }
 
   /**
-   * Move camera tagging along with cannon body
+   * Update the character's position and animation
    */
   update(delta: number) {
     if (!this.enabled || !this.#character) return
@@ -333,7 +360,7 @@ export class KeypadControls {
       // grounded
       this.#isFloating = false
       this.#floatingDuration = 0
-      this.#group.position.y += Math.min(this.#character.size.height - intersects[0].distance, 2 * delta)
+      this.#group.position.y += Math.min(this.#character.size.height - intersects[0].distance, 3 * delta)
     } else {
       // falling
       if (!intersects.length || intersects[0].distance > this.#character.size.height + FALL_ANIMATION_HEIGHT) {

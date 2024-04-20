@@ -64,6 +64,7 @@ module.exports = {
     '@typescript-eslint/no-unsafe-return': 0,
     '@typescript-eslint/no-floating-promises': 1,
     '@typescript-eslint/no-unnecessary-type-assertion': 0,
+    '@typescript-eslint/require-await': 0,
     'import/no-unresolved': [
       0,
       {

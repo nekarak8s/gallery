@@ -11,7 +11,8 @@ import px from '@/assets/cubemaps/sunset_sky/px.png'
 import py from '@/assets/cubemaps/sunset_sky/py.png'
 import pz from '@/assets/cubemaps/sunset_sky/pz.png'
 import { DefaultCamera } from '@/libs/three-custom/cameras/DefaultCamera'
-import { KeypadControls } from '@/libs/three-custom/controls/KeypadControls'
+import { IControls } from '@/libs/three-custom/controls'
+import KeypadControls from '@/libs/three-custom/controls/KeypadControls'
 import OceanFactory from '@/libs/three-custom/items/Ocean'
 import PostFramesFactory from '@/libs/three-custom/items/PostFrames'
 import { disposeObject } from '@/libs/three-custom/utils/disposeObject'
@@ -25,7 +26,7 @@ export default class KyotoStrategy implements IGalleryStrategy {
 
   // props
   scene: THREE.Scene | null = null
-  controls: KeypadControls | null = null
+  controls: IControls | null = null
   camera: DefaultCamera | null = null
 
   // interal arrays
@@ -60,7 +61,9 @@ export default class KyotoStrategy implements IGalleryStrategy {
     const gltfLoader = new GLTFLoader(props.loadingManager)
 
     // Enhance the controls raycaster's precision
-    props.controls.numRaycasters = 4
+    if (props.controls instanceof KeypadControls) {
+      props.controls.numRaycasters = 4
+    }
 
     // Set controls orientation
     props.controls.setPosition(-10.56, 15, -17.39)
@@ -129,7 +132,7 @@ export default class KyotoStrategy implements IGalleryStrategy {
 
   dispose() {
     this.camera && this.camera.resetFov()
-    this.controls && this.controls.resetNumRaycasters()
+    this.controls instanceof KeypadControls && this.controls.resetNumRaycasters()
     this.lights.forEach((light) => {
       this.scene && this.scene.remove(light)
       disposeObject(light)
