@@ -42,6 +42,20 @@ export const galleryHandlers = [
         content,
         createdDate: '2023-08-03T23:59:59',
       },
+      {
+        galleryId: 4,
+        title: `${query} 33`,
+        nickname: '어휴',
+        content,
+        createdDate: '2023-08-03T23:59:59',
+      },
+      {
+        galleryId: 5,
+        title: `${query} 44`,
+        nickname: '진짜',
+        content,
+        createdDate: '2023-08-03T23:59:59',
+      },
     ]
 
     if (type === 'title') {
@@ -64,6 +78,20 @@ export const galleryHandlers = [
           galleryId: 3,
           title: `${query} 789`,
           nickname: '루이보스',
+          content,
+          createdDate: '2023-08-03T23:59:59',
+        },
+        {
+          galleryId: 4,
+          title: `${query} 33`,
+          nickname: '어휴',
+          content,
+          createdDate: '2023-08-03T23:59:59',
+        },
+        {
+          galleryId: 5,
+          title: `${query} 44`,
+          nickname: '진짜',
           content,
           createdDate: '2023-08-03T23:59:59',
         },
@@ -93,6 +121,20 @@ export const galleryHandlers = [
           content,
           createdDate: '2023-08-03T23:59:59',
         },
+        {
+          galleryId: 2,
+          title: `돈까스`,
+          nickname: `${query} 도플갱어`,
+          content,
+          createdDate: '2023-08-03T23:59:59',
+        },
+        {
+          galleryId: 3,
+          title: `치즈 크륌 뷔렐레`,
+          nickname: `${query} 하하`,
+          content,
+          createdDate: '2023-08-03T23:59:59',
+        },
       ]
     }
 
@@ -107,7 +149,10 @@ export const galleryHandlers = [
     await delay()
 
     const data = galleryData
-    if (Math.random() < 1) {
+    if (Math.random() < 1 / 3) {
+      data.place.placeId = 2
+    }
+    if (Math.random() < 1 / 3) {
       data.place.placeId = 3
     }
 

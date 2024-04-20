@@ -37,7 +37,7 @@ const GallerySearch = ({ isShow, onClose }: GallerySearchProps) => {
   const debouncedQuery = useDebounce(query, 300)
 
   useEffect(() => {
-    debouncedQuery && refetch()
+    refetch()
   }, [debouncedQuery])
 
   return (
@@ -56,14 +56,22 @@ const GallerySearch = ({ isShow, onClose }: GallerySearchProps) => {
             <option value="title">{t('gallerySearch.title')}</option>
             <option value="author">{t('gallerySearch.author')}</option>
           </Select>
+          <button className="gallery-search__close" data-cursor-scale={CURSOR_SCALE} onClick={onClose}>
+            <span data-cursor-scale={CURSOR_SCALE} />
+            <span data-cursor-scale={CURSOR_SCALE} />
+          </button>
         </div>
-        <button className="gallery-search__close" data-cursor-scale={CURSOR_SCALE} onClick={onClose}>
-          <span data-cursor-scale={CURSOR_SCALE} />
-          <span data-cursor-scale={CURSOR_SCALE} />
-        </button>
-        <div className="gallery-search__list">
-          {isFetching ? <Loading /> : galleryList?.map((gallery) => <GallerySearchItem key={gallery.galleryId} gallery={gallery} />)}
-        </div>
+        <ul className="gallery-search__list">
+          {isFetching ? (
+            <Loading />
+          ) : (
+            galleryList?.map((gallery) => (
+              <li key={gallery.galleryId}>
+                <GallerySearchItem gallery={gallery} />
+              </li>
+            ))
+          )}
+        </ul>
       </div>
     </CSSTransition>
   )

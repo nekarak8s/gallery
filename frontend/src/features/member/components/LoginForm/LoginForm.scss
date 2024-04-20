@@ -91,9 +91,15 @@
   text-align: center;
 }
 
+@include laptop {
+  .login-form__header {
+    font-size: 1.3em;
+  }
+}
+
 @include mobile {
   .login-form {
-    font-size: 4vw;
+    font-size: 3.7vw;
     margin: 2em 2em;
   }
 

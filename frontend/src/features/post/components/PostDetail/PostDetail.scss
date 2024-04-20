@@ -6,7 +6,7 @@
   grid-template-rows: minmax(0, 1fr);
   gap: 1em;
   height: 100%;
-  max-height: 80vh;
+  max-height: 70vh;
   padding: 1em 1em 1em 0.6em;
   font-size: 1rem;
   overflow: auto;
@@ -15,7 +15,7 @@
 @include mobile {
   .post-detail {
     width: min(800px, 85vw);
-    height: 70vh;
+    height: 80vh;
     grid-template-columns: minmax(0, 1fr);
     grid-template-rows: repeat(2, max-content);
     padding: 0.8em 0.6em;

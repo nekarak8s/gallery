@@ -2,13 +2,14 @@
 @use '@/styles/_colors.scss' as c;
 
 .gallery-search-item {
-  display: block;
+  display: inline-block;
   overflow: hidden;
-  max-width: 30em;
+  width: 100%;
+  max-width: 600px;
   padding: 1em 1em;
   border-radius: 0.5em;
   font-size: 1.2rem;
-  box-shadow: 0 0 0 0 var(--color-bg-subtle, c.$bg-gray);
+  box-shadow: 0 0 7px 1px #c7d8f4;
   transition: box-shadow 300ms ease-in-out;
 
   article {
@@ -19,7 +20,7 @@
   }
 
   h2 {
-    font-size: 1.2em;
+    font-size: 1.3em;
     font-weight: 600;
   }
 
@@ -91,7 +92,7 @@
 
 @include mobile {
   .gallery-search-item {
-    padding: 1em 2em;
-    font-size: 0.8rem;
+    font-size: 3vw;
+    padding: 1.5em;
   }
 }

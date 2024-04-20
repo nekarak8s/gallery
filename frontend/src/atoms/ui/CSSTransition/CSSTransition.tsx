@@ -6,16 +6,10 @@ interface CSSTransitionProps {
   isShow: boolean
   duration: number
   timingFunction?: string
-  className: string
+  className?: string
 }
 
-function CSSTransition({
-  isShow,
-  duration,
-  timingFunction = 'linear',
-  className,
-  children,
-}: PropsWithChildren<CSSTransitionProps>) {
+function CSSTransition({ isShow, duration, timingFunction = 'linear', className = '', children }: PropsWithChildren<CSSTransitionProps>) {
   /**
    * Toggle css class according to isShow
    */

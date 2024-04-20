@@ -1,4 +1,4 @@
-import { useRef, useEffect, useMemo } from 'react'
+import { useRef, useEffect } from 'react'
 import InfoIcon from '@/assets/svgs/lighthouse.svg'
 import SuccessIcon from '@/assets/svgs/sail.svg'
 import ErrorIcon from '@/assets/svgs/wreck.svg'
@@ -12,17 +12,17 @@ export type ToastProps = {
   duration?: number
 }
 
+const ICONS = {
+  success: <SuccessIcon />,
+  error: <ErrorIcon />,
+  info: <InfoIcon />,
+}
+
 const Toast = ({ type, message, destroy, duration = 3000 }: ToastProps) => {
   /**
    * Select icon according to type
    */
-  const icon = useMemo(() => {
-    return {
-      success: <SuccessIcon />,
-      error: <ErrorIcon />,
-      info: <InfoIcon />,
-    }[type]
-  }, [type])
+  const icon = ICONS[type]
 
   /**
    * Move progress bar & Destroy the toast

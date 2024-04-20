@@ -7,7 +7,7 @@ const _downDirection = new THREE.Vector3(0, -1, 0)
 const MOVE_SPEED_FACTOR = 5
 const ROTATE_SPEED_FACTOR = 0.6
 
-const FLOOR_PASS_THRESHOLD = 0.4
+const FLOOR_PASS_THRESHOLD = 0.5
 const OBSTACLE_DETECT_DISTANCE = 1
 const FALL_ANIMATION_HEIGHT = 0.8
 
