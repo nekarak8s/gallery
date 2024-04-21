@@ -36,13 +36,11 @@ const useTerrainStrategy = ({ sceneRef, cameraRef, controlsRef, loadingManager, 
     const camera = cameraRef.current
     const controls = controlsRef.current
 
-    if (!scene || !camera || !controls) return
+    if (!scene || !camera || !controls || !loadingManager || !gallery || !postList) return
 
     // Select the terrain type
     const terrainStrategy = STRATEGY_TYPE[gallery.place.placeId]
     if (!terrainStrategy) throw new Error('Invalid gallery placeId')
-
-    setIsTerrainBuilt(false)
 
     // Build the terrain
     const terrain = new terrainStrategy()
@@ -64,10 +62,11 @@ const useTerrainStrategy = ({ sceneRef, cameraRef, controlsRef, loadingManager, 
     terrainRef.current = terrain
 
     return () => {
+      setIsTerrainBuilt(false)
       terrainRef.current = null
       terrain.dispose()
     }
-  }, [sceneRef, cameraRef.current, controlsRef.current, loadingManager, gallery, postList])
+  }, [sceneRef.current, cameraRef.current, controlsRef.current, loadingManager, gallery, postList])
 
   return { terrainRef, isTerrainBuilt }
 }

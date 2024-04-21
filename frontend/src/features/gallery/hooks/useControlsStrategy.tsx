@@ -31,7 +31,7 @@ const useControlsStrategy = ({ type, canvasRef, sceneRef, cameraRef, loadingMana
     const scene = sceneRef.current
     const camera = cameraRef.current
 
-    if (!canvas || !scene || !camera) return
+    if (!canvas || !scene || !camera || !loadingManager) return
 
     // Select the controls type
     const controlType = STRATEGY_TYPE[type]

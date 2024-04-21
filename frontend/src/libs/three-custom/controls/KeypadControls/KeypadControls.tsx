@@ -271,6 +271,7 @@ export default class KeypadControls implements IControls {
   raycastTargets() {
     this.#raycaster.setFromCamera(_canvasOrigin, this.camera)
     const intersects = this.#raycaster.intersectObjects(this.targets)
+    console.log(1, intersects, this.targets)
     return intersects[0]
   }
 

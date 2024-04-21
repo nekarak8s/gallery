@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import * as THREE from 'three'
 import useControlsStrategy from '../../hooks/useControlsStrategy'
 import useDefaultRender from '../../hooks/useDefaultRender'
@@ -6,6 +6,7 @@ import useLoadingCount from '../../hooks/useLoadingCount'
 import useTerrainStrategy from '../../hooks/useTerrainStrategy'
 import { GalleryData } from '../../types'
 import GalleryCover from '../GalleryCover'
+import JoystickControl from '../JoystickControl'
 import CSSTransition from '@/atoms/ui/CSSTransition'
 import Loading from '@/atoms/ui/Loading'
 import Modal from '@/atoms/ui/Modal'
@@ -53,13 +54,16 @@ const GalleryCanvas = ({ gallery, postList }: GalleryCanvasProps) => {
    */
   useEffect(() => {
     const renderer = rendererRef.current
-    if (!renderer) return
+    const scene = sceneRef.current
+    const camera = cameraRef.current
+
+    if (!renderer || !scene || !camera) return
 
     const clock = new THREE.Clock()
 
     const draw = function renderCanvas() {
       const delta = clock.getDelta()
-      sceneRef.current && cameraRef.current && renderer.render(sceneRef.current, cameraRef.current)
+      renderer.render(scene, camera)
       renderer.setAnimationLoop(draw)
       controlsRef.current?.update && controlsRef.current.update(delta)
       terrainRef.current?.update && terrainRef.current.update(delta)
@@ -78,19 +82,21 @@ const GalleryCanvas = ({ gallery, postList }: GalleryCanvasProps) => {
    */
   useEffect(() => {
     const controls = controlsRef.current
-    if (!controls || !isEntered || loadedCount !== requiredCount || !isTerrainBuilt) return
+    const terrain = terrainRef.current
+
+    if (!controls || !terrain || !isEntered || loadedCount !== requiredCount || !isTerrainBuilt) return
 
     if (controls instanceof KeypadControls) {
-      controls.floors = terrainRef.current!.floors // Don't destruct (promise objects)
-      controls.obstacles = terrainRef.current!.obstacles // Don't destruct (promise objects)
-      controls.targets = terrainRef.current!.targets // Don't destruct (promise objects)
+      controls.floors = terrain.floors // Don't destruct (promise objects)
+      controls.obstacles = terrain.obstacles // Don't destruct (promise objects)
+      controls.targets = terrain.targets // Don't destruct (promise objects)
     }
     controls.enabled = true
 
     return () => {
       controls.enabled = false
     }
-  }, [controlsRef.current, isEntered, loadedCount, requiredCount, isTerrainBuilt])
+  }, [controlsRef.current, terrainRef.current, isEntered, loadedCount, requiredCount, isTerrainBuilt])
 
   /**
    * Show selected frames modal
@@ -100,15 +106,16 @@ const GalleryCanvas = ({ gallery, postList }: GalleryCanvasProps) => {
   // Show modal with controls
   useEffect(() => {
     const controls = controlsRef.current
-    if (!controls) return
+    if (!controls || !isTerrainBuilt) return
 
     /* eslint-disable */
     const handler = {
       apply(target: Function, thisArg: object, args: any[]) {
         const item = Reflect.apply(target, thisArg, args) // Use reflect to access private properties
-        if (!item.object.userData.isPost) return
+        if (!item || !item.object.userData.isPost) return
         if (item.distance > 10) toastManager.addToast('error', '앨범이 너무 멀리 있습니다')
         else {
+          console.log(item.object.userData.idx)
           setSelectedPostIdx(item.object.userData.idx as number)
         }
       },
@@ -118,7 +125,7 @@ const GalleryCanvas = ({ gallery, postList }: GalleryCanvasProps) => {
       ...args: any[]
     ) => THREE.Intersection<THREE.Object3D<THREE.Object3DEventMap>> // Type assertion for assignability
     /* eslint-enable */
-  }, [controlsRef.current])
+  }, [controlsRef.current, isTerrainBuilt])
 
   // Close modal on ESC
   useEffect(() => {
@@ -144,9 +151,17 @@ const GalleryCanvas = ({ gallery, postList }: GalleryCanvasProps) => {
     }
   }, [selectedPostIdx])
 
+  const isKeypad = useMemo(() => {
+    if (controlsRef.current instanceof KeypadControls) {
+      return true
+    }
+    return false
+  }, [controlsRef.current])
+
   return (
     <div className="gallery-canvas">
       <canvas ref={canvasRef} />
+      {isKeypad && <JoystickControl controlsRef={controlsRef as React.RefObject<KeypadControls>} />}
       <Modal
         isOpen={selectedPostIdx !== null}
         onClose={() => {
