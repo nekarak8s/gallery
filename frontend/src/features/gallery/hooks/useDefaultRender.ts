@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react'
 import * as THREE from 'three'
 import { DefaultCamera } from '@/libs/three-custom/cameras/DefaultCamera'
 import { DefaultRenderer } from '@/libs/three-custom/renderers/DefaultRenderer'
+import { disposeObject } from '@/libs/three-custom/utils/disposeObject'
 
 type TDefaultRenderProps = {
   canvasRef: React.RefObject<HTMLCanvasElement>
@@ -18,7 +19,7 @@ const useDefaultRender = ({ canvasRef }: TDefaultRenderProps) => {
   useEffect(() => {
     const canvas = canvasRef.current!
 
-    if (!canvas) throw new Error('Canvas is not set')
+    if (!canvas) return
 
     const scene = new THREE.Scene()
     sceneRef.current = scene
@@ -46,11 +47,12 @@ const useDefaultRender = ({ canvasRef }: TDefaultRenderProps) => {
       cameraRef.current = null
 
       scene.remove(camera)
+      scene.children.forEach((child) => disposeObject(child))
       renderer.setAnimationLoop(null)
       renderer.dispose()
       window.removeEventListener('resize', handleSize)
     }
-  }, [canvasRef.current])
+  }, [canvasRef])
 
   return { sceneRef, rendererRef, cameraRef }
 }

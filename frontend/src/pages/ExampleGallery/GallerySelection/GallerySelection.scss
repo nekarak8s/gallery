@@ -10,6 +10,7 @@
   width: 100vw;
   height: 100vh;
   background-color: transparent;
+  transform: translateY(-15px);
 }
 
 .gallery-selection__title {
@@ -29,7 +30,6 @@
   gap: 100px;
   width: 80%;
   font-size: 1rem;
-  transform: translateY(-5%);
 
   li,
   button {
@@ -86,6 +86,7 @@
 
   .gallery-selection__list {
     width: 85%;
+    max-width: 85%;
     grid-template-columns: repeat(auto-fit, 45%);
     gap: 25px;
   }

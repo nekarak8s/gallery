@@ -73,9 +73,8 @@ const GalleryCanvas = ({ gallery, postList }: GalleryCanvasProps) => {
 
     return () => {
       renderer.setAnimationLoop(null)
-      renderer.dispose()
     }
-  }, [rendererRef.current])
+  }, [rendererRef, sceneRef, cameraRef])
 
   /**
    * Enable the controls
@@ -96,7 +95,7 @@ const GalleryCanvas = ({ gallery, postList }: GalleryCanvasProps) => {
     return () => {
       controls.enabled = false
     }
-  }, [controlsRef.current, terrainRef.current, isEntered, loadedCount, requiredCount, isTerrainBuilt])
+  }, [controlsRef, terrainRef, isEntered, loadedCount, requiredCount, isTerrainBuilt])
 
   /**
    * Show selected frames modal
@@ -115,7 +114,6 @@ const GalleryCanvas = ({ gallery, postList }: GalleryCanvasProps) => {
         if (!item || !item.object.userData.isPost) return
         if (item.distance > 10) toastManager.addToast('error', '앨범이 너무 멀리 있습니다')
         else {
-          console.log(item.object.userData.idx)
           setSelectedPostIdx(item.object.userData.idx as number)
         }
       },
@@ -125,7 +123,7 @@ const GalleryCanvas = ({ gallery, postList }: GalleryCanvasProps) => {
       ...args: any[]
     ) => THREE.Intersection<THREE.Object3D<THREE.Object3DEventMap>> // Type assertion for assignability
     /* eslint-enable */
-  }, [controlsRef.current, isTerrainBuilt])
+  }, [controlsRef, isTerrainBuilt])
 
   // Close modal on ESC
   useEffect(() => {
@@ -142,6 +140,8 @@ const GalleryCanvas = ({ gallery, postList }: GalleryCanvasProps) => {
 
   // Side effect of modal state
   useEffect(() => {
+    if (!isEntered) return
+
     if (selectedPostIdx === null) {
       musicManager.unmuteAudio()
       controlsRef.current && (controlsRef.current.enabled = true)
@@ -149,14 +149,11 @@ const GalleryCanvas = ({ gallery, postList }: GalleryCanvasProps) => {
       musicManager.muteAudio()
       controlsRef.current && (controlsRef.current.enabled = false)
     }
-  }, [selectedPostIdx])
+  }, [selectedPostIdx, isEntered])
 
   const isKeypad = useMemo(() => {
-    if (controlsRef.current instanceof KeypadControls) {
-      return true
-    }
-    return false
-  }, [controlsRef.current])
+    return controlsRef.current instanceof KeypadControls ? true : false
+  }, [controlsRef])
 
   return (
     <div className="gallery-canvas">

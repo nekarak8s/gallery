@@ -85,6 +85,8 @@ export class Greenary {
       obj.receiveShadow = true
     })
 
+    dracoLoader.dispose()
+
     return new Greenary({ scene, objects: { terrain, lake, ocean, edges, trees } })
   }
 }

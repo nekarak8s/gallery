@@ -10,19 +10,22 @@ type JoystickControlProps = {
 const JoystickControl = ({ controlsRef }: JoystickControlProps) => {
   const joystickControl = useCallback(
     (x: number, y: number) => {
-      controlsRef.current!.rotateSpeedRatio = x
-      controlsRef.current!.moveSpeedRatio = -y
+      if (!controlsRef.current) return
+      controlsRef.current.rotateSpeedRatio = x
+      controlsRef.current.moveSpeedRatio = -y
     },
-    [controlsRef.current]
+    [controlsRef]
   )
 
   const joystickShoot = useCallback(() => {
-    controlsRef.current!.raycastTargets()
-  }, [controlsRef.current])
+    if (!controlsRef.current) return
+    controlsRef.current.raycastTargets()
+  }, [controlsRef])
 
   const joystickJump = useCallback(() => {
-    controlsRef.current!.jump()
-  }, [controlsRef.current])
+    if (!controlsRef.current) return
+    controlsRef.current.jump()
+  }, [controlsRef])
 
   return (
     <div className="joystick-control">
