@@ -43,11 +43,7 @@ export class CannonKeypadControls {
     const shape = new Box(new Vec3(0.2, height / 2, 0.2))
     this.#cannonBody = new Body({
       mass: 40,
-      position: new Vec3(
-        this.camera.position.x,
-        this.camera.position.y - height / 2,
-        this.camera.position.z
-      ),
+      position: new Vec3(this.camera.position.x, this.camera.position.y - height / 2, this.camera.position.z),
       shape,
       fixedRotation: true,
     })
@@ -212,9 +208,7 @@ export class CannonKeypadControls {
       const actualMoveSpeed = 10000 * this.#movementSpeedRatio * this.#movementSpeed
       this.camera.getWorldDirection(_cameraDirection).normalize().multiplyScalar(actualMoveSpeed)
 
-      this.#cannonBody.applyForce(
-        _forceDirection.set(_cameraDirection.x, _cameraDirection.y, _cameraDirection.z)
-      )
+      this.#cannonBody.applyForce(_forceDirection.set(_cameraDirection.x, _cameraDirection.y, _cameraDirection.z))
     }
 
     // Rotate cannonBody angle
@@ -223,9 +217,7 @@ export class CannonKeypadControls {
       _rotationQuaternion.setFromAxisAngle(_yAxis, actualLookSpeed)
 
       const currentQuaternion = this.#cannonBody.quaternion
-      this.#cannonBody.quaternion.copy(
-        currentQuaternion.mult(_rotationQuaternion, currentQuaternion)
-      )
+      this.#cannonBody.quaternion.copy(currentQuaternion.mult(_rotationQuaternion, currentQuaternion))
     }
 
     // Move camera to the cannonBody

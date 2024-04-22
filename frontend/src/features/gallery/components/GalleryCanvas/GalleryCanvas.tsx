@@ -1,24 +1,18 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import * as THREE from 'three'
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
-import { IGalleryStrategy } from './strategies'
-import GalleryStrategy from './strategies/galleryStrategy'
-import GreenaryStrategy from './strategies/greenaryStrategy'
-import KyotoStrategy from './strategies/kyotoStrategy'
+import useControlsStrategy from '../../hooks/useControlsStrategy'
+import useDefaultRender from '../../hooks/useDefaultRender'
+import useLoadingCount from '../../hooks/useLoadingCount'
+import useTerrainStrategy from '../../hooks/useTerrainStrategy'
 import { GalleryData } from '../../types'
 import GalleryCover from '../GalleryCover'
+import JoystickControl from '../JoystickControl'
 import CSSTransition from '@/atoms/ui/CSSTransition'
-import Joystick from '@/atoms/ui/Joystick'
 import Loading from '@/atoms/ui/Loading'
 import Modal from '@/atoms/ui/Modal'
 import PostDetail from '@/features/post/components/PostDetail'
 import { PostItemData } from '@/features/post/types'
-import useMobile from '@/hooks/useMobile'
-import { DefaultCamera } from '@/libs/three-custom/cameras/DefaultCamera'
-import { KeypadControls } from '@/libs/three-custom/controls/KeypadControls'
-import { RaycasterControls } from '@/libs/three-custom/controls/RaycasterControls.ts'
-import { MichelleBuilder } from '@/libs/three-custom/items/Player'
-import { DefaultRenderer } from '@/libs/three-custom/renderers/DefaultRenderer'
+import KeypadControls from '@/libs/three-custom/controls/KeypadControls'
 import musicManager from '@/utils/musicManager'
 import toastManager from '@/utils/toastManager'
 import './GalleryCanvas.scss'
@@ -28,245 +22,156 @@ type GalleryCanvasProps = {
   postList: PostItemData[]
 }
 
-const STRATEGY_TYPE: Record<number, IGalleryStrategy> = {
-  1: new GreenaryStrategy(),
-  2: new GalleryStrategy(),
-  3: new KyotoStrategy(),
-}
-
 const GalleryCanvas = ({ gallery, postList }: GalleryCanvasProps) => {
-  const [requiredCount, setRequiredCount] = useState(0)
-  const [loadedCount, setLoadedCount] = useState(0)
-
   /**
-   * Handle click enter button
-   * 1. Remove the cover
-   * 2. Play the music
-   * 3. Enable the keypad controls
+   * Enter the gallery : initial invitation cover
    */
-  const [isCoverShow, setIsCoverShow] = useState(true)
-  const isClicked = useRef(false)
+  const [isEntered, setIsEntered] = useState(false)
 
-  const onClickEnter = () => {
-    if (!keypadControlsRef.current) return
-
-    setIsCoverShow(false)
+  const handleEnter = () => {
     musicManager.playAudio()
-    if (requiredCount === loadedCount) {
-      keypadControlsRef.current.enabled = true
-    } else {
-      isClicked.current = true
-    }
+    setIsEntered(true)
   }
 
   useEffect(() => {
-    if (loadedCount === requiredCount && isClicked.current) {
-      setTimeout(() => {
-        keypadControlsRef.current!.enabled = true
-      }, 100)
+    return () => {
+      setIsEntered(false)
     }
-  }, [loadedCount, requiredCount])
+  }, [gallery, postList])
 
   /**
-   * Set the Three.js canvas and controls
+   * Create rendering environment
+   * Default render data -> loadingManger -> controls -> terrain
    */
   const canvasRef = useRef<HTMLCanvasElement>(null)
-  const sceneRef = useRef<THREE.Scene | null>(null)
-  const rendererRef = useRef<THREE.WebGLRenderer | null>(null)
-  const cameraRef = useRef<DefaultCamera | null>(null)
-  const loadingManagerRef = useRef<THREE.LoadingManager | null>(null)
-  const keypadControlsRef = useRef<KeypadControls | null>(null)
-  const rayControlsRef = useRef<RaycasterControls | null>(null)
-  const isSet = useRef(false)
+  const { sceneRef, rendererRef, cameraRef } = useDefaultRender({ canvasRef })
+  const { loadingManager, requiredCount, loadedCount } = useLoadingCount()
+  const { controlsRef } = useControlsStrategy({ type: 'keypad', canvasRef, sceneRef, cameraRef, loadingManager })
+  const { terrainRef, isTerrainBuilt } = useTerrainStrategy({ sceneRef, cameraRef, controlsRef, loadingManager, gallery, postList })
 
-  const [selectedPostIdx, setSelectedPostIdx] = useState<number | null>(null)
-
+  /**
+   * Render the canvas
+   */
   useEffect(() => {
-    if (!gallery || !postList) return
+    const renderer = rendererRef.current
+    const scene = sceneRef.current
+    const camera = cameraRef.current
 
-    const canvas = canvasRef.current!
+    if (!renderer || !scene || !camera) return
 
-    // loadingManager
-    const loadingManager = new THREE.LoadingManager()
-    loadingManagerRef.current = loadingManager
-    loadingManager.onStart = function increaseLoadCount() {
-      setRequiredCount((cnt) => cnt + 1)
-    }
-    loadingManager.onLoad = function decreaseLoadCount() {
-      setLoadedCount((cnt) => cnt + 1)
-    }
-    loadingManager.onError = function toastLoadingErrorMesage(url) {
-      console.error(url)
-      toastManager.addToast('error', '필요한 자원을 로드하지 못했습니다')
-    }
-
-    // Renderer
-    const renderer = new DefaultRenderer({ canvas, antialias: true })
-    rendererRef.current = renderer
-
-    // Scene
-    const scene = new THREE.Scene()
-    sceneRef.current = scene
-
-    // Camera
-    const camera = new DefaultCamera({ canvas })
-    cameraRef.current = camera
-    scene.add(camera)
-
-    // Keypad controls
-    const keypadControls = new KeypadControls(scene, camera, 1.6)
-    keypadControlsRef.current = keypadControls
-    keypadControls.enabled = false
-
-    // Create character for the keypad contorls
-    MichelleBuilder.build(new GLTFLoader(loadingManager))
-      .then((michelle) => {
-        keypadControls.character = michelle
-      })
-      .catch((err) => {
-        console.error(err)
-      })
-
-    // Raycaster controls
-    const rayControls = new RaycasterControls(canvas, camera)
-    rayControlsRef.current = rayControls
-    rayControls.raycast = (item) => {
-      if (!item.object.userData.isPost) return
-      if (item.distance > 15) toastManager.addToast('error', '앨범이 너무 멀리 있습니다')
-      else {
-        setSelectedPostIdx(item.object.userData.idx as number)
-        musicManager.muteAudio()
-        keypadControls.enabled = false
-      }
-    }
-    rayControls.onEsc = () => {
-      setSelectedPostIdx(null)
-      musicManager.unmuteAudio()
-      keypadControls.enabled = true
-    }
-
-    // Add Re-size Listener
-    const handleSize = function resizeCameraRenderer() {
-      camera.setDefaultAspect()
-      camera.updateProjectionMatrix()
-      renderer.setDefaultSize()
-      renderer.render(scene, camera)
-    }
-    window.addEventListener('resize', handleSize)
-
-    // Draw canvas
     const clock = new THREE.Clock()
+
     const draw = function renderCanvas() {
       const delta = clock.getDelta()
-      keypadControls.update(delta)
-      currentStrategy.current?.update && currentStrategy.current.update(delta)
       renderer.render(scene, camera)
       renderer.setAnimationLoop(draw)
+      controlsRef.current?.update && controlsRef.current.update(delta)
+      terrainRef.current?.update && terrainRef.current.update(delta)
     }
+
     draw()
 
-    // Ready to build the strategy
-    isSet.current = true
-
-    // Clean-up function: Release resources
     return () => {
-      scene.remove(camera)
       renderer.setAnimationLoop(null)
-      renderer.dispose()
-      keypadControls.dispose()
-      rayControls.dispose()
-      window.removeEventListener('resize', handleSize)
     }
-  }, [])
+  }, [rendererRef, sceneRef, cameraRef])
 
   /**
-   * Draw Strategy
+   * Enable the controls
    */
-  const isFirst = useRef(true)
-  const currentStrategy = useRef<IGalleryStrategy | null>(null)
-
   useEffect(() => {
-    if (isFirst.current) {
-      isFirst.current = false
-      return
+    const controls = controlsRef.current
+    const terrain = terrainRef.current
+
+    if (!controls || !terrain || !isEntered || loadedCount !== requiredCount || !isTerrainBuilt) return
+
+    if (controls instanceof KeypadControls) {
+      controls.floors = terrain.floors // Don't destruct (promise objects)
+      controls.obstacles = terrain.obstacles // Don't destruct (promise objects)
+      controls.targets = terrain.targets // Don't destruct (promise objects)
     }
+    controls.enabled = true
 
-    if (!gallery || !postList || !isSet.current) return
-
-    // Select strategy
-    const strategy = STRATEGY_TYPE[gallery.place.placeId]
-    currentStrategy.current = strategy
-
-    // Build the strategy
-    strategy.build({
-      scene: sceneRef.current!,
-      camera: cameraRef.current!,
-      controls: keypadControlsRef.current!,
-      loadingManager: loadingManagerRef.current!,
-      postList,
-    })
-
-    keypadControlsRef.current!.floors = strategy.floors // Don't destruct (promise objects)
-    keypadControlsRef.current!.obstacles = strategy.obstacles // Don't destruct (promise objects)
-    rayControlsRef.current!.rayItems = strategy.targets // Don't destruct (promise objects)
-
-    // Reset the variables
     return () => {
-      setIsCoverShow(true)
-      isClicked.current = false
-      keypadControlsRef.current!.enabled = false
-      setRequiredCount(0)
-      setLoadedCount(0)
-      strategy.dispose()
+      controls.enabled = false
     }
-  }, [gallery, postList, isSet.current])
+  }, [controlsRef, terrainRef, isEntered, loadedCount, requiredCount, isTerrainBuilt])
 
   /**
-   * Joystick on Mobile
+   * Show selected frames modal
    */
-  const isMobile = useMobile()
+  const [selectedPostIdx, setSelectedPostIdx] = useState<number | null>(null)
 
-  const joystickControl = useCallback((x: number, y: number) => {
-    if (!keypadControlsRef.current) return
-    keypadControlsRef.current.rotateSpeedRatio = x
-    keypadControlsRef.current.moveSpeedRatio = -y
+  // Show modal with controls
+  useEffect(() => {
+    const controls = controlsRef.current
+    if (!controls || !isTerrainBuilt) return
+
+    /* eslint-disable */
+    const handler = {
+      apply(target: Function, thisArg: object, args: any[]) {
+        const item = Reflect.apply(target, thisArg, args) // Use reflect to access private properties
+        if (!item || !item.object.userData.isPost) return
+        if (item.distance > 10) toastManager.addToast('error', '앨범이 너무 멀리 있습니다')
+        else {
+          setSelectedPostIdx(item.object.userData.idx as number)
+        }
+      },
+    }
+
+    controls.raycastTargets = new Proxy(controls.raycastTargets, handler) as (
+      ...args: any[]
+    ) => THREE.Intersection<THREE.Object3D<THREE.Object3DEventMap>> // Type assertion for assignability
+    /* eslint-enable */
+  }, [controlsRef, isTerrainBuilt])
+
+  // Close modal on ESC
+  useEffect(() => {
+    const closeModal = (e: KeyboardEvent) => {
+      if (e.code === 'Escape') setSelectedPostIdx(null)
+    }
+
+    window.addEventListener('keydown', closeModal)
+
+    return () => {
+      window.removeEventListener('keydown', closeModal)
+    }
   }, [])
 
-  const joystickShoot = useCallback(() => {
-    if (!rayControlsRef.current) return
-    rayControlsRef.current.shoot()
-  }, [])
+  // Side effect of modal state
+  useEffect(() => {
+    if (!isEntered) return
 
-  const joystickJump = useCallback(() => {
-    if (!keypadControlsRef.current) return
-    keypadControlsRef.current.jump()
-  }, [])
+    if (selectedPostIdx === null) {
+      musicManager.unmuteAudio()
+      controlsRef.current && (controlsRef.current.enabled = true)
+    } else {
+      musicManager.muteAudio()
+      controlsRef.current && (controlsRef.current.enabled = false)
+    }
+  }, [selectedPostIdx, isEntered])
+
+  const isKeypad = useMemo(() => {
+    return controlsRef.current instanceof KeypadControls ? true : false
+  }, [controlsRef])
 
   return (
     <div className="gallery-canvas">
       <canvas ref={canvasRef} />
+      {isKeypad && <JoystickControl controlsRef={controlsRef as React.RefObject<KeypadControls>} />}
       <Modal
         isOpen={selectedPostIdx !== null}
         onClose={() => {
           setSelectedPostIdx(null)
-          musicManager.unmuteAudio()
-          if (keypadControlsRef.current) {
-            keypadControlsRef.current.enabled = true
-          }
         }}
       >
-        {selectedPostIdx !== null && <PostDetail post={postList[selectedPostIdx]} />}
+        <PostDetail post={postList[selectedPostIdx!]} />
       </Modal>
-      {isMobile && (
-        <div className="gallery-canvas__joystick">
-          <Joystick control={joystickControl} shoot={joystickShoot} jump={joystickJump} />
-        </div>
-      )}
       <CSSTransition className="gallery-canvas__loading" isShow={requiredCount !== loadedCount} duration={1000} timingFunction="ease-in-out">
         <Loading />
       </CSSTransition>
-      <CSSTransition className="gallery-canvas__cover" isShow={isCoverShow} duration={1000}>
-        <GalleryCover gallery={gallery} onClickEnter={onClickEnter} />
+      <CSSTransition className="gallery-canvas__cover" isShow={!isEntered} duration={1000}>
+        <GalleryCover gallery={gallery} onClickEnter={handleEnter} />
       </CSSTransition>
     </div>
   )

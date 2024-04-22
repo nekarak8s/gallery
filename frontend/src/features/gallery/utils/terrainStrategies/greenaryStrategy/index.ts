@@ -56,7 +56,7 @@ export default class GreenaryStrategy implements IGalleryStrategy {
     const gltfLoader = new GLTFLoader(props.loadingManager)
 
     // Set control orientation
-    props.controls.setPosition(27.1, 10, 27.1)
+    props.controls.setPosition(29.1, 10, 29.1)
     props.controls.setQuaternion(0, degToRad(40), 0)
 
     // Set scene background cubemap

@@ -1,5 +1,4 @@
 import * as THREE from 'three'
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import { degToRad } from 'three/src/math/MathUtils'
 import { acceleratedRaycast } from 'three-mesh-bvh'
 import { CEILING_DATA, EDGES_DATA, FLOORS_DATA, FRAMES_DATA, GLASS_FLOORS_DATA, GLASS_WALL, WALLS_DATA } from './galleryData'
@@ -41,7 +40,7 @@ export default class GalleryStrategy implements IGalleryStrategy {
     GalleryStrategy.instance = this
   }
 
-  build(props: TGalleryStrategyProps) {
+  async build(props: TGalleryStrategyProps) {
     // Reset the scene
     this.dispose()
 
@@ -49,7 +48,6 @@ export default class GalleryStrategy implements IGalleryStrategy {
     this.scene = props.scene
 
     // Create Loaders
-    const gltfLoader = new GLTFLoader(props.loadingManager)
     const textureLoader = new THREE.TextureLoader(props.loadingManager)
 
     // Set control orientation

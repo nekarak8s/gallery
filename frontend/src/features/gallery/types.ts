@@ -1,6 +1,5 @@
 import { PostData } from '../post/types'
-import { KeypadControls } from '@/libs/three-custom/controls/KeypadControls'
-import { RaycasterControls } from '@/libs/three-custom/controls/RaycasterControls.ts'
+import { IControls } from '@/libs/three-custom/controls'
 
 export type GalleryFormData = {
   name: string
@@ -60,8 +59,8 @@ export type GalleryTypeProps = {
   renderer: THREE.WebGLRenderer
   scene: THREE.Scene
   camera: THREE.PerspectiveCamera
-  controls: KeypadControls
-  rayControls: RaycasterControls
+  controls: IControls
+  rayControls: IControls
   postList: PostData[]
 }
 

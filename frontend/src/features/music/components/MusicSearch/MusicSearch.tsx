@@ -9,12 +9,14 @@ import Button from '@/atoms/ui/Button'
 import Loading from '@/atoms/ui/Loading'
 import useDebounce from '@/hooks/useDebounce'
 import './MusicSearch.scss'
+import { useTranslation } from 'react-i18next'
 
 type MusicSearchProps = {
   onSelect: (music: MusicData) => void
 }
 
 const MusicSearch = ({ onSelect }: MusicSearchProps) => {
+  const { t } = useTranslation()
   const [query, setQuery] = useState('')
   const { data: musicList, isFetching: isMusicFetching, refetch } = useMusicListQuery(query)
 
@@ -45,12 +47,7 @@ const MusicSearch = ({ onSelect }: MusicSearchProps) => {
   return (
     <>
       <div className="music-search">
-        <Text
-          label="음악 검색"
-          name="music"
-          initialValue=""
-          onChange={(e) => setQuery(e.target.value)}
-        />
+        <Text label={t('inputs.searchMusic')} name="music" initialValue="" onChange={(e) => setQuery(e.target.value)} />
         <Form className="music-search__form" onSubmit={handleSubmit}>
           <ul className="music-search__list">
             {isMusicFetching ? (
@@ -65,7 +62,7 @@ const MusicSearch = ({ onSelect }: MusicSearchProps) => {
               ))
             )}
           </ul>
-          <Button type="submit" text="음악 선택" ariaLabel="음악 선택" />
+          <Button type="submit" text={t('buttons.select')} ariaLabel="음악 선택" />
         </Form>
       </div>
       {isCreateLoading && (
