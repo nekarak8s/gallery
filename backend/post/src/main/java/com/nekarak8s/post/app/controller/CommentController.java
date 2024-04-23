@@ -37,7 +37,7 @@ public class CommentController {
             return ResponseEntity.ok(createApiResponse("댓글이 생성되었습니다."));
         }
 
-        return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS).build();
+        return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS).body(createApiResponse("짧은 시간에 많은 댓글을 작성할 수 없습니다. \n잠시후 다시 시도해주세요."));
     }
 
     // 댓글 목록 조회
