@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import * as THREE from 'three'
 import useControlsStrategy from '../../hooks/useControlsStrategy'
 import useDefaultRender from '../../hooks/useDefaultRender'
@@ -151,8 +151,11 @@ const GalleryCanvas = ({ gallery, postList }: GalleryCanvasProps) => {
     }
   }, [selectedPostIdx, isEntered])
 
-  const isKeypad = useMemo(() => {
-    return controlsRef.current instanceof KeypadControls ? true : false
+  // Check the control type
+  const [isKeypad, setIsKeypad] = useState(false)
+
+  useEffect(() => {
+    setIsKeypad(controlsRef.current instanceof KeypadControls)
   }, [controlsRef])
 
   return (

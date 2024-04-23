@@ -13,6 +13,7 @@ import { DefaultCamera } from '@/libs/three-custom/cameras/DefaultCamera'
 import { DefaultRenderer } from '@/libs/three-custom/renderers/DefaultRenderer'
 import toFrame from '@/utils/toFrame'
 import './Guide.scss'
+import { disposeObject } from '@/libs/three-custom/utils/disposeObject'
 
 const CAMERA_ORDERS = [
   { position: { x: 50, y: 17, z: 110 }, rotation: { x: degToRad(0), y: degToRad(20) } },
@@ -126,6 +127,7 @@ const Guide = () => {
       architect.dispose && architect.dispose()
 
       scene.remove(camera)
+      scene.children.forEach((child) => disposeObject(child))
       renderer.setAnimationLoop(null)
       renderer.dispose()
 
