@@ -3,11 +3,14 @@ package com.nekarak8s.post.app.controller;
 import com.nekarak8s.post.app.data.dto.request.CommentCreateRequest;
 import com.nekarak8s.post.app.data.dto.request.CommentModifyRequest;
 import com.nekarak8s.post.app.data.dto.response.CommentResponse;
+import com.nekarak8s.post.app.util.ratelimit.RateLimitUtil;
 import com.nekarak8s.post.base.exception.CustomException;
 import com.nekarak8s.post.app.service.CommentService;
+import io.github.bucket4j.Bucket;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,13 +24,20 @@ import static com.nekarak8s.post.app.data.dto.response.ApiResponse.createApiResp
 @RequestMapping("api/post/comment")
 public class CommentController {
     private final CommentService commentService;
+    private final RateLimitUtil rateLimitUtil;
 
     // 댓글 생성
     @PostMapping
     public ResponseEntity<?> createComment(@RequestHeader(value = "X-Member-ID", required = false) Long memberId,
                                            @Valid @RequestBody CommentCreateRequest requestDTO) throws CustomException {
-        commentService.createComment(memberId, requestDTO);
-        return ResponseEntity.ok(createApiResponse("댓글이 생성되었습니다."));
+        Bucket bucket = rateLimitUtil.getBucket(memberId);
+
+        if (bucket.tryConsume(1)) {
+            commentService.createComment(memberId, requestDTO);
+            return ResponseEntity.ok(createApiResponse("댓글이 생성되었습니다."));
+        }
+
+        return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS).body(createApiResponse("짧은 시간에 많은 댓글을 작성할 수 없습니다. \n잠시후 다시 시도해주세요."));
     }
 
     // 댓글 목록 조회
