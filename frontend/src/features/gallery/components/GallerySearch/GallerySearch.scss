@@ -132,6 +132,8 @@
 }
 
 .gallery-search__list {
+  width: 100%;
+  max-width: 600px;
   height: 100%;
   padding: 0 10px;
   overflow: auto;
