@@ -22,17 +22,17 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     Optional<Member> findByNicknameAndIsDeletedFalse(String nickname);
 
     // 닉네임 리스트 조회
-    @Query("SELECT m.memberId, m.nickname FROM Member m WHERE m.memberId IN :memberIdList")
-    List<Object[]> findIdAndNicknamesByMemberIdList(@Param("memberIdList") List<Long> memberIdList);
+//    @Query("SELECT m.memberId, m.nickname FROM Member m WHERE m.memberId IN :memberIdList")
+//    List<Object[]> findIdAndNicknamesByMemberIdList(@Param("memberIdList") List<Long> memberIdList);
 
-    default Map<Long, String> findNicknamesMapByMemberIds(List<Long> memberIdList) {
-        List<Object[]> idAndNicknameList = findIdAndNicknamesByMemberIdList(memberIdList);
-        return idAndNicknameList.stream()
-                .collect(Collectors.toMap(
-                        array -> (Long) array[0],  // Member ID
-                        array -> (String) array[1]  // Member Nickname
-                ));
-    }
+//    default Map<Long, String> findNicknamesMapByMemberIds(List<Long> memberIdList) {
+//        List<Object[]> idAndNicknameList = findIdAndNicknamesByMemberIdList(memberIdList);
+//        return idAndNicknameList.stream()
+//                .collect(Collectors.toMap(
+//                        array -> (Long) array[0],  // Member ID
+//                        array -> (String) array[1]  // Member Nickname
+//                ));
+//    }
 
     // 회원 아이디 조회
     Optional<Member> findMemberIdByNickname(String nickname);

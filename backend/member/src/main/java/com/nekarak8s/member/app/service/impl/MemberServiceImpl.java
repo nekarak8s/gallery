@@ -1,14 +1,14 @@
 package com.nekarak8s.member.app.service.impl;
 
-import com.nekarak8s.member.app.data.dto.request.MemberModifyDTO;
+import com.nekarak8s.member.app.data.dto.request.MemberModifyRequest;
 import com.nekarak8s.member.app.data.dto.response.LoginResponse;
-import com.nekarak8s.member.app.data.dto.response.MemberDTO;
+import com.nekarak8s.member.app.data.dto.response.MemberResponse;
 import com.nekarak8s.member.app.data.entity.Member;
 import com.nekarak8s.member.app.data.repository.MemberRepository;
 import com.nekarak8s.member.app.service.dto.SocialMemberInfo;
 import com.nekarak8s.member.app.util.jwt.TokenMember;
 import com.nekarak8s.member.base.exception.CustomException;
-import com.nekarak8s.member.app.kafka.dto.MemberEvent;
+import com.nekarak8s.member.app.data.dto.event.MemberEvent;
 import com.nekarak8s.member.app.redis.service.NicknameService;
 import com.nekarak8s.member.app.service.AuthService;
 import com.nekarak8s.member.app.service.MemberService;
@@ -124,11 +124,11 @@ public class MemberServiceImpl implements MemberService{
 
     // 회원 정보 조회
     @Override
-    public MemberDTO findMemberById(long memberId) throws CustomException {
+    public MemberResponse findMemberById(long memberId) throws CustomException {
         Member member = memberRepository.findByMemberIdAndIsDeletedFalse(memberId)
                 .orElseThrow(() -> new CustomException(RESOURCE_NOT_FOUND.getHttpStatus(), RESOURCE_NOT_FOUND.getCode(), "사용자 정보가 없습니다"));
         member.setCreatedDate(member.getCreatedDate().plusMinutes(540));
-        return MemberDTO.toDTO(member);
+        return MemberResponse.toDTO(member);
     }
 
     // 닉네임 중복 검사
@@ -147,7 +147,7 @@ public class MemberServiceImpl implements MemberService{
     // 회원 정보 수정
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public void modifyMemberInfo(long memberId, MemberModifyDTO request) throws CustomException {
+    public void modifyMemberInfo(long memberId, MemberModifyRequest request) throws CustomException {
         Member member = findMemberByIdAndValidate(memberId);
         updateRedisAndDatabase(member, request.getNickname());
     }
@@ -230,10 +230,10 @@ public class MemberServiceImpl implements MemberService{
     }
 
      // Map<아이디, 닉네임> 리턴
-    @Override
-    public Map<Long, String> getMemberMap(List<Long> memberIdList) {
-        return memberRepository.findNicknamesMapByMemberIds(memberIdList);
-    }
+//    @Override
+//    public Map<Long, String> getMemberMap(List<Long> memberIdList) {
+//        return memberRepository.findNicknamesMapByMemberIds(memberIdList);
+//    }
 
 
     // 닉네임 생성 (재시도 로직 포함)

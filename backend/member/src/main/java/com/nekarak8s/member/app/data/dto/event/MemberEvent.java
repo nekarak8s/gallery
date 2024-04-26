@@ -1,4 +1,4 @@
-package com.nekarak8s.member.app.kafka.dto;
+package com.nekarak8s.member.app.data.dto.event;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

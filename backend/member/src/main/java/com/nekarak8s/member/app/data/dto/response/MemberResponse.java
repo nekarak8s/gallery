@@ -9,13 +9,13 @@ import java.time.LocalDateTime;
 
 @Data
 @Builder
-public class MemberDTO {
+public class MemberResponse {
     private String nickname;
     private Role role;
     private LocalDateTime createdDate;
 
-    public static MemberDTO toDTO(Member member) {
-        return MemberDTO.builder()
+    public static MemberResponse toDTO(Member member) {
+        return MemberResponse.builder()
                 .nickname(member.getNickname())
                 .role(member.getRole())
                 .createdDate(member.getCreatedDate())
