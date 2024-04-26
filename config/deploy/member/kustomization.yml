@@ -6,4 +6,4 @@ resources:
 
 images:
 - name: chancehee/gallery-member
-  newTag: 7fd87548678d4e8141365da0555e673bf0afcfd3
+  newTag: fb6cfa5bf1d72eff6f0913f5b8459fe846949c2c
