@@ -28,6 +28,7 @@ axiosInstance.interceptors.response.use(
     //   console.log(key, ':', err.config?.data.get(key))
     // }
 
+    // Test
     if (err.response?.status === 429) {
       toastManager.addToast('error', err.response?.data.message)
     }

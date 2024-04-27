@@ -39,6 +39,7 @@
     "react-youtube": "^10.1.0",
     "three": "^0.157.0",
     "three-mesh-bvh": "^0.7.3",
+    "uuid": "^9.0.1",
     "zustand": "^4.4.4"
   },
   "devDependencies": {
@@ -66,6 +67,7 @@
     "@types/react": "^18.2.20",
     "@types/react-dom": "^18.2.7",
     "@types/three": "^0.157.2",
+    "@types/uuid": "^9.0.8",
     "@types/youtube-player": "^5.5.11",
     "@typescript-eslint/eslint-plugin": "^6.4.0",
     "@typescript-eslint/parser": "^6.4.0",

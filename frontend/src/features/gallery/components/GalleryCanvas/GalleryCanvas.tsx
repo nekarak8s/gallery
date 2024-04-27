@@ -5,6 +5,7 @@ import useDefaultRender from '../../hooks/useDefaultRender'
 import useLoadingCount from '../../hooks/useLoadingCount'
 import useTerrainStrategy from '../../hooks/useTerrainStrategy'
 import { GalleryData } from '../../types'
+import ButtonControl from '../ButtonControl/ButtonControl'
 import GalleryCover from '../GalleryCover'
 import JoystickControl from '../JoystickControl'
 import CSSTransition from '@/atoms/ui/CSSTransition'
@@ -13,6 +14,7 @@ import Modal from '@/atoms/ui/Modal'
 import PostDetail from '@/features/post/components/PostDetail'
 import { PostItemData } from '@/features/post/types'
 import KeypadControls from '@/libs/three-custom/controls/KeypadControls'
+import MouseControls from '@/libs/three-custom/controls/MouseControls'
 import musicManager from '@/utils/musicManager'
 import toastManager from '@/utils/toastManager'
 import './GalleryCanvas.scss'
@@ -40,13 +42,13 @@ const GalleryCanvas = ({ gallery, postList }: GalleryCanvasProps) => {
   }, [gallery, postList])
 
   /**
-   * Create rendering environment
-   * Default render data -> loadingManger -> controls -> terrain
+   * Create rendering resources
+   * Default render data / loadingManger -> controls -> terrain
    */
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const { sceneRef, rendererRef, cameraRef } = useDefaultRender({ canvasRef })
   const { loadingManager, requiredCount, loadedCount } = useLoadingCount()
-  const { controlsRef } = useControlsStrategy({ type: 'keypad', canvasRef, sceneRef, cameraRef, loadingManager })
+  const { controlsRef } = useControlsStrategy({ type: 'mouse', canvasRef, sceneRef, cameraRef, loadingManager })
   const { terrainRef, isTerrainBuilt } = useTerrainStrategy({ sceneRef, cameraRef, controlsRef, loadingManager, gallery, postList })
 
   /**
@@ -80,16 +82,18 @@ const GalleryCanvas = ({ gallery, postList }: GalleryCanvasProps) => {
    * Enable the controls
    */
   useEffect(() => {
+    if (!isEntered || loadedCount !== requiredCount || !isTerrainBuilt) return
+
     const controls = controlsRef.current
     const terrain = terrainRef.current
+    if (!controls || !terrain) return
 
-    if (!controls || !terrain || !isEntered || loadedCount !== requiredCount || !isTerrainBuilt) return
-
+    controls.targets = terrain.targets // Don't destruct (promise objects)
     if (controls instanceof KeypadControls) {
       controls.floors = terrain.floors // Don't destruct (promise objects)
       controls.obstacles = terrain.obstacles // Don't destruct (promise objects)
-      controls.targets = terrain.targets // Don't destruct (promise objects)
     }
+
     controls.enabled = true
 
     return () => {
@@ -161,7 +165,11 @@ const GalleryCanvas = ({ gallery, postList }: GalleryCanvasProps) => {
   return (
     <div className="gallery-canvas">
       <canvas ref={canvasRef} />
-      {isKeypad && <JoystickControl controlsRef={controlsRef as React.RefObject<KeypadControls>} />}
+      {isKeypad ? (
+        <JoystickControl controlsRef={controlsRef as React.RefObject<KeypadControls>} />
+      ) : (
+        <ButtonControl controlsRef={controlsRef as React.RefObject<MouseControls>} />
+      )}
       <Modal
         isOpen={selectedPostIdx !== null}
         onClose={() => {

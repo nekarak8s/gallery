@@ -13,6 +13,9 @@
     "selectMusic": "음악 선택",
     "enter": "입장하기",
     "login": "로그인",
-    "write": "작성"
+    "write": "작성",
+    "start": "시작하기",
+    "next": "다음",
+    "prev": "이전"
   }
 }

@@ -4,9 +4,10 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import { DefaultCamera } from '@/libs/three-custom/cameras/DefaultCamera'
 import { IControls } from '@/libs/three-custom/controls'
 import KeypadControls from '@/libs/three-custom/controls/KeypadControls'
+import MouseControls from '@/libs/three-custom/controls/MouseControls'
 import { MichelleBuilder } from '@/libs/three-custom/items/Player'
 
-type ControlType = 'keypad'
+type ControlType = 'keypad' | 'mouse'
 
 type TControlStrategyProps = {
   type: ControlType
@@ -18,6 +19,7 @@ type TControlStrategyProps = {
 
 const STRATEGY_TYPE: Record<ControlType, new (...args: any[]) => IControls> = {
   keypad: KeypadControls,
+  mouse: MouseControls,
 }
 
 /**
@@ -38,7 +40,7 @@ const useControlsStrategy = ({ type, canvasRef, sceneRef, cameraRef, loadingMana
     if (!controlType) throw new Error('Invalid contorl type')
 
     // Create the control
-    const controls = new controlType(canvas, scene, camera, 1.6)
+    const controls = new controlType({ canvas, scene, camera })
     controls.enabled = false
     controlsRef.current = controls
 

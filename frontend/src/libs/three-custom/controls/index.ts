@@ -2,6 +2,7 @@ import * as THREE from 'three'
 
 export interface IControls {
   enabled: boolean
+  camera: THREE.Camera
   targets: THREE.Object3D<THREE.Object3DEventMap>[]
   setPosition: (x: number, y: number, z: number) => void
   setQuaternion: (x: number, y: number, z: number) => void

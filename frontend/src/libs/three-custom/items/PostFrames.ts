@@ -48,6 +48,8 @@ export class PostFrames implements IItems {
   textures: Record<string, THREE.Texture> = {}
   isAnimation: boolean
 
+  #sumDelta: number = 0
+
   constructor(info: PostFramesArgs) {
     this.isAnimation = info.isAnimation || false
 
@@ -133,8 +135,9 @@ export class PostFrames implements IItems {
 
   update = (delta: number) => {
     if (!this.isAnimation) return
+    this.#sumDelta += delta
     this.objects.forEach((object) => {
-      object.rotation.y += delta
+      object.position.y = Math.sin(this.#sumDelta) * 0.001 + object.position.y
     })
   }
 

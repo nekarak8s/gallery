@@ -13,6 +13,9 @@
     "selectMusic": "Select Music",
     "enter": "Enter",
     "login": "Login",
-    "write": "Write"
+    "write": "Write",
+    "start": "Start",
+    "next": "Next",
+    "prev": "Prev"
   }
 }

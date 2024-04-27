@@ -14,12 +14,21 @@ const FLOOR_PASS_THRESHOLD = 0.5
 const OBSTACLE_DETECT_DISTANCE = 1
 const FALL_ANIMATION_HEIGHT = 0.8
 
-const CAMERA_OFFSET = new THREE.Vector3(0, 3.3, -4)
-const CAMERA_LOOK_AT = new THREE.Vector3(0, 2.5, 2)
+const CAMERA_OFFSET = new THREE.Vector3(0, 2.7, -4) // camera offset from the character's foot
+const CAMERA_LOOK_AT = new THREE.Vector3(0, 2.7, 2)
 
 THREE.Mesh.prototype.raycast = acceleratedRaycast
 
-export default class KeypadControls implements IControls {
+type KeypadControlsArgs = {
+  canvas: HTMLCanvasElement
+  scene: THREE.Scene
+  camera: THREE.Camera
+  gravity: number
+  jumpForce: number
+  maxFallSpeed: number
+}
+
+class KeypadControls implements IControls {
   // arguments
   canvas: HTMLCanvasElement
   scene: THREE.Scene
@@ -67,14 +76,7 @@ export default class KeypadControls implements IControls {
   onControl?: () => unknown
   onEsc?: () => unknown
 
-  constructor(
-    canvas: HTMLCanvasElement,
-    scene: THREE.Scene,
-    camera: THREE.Camera,
-    gravity: number = 10,
-    jumpForce: number = 10,
-    maxFallSpeed: number = 7
-  ) {
+  constructor({ canvas, scene, camera, gravity = 10, jumpForce = 10, maxFallSpeed = 7 }: KeypadControlsArgs) {
     this.canvas = canvas
     this.scene = scene
     this.camera = camera
@@ -392,3 +394,5 @@ export default class KeypadControls implements IControls {
     }
   }
 }
+
+export default KeypadControls

@@ -9,8 +9,8 @@ import Button from '@/atoms/ui/Button'
 import CSSTransition from '@/atoms/ui/CSSTransition'
 import Loading from '@/atoms/ui/Loading'
 import ScrollDown from '@/atoms/ui/ScrollDown'
-import { DefaultCamera } from '@/libs/three-custom/cameras/DefaultCamera'
-import { DefaultRenderer } from '@/libs/three-custom/renderers/DefaultRenderer'
+import useDefaultRender from '@/features/gallery/hooks/useDefaultRender'
+import useLoadingCount from '@/features/gallery/hooks/useLoadingCount'
 import toFrame from '@/utils/toFrame'
 import './Guide.scss'
 
@@ -52,58 +52,22 @@ const Guide = () => {
   }, [])
 
   /**
-   * Render the Three.js canvas
+   * Create rendering resources
+   * Default render data, loadingManger
    */
   const canvasRef = useRef<HTMLCanvasElement>(null)
-
-  const [requiredCount, setRequiredCount] = useState(0)
-  const [loadedCount, setLoadedCount] = useState(0)
+  const { sceneRef, rendererRef, cameraRef } = useDefaultRender({ canvasRef })
+  const { loadingManager, requiredCount, loadedCount, setLoadedCount, setRequiredCount } = useLoadingCount()
 
   useEffect(() => {
-    const canvas = canvasRef.current!
+    const renderer = rendererRef.current
+    const scene = sceneRef.current
+    const camera = cameraRef.current
 
-    // loadingManager
-    const loadingManager = new THREE.LoadingManager()
-    loadingManager.onStart = function increaseLoadCount() {
-      setRequiredCount((cnt) => cnt + 1)
-    }
-    loadingManager.onLoad = function decreaseLoadCount() {
-      setLoadedCount((cnt) => cnt + 1)
-    }
+    if (!renderer || !scene || !camera || !loadingManager) return
 
-    // Renderer
-    const renderer = new DefaultRenderer({ canvas, antialias: true })
-
-    // Scene
-    const scene = new THREE.Scene()
-
-    // Camera
-    const camera = new DefaultCamera({ canvas, fov: 30, near: 2, far: 20000 })
-    camera.rotation.order = 'YXZ'
-    if (window.innerWidth < MOBILE_WIDTH) {
-      camera.position.set(CAMERA_MOBILE_ORDERS[0].position.x, CAMERA_MOBILE_ORDERS[0].position.y, CAMERA_MOBILE_ORDERS[0].position.z)
-      camera.rotation.set(CAMERA_MOBILE_ORDERS[0].rotation.x, CAMERA_MOBILE_ORDERS[0].rotation.y, 0)
-    } else {
-      camera.position.set(CAMERA_ORDERS[0].position.x, CAMERA_ORDERS[0].position.y, CAMERA_ORDERS[0].position.z)
-      camera.rotation.set(CAMERA_ORDERS[0].rotation.x, CAMERA_ORDERS[0].rotation.y, 0)
-    }
-    cameraRef.current = camera
-
-    // Meshes
+    // Build architect
     const architect = buildArchitect({ scene, loadingManager })
-
-    // Add Resize Listener
-    const handleSize = function resizeCameraRenderer() {
-      // camera resize
-      camera.setDefaultAspect()
-      camera.updateProjectionMatrix()
-
-      // renderer resize
-      renderer.setDefaultSize()
-      renderer.render(scene, camera)
-    }
-
-    window.addEventListener('resize', handleSize)
 
     // Update canvas
     const clock = new THREE.Clock()
@@ -111,7 +75,6 @@ const Guide = () => {
     const draw = function renderCanvas() {
       const delta = clock.getDelta()
       architect.update && architect.update(delta)
-
       renderer.render(scene, camera)
       renderer.setAnimationLoop(draw)
     }
@@ -122,60 +85,52 @@ const Guide = () => {
     return () => {
       setRequiredCount(0)
       setLoadedCount(0)
-
       architect.dispose && architect.dispose()
-
-      scene.remove(camera)
-      renderer.setAnimationLoop(null)
-      renderer.dispose()
-
-      window.removeEventListener('resize', handleSize)
     }
-  }, [])
+  }, [rendererRef, sceneRef, cameraRef, loadingManager])
 
   /**
-   * Handle Scroll: Move camera position
+   * Handle Scroll: Move camera position by scroll
    */
-  const cameraRef = useRef<THREE.Camera | null>(null)
   const sectionsRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    const sections = sectionsRef.current!
+    const camera = cameraRef.current
+    const sections = sectionsRef.current
 
-    let currentSection = 0
+    if (!camera || !sections) return
+
+    let currentSection = -1
 
     const handleScroll = function setSection() {
-      if (!cameraRef.current) return
-
       // Only when the section is changed
       const newSection = Math.round(window.scrollY / window.innerHeight)
       if (currentSection === newSection) return
 
       currentSection = newSection
-
       sections.style.transform = `translate(0, -${newSection * 100}vh)`
 
       // Move camera
       if (window.innerWidth < MOBILE_WIDTH) {
-        gsap.to(cameraRef.current.position, {
+        gsap.to(camera.position, {
           duration: 1,
           x: CAMERA_MOBILE_ORDERS[currentSection].position.x,
           y: CAMERA_MOBILE_ORDERS[currentSection].position.y,
           z: CAMERA_MOBILE_ORDERS[currentSection].position.z,
         })
-        gsap.to(cameraRef.current.rotation, {
+        gsap.to(camera.rotation, {
           duration: 1,
           x: CAMERA_MOBILE_ORDERS[currentSection].rotation.x,
           y: CAMERA_MOBILE_ORDERS[currentSection].rotation.y,
         })
       } else {
-        gsap.to(cameraRef.current.position, {
+        gsap.to(camera.position, {
           duration: 1,
           x: CAMERA_ORDERS[currentSection].position.x,
           y: CAMERA_ORDERS[currentSection].position.y,
           z: CAMERA_ORDERS[currentSection].position.z,
         })
-        gsap.to(cameraRef.current.rotation, {
+        gsap.to(camera.rotation, {
           duration: 1,
           x: CAMERA_ORDERS[currentSection].rotation.x,
           y: CAMERA_ORDERS[currentSection].rotation.y,
@@ -185,13 +140,15 @@ const Guide = () => {
 
     // Add event listener
     const optimizedHandleScroll = toFrame(handleScroll)
+    optimizedHandleScroll()
+
     window.addEventListener('scroll', optimizedHandleScroll)
 
     // Remove event listener
     return () => {
       window.addEventListener('scroll', optimizedHandleScroll)
     }
-  }, [])
+  }, [cameraRef])
 
   return (
     <div className="guide">
