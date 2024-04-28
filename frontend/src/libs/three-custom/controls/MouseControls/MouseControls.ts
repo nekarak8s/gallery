@@ -4,7 +4,6 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import { acceleratedRaycast } from 'three-mesh-bvh'
 import { IControls } from '..'
 
-const CAMERA_OFFSET = new THREE.Vector3(0, 0, 5) // camera offset from the post
 const DRAG_THRESHOLD = 0.1
 
 THREE.Mesh.prototype.raycast = acceleratedRaycast
@@ -27,16 +26,20 @@ class MouseControls implements IControls {
   // raycasting
   #raycaster = new THREE.Raycaster()
   #mouse = new THREE.Vector2()
-  #curPostIdx: number = -1
+
+  // movement
   #orbitControls: OrbitControls
+  #curPostIdx: number = -1
+  #isMoving: boolean = false
   maxDuration: number = 2 // second
+  offsetDistance: number = 3
 
   constructor({ canvas, camera }: MouseControlsArgs) {
     this.canvas = canvas
     this.camera = camera
     this.#orbitControls = new OrbitControls(camera, canvas)
     this.#orbitControls.enableDamping = true
-    this.#orbitControls.maxDistance = 10
+    this.#orbitControls.maxDistance = 15
     this.#orbitControls.minDistance = 1
     this.#orbitControls.minPolarAngle = Math.PI / 3 // radians
     this.#orbitControls.maxPolarAngle = (2 * Math.PI) / 3 // radians
@@ -100,38 +103,49 @@ class MouseControls implements IControls {
   }
 
   moveToPost(post: THREE.Object3D<THREE.Object3DEventMap>) {
-    const offset = CAMERA_OFFSET.clone()
-    offset.applyQuaternion(post.quaternion)
-    offset.add(post.position)
-
+    // calculate distance and duration
     const distance = this.camera.position.distanceTo(post.position)
     const duration = Math.max(1, Math.min(distance / 10, this.maxDuration))
 
+    // get target position
+
+    const targetPosition = new THREE.Vector3(0, 0, this.offsetDistance * Number(post.userData.width) || this.offsetDistance).clone()
+    targetPosition.applyQuaternion(post.quaternion)
+    targetPosition.add(post.position)
+
+    this.#isMoving = true
     gsap.to(this.camera.position, {
       duration,
-      x: offset.x,
-      y: offset.y,
-      z: offset.z,
+      x: targetPosition.x,
+      y: targetPosition.y,
+      z: targetPosition.z,
     })
 
-    gsap.to(this.camera.rotation, {
-      duration,
-      x: post.rotation.x,
-      y: post.rotation.y,
-      z: post.rotation.z,
+    // get target quaternion
+    const targetQuaternion = new THREE.Quaternion()
+    post.getWorldQuaternion(targetQuaternion)
+    gsap.to(this.camera.quaternion, {
+      duration: duration + 0.01,
+      x: targetQuaternion.x,
+      y: targetQuaternion.y,
+      z: targetQuaternion.z,
+      w: targetQuaternion.w,
       onComplete: () => {
         this.#orbitControls.target = post.position
+        this.#isMoving = false
       },
     })
   }
 
   raycastTargets() {
+    if (this.#isMoving) return
     this.#raycaster.setFromCamera(this.#mouse, this.camera)
     const intersects = this.#raycaster.intersectObjects(this.targets)
     return intersects[0]
   }
 
   update(delta: number) {
+    if (this.#isMoving) return
     this.#orbitControls.update()
   }
 }

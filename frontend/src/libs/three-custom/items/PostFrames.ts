@@ -107,6 +107,8 @@ export class PostFrames implements IItems {
       // Post data -> raycaster controls
       object.userData.isPost = true
       object.userData.idx = idx
+      object.userData.width = frameData.width
+      object.userData.height = frameData.height
       this.objects.push(object)
 
       // Add SpotLight

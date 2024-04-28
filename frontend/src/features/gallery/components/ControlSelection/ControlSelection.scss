@@ -10,7 +10,7 @@
   width: 100vw;
   height: 100vh;
   background-color: transparent;
-  transform: translateY(-15px);
+  transform: translateY(-25px);
 }
 
 .control-selection__title {
@@ -89,10 +89,11 @@
     width: 85%;
     max-width: 85%;
     grid-template-columns: repeat(auto-fit, 45%);
-    gap: 25px;
   }
 
   .control-selection__button {
-    font-size: 4.2vw;
+    gap: 30px;
+    padding: 40px 20px;
+    font-size: 3.5vw;
   }
 }

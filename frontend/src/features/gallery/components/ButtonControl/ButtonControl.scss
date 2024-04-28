@@ -19,7 +19,7 @@
   width: 80vw;
   height: 70vh;
   border-radius: 10px;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.7);
   color: var(--color-ft-reverse, c.$ft-white);
   pointer-events: auto;
 }
@@ -27,6 +27,6 @@
 .button-control__buttons {
   display: flex;
   gap: 30px;
-  transform: translateY(300px);
+  transform: translateY(30vh);
   pointer-events: auto;
 }

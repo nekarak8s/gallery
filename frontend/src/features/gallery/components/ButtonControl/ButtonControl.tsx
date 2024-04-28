@@ -1,6 +1,7 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import Button from '@/atoms/ui/Button'
+import useMobile from '@/hooks/useMobile'
 import MouseControls from '@/libs/three-custom/controls/MouseControls'
 import './ButtonControl.scss'
 
@@ -11,6 +12,7 @@ type ButtonControlProps = {
 const ButtonControl = ({ controlsRef }: ButtonControlProps) => {
   const { t } = useTranslation()
   const [isOpen, setIsOpen] = useState(true)
+  const isMobile = useMobile()
 
   const handleClickModal = useCallback(() => {
     if (!controlsRef.current) return
@@ -27,6 +29,16 @@ const ButtonControl = ({ controlsRef }: ButtonControlProps) => {
     if (!controlsRef.current) return
     controlsRef.current.moveToPrevPost()
   }, [controlsRef])
+
+  useEffect(() => {
+    if (!controlsRef.current) return
+
+    if (isMobile) {
+      controlsRef.current.offsetDistance = 4
+    } else {
+      controlsRef.current.offsetDistance = 3
+    }
+  }, [controlsRef, isMobile])
 
   return (
     <div className="button-control">
