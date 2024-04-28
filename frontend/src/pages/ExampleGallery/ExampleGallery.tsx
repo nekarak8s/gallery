@@ -7,7 +7,9 @@ import kyotoBgm from '@/assets/audios/Tokyo-Music-Walker-Colorful-Flowers.mp3'
 import CSSTransition from '@/atoms/ui/CSSTransition'
 import Fallback from '@/atoms/ui/Fallback'
 import Music from '@/atoms/ui/Music'
+import ControlSelection from '@/features/gallery/components/ControlSelection'
 import GalleryCanvas from '@/features/gallery/components/GalleryCanvas'
+import { TControlType } from '@/features/gallery/hooks/useControlsStrategy'
 import { useGalleryQuery } from '@/features/gallery/services'
 import { usePostListQuery } from '@/features/post/services'
 import './ExampleGallery.scss'
@@ -48,6 +50,15 @@ const ExampleGallery = () => {
   }
 
   /**
+   * Select controller
+   */
+  const [controlType, setControlType] = useState<TControlType | null>(null)
+
+  const selectControl = (type: TControlType) => {
+    setControlType(type)
+  }
+
+  /**
    * Disable scroll
    */
   useEffect(() => {
@@ -68,7 +79,10 @@ const ExampleGallery = () => {
       <CSSTransition isShow={placeId == null} className="example-gallery__selection" duration={500}>
         <GallerySelection onSelect={selectGallery} />
       </CSSTransition>
-      {placeId && (
+      <CSSTransition isShow={placeId !== null && controlType == null} className="example-gallery__selection" duration={500}>
+        <ControlSelection onSelect={selectControl} />
+      </CSSTransition>
+      {placeId && controlType && (
         <div className="example-gallery__gallery">
           <div className="example-gallery__music">
             <Music id="gallery-audio" src={MUSIC_TYPE[gallery.place.placeId].src} title={MUSIC_TYPE[gallery.place.placeId].title} color="white" />
@@ -77,7 +91,7 @@ const ExampleGallery = () => {
             <GalleryNavbar />
           </div>
           <div className="example-gallery__canvas">
-            <GalleryCanvas gallery={gallery} postList={postList} />
+            <GalleryCanvas controlType={controlType} gallery={gallery} postList={postList} />
           </div>
         </div>
       )}

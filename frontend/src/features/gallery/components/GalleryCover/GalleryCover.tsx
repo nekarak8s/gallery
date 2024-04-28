@@ -2,6 +2,7 @@ import { MouseEventHandler, useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { GalleryData } from '../../types'
 import Button from '@/atoms/ui/Button'
+import useFocusTrap from '@/hooks/useFocusTrap'
 import toFrame from '@/utils/toFrame'
 import './GalleryCover.scss'
 
@@ -12,6 +13,7 @@ type GalleryCoverProps = {
 
 const GalleryCover = ({ gallery, onClickEnter }: GalleryCoverProps) => {
   const { t } = useTranslation()
+  const focusRef = useFocusTrap(true)
 
   /**
    * Handle Mousemove Event
@@ -62,7 +64,7 @@ const GalleryCover = ({ gallery, onClickEnter }: GalleryCoverProps) => {
   }, [])
 
   return (
-    <div className="gallery-cover">
+    <div className="gallery-cover" ref={focusRef}>
       <article className="gallery-cover__content" ref={contentRef}>
         <h1>{gallery.name}</h1>
         <p>{gallery.content}</p>

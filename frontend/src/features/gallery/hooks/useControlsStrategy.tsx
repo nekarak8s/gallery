@@ -7,17 +7,17 @@ import KeypadControls from '@/libs/three-custom/controls/KeypadControls'
 import MouseControls from '@/libs/three-custom/controls/MouseControls'
 import { MichelleBuilder } from '@/libs/three-custom/items/Player'
 
-type ControlType = 'keypad' | 'mouse'
+export type TControlType = 'keypad' | 'mouse'
 
 type TControlStrategyProps = {
-  type: ControlType
+  type: TControlType
   canvasRef: React.RefObject<HTMLCanvasElement>
   sceneRef: React.RefObject<THREE.Scene>
   cameraRef: React.RefObject<DefaultCamera>
   loadingManager: THREE.LoadingManager
 }
 
-const STRATEGY_TYPE: Record<ControlType, new (...args: any[]) => IControls> = {
+const STRATEGY_TYPE: Record<TControlType, new (...args: any[]) => IControls> = {
   keypad: KeypadControls,
   mouse: MouseControls,
 }

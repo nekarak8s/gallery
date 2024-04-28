@@ -53,5 +53,8 @@
     "all": "All",
     "title": "Title",
     "author": "Author"
+  },
+  "controller": {
+    "chooseType": "Choose the type of controller you'd like play with"
   }
 }

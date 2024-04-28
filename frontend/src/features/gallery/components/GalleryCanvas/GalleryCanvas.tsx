@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import * as THREE from 'three'
-import useControlsStrategy from '../../hooks/useControlsStrategy'
+import useControlsStrategy, { TControlType } from '../../hooks/useControlsStrategy'
 import useDefaultRender from '../../hooks/useDefaultRender'
 import useLoadingCount from '../../hooks/useLoadingCount'
 import useTerrainStrategy from '../../hooks/useTerrainStrategy'
@@ -20,11 +20,12 @@ import toastManager from '@/utils/toastManager'
 import './GalleryCanvas.scss'
 
 type GalleryCanvasProps = {
+  controlType: TControlType
   gallery: GalleryData
   postList: PostItemData[]
 }
 
-const GalleryCanvas = ({ gallery, postList }: GalleryCanvasProps) => {
+const GalleryCanvas = ({ controlType, gallery, postList }: GalleryCanvasProps) => {
   /**
    * Enter the gallery : initial invitation cover
    */
@@ -48,7 +49,7 @@ const GalleryCanvas = ({ gallery, postList }: GalleryCanvasProps) => {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const { sceneRef, rendererRef, cameraRef } = useDefaultRender({ canvasRef })
   const { loadingManager, requiredCount, loadedCount } = useLoadingCount()
-  const { controlsRef } = useControlsStrategy({ type: 'mouse', canvasRef, sceneRef, cameraRef, loadingManager })
+  const { controlsRef } = useControlsStrategy({ type: controlType, canvasRef, sceneRef, cameraRef, loadingManager })
   const { terrainRef, isTerrainBuilt } = useTerrainStrategy({ sceneRef, cameraRef, controlsRef, loadingManager, gallery, postList })
 
   /**
