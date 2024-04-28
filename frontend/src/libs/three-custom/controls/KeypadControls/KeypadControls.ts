@@ -6,6 +6,7 @@ import './KeypadControls.scss'
 
 const _canvasOrigin = new THREE.Vector2(0, 0)
 const _downDirection = new THREE.Vector3(0, -1, 0)
+const _epsilon = 0.001
 
 const MOVE_SPEED_FACTOR = 5
 const ROTATE_SPEED_FACTOR = 0.6

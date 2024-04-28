@@ -15,8 +15,15 @@ export const disposeObject = (object: THREE.Object3D) => {
         disposeMaterial(obj.material)
         obj.material = null
       }
-    } else if (obj instanceof THREE.Light) {
-      // Dispose light
+    }
+
+    // Dispose light
+    if (obj instanceof THREE.Light) {
+      obj.dispose()
+    }
+
+    // Dispose render target
+    if (obj instanceof THREE.WebGLRenderTarget) {
       obj.dispose()
     }
   })
@@ -26,11 +33,12 @@ export const disposeObject = (object: THREE.Object3D) => {
 }
 
 export const disposeMaterial = (material: THREE.Material) => {
-  material.dispose()
   // Dispose textures
   Object.entries(material).forEach(([key, value]) => {
     if (value instanceof THREE.Texture) {
       value.dispose()
     }
   })
+  // Dispose material
+  material.dispose()
 }
