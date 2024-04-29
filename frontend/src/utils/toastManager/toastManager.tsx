@@ -1,16 +1,16 @@
-import React from 'react'
 import { Root, createRoot } from 'react-dom/client'
+import { v4 as uuidv4 } from 'uuid'
 import Toast from '@/atoms/ui/Toast'
 import { ToastProps } from '@/atoms/ui/Toast/Toast'
 import './toastManager.scss'
 
-type ToastOption = ToastProps & {
-  id?: number
+type TToast = ToastProps & {
+  id?: string
 }
 
 class ToastManager {
   private container: Root
-  private toasts: ToastOption[] = []
+  private toasts: TToast[] = []
 
   // Set toast message container
   constructor() {
@@ -19,7 +19,7 @@ class ToastManager {
 
   // Add a toast message
   addToast(type: 'error' | 'success' | 'info', message: string, duration: number = 3000) {
-    const id = Date.now()
+    const id = uuidv4()
     this.toasts.push({
       id,
       type,
@@ -31,7 +31,7 @@ class ToastManager {
   }
 
   // Delete a toast message
-  deleteToast(id: number) {
+  deleteToast(id: string) {
     this.toasts = this.toasts.filter((toast) => toast.id !== id)
     this.render()
   }

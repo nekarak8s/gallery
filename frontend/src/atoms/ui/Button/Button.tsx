@@ -9,7 +9,7 @@ interface ButtonProps {
   direction?: 'left' | 'right' | 'top' | 'bottom' | 'center'
   type?: 'button' | 'submit' | 'reset'
   size?: 'sm' | 'md' | 'lg'
-  color?: 'blue' | 'black' | 'red'
+  color?: 'blue' | 'black' | 'red' | 'white'
   isTransparent?: boolean
   to?: string
   onClick?: MouseEventHandler<HTMLButtonElement>

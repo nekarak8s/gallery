@@ -264,21 +264,9 @@ export function buildArchitect(props: buildArchitectProps): ThreeItem {
     })
   }, 60 * 1000)
 
-  // Light Helper : Development
-  if (process.env.NODE_ENV !== 'production') {
-    import('three')
-      .then(({ CameraHelper }) => {
-        props.scene.add(new CameraHelper(directLight.shadow.camera))
-      })
-      .catch((err) => {
-        console.error(err)
-      })
-  }
-
   /**
    * Update function: Flow water
    */
-
   const update = () => {
     water.update()
   }

@@ -1,6 +1,5 @@
 import { useEffect, useRef } from 'react'
 import JumpIcon from '@/assets/svgs/jump.svg'
-import useMobile from '@/hooks/useMobile'
 import toFrame from '@/utils/toFrame'
 import './Joystick.scss'
 
@@ -11,8 +10,6 @@ type JoystickProps = {
 }
 
 const Joystick = ({ control, shoot, jump }: JoystickProps) => {
-  const isMobile = useMobile()
-
   /**
    * Joystick control
    */
@@ -24,8 +21,6 @@ const Joystick = ({ control, shoot, jump }: JoystickProps) => {
   const isTracking = useRef(false)
 
   useEffect(() => {
-    if (!isMobile) return
-
     const joystick = joystickRef.current
     const core = coreRef.current
     const shootDiv = shootRef.current
@@ -179,9 +174,7 @@ const Joystick = ({ control, shoot, jump }: JoystickProps) => {
       document.removeEventListener('touchmove', optimizedHandleTouchmove)
       document.removeEventListener('touchend', handleTouchEnd)
     }
-  }, [isMobile])
-
-  if (!isMobile) return
+  }, [])
 
   return (
     <div className="joystick">

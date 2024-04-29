@@ -1,12 +1,15 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import GalleryNavbar from './GalleryNavbar'
 import galleryBgm from '@/assets/audios/MapleStory-Pantheon.mp3'
 import greenaryBgm from '@/assets/audios/MapleStory-Raindrop-Flower.mp3'
 import kyotoBgm from '@/assets/audios/Tokyo-Music-Walker-Colorful-Flowers.mp3'
+import CSSTransition from '@/atoms/ui/CSSTransition'
 import Fallback from '@/atoms/ui/Fallback'
 import Music from '@/atoms/ui/Music'
+import ControlSelection from '@/features/gallery/components/ControlSelection'
 import GalleryCanvas from '@/features/gallery/components/GalleryCanvas'
+import { TControlType } from '@/features/gallery/hooks/useControlsStrategy'
 import { useGalleryQuery } from '@/features/gallery/services'
 import { usePostListQuery } from '@/features/post/services'
 import './Gallery.scss'
@@ -37,6 +40,15 @@ const Gallery = () => {
   const { data: postList, isLoading: isPostLoading, isError: isPostError } = usePostListQuery(parseInt(galleryId as string))
 
   /**
+   * Select controller
+   */
+  const [controlType, setControlType] = useState<TControlType | null>(null)
+
+  const selectControl = (type: TControlType) => {
+    setControlType(type)
+  }
+
+  /**
    * Disable scroll
    */
   useEffect(() => {
@@ -54,15 +66,22 @@ const Gallery = () => {
 
   return (
     <div className="gallery">
-      <div className="gallery__music">
-        <Music id="gallery-audio" src={MUSIC_TYPE[gallery.place.placeId].src} title={MUSIC_TYPE[gallery.place.placeId].title} color="white" />
-      </div>
-      <div className="gallery__navbar">
-        <GalleryNavbar />
-      </div>
-      <div className="gallery__canvas">
-        <GalleryCanvas gallery={gallery} postList={postList} />
-      </div>
+      <CSSTransition isShow={controlType == null} className="gallery__selection" duration={500}>
+        <ControlSelection onSelect={selectControl} />
+      </CSSTransition>
+      {controlType && (
+        <>
+          <div className="gallery__music">
+            <Music id="gallery-audio" src={MUSIC_TYPE[gallery.place.placeId].src} title={MUSIC_TYPE[gallery.place.placeId].title} color="white" />
+          </div>
+          <div className="gallery__navbar">
+            <GalleryNavbar />
+          </div>
+          <div className="gallery__canvas">
+            <GalleryCanvas controlType={controlType} gallery={gallery} postList={postList} />
+          </div>
+        </>
+      )}
     </div>
   )
 }

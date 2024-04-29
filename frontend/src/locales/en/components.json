@@ -43,15 +43,25 @@
   },
   "galleryNav": {
     "goBack": "Go back",
-    "manual": "Manual",
-    "move": "Move",
-    "rotate": "Rotate",
-    "jump": "Jump",
-    "shoot": "Shoot the frame"
+    "manual": "Manual"
   },
   "gallerySearch": {
     "all": "All",
     "title": "Title",
     "author": "Author"
+  },
+  "controller": {
+    "chooseType": "Choose the type of controller you'd like play with"
+  },
+  "joystickControl": {
+    "move": "Move the character forward and backward",
+    "rotate": "Rotate the character left and right",
+    "jump": "Make the character jump",
+    "shoot": "Aim the frame at the crosshair"
+  },
+  "buttonControl": {
+    "button": "Press the button to move the artwork",
+    "click": "Open the artwork by clicking on it",
+    "drag": "Rotate the screen by dragging"
   }
 }

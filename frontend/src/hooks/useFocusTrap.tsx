@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef } from 'react'
 
-function useFocusTrap(enabled: boolean, escape: () => void) {
+function useFocusTrap(enabled: boolean, escape: () => void = () => {}) {
   const containerRef = useRef<HTMLDivElement>(null)
 
   /**
@@ -55,10 +55,7 @@ function useFocusTrap(enabled: boolean, escape: () => void) {
       if (e.key !== 'Tab') return
 
       // Focus if the activated element is not in the container
-      if (
-        !(document.activeElement instanceof HTMLElement) ||
-        !focusEles.includes(document.activeElement)
-      ) {
+      if (!(document.activeElement instanceof HTMLElement) || !focusEles.includes(document.activeElement)) {
         e.preventDefault()
         firstEle.focus()
         return

@@ -1,7 +1,7 @@
 @use '@/styles/_colors.scss' as c;
 @use '@/styles/_responsive.scss' as *;
 
-.gallery-selection {
+.control-selection {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -10,10 +10,10 @@
   width: 100vw;
   height: 100vh;
   background-color: transparent;
-  transform: translateY(-15px);
+  transform: translateY(-25px);
 }
 
-.gallery-selection__title {
+.control-selection__title {
   display: flex;
   gap: 100px;
   max-width: 90%;
@@ -23,12 +23,12 @@
   line-height: 150%;
 }
 
-.gallery-selection__list {
+.control-selection__list {
   display: grid;
-  grid-template-columns: repeat(3, 25%);
+  grid-template-columns: repeat(2, 40%);
   align-items: center;
   justify-content: space-between;
-  width: 80%;
+  width: 60%;
   font-size: 1rem;
 
   li,
@@ -37,61 +37,63 @@
   }
 }
 
-.gallery-selection__button {
+.control-selection__button {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 20px;
+  gap: 50px;
   width: 100%;
-  padding: 20px;
+  padding: 50px 20px;
   font-size: 1.5rem;
   font-weight: 600;
 
-  img {
-    width: 100%;
+  svg {
+    width: 40%;
+    height: 40%;
     object-fit: contain;
     aspect-ratio: 1/1;
   }
 }
 
 @include laptop {
-  .gallery-selection__list {
-    gap: 70px;
+  .control-selection__list {
+    width: 70%;
   }
 
-  .gallery-selection__button {
+  .control-selection__button {
     font-size: 1.5rem;
   }
 }
 
 @include tablet {
-  .gallery-selection__list {
-    width: 90%;
-    gap: 50px;
+  .control-selection__list {
+    width: 80%;
     font-size: 0.9rem;
   }
 
-  .gallery-selection__button {
+  .control-selection__button {
     font-size: 1.4rem;
   }
 }
 
 @include mobile {
-  .gallery-selection {
+  .control-selection {
     gap: 50px;
   }
-  .gallery-selection__title {
+
+  .control-selection__title {
     font-size: 5.7vw;
   }
 
-  .gallery-selection__list {
+  .control-selection__list {
     width: 85%;
     max-width: 85%;
     grid-template-columns: repeat(auto-fit, 45%);
-    gap: 25px;
   }
 
-  .gallery-selection__button {
-    font-size: 4.2vw;
+  .control-selection__button {
+    gap: 30px;
+    padding: 40px 20px;
+    font-size: 3.5vw;
   }
 }

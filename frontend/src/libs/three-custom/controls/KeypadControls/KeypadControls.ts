@@ -6,6 +6,7 @@ import './KeypadControls.scss'
 
 const _canvasOrigin = new THREE.Vector2(0, 0)
 const _downDirection = new THREE.Vector3(0, -1, 0)
+const _epsilon = 0.001
 
 const MOVE_SPEED_FACTOR = 5
 const ROTATE_SPEED_FACTOR = 0.6
@@ -14,12 +15,21 @@ const FLOOR_PASS_THRESHOLD = 0.5
 const OBSTACLE_DETECT_DISTANCE = 1
 const FALL_ANIMATION_HEIGHT = 0.8
 
-const CAMERA_OFFSET = new THREE.Vector3(0, 3.3, -4)
-const CAMERA_LOOK_AT = new THREE.Vector3(0, 2.5, 2)
+const CAMERA_OFFSET = new THREE.Vector3(0, 2.7, -4) // camera offset from the character's foot
+const CAMERA_LOOK_AT = new THREE.Vector3(0, 2.7, 2)
 
 THREE.Mesh.prototype.raycast = acceleratedRaycast
 
-export default class KeypadControls implements IControls {
+type KeypadControlsArgs = {
+  canvas: HTMLCanvasElement
+  scene: THREE.Scene
+  camera: THREE.Camera
+  gravity: number
+  jumpForce: number
+  maxFallSpeed: number
+}
+
+class KeypadControls implements IControls {
   // arguments
   canvas: HTMLCanvasElement
   scene: THREE.Scene
@@ -67,14 +77,7 @@ export default class KeypadControls implements IControls {
   onControl?: () => unknown
   onEsc?: () => unknown
 
-  constructor(
-    canvas: HTMLCanvasElement,
-    scene: THREE.Scene,
-    camera: THREE.Camera,
-    gravity: number = 10,
-    jumpForce: number = 10,
-    maxFallSpeed: number = 7
-  ) {
+  constructor({ canvas, scene, camera, gravity = 10, jumpForce = 10, maxFallSpeed = 7 }: KeypadControlsArgs) {
     this.canvas = canvas
     this.scene = scene
     this.camera = camera
@@ -271,7 +274,6 @@ export default class KeypadControls implements IControls {
   raycastTargets() {
     this.#raycaster.setFromCamera(_canvasOrigin, this.camera)
     const intersects = this.#raycaster.intersectObjects(this.targets)
-    console.log(1, intersects, this.targets)
     return intersects[0]
   }
 
@@ -330,12 +332,36 @@ export default class KeypadControls implements IControls {
   update(delta: number) {
     if (!this.enabled || !this.#character) return
 
+    let intersects
+
+    // Position vertically
+    this.#raycaster.set(new THREE.Vector3(0, this.#character.size.height, 0).add(this.#group.position), _downDirection)
+    intersects = this.#raycaster.intersectObjects(this.floors)
+
+    if (!intersects.length) return // Don't update if the floor is not detected
+
+    if (intersects[0].distance < this.#character.size.height) {
+      // grounded
+      this.#isFloating = false
+      this.#floatingDuration = 0
+      // update the position proportional to the distance from the floor
+      const factor = 4 * ((this.#character.size.height - intersects[0].distance) / this.#character.size.height)
+      this.#group.position.y += Math.min(this.#character.size.height - intersects[0].distance, (factor + 1) * delta)
+    } else if (intersects[0].distance - this.#character.size.height > Number.EPSILON) {
+      // falling
+      if (!intersects.length || intersects[0].distance > this.#character.size.height + FALL_ANIMATION_HEIGHT) {
+        this.#isFloating = true
+      }
+      this.#floatingDuration += delta
+      const fallspeed = Math.min(this.gravity * this.#floatingDuration ** 2 * 10, this.maxFallSpeed)
+      this.#group.position.y -= delta * fallspeed
+    }
+
     // Rotate group
     const actualRotateSpeed = delta * this.#rotateSpeed * (this.#rotateLeftRatio - this.#rotateRightRatio) * ROTATE_SPEED_FACTOR
     this.#group.rotateY(actualRotateSpeed)
 
     // Move group detecting obstacles
-    let intersects
     let actualMoveSpeed = 0
 
     if (this.#moveForwardRatio || this.#moveBackwardRatio) {
@@ -354,24 +380,6 @@ export default class KeypadControls implements IControls {
     }
     this.#group.translateZ(actualMoveSpeed)
 
-    // Position vertically
-    this.#raycaster.set(new THREE.Vector3(0, this.#character.size.height, 0).add(this.#group.position), _downDirection)
-    intersects = this.#raycaster.intersectObjects(this.floors)
-    if (intersects.length && intersects[0].distance < this.#character.size.height) {
-      // grounded
-      this.#isFloating = false
-      this.#floatingDuration = 0
-      this.#group.position.y += Math.min(this.#character.size.height - intersects[0].distance, 3 * delta)
-    } else {
-      // falling
-      if (!intersects.length || intersects[0].distance > this.#character.size.height + FALL_ANIMATION_HEIGHT) {
-        this.#isFloating = true
-      }
-      this.#floatingDuration += delta
-      const fallspeed = Math.min(this.gravity * this.#floatingDuration ** 2 * 10, this.maxFallSpeed)
-      this.#group.position.y -= delta * fallspeed
-    }
-
     // Animation Update
     this.#character.mixer.update(delta)
     if (this.#isJump) {
@@ -387,3 +395,5 @@ export default class KeypadControls implements IControls {
     }
   }
 }
+
+export default KeypadControls

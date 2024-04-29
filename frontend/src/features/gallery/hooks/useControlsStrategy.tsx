@@ -4,20 +4,22 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import { DefaultCamera } from '@/libs/three-custom/cameras/DefaultCamera'
 import { IControls } from '@/libs/three-custom/controls'
 import KeypadControls from '@/libs/three-custom/controls/KeypadControls'
+import MouseControls from '@/libs/three-custom/controls/MouseControls'
 import { MichelleBuilder } from '@/libs/three-custom/items/Player'
 
-type ControlType = 'keypad'
+export type TControlType = 'keypad' | 'mouse'
 
 type TControlStrategyProps = {
-  type: ControlType
+  type: TControlType
   canvasRef: React.RefObject<HTMLCanvasElement>
   sceneRef: React.RefObject<THREE.Scene>
   cameraRef: React.RefObject<DefaultCamera>
   loadingManager: THREE.LoadingManager
 }
 
-const STRATEGY_TYPE: Record<ControlType, new (...args: any[]) => IControls> = {
+const STRATEGY_TYPE: Record<TControlType, new (...args: any[]) => IControls> = {
   keypad: KeypadControls,
+  mouse: MouseControls,
 }
 
 /**
@@ -38,7 +40,7 @@ const useControlsStrategy = ({ type, canvasRef, sceneRef, cameraRef, loadingMana
     if (!controlType) throw new Error('Invalid contorl type')
 
     // Create the control
-    const controls = new controlType(canvas, scene, camera, 1.6)
+    const controls = new controlType({ canvas, scene, camera })
     controls.enabled = false
     controlsRef.current = controls
 

@@ -6,52 +6,88 @@ export const FRAME_INFO = {
 
 export const FRAMES_DATA = [
   {
-    // 1
+    // 10 -> 1
+    x: 17,
+    y: 1.5,
+    z: 28,
+    rotationY: -1,
+    width: FRAME_INFO.width,
+    height: FRAME_INFO.height,
+    depth: FRAME_INFO.depth,
+  },
+  {
+    // 1 -> 2
     x: 40,
     y: 1,
     z: 39,
+    rotationY: -2,
     width: FRAME_INFO.width,
     height: FRAME_INFO.height,
     depth: FRAME_INFO.depth,
   },
   {
-    // 2
-    x: 63,
-    y: 4,
-    z: 53,
-    width: FRAME_INFO.width,
-    height: FRAME_INFO.height,
-    depth: FRAME_INFO.depth,
-  },
-  {
-    // 3
+    // 3 -> 3
     x: 75,
     y: 3,
     z: 27,
+    rotationY: -2.2,
     width: FRAME_INFO.width,
     height: FRAME_INFO.height,
     depth: FRAME_INFO.depth,
   },
   {
-    // 4
+    // 4 -> 4
     x: 100,
     y: 1.7,
-    z: 40,
+    z: 30,
+    rotationY: -3.1,
     width: FRAME_INFO.width,
     height: FRAME_INFO.height,
     depth: FRAME_INFO.depth,
   },
   {
-    // 5
+    // 9 -> 5
+    x: 103,
+    y: 1.7,
+    z: 50,
+    rotationY: -3.0,
+    width: FRAME_INFO.width,
+    height: FRAME_INFO.height,
+    depth: FRAME_INFO.depth,
+  },
+  {
+    // 2 -> 6
+    x: 63,
+    y: 4,
+    z: 53,
+    rotationY: 1.5,
+    width: FRAME_INFO.width,
+    height: FRAME_INFO.height,
+    depth: FRAME_INFO.depth,
+  },
+  {
+    // 5 -> 7
     x: 28,
     y: 4,
     z: 66,
+    rotationY: 3,
     width: FRAME_INFO.width,
     height: FRAME_INFO.height,
     depth: FRAME_INFO.depth,
   },
   {
-    // 6
+    // 8 -> 8
+    x: 37,
+    y: 2.4,
+    z: 93,
+    rotationY: 1.5,
+    width: FRAME_INFO.width,
+    height: FRAME_INFO.height,
+    depth: FRAME_INFO.depth,
+  },
+
+  {
+    // 6 -> 9
     x: 64,
     y: 14.6,
     z: 78,
@@ -60,37 +96,11 @@ export const FRAMES_DATA = [
     depth: FRAME_INFO.depth,
   },
   {
-    // 7
+    // 7 -> 10
     x: 83,
     y: 10,
     z: 80,
-    width: FRAME_INFO.width,
-    height: FRAME_INFO.height,
-    depth: FRAME_INFO.depth,
-  },
-  {
-    // 8
-    x: 37,
-    y: 2.4,
-    z: 93,
-    width: FRAME_INFO.width,
-    height: FRAME_INFO.height,
-    depth: FRAME_INFO.depth,
-  },
-  {
-    // 9
-    x: 104,
-    y: -2.6,
-    z: 104,
-    width: FRAME_INFO.width,
-    height: FRAME_INFO.height,
-    depth: FRAME_INFO.depth,
-  },
-  {
-    // 10
-    x: 17,
-    y: 1.5,
-    z: 28,
+    rotationY: 0,
     width: FRAME_INFO.width,
     height: FRAME_INFO.height,
     depth: FRAME_INFO.depth,

@@ -460,7 +460,7 @@ export const FRAMES_DATA = [
     width: 3,
     height: 3,
     depth: FRAME_INFO.depth,
-    rotationY: degToRad(180),
+    rotationY: degToRad(-180),
   },
   {
     // 8
@@ -470,7 +470,7 @@ export const FRAMES_DATA = [
     width: 3,
     height: 3,
     depth: FRAME_INFO.depth,
-    rotationY: degToRad(180),
+    rotationY: degToRad(-180),
   },
   {
     // 9

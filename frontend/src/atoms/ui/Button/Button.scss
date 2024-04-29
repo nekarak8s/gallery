@@ -73,11 +73,7 @@
   &.blue {
     color: var(--color-primary, c.$primary);
     border: 2px solid var(--color-primary, c.$primary);
-    background-image: linear-gradient(
-      0deg,
-      var(--color-primary, c.$primary),
-      var(--color-primary, c.$primary)
-    );
+    background-image: linear-gradient(0deg, var(--color-primary, c.$primary), var(--color-primary, c.$primary));
 
     &:hover,
     &:focus {
@@ -88,11 +84,7 @@
   &.black {
     color: var(--color-ft, c.$ft-black);
     border: 2px solid var(--color-ft, c.$ft-black);
-    background-image: linear-gradient(
-      0deg,
-      var(--color-ft, c.$ft-black),
-      var(--color-ft, c.$ft-black)
-    );
+    background-image: linear-gradient(0deg, var(--color-ft, c.$ft-black), var(--color-ft, c.$ft-black));
 
     &:hover,
     &:focus {
@@ -103,15 +95,22 @@
   &.red {
     color: var(--color-ft-warning, c.$ft-red);
     border: 2px solid var(--color-ft-warning, c.$ft-red);
-    background-image: linear-gradient(
-      0deg,
-      var(--color-ft-warning, c.$ft-red),
-      var(--color-ft-warning, c.$ft-red)
-    );
+    background-image: linear-gradient(0deg, var(--color-ft-warning, c.$ft-red), var(--color-ft-warning, c.$ft-red));
 
     &:hover,
     &:focus {
       color: var(--color-ft-reverse, c.$ft-white);
+    }
+  }
+
+  &.white {
+    color: var(--color-ft-reverse, c.$ft-white);
+    border: 2px solid var(--color-ft-reverse, c.$ft-white);
+    background-image: linear-gradient(0deg, var(--color-ft-reverse, c.$ft-white), var(--color-ft-reverse, c.$ft-white));
+
+    &:hover,
+    &:focus {
+      color: var(--color-ft, c.$ft-black);
     }
   }
 }

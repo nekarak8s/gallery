@@ -10,6 +10,26 @@
   height: 100vh;
 }
 
+.gallery__selection {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transform: translateY(10%);
+  opacity: 0;
+
+  &--enter {
+    opacity: 1;
+    transform: translateY(0%);
+  }
+
+  &--leave {
+    opacity: 0;
+    transform: translateY(10%);
+  }
+}
+
 .gallery__music {
   @include z-index(modal);
   position: fixed;

@@ -43,15 +43,26 @@
   },
   "galleryNav": {
     "goBack": "뒤로가기",
-    "manual": "조작법",
-    "move": "캐릭터 이동",
-    "rotate": "캐릭터 회전",
-    "shoot": "액자 조준",
-    "jump": "점프"
+    "manual": "조작법"
   },
+
   "gallerySearch": {
     "all": "전체",
     "title": "제목",
     "author": "작가"
+  },
+  "controller": {
+    "chooseType": "갤러리를 관람할 방법을 선택하세요"
+  },
+  "joystickControl": {
+    "move": "캐릭터를 앞뒤로 이동합니다",
+    "rotate": "캐릭터를 좌우로 회전합니다",
+    "shoot": "십자 과녁에 맞춰 작품을 조준합니다",
+    "jump": "캐릭터를 점프 합니다"
+  },
+  "buttonControl": {
+    "button": "버튼을 눌러 작품을 이동하세요",
+    "click": "작품을 클릭해서 열어보세요",
+    "drag": "화면을 드래그해서 회전하세요"
   }
 }
