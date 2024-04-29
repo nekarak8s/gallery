@@ -53,7 +53,7 @@
   "controller": {
     "chooseType": "Choose the type of controller you'd like play with"
   },
-  "galleryControl": {
+  "joystickControl": {
     "move": "Move the character forward and backward",
     "rotate": "Rotate the character left and right",
     "jump": "Make the character jump",

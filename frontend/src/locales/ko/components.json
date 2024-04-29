@@ -54,7 +54,7 @@
   "controller": {
     "chooseType": "갤러리를 관람할 방법을 선택하세요"
   },
-  "galleryControl": {
+  "joystickControl": {
     "move": "캐릭터를 앞뒤로 이동합니다",
     "rotate": "캐릭터를 좌우로 회전합니다",
     "shoot": "십자 과녁에 맞춰 작품을 조준합니다",

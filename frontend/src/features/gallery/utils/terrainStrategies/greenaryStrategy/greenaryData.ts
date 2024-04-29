@@ -80,28 +80,27 @@ export const FRAMES_DATA = [
     x: 37,
     y: 2.4,
     z: 93,
-    rotationY: 4.5,
+    rotationY: 1.5,
     width: FRAME_INFO.width,
     height: FRAME_INFO.height,
     depth: FRAME_INFO.depth,
   },
 
   {
-    // 7 -> 9
-    x: 83,
-    y: 10,
-    z: 80,
-    rotationY: 6,
-    width: FRAME_INFO.width,
-    height: FRAME_INFO.height,
-    depth: FRAME_INFO.depth,
-  },
-
-  {
-    // 6 -> 10
+    // 6 -> 9
     x: 64,
     y: 14.6,
     z: 78,
+    width: FRAME_INFO.width,
+    height: FRAME_INFO.height,
+    depth: FRAME_INFO.depth,
+  },
+  {
+    // 7 -> 10
+    x: 83,
+    y: 10,
+    z: 80,
+    rotationY: 0,
     width: FRAME_INFO.width,
     height: FRAME_INFO.height,
     depth: FRAME_INFO.depth,
