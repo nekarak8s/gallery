@@ -1,0 +1,60 @@
+@use '@/styles/_colors.scss' as c;
+@use '@/styles/_responsive.scss' as *;
+
+.button-control-notice {
+  padding: 1em;
+  background-color: transparent;
+  font-size: 1.5rem;
+
+  > ul {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.8em;
+  }
+
+  > ul > li {
+    display: grid;
+    grid-template-columns: 6em 1fr;
+    align-items: center;
+    gap: 1em;
+    white-space: nowrap;
+
+    svg {
+      color: var(--color-ft-reverse, c.$ft-white);
+      width: 3.8em;
+      height: 3.8em;
+    }
+
+    path {
+      stroke: var(--color-ft-reverse, c.$ft-white);
+    }
+  }
+}
+
+.button-control-notice__button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 4em;
+  height: 2.5em;
+  border: 2px solid var(--color-ft-reverse, c.$ft-white);
+}
+
+@include laptop {
+  .button-control-notice {
+    font-size: 1.4rem;
+  }
+}
+
+@include tablet {
+  .button-control-notice {
+    font-size: 1.2rem;
+  }
+}
+
+@include mobile {
+  .button-control-notice {
+    font-size: 3.5vw;
+  }
+}

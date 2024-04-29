@@ -1,34 +1,38 @@
 @use '@/styles/_colors.scss' as c;
 @use '@/styles/_responsive.scss' as *;
 
-.control-notice {
-  width: 13em;
+.joystick-control-notice {
   padding: 1em;
-  border-radius: 0.5em;
-  background-color: var(--color-bg, c.$bg-white);
-  font-size: 1.1rem;
+  background-color: transparent;
+  font-size: 1.5rem;
 
   > ul {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: 1em;
+    gap: 1.8em;
   }
 
   > ul > li {
-    display: flex;
+    display: grid;
+    grid-template-columns: 6em 1fr;
     align-items: center;
     gap: 1em;
+    white-space: nowrap;
+  }
+
+  kbd {
+    font-size: 1.2em;
   }
 }
 
-.control-notice__controller {
+.joystick-control-notice__controller {
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
-  width: 2em;
-  height: 2em;
+  width: 4em;
+  height: 4em;
   border-radius: 50%;
   background-color: rgba(57, 57, 57, 0.4);
 
@@ -40,38 +44,37 @@
   }
 }
 
-.control-notice__button {
+.joystick-control-notice__button {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 2em;
-  height: 2em;
+  width: 4em;
+  height: 4em;
   border-radius: 50%;
   background-color: rgba(57, 57, 57, 0.4);
 
   svg {
-    width: 1.5em;
-    height: 1.5em;
+    width: 80%;
+    height: 80%;
     color: var(--color-bg, c.$bg-white);
   }
 }
 
-.control-notice__shoot {
+.joystick-control-notice__shoot {
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
-  width: 2em;
-  height: 2em;
+  width: 4em;
+  height: 4em;
 
   span {
-    width: 80%;
+    width: 70%;
     aspect-ratio: 8;
     background-color: rgb(169, 169, 169);
     border-radius: 5px;
   }
-  span:nth-child(1) {
-  }
+
   span:nth-child(2) {
     position: absolute;
     top: 50%;
@@ -80,14 +83,20 @@
   }
 }
 
+@include laptop {
+  .joystick-control-notice {
+    font-size: 1.4rem;
+  }
+}
+
 @include tablet {
-  .control-notice {
-    font-size: 1rem;
+  .joystick-control-notice {
+    font-size: 1.2rem;
   }
 }
 
 @include mobile {
-  .control-notice {
-    font-size: 0.9rem;
+  .joystick-control-notice {
+    font-size: 3.5vw;
   }
 }

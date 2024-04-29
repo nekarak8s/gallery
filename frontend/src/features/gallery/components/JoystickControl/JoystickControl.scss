@@ -1,7 +1,49 @@
+@use '@/styles/_colors.scss' as c;
+@use '@/styles/_responsive.scss' as *;
+
 .joystick-control {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  font-size: 1rem;
+  pointer-events: none;
+}
+
+.joystick-control__modal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2em;
+  max-width: 90vw;
+  max-height: 70vh;
+  padding: 4em 8em;
+  border-radius: 10px;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: var(--color-ft-reverse, c.$ft-white);
+  pointer-events: auto;
+  overflow-y: auto;
+}
+
+.joystick-control__controller {
   position: fixed;
   bottom: 0;
   left: 0;
   width: 100%;
   padding: 0 min(10%, 3em) min(15%, 5em) min(10%, 3em);
+}
+
+@include tablet {
+  .joystick-control__modal {
+    padding: 3em 3em;
+  }
+}
+
+@include mobile {
+  .joystick-control__modal {
+    padding: 2em 2em;
+  }
 }

@@ -1,5 +1,6 @@
 import React, { useCallback, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import JoystickControlNotice from './JoystickControlNotice'
 import Button from '@/atoms/ui/Button'
 import Joystick from '@/atoms/ui/Joystick'
 import useMobile from '@/hooks/useMobile'
@@ -37,11 +38,14 @@ const JoystickControl = ({ controlsRef }: JoystickControlProps) => {
   return (
     <div className="joystick-control">
       {isOpen ? (
-        <div className="button-control__modal">
+        <div className="joystick-control__modal">
+          <JoystickControlNotice />
           <Button size="lg" text={t('buttons.start')} onClick={() => setIsOpen(false)} isTransparent={true} color="white" />
         </div>
       ) : (
-        isMobile && <Joystick control={joystickControl} shoot={joystickShoot} jump={joystickJump} />
+        <div className="joystick-control__controller">
+          {isMobile && <Joystick control={joystickControl} shoot={joystickShoot} jump={joystickJump} />}
+        </div>
       )}
     </div>
   )

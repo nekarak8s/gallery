@@ -4,7 +4,8 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import { acceleratedRaycast } from 'three-mesh-bvh'
 import { IControls } from '..'
 
-const DRAG_THRESHOLD = 0.1
+const _vector3 = new THREE.Vector3()
+const DRAG_THRESHOLD = 0.05
 
 THREE.Mesh.prototype.raycast = acceleratedRaycast
 
@@ -31,12 +32,14 @@ class MouseControls implements IControls {
   #orbitControls: OrbitControls
   #curPostIdx: number = -1
   #isMoving: boolean = false
+  #originPosition: THREE.Vector3 = new THREE.Vector3()
   maxDuration: number = 2 // second
-  offsetDistance: number = 3
+  offsetDistance: number = 2.5
 
   constructor({ canvas, camera }: MouseControlsArgs) {
     this.canvas = canvas
     this.camera = camera
+    this.#originPosition.copy(camera.position)
     this.#orbitControls = new OrbitControls(camera, canvas)
     this.#orbitControls.enableDamping = true
     this.#orbitControls.maxDistance = 15
@@ -114,6 +117,7 @@ class MouseControls implements IControls {
     targetPosition.add(post.position)
 
     this.#isMoving = true
+    this.#orbitControls.enabled = false
     gsap.to(this.camera.position, {
       duration,
       x: targetPosition.x,
@@ -123,7 +127,7 @@ class MouseControls implements IControls {
 
     // get target quaternion
     const targetQuaternion = new THREE.Quaternion()
-    post.getWorldQuaternion(targetQuaternion)
+    post.getWorldQuaternion(targetQuaternion).normalize()
     gsap.to(this.camera.quaternion, {
       duration: duration + 0.01,
       x: targetQuaternion.x,
@@ -131,7 +135,9 @@ class MouseControls implements IControls {
       z: targetQuaternion.z,
       w: targetQuaternion.w,
       onComplete: () => {
+        this.#originPosition.copy(this.camera.position)
         this.#orbitControls.target = post.position
+        this.#orbitControls.enabled = true
         this.#isMoving = false
       },
     })
@@ -146,6 +152,8 @@ class MouseControls implements IControls {
 
   update(delta: number) {
     if (this.#isMoving) return
+    const movementSpeed = _vector3.copy(this.#originPosition).sub(this.camera.position).multiplyScalar(delta)
+    this.camera.position.add(movementSpeed)
     this.#orbitControls.update()
   }
 }
