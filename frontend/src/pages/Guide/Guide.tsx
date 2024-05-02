@@ -66,6 +66,9 @@ const Guide = () => {
 
     if (!renderer || !scene || !camera || !loadingManager) return
 
+    camera.fov = 30
+    camera.updateProjectionMatrix()
+
     // Build architect
     const architect = buildArchitect({ scene, loadingManager })
 
@@ -83,6 +86,7 @@ const Guide = () => {
 
     // Clean-up function: Release resources
     return () => {
+      camera.resetFov()
       setRequiredCount(0)
       setLoadedCount(0)
       architect.dispose && architect.dispose()

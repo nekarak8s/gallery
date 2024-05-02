@@ -67,11 +67,11 @@ export const FRAMES_DATA = [
     depth: FRAME_INFO.depth,
   },
   {
-    // 포장 마차
-    x: 22.7,
-    y: 11.5,
-    z: 9.7,
-    rotationY: -1.57,
+    // 구석 담벼락(토기)
+    x: 28.8,
+    y: 10.5,
+    z: -7.7,
+    rotationY: -1.24,
     width: FRAME_INFO.width,
     height: FRAME_INFO.height,
     depth: FRAME_INFO.depth,
@@ -86,23 +86,22 @@ export const FRAMES_DATA = [
     height: FRAME_INFO.height,
     depth: FRAME_INFO.depth,
   },
-
+  {
+    // 포장 마차
+    x: 22.7,
+    y: 11.5,
+    z: 9.7,
+    rotationY: -1.57,
+    width: FRAME_INFO.width,
+    height: FRAME_INFO.height,
+    depth: FRAME_INFO.depth,
+  },
   {
     // 외곽
     x: 31.85,
     y: 6.5,
     z: 5.7,
     rotationY: 1.6,
-    width: FRAME_INFO.width,
-    height: FRAME_INFO.height,
-    depth: FRAME_INFO.depth,
-  },
-  {
-    // 구석 담벼락(토기)
-    x: 28.8,
-    y: 10.5,
-    z: -7.7,
-    rotationY: -1.24,
     width: FRAME_INFO.width,
     height: FRAME_INFO.height,
     depth: FRAME_INFO.depth,

@@ -1,11 +1,9 @@
 import { useEffect, useRef } from 'react'
 import * as THREE from 'three'
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import { DefaultCamera } from '@/libs/three-custom/cameras/DefaultCamera'
 import { IControls } from '@/libs/three-custom/controls'
 import KeypadControls from '@/libs/three-custom/controls/KeypadControls'
 import MouseControls from '@/libs/three-custom/controls/MouseControls'
-import { MichelleBuilder } from '@/libs/three-custom/items/Player'
 
 export type TControlType = 'keypad' | 'mouse'
 
@@ -43,16 +41,6 @@ const useControlsStrategy = ({ type, canvasRef, sceneRef, cameraRef, loadingMana
     const controls = new controlType({ canvas, scene, camera })
     controls.enabled = false
     controlsRef.current = controls
-
-    if (controls instanceof KeypadControls) {
-      MichelleBuilder.build(new GLTFLoader(loadingManager))
-        .then((michelle) => {
-          controls.character = michelle
-        })
-        .catch((err) => {
-          console.error(err)
-        })
-    }
 
     return () => {
       controlsRef.current = null

@@ -1,20 +1,36 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import JoystickControlNotice from './JoystickControlNotice'
 import Button from '@/atoms/ui/Button'
 import Joystick from '@/atoms/ui/Joystick'
 import useMobile from '@/hooks/useMobile'
 import KeypadControls from '@/libs/three-custom/controls/KeypadControls'
+import { MichelleBuilder } from '@/libs/three-custom/items/Player'
 import './JoystickControl.scss'
 
 type JoystickControlProps = {
   controlsRef: React.RefObject<KeypadControls>
+  loadingManager: THREE.LoadingManager
 }
 
-const JoystickControl = ({ controlsRef }: JoystickControlProps) => {
+const JoystickControl = ({ controlsRef, loadingManager }: JoystickControlProps) => {
   const isMobile = useMobile()
   const { t } = useTranslation()
   const [isOpen, setIsOpen] = useState(true)
+
+  useEffect(() => {
+    const controls = controlsRef.current
+    if (!controls) return
+
+    MichelleBuilder.build(new GLTFLoader(loadingManager))
+      .then((michelle) => {
+        controls.character = michelle
+      })
+      .catch((err) => {
+        console.error(err)
+      })
+  }, [controlsRef])
 
   const joystickControl = useCallback(
     (x: number, y: number) => {

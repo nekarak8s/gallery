@@ -1,5 +1,7 @@
 import { PerspectiveCamera } from 'three'
 
+const DEFUALT_FOV = 45
+
 type DefaultCameraProps = {
   canvas?: HTMLCanvasElement
   fov?: number
@@ -13,7 +15,7 @@ export class DefaultCamera extends PerspectiveCamera {
 
   constructor(info: DefaultCameraProps) {
     super(
-      info.fov || 45,
+      info.fov || DEFUALT_FOV,
       info.canvas ? info.canvas.offsetWidth / info.canvas.offsetHeight : window.innerWidth / window.innerHeight,
       info.near || 1,
       info.far || 500
@@ -26,6 +28,6 @@ export class DefaultCamera extends PerspectiveCamera {
   }
 
   resetFov() {
-    this.fov = 45
+    this.fov = DEFUALT_FOV
   }
 }

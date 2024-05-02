@@ -127,7 +127,6 @@ export default class GreenaryStrategy implements IGalleryStrategy {
       textureLoader: textureLoader,
       postList: props.postList,
       framesData: FRAMES_DATA,
-      isAnimation: true,
     })
     this.items.push(frames)
     this.targets.push(...frames.objects)

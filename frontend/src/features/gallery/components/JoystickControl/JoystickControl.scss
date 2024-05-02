@@ -34,6 +34,7 @@
   left: 0;
   width: 100%;
   padding: 0 min(10%, 3em) min(15%, 5em) min(10%, 3em);
+  pointer-events: auto;
 }
 
 @include tablet {

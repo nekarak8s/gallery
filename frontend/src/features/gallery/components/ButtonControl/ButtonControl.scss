@@ -1,3 +1,4 @@
+@use '@/styles/_responsive.scss' as *;
 @use '@/styles/_colors.scss' as c;
 
 .button-control {
@@ -32,4 +33,10 @@
   gap: 30px;
   transform: translateY(35vh);
   pointer-events: auto;
+}
+
+@include mobile {
+  .button-control__buttons {
+    transform: translateY(28vh);
+  }
 }

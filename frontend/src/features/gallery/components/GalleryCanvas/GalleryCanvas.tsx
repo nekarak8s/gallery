@@ -167,7 +167,7 @@ const GalleryCanvas = ({ controlType, gallery, postList }: GalleryCanvasProps) =
     <div className="gallery-canvas">
       <canvas ref={canvasRef} />
       {isKeypad ? (
-        <JoystickControl controlsRef={controlsRef as React.RefObject<KeypadControls>} />
+        <JoystickControl controlsRef={controlsRef as React.RefObject<KeypadControls>} loadingManager={loadingManager} />
       ) : (
         <ButtonControl controlsRef={controlsRef as React.RefObject<MouseControls>} />
       )}

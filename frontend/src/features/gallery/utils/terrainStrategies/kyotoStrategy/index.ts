@@ -54,6 +54,7 @@ export default class KyotoStrategy implements IGalleryStrategy {
 
     // Set the camrea fov
     this.camera.fov = 40
+    this.camera.updateMatrix()
 
     // Create Loaders
     const textureLoader = new THREE.TextureLoader(props.loadingManager)
