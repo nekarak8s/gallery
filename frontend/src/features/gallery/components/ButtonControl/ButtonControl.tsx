@@ -12,8 +12,10 @@ type ButtonControlProps = {
 
 const ButtonControl = ({ controlsRef }: ButtonControlProps) => {
   const { t } = useTranslation()
-  const [isOpen, setIsOpen] = useState(true)
   const isMobile = useMobile()
+
+  const [isOpen, setIsOpen] = useState(true)
+  const [idx, setIdx] = useState(0)
 
   const handleClickModal = useCallback(() => {
     if (!controlsRef.current) return
@@ -22,12 +24,14 @@ const ButtonControl = ({ controlsRef }: ButtonControlProps) => {
   }, [controlsRef])
 
   const handleNextClick = useCallback(() => {
-    if (!controlsRef.current) return
+    if (!controlsRef.current || controlsRef.current.isMoving) return
+    setIdx((idx) => idx + 1)
     controlsRef.current.moveToNextPost()
   }, [controlsRef])
 
   const handlePrevClick = useCallback(() => {
-    if (!controlsRef.current) return
+    if (!controlsRef.current || controlsRef.current.isMoving) return
+    setIdx((idx) => idx - 1)
     controlsRef.current.moveToPrevPost()
   }, [controlsRef])
 
@@ -50,8 +54,10 @@ const ButtonControl = ({ controlsRef }: ButtonControlProps) => {
         </div>
       ) : (
         <div className="button-control__buttons">
-          <Button size="lg" text={t('buttons.prev')} onClick={handlePrevClick} isTransparent={true} color="white" />
-          <Button size="lg" text={t('buttons.next')} onClick={handleNextClick} isTransparent={true} color="white" />
+          {idx !== 0 && <Button size="lg" text={t('buttons.prev')} onClick={handlePrevClick} isTransparent={true} color="white" />}
+          {idx + 1 !== controlsRef.current?.postTargets.length && (
+            <Button size="lg" text={t('buttons.next')} onClick={handleNextClick} isTransparent={true} color="white" />
+          )}
         </div>
       )}
     </div>

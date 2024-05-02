@@ -31,21 +31,24 @@ class MouseControls implements IControls {
   // movement
   #orbitControls: OrbitControls
   #curPostIdx: number = -1
-  #isMoving: boolean = false
+  isMoving: boolean = false
   #originPosition: THREE.Vector3 = new THREE.Vector3()
-  maxDuration: number = 2 // second
+  maxDuration: number = 4 // second
+  minDuration: number = 2 // second
   offsetDistance: number = 2.5
 
   constructor({ canvas, camera }: MouseControlsArgs) {
     this.canvas = canvas
     this.camera = camera
-    this.#originPosition.copy(camera.position)
+    this.camera.rotation.order = 'YXZ'
     this.#orbitControls = new OrbitControls(camera, canvas)
     this.#orbitControls.enableDamping = true
     this.#orbitControls.maxDistance = 15
     this.#orbitControls.minDistance = 1
     this.#orbitControls.minPolarAngle = Math.PI / 3 // radians
     this.#orbitControls.maxPolarAngle = (2 * Math.PI) / 3 // radians
+    this.#originPosition.copy(camera.position)
+    this.#orbitControls.target = camera.position.clone().sub(new THREE.Vector3(0, 0, -1))
 
     // Add event listener
     const _onMouseDown = this.onMouseDown.bind(this)
@@ -82,7 +85,10 @@ class MouseControls implements IControls {
 
   setPosition(x: number, y: number, z: number) {
     this.camera.position.set(x, y, z)
+    this.#orbitControls.target = this.camera.position.clone().sub(new THREE.Vector3(0, 0, 1))
+    this.#originPosition.copy(this.camera.position)
   }
+
   setQuaternion(x: number, y: number, z: number) {
     this.camera.rotation.set(x, y, z)
   }
@@ -108,15 +114,15 @@ class MouseControls implements IControls {
   moveToPost(post: THREE.Object3D<THREE.Object3DEventMap>) {
     // calculate distance and duration
     const distance = this.camera.position.distanceTo(post.position)
-    const duration = Math.max(1, Math.min(distance / 10, this.maxDuration))
+    const duration = Math.max(this.minDuration, Math.min(distance / 10, this.maxDuration))
 
     // get target position
 
-    const targetPosition = new THREE.Vector3(0, 0, this.offsetDistance * Number(post.userData.width) || this.offsetDistance).clone()
+    const targetPosition = new THREE.Vector3(0, 0, this.offsetDistance * Number(post.userData.width) || this.offsetDistance)
     targetPosition.applyQuaternion(post.quaternion)
     targetPosition.add(post.position)
 
-    this.#isMoving = true
+    this.isMoving = true
     this.#orbitControls.enabled = false
     gsap.to(this.camera.position, {
       duration,
@@ -125,33 +131,44 @@ class MouseControls implements IControls {
       z: targetPosition.z,
     })
 
-    // get target quaternion
-    const targetQuaternion = new THREE.Quaternion()
-    post.getWorldQuaternion(targetQuaternion).normalize()
-    gsap.to(this.camera.quaternion, {
-      duration: duration + 0.01,
-      x: targetQuaternion.x,
-      y: targetQuaternion.y,
-      z: targetQuaternion.z,
-      w: targetQuaternion.w,
+    gsap.to(this.camera.rotation, {
+      duration: duration,
+      y: post.rotation.y,
       onComplete: () => {
         this.#originPosition.copy(this.camera.position)
         this.#orbitControls.target = post.position
         this.#orbitControls.enabled = true
-        this.#isMoving = false
+        this.isMoving = false
       },
     })
+
+    // //  get target quaternion
+    // const targetQuaternion = new THREE.Quaternion()
+    // post.getWorldQuaternion(targetQuaternion).normalize()
+    // gsap.to(this.camera.quaternion, {
+    //   duration: duration + 0.01,
+    //   x: targetQuaternion.x,
+    //   y: targetQuaternion.y,
+    //   z: targetQuaternion.z,
+    //   w: targetQuaternion.w,
+    //   onComplete: () => {
+    //     this.#originPosition.copy(this.camera.position)
+    //     this.#orbitControls.target = post.position
+    //     this.#orbitControls.enabled = true
+    //     this.isMoving = false
+    //   },
+    // })
   }
 
   raycastTargets() {
-    if (this.#isMoving) return
+    if (this.isMoving) return
     this.#raycaster.setFromCamera(this.#mouse, this.camera)
     const intersects = this.#raycaster.intersectObjects(this.targets)
     return intersects[0]
   }
 
   update(delta: number) {
-    if (this.#isMoving) return
+    if (this.isMoving) return
     const movementSpeed = _vector3.copy(this.#originPosition).sub(this.camera.position).multiplyScalar(delta)
     this.camera.position.add(movementSpeed)
     this.#orbitControls.update()
