@@ -44,3 +44,9 @@
   left: 0;
   width: 100%;
 }
+
+@include mobile {
+  .gallery__music {
+    bottom: 2em;
+  }
+}

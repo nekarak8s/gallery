@@ -13,7 +13,7 @@
 .example-gallery__music {
   @include z-index(modal);
   position: fixed;
-  bottom: 1em;
+  bottom: 2em;
   left: 1em;
 }
 
@@ -61,5 +61,11 @@
 
   100% {
     opacity: 1;
+  }
+}
+
+@include mobile {
+  .example-gallery__navbar {
+    bottom: 2em;
   }
 }

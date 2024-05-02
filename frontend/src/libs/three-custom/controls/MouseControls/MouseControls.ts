@@ -117,7 +117,6 @@ class MouseControls implements IControls {
     const duration = Math.max(this.minDuration, Math.min(distance / 10, this.maxDuration))
 
     // get target position
-
     const targetPosition = new THREE.Vector3(0, 0, this.offsetDistance * Number(post.userData.width) || this.offsetDistance)
     targetPosition.applyQuaternion(post.quaternion)
     targetPosition.add(post.position)
@@ -141,23 +140,6 @@ class MouseControls implements IControls {
         this.isMoving = false
       },
     })
-
-    // //  get target quaternion
-    // const targetQuaternion = new THREE.Quaternion()
-    // post.getWorldQuaternion(targetQuaternion).normalize()
-    // gsap.to(this.camera.quaternion, {
-    //   duration: duration + 0.01,
-    //   x: targetQuaternion.x,
-    //   y: targetQuaternion.y,
-    //   z: targetQuaternion.z,
-    //   w: targetQuaternion.w,
-    //   onComplete: () => {
-    //     this.#originPosition.copy(this.camera.position)
-    //     this.#orbitControls.target = post.position
-    //     this.#orbitControls.enabled = true
-    //     this.isMoving = false
-    //   },
-    // })
   }
 
   raycastTargets() {
