@@ -63,3 +63,9 @@
     opacity: 1;
   }
 }
+
+@include mobile {
+  .example-gallery__music {
+    bottom: 2em;
+  }
+}

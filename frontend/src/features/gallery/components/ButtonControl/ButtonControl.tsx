@@ -39,7 +39,7 @@ const ButtonControl = ({ controlsRef }: ButtonControlProps) => {
     if (!controlsRef.current) return
 
     if (isMobile) {
-      controlsRef.current.offsetDistance = 4
+      controlsRef.current.offsetDistance = 3.5
     } else {
       controlsRef.current.offsetDistance = 2.5
     }
