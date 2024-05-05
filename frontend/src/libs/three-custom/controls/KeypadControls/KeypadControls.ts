@@ -347,7 +347,7 @@ class KeypadControls implements IControls {
       // update the position proportional to the distance from the floor
       const factor = 4 * ((this.#character.size.height - intersects[0].distance) / this.#character.size.height)
       this.#group.position.y += Math.min(this.#character.size.height - intersects[0].distance, (factor + 1) * delta)
-    } else if (intersects[0].distance - this.#character.size.height > Number.EPSILON) {
+    } else if (intersects[0].distance - this.#character.size.height > _epsilon) {
       // falling
       if (!intersects.length || intersects[0].distance > this.#character.size.height + FALL_ANIMATION_HEIGHT) {
         this.#isFloating = true
