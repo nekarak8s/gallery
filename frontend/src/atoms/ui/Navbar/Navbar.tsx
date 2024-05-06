@@ -17,7 +17,7 @@ type NavbarProps = {
 }
 
 function Navbar({ whitePathname, isLogin }: NavbarProps) {
-  const { t, i18n } = useTranslation()
+  const { t } = useTranslation()
 
   /**
    * Scroll responsive navbar

@@ -51,7 +51,9 @@
     "author": "Author"
   },
   "controller": {
-    "chooseType": "Choose the type of controller you'd like play with"
+    "chooseType": "Choose the type of controller you'd like play with",
+    "mouse": "Convenient viewing",
+    "keypad": "Direct viewing"
   },
   "joystickControl": {
     "move": "Move the character forward and backward",

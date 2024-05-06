@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
 import GallerySelection from './GallerySelection'
 import GalleryNavbar from '../Gallery/GalleryNavbar'
 import galleryBgm from '@/assets/audios/MapleStory-Pantheon.mp3'
@@ -30,12 +31,32 @@ const MUSIC_TYPE = [
   },
 ]
 
+export const PORTFOLIO_GALLERY_ID: Record<string, number> = {
+  byongho: 12,
+  chanhee: 10,
+}
+
 const ExampleGallery = () => {
   /**
-   * Get Data: gallery 1
+   * Get Data
    */
-  const { data: gallery, isLoading: isGalleryLoading, isError: isGalleryError } = useGalleryQuery(1)
-  const { data: postList, isLoading: isPostLoading, isError: isPostError } = usePostListQuery(1)
+  const { developer } = useParams()
+
+  const { data: gallery, isLoading: isGalleryLoading, isError: isGalleryError } = useGalleryQuery(developer ? PORTFOLIO_GALLERY_ID[developer] : 1)
+  const { data: postList, isLoading: isPostLoading, isError: isPostError } = usePostListQuery(developer ? PORTFOLIO_GALLERY_ID[developer] : 1)
+
+  // Check if it's portfolio
+  const navigate = useNavigate()
+
+  const isPortfolio = useMemo(() => {
+    return !developer || !PORTFOLIO_GALLERY_ID[developer] ? false : true
+  }, [developer])
+
+  useEffect(() => {
+    if (!developer || !PORTFOLIO_GALLERY_ID[developer]) {
+      navigate('/gallery/example')
+    }
+  }, [developer])
 
   /**
    * Select gallery
@@ -91,7 +112,7 @@ const ExampleGallery = () => {
             <GalleryNavbar />
           </div>
           <div className="example-gallery__canvas">
-            <GalleryCanvas controlType={controlType} gallery={gallery} postList={postList} />
+            <GalleryCanvas controlType={controlType} gallery={gallery} postList={postList} isPortfolio={isPortfolio} />
           </div>
         </div>
       )}

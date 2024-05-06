@@ -11,6 +11,7 @@ import JoystickControl from '../JoystickControl'
 import CSSTransition from '@/atoms/ui/CSSTransition'
 import Loading from '@/atoms/ui/Loading'
 import Modal from '@/atoms/ui/Modal'
+import PortfolioDetail from '@/features/post/components/PortfolioDetail'
 import PostDetail from '@/features/post/components/PostDetail'
 import { PostItemData } from '@/features/post/types'
 import KeypadControls from '@/libs/three-custom/controls/KeypadControls'
@@ -23,9 +24,10 @@ type GalleryCanvasProps = {
   controlType: TControlType
   gallery: GalleryData
   postList: PostItemData[]
+  isPortfolio?: boolean
 }
 
-const GalleryCanvas = ({ controlType, gallery, postList }: GalleryCanvasProps) => {
+const GalleryCanvas = ({ controlType, gallery, postList, isPortfolio = false }: GalleryCanvasProps) => {
   /**
    * Enter the gallery : initial invitation cover
    */
@@ -50,7 +52,14 @@ const GalleryCanvas = ({ controlType, gallery, postList }: GalleryCanvasProps) =
   const { sceneRef, rendererRef, cameraRef } = useDefaultRender({ canvasRef })
   const { loadingManager, requiredCount, loadedCount } = useLoadingCount()
   const { controlsRef } = useControlsStrategy({ type: controlType, canvasRef, sceneRef, cameraRef, loadingManager })
-  const { terrainRef, isTerrainBuilt } = useTerrainStrategy({ sceneRef, cameraRef, controlsRef, loadingManager, gallery, postList })
+  const { terrainRef, isTerrainBuilt } = useTerrainStrategy({
+    sceneRef,
+    cameraRef,
+    controlsRef,
+    loadingManager,
+    placeId: gallery.place.placeId,
+    postList,
+  })
 
   /**
    * Render the canvas
@@ -130,7 +139,9 @@ const GalleryCanvas = ({ controlType, gallery, postList }: GalleryCanvasProps) =
     /* eslint-enable */
   }, [controlsRef, isTerrainBuilt])
 
-  // Close modal on ESC
+  /**
+   * Close post modal on ESC
+   */
   useEffect(() => {
     const closeModal = (e: KeyboardEvent) => {
       if (e.code === 'Escape') setSelectedPostIdx(null)
@@ -143,7 +154,9 @@ const GalleryCanvas = ({ controlType, gallery, postList }: GalleryCanvasProps) =
     }
   }, [])
 
-  // Side effect of modal state
+  /**
+   * Side effect from the modal state
+   */
   useEffect(() => {
     if (!isEntered) return
 
@@ -156,7 +169,9 @@ const GalleryCanvas = ({ controlType, gallery, postList }: GalleryCanvasProps) =
     }
   }, [selectedPostIdx, isEntered])
 
-  // Check the control type
+  /**
+   * Switch the control component
+   */
   const [isKeypad, setIsKeypad] = useState(false)
 
   useEffect(() => {
@@ -177,7 +192,7 @@ const GalleryCanvas = ({ controlType, gallery, postList }: GalleryCanvasProps) =
           setSelectedPostIdx(null)
         }}
       >
-        <PostDetail post={postList[selectedPostIdx!]} />
+        {isPortfolio ? <PortfolioDetail post={postList[selectedPostIdx!]} /> : <PostDetail post={postList[selectedPostIdx!]} />}
       </Modal>
       <CSSTransition className="gallery-canvas__loading" isShow={requiredCount !== loadedCount} duration={1000} timingFunction="ease-in-out">
         <Loading />

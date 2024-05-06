@@ -20,7 +20,7 @@ function ControlSelection({ onSelect }: ControlSelectionProps) {
           <Button3D onClick={() => onSelect('mouse')} ariaLabel="마우스로 컨트롤">
             <div className="control-selection__button">
               <PointerSvg />
-              <span>마우스로 간편 관람</span>
+              <span>{t('controller.mouse')}</span>
             </div>
           </Button3D>
         </li>
@@ -28,7 +28,7 @@ function ControlSelection({ onSelect }: ControlSelectionProps) {
           <Button3D onClick={() => onSelect('keypad')} ariaLabel="키패드로 컨트롤">
             <div className="control-selection__button">
               <GameSvg />
-              <span>키패드로 직접 관람</span>
+              <span>{t('controller.keypad')}</span>
             </div>
           </Button3D>
         </li>

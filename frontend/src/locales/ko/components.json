@@ -52,7 +52,9 @@
     "author": "작가"
   },
   "controller": {
-    "chooseType": "갤러리를 관람할 방법을 선택하세요"
+    "chooseType": "갤러리를 관람할 방법을 선택하세요",
+    "mouse": "마우스로 간편 관람",
+    "keypad": "키패드로 직접 관람"
   },
   "joystickControl": {
     "move": "캐릭터를 앞뒤로 이동합니다",
