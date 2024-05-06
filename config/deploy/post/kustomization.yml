@@ -6,4 +6,4 @@ resources:
 
 images:
 - name: chancehee/gallery-post
-  newTag: cf150946ca055b017361266b7a3e07725584d34b
+  newTag: 35eb6eaa4d2b979489edf6446046308a794b8c35
