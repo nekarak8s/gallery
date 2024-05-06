@@ -2,10 +2,7 @@ package com.nekarak8s.post.app.data.entity;
 
 import com.nekarak8s.post.app.data.dto.response.PostResponse;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +10,7 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "post",
@@ -62,5 +60,16 @@ public class Post extends BaseEntity{
                 .modifiedDate(getModifiedDate())
                 .isActive(isActive)
                 .build();
+    }
+
+    public static Post createInitPost(long galleryId, long order, String imageURL) {
+        return Post.builder()
+            .galleryId(galleryId)
+            .order(order)
+            .title("")
+            .content("")
+            .imageURL(imageURL)
+            .isActive(true)
+            .build();
     }
 }
