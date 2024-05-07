@@ -13,8 +13,9 @@ const PortfolioDetail = ({ post }: PortfolioDetailProps) => {
     return post.content.split('SPLIT')
   }, [post])
 
-  const markup = { __html: '<p>some raw html</p>' }
-  ;<div dangerouslySetInnerHTML={markup} />
+  // Filter invalid content
+  if (post.content.includes('script') || post.content.includes('img')) return
+
   return (
     <article className="portfolio-detail">
       <section className="portfolio-detail__summary">

@@ -47,7 +47,7 @@ const Gallery = () => {
     const portfolioKeys = Object.keys(PORTFOLIO_GALLERY_ID)
     const portfolioKey = portfolioKeys.find((key) => PORTFOLIO_GALLERY_ID[key] === parseInt(galleryId as string))
     if (portfolioKey) {
-      navigate(`/portfolio/${portfolioKey}`)
+      navigate(`/portfolio/${portfolioKey}`, { replace: true })
     }
   }, [galleryId])
 

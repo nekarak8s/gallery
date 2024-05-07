@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import GallerySelection from './GallerySelection'
 import GalleryNavbar from '../Gallery/GalleryNavbar'
 import galleryBgm from '@/assets/audios/MapleStory-Pantheon.mp3'
@@ -47,14 +47,16 @@ const ExampleGallery = () => {
 
   // Check if it's portfolio
   const navigate = useNavigate()
+  const location = useLocation()
 
   const isPortfolio = useMemo(() => {
     return !developer || !PORTFOLIO_GALLERY_ID[developer] ? false : true
   }, [developer])
 
   useEffect(() => {
+    if (location.pathname === '/gallery/example') return
     if (!developer || !PORTFOLIO_GALLERY_ID[developer]) {
-      navigate('/gallery/example')
+      navigate('/gallery/example', { replace: true })
     }
   }, [developer])
 
