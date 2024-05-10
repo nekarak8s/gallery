@@ -8,6 +8,7 @@ import { GalleryData } from '../../types'
 import ButtonControl from '../ButtonControl/ButtonControl'
 import GalleryCover from '../GalleryCover'
 import JoystickControl from '../JoystickControl'
+import MiniMap from '../MiniMap'
 import CSSTransition from '@/atoms/ui/CSSTransition'
 import Loading from '@/atoms/ui/Loading'
 import Modal from '@/atoms/ui/Modal'
@@ -86,7 +87,7 @@ const GalleryCanvas = ({ controlType, gallery, postList, isPortfolio = false }: 
     return () => {
       renderer.setAnimationLoop(null)
     }
-  }, [rendererRef, sceneRef, cameraRef])
+  }, [rendererRef.current, sceneRef.current, cameraRef.current])
 
   /**
    * Enable the controls
@@ -109,7 +110,7 @@ const GalleryCanvas = ({ controlType, gallery, postList, isPortfolio = false }: 
     return () => {
       controls.enabled = false
     }
-  }, [controlsRef, terrainRef, isEntered, loadedCount, requiredCount, isTerrainBuilt])
+  }, [controlsRef.current, terrainRef.current, isEntered, loadedCount, requiredCount, isTerrainBuilt])
 
   /**
    * Show selected frames modal
@@ -181,6 +182,9 @@ const GalleryCanvas = ({ controlType, gallery, postList, isPortfolio = false }: 
   return (
     <div className="gallery-canvas">
       <canvas ref={canvasRef} />
+      <div className="gallery-canvas__mini-map">
+        <MiniMap controlsRef={controlsRef} galleryType={gallery.place.placeId} />
+      </div>
       {isKeypad ? (
         <JoystickControl controlsRef={controlsRef as React.RefObject<KeypadControls>} loadingManager={loadingManager} />
       ) : (
@@ -207,16 +211,10 @@ const GalleryCanvas = ({ controlType, gallery, postList, isPortfolio = false }: 
 export default GalleryCanvas
 
 // Capture camera
-// const camera2 = new THREE.OrthographicCamera(
-//   canvas.offsetWidth / -2,
-//   canvas.offsetWidth / 2,
-//   canvas.offsetHeight / 2,
-//   canvas.offsetHeight / -2,
-//   3,
-//   1000
-// )
-// camera2.position.set(-40, 90, -40)
-// camera2.lookAt(54, 0, 54)
-// camera2.zoom = 10
+
+// const camera2 = new THREE.OrthographicCamera()
+// camera2.position.set(50, 1000, 50)
+// camera2.lookAt(50, 0, 50)
+// camera2.zoom = 0.017
 // camera2.updateProjectionMatrix()
 // scene.add(camera2)

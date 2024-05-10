@@ -7,9 +7,9 @@ export const FRAME_INFO = {
 export const FRAMES_DATA = [
   {
     // 초입
-    x: 5.5,
+    x: 50.5,
     y: 8.9,
-    z: -23.4,
+    z: 21.6,
     rotationY: -2.39,
     width: FRAME_INFO.width,
     height: FRAME_INFO.height,
@@ -17,9 +17,9 @@ export const FRAMES_DATA = [
   },
   {
     // 신사 가는길 의자 위
-    x: -16.2,
+    x: 28.8,
     y: 8.1,
-    z: -4.75,
+    z: 40.25,
     rotationY: -2.24,
     width: FRAME_INFO.width,
     height: FRAME_INFO.height,
@@ -27,9 +27,9 @@ export const FRAMES_DATA = [
   },
   {
     // 붉은 신사
-    x: -4.1,
+    x: 40.9,
     y: 8,
-    z: 22.3,
+    z: 67.3,
     rotationY: -2.44,
     width: FRAME_INFO.width,
     height: FRAME_INFO.height,
@@ -37,9 +37,9 @@ export const FRAMES_DATA = [
   },
   {
     // 신사 뒤쪽
-    x: 3.4,
+    x: 48.4,
     y: 11.3,
-    z: 21.85,
+    z: 66.85,
     rotationY: -2.44,
     width: FRAME_INFO.width,
     height: FRAME_INFO.height,
@@ -47,9 +47,9 @@ export const FRAMES_DATA = [
   },
   {
     // 중앙 도로 왼쪽 건물
-    x: 2.5,
+    x: 47.5,
     y: 8.5,
-    z: -14.6,
+    z: 30.4,
     rotationY: -0.8,
     width: FRAME_INFO.width,
     height: FRAME_INFO.height,
@@ -58,9 +58,9 @@ export const FRAMES_DATA = [
 
   {
     // 가게 안
-    x: 14.3,
+    x: 59.3,
     y: 10.35,
-    z: -10.65,
+    z: 34.35,
     rotationY: -0.78,
     width: FRAME_INFO.width,
     height: FRAME_INFO.height,
@@ -68,9 +68,9 @@ export const FRAMES_DATA = [
   },
   {
     // 구석 담벼락(토기)
-    x: 28.8,
+    x: 73.8,
     y: 10.5,
-    z: -7.7,
+    z: 37.3,
     rotationY: -1.24,
     width: FRAME_INFO.width,
     height: FRAME_INFO.height,
@@ -78,9 +78,9 @@ export const FRAMES_DATA = [
   },
   {
     // 끝 건물
-    x: 19.1,
+    x: 64.1,
     y: 11.5,
-    z: 19.8,
+    z: 64.8,
     rotationY: 2.28,
     width: FRAME_INFO.width,
     height: FRAME_INFO.height,
@@ -88,9 +88,9 @@ export const FRAMES_DATA = [
   },
   {
     // 포장 마차
-    x: 22.7,
+    x: 67.7,
     y: 11.5,
-    z: 9.7,
+    z: 54.7,
     rotationY: -1.57,
     width: FRAME_INFO.width,
     height: FRAME_INFO.height,
@@ -98,9 +98,9 @@ export const FRAMES_DATA = [
   },
   {
     // 외곽
-    x: 31.85,
+    x: 76.85,
     y: 6.5,
-    z: 5.7,
+    z: 50.7,
     rotationY: 1.6,
     width: FRAME_INFO.width,
     height: FRAME_INFO.height,

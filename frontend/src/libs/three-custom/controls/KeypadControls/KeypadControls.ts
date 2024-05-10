@@ -91,6 +91,7 @@ class KeypadControls implements IControls {
     this.camera.position.copy(this.#cameraOffset)
     this.#group.add(this.camera)
     this.camera.lookAt(CAMERA_LOOK_AT.add(this.#group.position))
+    this.#group.rotation.order = 'YXZ'
 
     // Limit the raycaster distance
     this.#raycaster.far = 20
@@ -123,6 +124,14 @@ class KeypadControls implements IControls {
       window.removeEventListener('keydown', _onKeyDown)
       window.removeEventListener('keyup', _onKeyUp)
     }
+  }
+
+  get position() {
+    return this.#group.position
+  }
+
+  get rotationY() {
+    return -this.#group.rotation.y
   }
 
   /**

@@ -18,32 +18,39 @@ const ButtonControl = ({ controlsRef }: ButtonControlProps) => {
   const [idx, setIdx] = useState(0)
 
   const handleClickModal = useCallback(() => {
-    if (!controlsRef.current) return
+    const controls = controlsRef.current
+    if (!controls) return
+
     setIsOpen(false)
-    controlsRef.current.moveToNextPost()
-  }, [controlsRef])
+    controls.moveToNextPost()
+  }, [controlsRef.current])
 
   const handleNextClick = useCallback(() => {
-    if (!controlsRef.current || controlsRef.current.isMoving) return
+    const controls = controlsRef.current
+    if (!controls || controls.isMoving) return
+
     setIdx((idx) => idx + 1)
-    controlsRef.current.moveToNextPost()
-  }, [controlsRef])
+    controls.moveToNextPost()
+  }, [controlsRef.current])
 
   const handlePrevClick = useCallback(() => {
-    if (!controlsRef.current || controlsRef.current.isMoving) return
+    const controls = controlsRef.current
+    if (!controls || controls.isMoving) return
+
     setIdx((idx) => idx - 1)
-    controlsRef.current.moveToPrevPost()
-  }, [controlsRef])
+    controls.moveToPrevPost()
+  }, [controlsRef.current])
 
   useEffect(() => {
-    if (!controlsRef.current) return
+    const controls = controlsRef.current
+    if (!controls) return
 
     if (isMobile) {
-      controlsRef.current.offsetDistance = 3.5
+      controls.offsetDistance = 3.5
     } else {
-      controlsRef.current.offsetDistance = 2.5
+      controls.offsetDistance = 2.5
     }
-  }, [controlsRef, isMobile])
+  }, [controlsRef.current, isMobile])
 
   return (
     <div className="button-control">

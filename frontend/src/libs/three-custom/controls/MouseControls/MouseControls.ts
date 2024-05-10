@@ -42,7 +42,7 @@ class MouseControls implements IControls {
   constructor({ canvas, camera }: MouseControlsArgs) {
     this.canvas = canvas
     this.camera = camera
-    this.camera.rotation.order = 'YXZ'
+    this.camera.rotation.order = 'YZX'
     this.#orbitControls = new OrbitControls(camera, canvas)
     this.#orbitControls.enableDamping = true
     this.#orbitControls.maxDistance = 15
@@ -67,6 +67,14 @@ class MouseControls implements IControls {
 
   get postTargets() {
     return this.targets.filter((target) => target.userData.isPost)
+  }
+
+  get position() {
+    return this.camera.position
+  }
+
+  get rotationY() {
+    return Math.PI - this.camera.rotation.y
   }
 
   onMouseDown(e: MouseEvent) {

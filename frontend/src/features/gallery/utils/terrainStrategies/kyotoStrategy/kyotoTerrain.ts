@@ -6,6 +6,8 @@ import { MeshoptDecoder } from '@/libs/three-custom/decoder/MeshoptDecoder'
 import { toLambert } from '@/libs/three-custom/utils/changeMaterial'
 import { disposeObject } from '@/libs/three-custom/utils/disposeObject'
 
+export const TERRAIN_WIDTH = 100
+
 type KyotoProps = {
   scene: THREE.Scene
   objects: {
@@ -29,7 +31,7 @@ export class Kyoto {
 
     // Add all the objects to the scene
     Object.values(this.objects).forEach((object) => {
-      object.position.set(-60, -50, -60)
+      object.position.set(-15, -50, -15)
       this.scene.add(object)
     })
   }

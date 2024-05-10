@@ -65,7 +65,7 @@ const useTerrainStrategy = ({ sceneRef, cameraRef, controlsRef, loadingManager, 
       terrainRef.current = null
       terrain.dispose()
     }
-  }, [sceneRef, cameraRef, controlsRef, loadingManager, placeId, postList])
+  }, [sceneRef.current, cameraRef.current, controlsRef.current, loadingManager, placeId, postList])
 
   return { terrainRef, isTerrainBuilt }
 }

@@ -46,7 +46,7 @@ const useControlsStrategy = ({ type, canvasRef, sceneRef, cameraRef, loadingMana
       controlsRef.current = null
       controls.dispose()
     }
-  }, [type, canvasRef, sceneRef, cameraRef, loadingManager])
+  }, [type, canvasRef.current, sceneRef.current, cameraRef.current, loadingManager])
 
   return { controlsRef }
 }

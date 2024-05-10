@@ -52,7 +52,7 @@ const useDefaultRender = ({ canvasRef }: TDefaultRenderProps) => {
       renderer.dispose()
       window.removeEventListener('resize', handleSize)
     }
-  }, [canvasRef])
+  }, [canvasRef.current])
 
   return { sceneRef, rendererRef, cameraRef }
 }

@@ -6,6 +6,8 @@ import greenaryGlb from '@/assets/glbs/terrains/greenary-draco.glb'
 import { toLambert } from '@/libs/three-custom/utils/changeMaterial'
 import { disposeObject } from '@/libs/three-custom/utils/disposeObject'
 
+export const TERRAIN_WIDTH = 112
+
 type GreenaryProps = {
   scene: THREE.Scene
   objects: {
