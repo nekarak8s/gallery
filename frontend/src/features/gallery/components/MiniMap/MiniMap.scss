@@ -1,14 +1,67 @@
+@use '@/styles/_z-index.scss' as *;
+@use '@/styles/_colors.scss' as c;
+
 .mini-map {
-  position: relative;
+  @include z-index(dnd);
+  display: grid;
+  grid-template-rows: auto 1fr;
+  overflow: hidden;
+  position: fixed;
   width: var(--data-width, 200px);
-  height: var(--data-width, 200px);
   border-radius: 5px;
+  font-size: 1rem;
+  transition: grid-template-rows 0.3s;
+
+  &.close {
+    grid-template-rows: auto 0fr;
+  }
+}
+
+.mini-map__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 2em;
+  padding: 0 0.5em;
+  background-color: rgb(121, 121, 121);
+  color: var(--colors-ft-reverse, c.$ft-white);
+
+  > div {
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+  }
+}
+
+.mini-map__bar-icons {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  overflow: hidden;
+  height: 1em;
+
+  svg {
+    min-height: 100%;
+    transition: transform 0.3s;
+  }
+}
+
+.mini-map.close {
+  .mini-map__bar-icons svg {
+    transform: translateY(-100%);
+  }
+}
+
+.mini-map__map {
+  position: relative;
+  max-width: var(--data-width, 200px);
+  max-height: var(--data-width, 200px);
   overflow: hidden;
 
   img {
     width: 100%;
     height: 100%;
-    filter: contrast(160%) opacity(80%) brightness(1.7);
+    filter: opacity(70%);
   }
 
   svg {

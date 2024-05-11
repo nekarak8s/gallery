@@ -182,9 +182,7 @@ const GalleryCanvas = ({ controlType, gallery, postList, isPortfolio = false }: 
   return (
     <div className="gallery-canvas">
       <canvas ref={canvasRef} />
-      <div className="gallery-canvas__mini-map">
-        <MiniMap controlsRef={controlsRef} galleryType={gallery.place.placeId} />
-      </div>
+      <MiniMap controlsRef={controlsRef} galleryType={gallery.place.placeId} defaultPosition={{ top: '10px', right: '10px' }} />
       {isKeypad ? (
         <JoystickControl controlsRef={controlsRef as React.RefObject<KeypadControls>} loadingManager={loadingManager} />
       ) : (
