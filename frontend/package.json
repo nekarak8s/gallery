@@ -28,7 +28,6 @@
     "@sentry/react": "^7.93.0",
     "@sentry/webpack-plugin": "^2.10.2",
     "axios": "^1.4.0",
-    "cannon-es": "^0.20.0",
     "gsap": "^3.12.2",
     "i18next": "^23.11.1",
     "react": "^18.2.0",

@@ -97,10 +97,6 @@ export default class KyotoStrategy implements IGalleryStrategy {
     props.scene.add(directLight)
     this.lights.push(directLight)
 
-    // add light helper
-    const lightHelper = new THREE.DirectionalLightHelper(directLight)
-    props.scene.add(lightHelper)
-
     // Create ocean
     const ocean = new OceanFactory().addItem({
       container: props.scene,

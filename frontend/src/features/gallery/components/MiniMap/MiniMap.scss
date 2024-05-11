@@ -3,7 +3,6 @@
 @use '@/styles/_colors.scss' as c;
 
 .mini-map {
-  @include z-index(dnd);
   display: grid;
   grid-template-rows: auto 1fr;
   overflow: hidden;

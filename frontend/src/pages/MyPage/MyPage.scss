@@ -12,6 +12,21 @@
   font-size: 1rem;
 }
 
+.my-page.loaded {
+  .my-page__profile-edit {
+    @include a.animation-clear('profile-edit', slow);
+    visibility: visible;
+  }
+  .my-page__line {
+    @include a.animation-clear('profile-line', slow);
+    visibility: visible;
+  }
+  .my-page__gallery {
+    @include a.animation-slide-in-up('profile-gallery', slow, $distance: 50px);
+    visibility: visible;
+  }
+}
+
 .my-page__profile {
   display: flex;
   align-items: center;
@@ -55,8 +70,7 @@
 }
 
 .my-page__profile-edit {
-  @include a.animation-clear('profile-edit', slow);
-  display: none;
+  visibility: hidden;
   position: absolute;
   bottom: 0;
   right: 0;
@@ -64,8 +78,7 @@
 }
 
 .my-page__line {
-  @include a.animation-clear('profile-line', slow);
-  display: none;
+  visibility: hidden;
   width: 80vw;
   height: 15px;
   background-image: radial-gradient(ellipse at 50% 0%, rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0) 70%);
@@ -73,8 +86,7 @@
 }
 
 .my-page__gallery {
-  @include a.animation-slide-in-up('profile-gallery', slow, $distance: 50px);
-  display: none;
+  visibility: hidden;
   width: clamp(400px, 90%, 1200px);
   opacity: 0;
 }

@@ -1,4 +1,5 @@
 import { MouseEventHandler, useEffect, useRef, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import galleryImg from '@/assets/images/minimap/gallery.png?format=png'
 import galleryWebp from '@/assets/images/minimap/gallery.png?format=webp'
 import greenaryImg from '@/assets/images/minimap/greenary.png?format=png'
@@ -42,6 +43,7 @@ type MiniMapProps = {
 }
 
 function MiniMap({ galleryType, controlsRef, defaultPosition }: MiniMapProps) {
+  const { t } = useTranslation()
   const containerRef = useRef<HTMLDivElement>(null)
   const [isOpen, setIsOpen] = useState(true)
 
@@ -105,7 +107,7 @@ function MiniMap({ galleryType, controlsRef, defaultPosition }: MiniMapProps) {
       <div className="mini-map__bar" data-cursor-scale={CURSOR_SCALE}>
         <div>
           <DragSvg />
-          <span>미니맵</span>
+          <span>{t('minimap')}</span>
         </div>
         <button className="mini-map__bar-icons" onClick={handleClick} aria-label={isOpen ? '미니맵 닫기' : '미니맵 닫기'}>
           <CloseSvg />

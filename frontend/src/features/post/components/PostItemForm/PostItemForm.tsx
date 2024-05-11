@@ -136,7 +136,7 @@ const PostItemForm = ({ post, index }: PostItemFormProps) => {
             <Button text={t('buttons.selectMusic')} size="sm" onClick={() => setIsMusicOpen(true)} />
           </div>
           <Text label={t('inputs.title')} name={`posts[${index}].title`} initialValue={post.title} onChange={handleChangeTitle} />
-          <Textarea label={t('inputs.description')} name={`posts[${index}].content`} initialValue={post.content} height="4em" maxLen={500} />
+          <Textarea label={t('inputs.description')} name={`posts[${index}].content`} initialValue={post.content} height="6em" maxLen={500} />
         </div>
       </article>
       {/* Music Select Modal */}
