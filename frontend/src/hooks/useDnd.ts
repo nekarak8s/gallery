@@ -21,23 +21,21 @@ const useDnd = ({ ref }: useDndProps) => {
     let offsetX: number // mouse x - element x
     let offsetY: number // mouse y - element y
 
-    const handleMouseDown = (event: MouseEvent) => {
-      event.preventDefault()
+    const handleDragStart = (event: MouseEvent | TouchEvent) => {
+      if (event instanceof MouseEvent) event.preventDefault()
       isDraggingRef.current = true
 
-      x = event.clientX
-      y = event.clientY
+      x = event instanceof MouseEvent ? event.clientX : event.touches[0].clientX
+      y = event instanceof MouseEvent ? event.clientY : event.touches[0].clientY
       offsetX = x - element.getBoundingClientRect().left
       offsetY = y - element.getBoundingClientRect().top
     }
 
-    const handleMouseMove = (event: MouseEvent) => {
-      event.preventDefault()
-
+    const handleDrag = (event: MouseEvent | TouchEvent) => {
       if (!isDraggingRef.current) return
 
-      x = event.clientX
-      y = event.clientY
+      x = event instanceof MouseEvent ? event.clientX : event.touches[0].clientX
+      y = event instanceof MouseEvent ? event.clientY : event.touches[0].clientY
       element.style.inset = `
         ${y - offsetY}px 
         auto 
@@ -46,23 +44,28 @@ const useDnd = ({ ref }: useDndProps) => {
       `
     }
 
-    const handleMouseUp = (event: MouseEvent) => {
-      event.preventDefault()
+    const handleDragEnd = (event: MouseEvent | TouchEvent) => {
       isDraggingRef.current = false
 
       offsetX = 0
       offsetY = 0
     }
 
-    const throttledHandleMouseMove = throttle(handleMouseMove, 16)
-    element.addEventListener('mousedown', handleMouseDown)
-    document.addEventListener('mousemove', throttledHandleMouseMove)
-    document.addEventListener('mouseup', handleMouseUp)
+    const throttledHandleDrag = throttle(handleDrag, 16)
+    element.addEventListener('mousedown', handleDragStart)
+    element.addEventListener('touchstart', handleDragStart)
+    document.addEventListener('mousemove', throttledHandleDrag)
+    document.addEventListener('touchmove', throttledHandleDrag)
+    document.addEventListener('mouseup', handleDragEnd)
+    document.addEventListener('touchend', handleDragEnd)
 
     return () => {
-      element.removeEventListener('mousedown', handleMouseDown)
-      document.removeEventListener('mousemove', throttledHandleMouseMove)
-      document.removeEventListener('mouseup', handleMouseUp)
+      element.removeEventListener('mousedown', handleDragStart)
+      element.removeEventListener('touchstart', handleDragStart)
+      document.removeEventListener('mousemove', throttledHandleDrag)
+      document.removeEventListener('touchmove', throttledHandleDrag)
+      document.removeEventListener('mouseup', handleDragEnd)
+      document.removeEventListener('touchend', handleDragEnd)
     }
   }, [ref.current])
 }

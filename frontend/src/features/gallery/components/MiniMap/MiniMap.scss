@@ -1,3 +1,4 @@
+@use '@/styles/_responsive.scss' as *;
 @use '@/styles/_z-index.scss' as *;
 @use '@/styles/_colors.scss' as c;
 
@@ -75,5 +76,11 @@
     path {
       fill: rgb(255, 42, 42);
     }
+  }
+}
+
+@include mobile {
+  .mini-map {
+    font-size: 0.9rem;
   }
 }

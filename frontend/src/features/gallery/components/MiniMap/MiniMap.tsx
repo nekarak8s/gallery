@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { MouseEventHandler, useEffect, useRef, useState } from 'react'
 import galleryImg from '@/assets/images/minimap/gallery.png?format=png'
 import galleryWebp from '@/assets/images/minimap/gallery.png?format=webp'
 import greenaryImg from '@/assets/images/minimap/greenary.png?format=png'
@@ -31,8 +31,9 @@ const TERRAIN_IMAGE: Record<number, [ResponsiveImageOutput, ResponsiveImageOutpu
 }
 
 const DESKTOP_MINIMAP_WIDTH = 250 // width of the minimap. px
-const LAPTOP_MINIMAP_WIDTH = 200 // width of the minimap. px
-const MOBILE_MINIMAP_WIDTH = 150 // width of the minimap. px
+const LAPTOP_MINIMAP_WIDTH = 240 // width of the minimap. px
+const TABLET_MINIMAP_WIDTH = 230 // width of the minimap. px
+const MOBILE_MINIMAP_WIDTH = 170 // width of the minimap. px
 
 type MiniMapProps = {
   galleryType: number
@@ -43,6 +44,11 @@ type MiniMapProps = {
 function MiniMap({ galleryType, controlsRef, defaultPosition }: MiniMapProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const [isOpen, setIsOpen] = useState(true)
+
+  const handleClick: MouseEventHandler = (e) => {
+    e.stopPropagation()
+    setIsOpen(!isOpen)
+  }
 
   // Set the initial position
   useEffect(() => {
@@ -79,6 +85,7 @@ function MiniMap({ galleryType, controlsRef, defaultPosition }: MiniMapProps) {
     const handleResize = () => {
       MINIMAP_WIDTH = DESKTOP_MINIMAP_WIDTH
       if (window.innerWidth < 1280) MINIMAP_WIDTH = LAPTOP_MINIMAP_WIDTH
+      if (window.innerWidth < 992) MINIMAP_WIDTH = TABLET_MINIMAP_WIDTH
       if (window.innerWidth < 640) MINIMAP_WIDTH = MOBILE_MINIMAP_WIDTH
       container.style.setProperty('--data-width', `${MINIMAP_WIDTH}px`)
     }
@@ -100,7 +107,7 @@ function MiniMap({ galleryType, controlsRef, defaultPosition }: MiniMapProps) {
           <DragSvg />
           <span>미니맵</span>
         </div>
-        <button className="mini-map__bar-icons" onClick={() => setIsOpen(!isOpen)} aria-label={isOpen ? '미니맵 닫기' : '미니맵 닫기'}>
+        <button className="mini-map__bar-icons" onClick={handleClick} aria-label={isOpen ? '미니맵 닫기' : '미니맵 닫기'}>
           <CloseSvg />
           <OpenSvg />
         </button>
