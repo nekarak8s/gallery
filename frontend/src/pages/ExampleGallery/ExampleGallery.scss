@@ -7,13 +7,13 @@
   grid-template-columns: 1fr;
   grid-template-rows: 1fr;
   width: 100vw;
-  height: 100vh;
+  height: calc(var(--vh, 1vh) * 100);
 }
 
 .example-gallery__music {
   @include z-index(modal);
   position: fixed;
-  bottom: 2em;
+  bottom: 1em;
   left: 1em;
 }
 
@@ -60,11 +60,5 @@
 
   100% {
     opacity: 1;
-  }
-}
-
-@include mobile {
-  .example-gallery__music {
-    bottom: 2em;
   }
 }

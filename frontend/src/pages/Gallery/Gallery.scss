@@ -7,7 +7,7 @@
   grid-template-columns: 1fr;
   grid-template-rows: 1fr;
   width: 100vw;
-  height: 100vh;
+  height: calc(var(--vh, 1vh) * 100);
 }
 
 .gallery__selection {
@@ -42,10 +42,4 @@
   position: fixed;
   top: 0;
   left: 0;
-}
-
-@include mobile {
-  .gallery__music {
-    bottom: 2em;
-  }
 }

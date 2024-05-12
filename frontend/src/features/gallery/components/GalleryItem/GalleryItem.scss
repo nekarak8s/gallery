@@ -138,25 +138,6 @@
   }
 }
 
-.gallery-item__update {
-  position: fixed;
-  z-index: 99;
-  width: 90vw;
-  height: 100vh;
-  top: 0;
-  right: 0;
-  background-color: purple;
-  transform: translate(100%, 0%);
-
-  &--enter {
-    transform: translate(0%, 0%);
-  }
-
-  &--leave {
-    transform: translate(100%, 0%);
-  }
-}
-
 @include laptop {
   .gallery-item {
     font-size: 1rem;

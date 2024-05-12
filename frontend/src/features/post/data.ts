@@ -233,6 +233,25 @@ export const postListData: PostItemData[] = [
   },
 ]
 
+export const portfolioItemData: PostItemData = {
+  postId: 1,
+  order: 1,
+  title: '이병호',
+  content: '<p>summary</p><ul><li><b>작업기간</b>: 2024.01.03</li><li>작업인원</li></ul>SPLIT<p>detail</p>',
+  imageURL: 'https://source.unsplash.com/500x500',
+  createdDate: '2023-08-03T23:59:59',
+  modifiedDate: '2023-08-04T00:59:59',
+  isActive: true,
+  music: {
+    musicId: 1,
+    title: '비밀번호 486',
+    artist: '윤하',
+    releasedDate: '2023-08-03T23:59:59',
+    videoId: 'iEfIcJHEb70',
+    coverURL: 'https://source.unsplash.com/500x500',
+  },
+}
+
 export const portfolioListData: PostItemData[] = [
   {
     postId: 1,

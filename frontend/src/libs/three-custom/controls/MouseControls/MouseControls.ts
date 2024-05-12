@@ -44,6 +44,10 @@ class MouseControls implements IControls {
     this.camera = camera
     this.camera.rotation.order = 'YZX'
     this.#orbitControls = new OrbitControls(camera, canvas)
+    this.#orbitControls.touches = {
+      ONE: THREE.TOUCH.ROTATE,
+      TWO: null,
+    }
     this.#orbitControls.enableDamping = true
     this.#orbitControls.maxDistance = 15
     this.#orbitControls.minDistance = 1

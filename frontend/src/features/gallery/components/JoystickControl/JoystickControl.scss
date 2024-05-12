@@ -19,7 +19,7 @@
   justify-content: center;
   gap: 2em;
   max-width: 90vw;
-  max-height: 70vh;
+  max-height: calc(var(--vh, 1vh) * 70);
   padding: 4em 4em;
   border-radius: 10px;
   background-color: rgba(0, 0, 0, 0.8);
