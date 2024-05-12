@@ -3,18 +3,11 @@
 @use '@/styles/_colors.scss' as c;
 
 .mini-map {
-  display: grid;
-  grid-template-rows: auto 1fr;
   overflow: hidden;
   position: fixed;
   width: var(--data-width, 200px);
   border-radius: 5px;
   font-size: 1rem;
-  transition: grid-template-rows 0.3s;
-
-  &.close {
-    grid-template-rows: auto 0fr;
-  }
 }
 
 .mini-map__bar {
@@ -36,8 +29,10 @@
 .mini-map__bar-icons {
   display: flex;
   flex-direction: column;
+  align-items: flex-end;
   flex-wrap: nowrap;
   overflow: hidden;
+  width: 2em;
   height: 1em;
 
   svg {
@@ -53,6 +48,7 @@
 }
 
 .mini-map__map {
+  display: block;
   position: relative;
   max-width: var(--data-width, 200px);
   max-height: var(--data-width, 200px);
@@ -68,9 +64,9 @@
     position: absolute;
     width: 8%;
     height: 8%;
-    left: var(--data-x, -8%);
-    top: var(--data-y, -8%);
-    transform: translate(-50%, -50%) rotate(var(--data-rad, 0));
+    left: 0;
+    top: 0;
+    transform: translate(calc(var(--data-x, 0px) - 50%), calc(var(--data-y, 0px) - 50%)) rotate(var(--data-rad, 0));
 
     path {
       fill: rgb(255, 42, 42);
@@ -78,8 +74,19 @@
   }
 }
 
+.mini-map.close {
+  .mini-map__map {
+    display: none;
+  }
+}
+
 @include mobile {
   .mini-map {
     font-size: 0.9rem;
+  }
+
+  .mini-map__bar {
+    height: 2.3em;
+    padding: 0 0.6em;
   }
 }

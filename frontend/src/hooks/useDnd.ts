@@ -1,6 +1,8 @@
 import { useEffect, useRef } from 'react'
 import throttle from '@/utils/throttle'
 
+const WINDOW_OFFSET = 40 // component's offset from the window edge. px
+
 type useDndProps = {
   ref: React.RefObject<HTMLElement>
 }
@@ -16,31 +18,42 @@ const useDnd = ({ ref }: useDndProps) => {
     element.style.cursor = 'move'
 
     // announce the required variables
-    let x: number // mouse x
-    let y: number // mouse y
-    let offsetX: number // mouse x - element x
-    let offsetY: number // mouse y - element y
+    let clientX: number // mouse clientX
+    let clientY: number // mouse clientY
+    let offsetX: number // mouse clientX - element clientX
+    let offsetY: number // mouse clientY - element clientY
+    let left: number
+    let top: number
 
     const handleDragStart = (event: MouseEvent | TouchEvent) => {
       if (event instanceof MouseEvent) event.preventDefault()
       isDraggingRef.current = true
 
-      x = event instanceof MouseEvent ? event.clientX : event.touches[0].clientX
-      y = event instanceof MouseEvent ? event.clientY : event.touches[0].clientY
-      offsetX = x - element.getBoundingClientRect().left
-      offsetY = y - element.getBoundingClientRect().top
+      clientX = event instanceof MouseEvent ? event.clientX : event.touches[0].clientX
+      clientY = event instanceof MouseEvent ? event.clientY : event.touches[0].clientY
+      offsetX = clientX - element.getBoundingClientRect().left
+      offsetY = clientY - element.getBoundingClientRect().top
     }
 
     const handleDrag = (event: MouseEvent | TouchEvent) => {
       if (!isDraggingRef.current) return
 
-      x = event instanceof MouseEvent ? event.clientX : event.touches[0].clientX
-      y = event instanceof MouseEvent ? event.clientY : event.touches[0].clientY
+      clientX = event instanceof MouseEvent ? event.clientX : event.touches[0].clientX
+      clientY = event instanceof MouseEvent ? event.clientY : event.touches[0].clientY
+      left = clientX - offsetX
+      top = clientY - offsetY
+
+      if (left < 0) left = 0
+      else if (left + WINDOW_OFFSET > window.innerWidth) left = window.innerWidth - WINDOW_OFFSET
+
+      if (top < 0) top = 0
+      else if (top + WINDOW_OFFSET > window.innerHeight) top = window.innerHeight - WINDOW_OFFSET
+
       element.style.inset = `
-        ${y - offsetY}px 
+        ${top}px 
         auto 
         auto 
-        ${x - offsetX}px
+        ${left}px
       `
     }
 
