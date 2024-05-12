@@ -9,7 +9,6 @@ import Login from '@/pages/Login'
 import OAuth from '@/pages/OAuth'
 import '@/styles/_reset.scss'
 import '@/styles/_global.scss'
-
 import './App.scss'
 
 const Home = lazy(() => import('@/pages/Home'))
@@ -28,6 +27,7 @@ const navbarRoutes: Record<string, RouteElement> = {
 const plainRoutes: Record<string, RouteElement> = {
   OAuth: { path: '/oauth/:type', element: <OAuth /> },
   Gallery: { path: '/gallery/:galleryId', element: <Gallery /> },
+  Portfolio: { path: '/portfolio/:developer', element: <ExampleGallery /> },
   Example: { path: '/gallery/example', element: <ExampleGallery /> },
 }
 

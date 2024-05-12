@@ -5,6 +5,8 @@ import galleryGlb from '@/assets/glbs/terrains/gallery.glb'
 import { toLambert } from '@/libs/three-custom/utils/changeMaterial'
 import { disposeObject } from '@/libs/three-custom/utils/disposeObject'
 
+export const TERRAIN_WIDTH = 70
+
 type GalleryProps = {
   scene: THREE.Scene
   objects: {

@@ -17,7 +17,7 @@ const useDefaultRender = ({ canvasRef }: TDefaultRenderProps) => {
   const cameraRef = useRef<DefaultCamera | null>(null)
 
   useEffect(() => {
-    const canvas = canvasRef.current!
+    const canvas = canvasRef.current
 
     if (!canvas) return
 
@@ -48,11 +48,10 @@ const useDefaultRender = ({ canvasRef }: TDefaultRenderProps) => {
 
       scene.remove(camera)
       scene.children.forEach((child) => disposeObject(child))
-      renderer.setAnimationLoop(null)
       renderer.dispose()
       window.removeEventListener('resize', handleSize)
     }
-  }, [canvasRef])
+  }, [canvasRef.current])
 
   return { sceneRef, rendererRef, cameraRef }
 }

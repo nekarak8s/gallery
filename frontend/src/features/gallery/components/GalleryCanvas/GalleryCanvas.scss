@@ -2,8 +2,8 @@
 @use '@/styles/_z-index.scss' as *;
 
 .gallery-canvas {
-  width: 100lvw;
-  height: 100vh;
+  width: 100vw;
+  height: calc(var(--vh, 1vh) * 100);
 
   canvas {
     position: fixed;

@@ -67,7 +67,7 @@ export default class KyotoStrategy implements IGalleryStrategy {
     }
 
     // Set controls orientation
-    props.controls.setPosition(-10.56, 15, -17.39)
+    props.controls.setPosition(34.44, 15, 27.61)
     props.controls.setQuaternion(0, 0.94, 0)
 
     // Set scene background cubemap
@@ -96,10 +96,6 @@ export default class KyotoStrategy implements IGalleryStrategy {
     directLight.target = kyoto.objects.terrain
     props.scene.add(directLight)
     this.lights.push(directLight)
-
-    // add light helper
-    const lightHelper = new THREE.DirectionalLightHelper(directLight)
-    props.scene.add(lightHelper)
 
     // Create ocean
     const ocean = new OceanFactory().addItem({

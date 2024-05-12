@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
 import * as THREE from 'three'
-import { GalleryData } from '../types'
 import { IGalleryStrategy } from '../utils/terrainStrategies'
 import GalleryStrategy from '../utils/terrainStrategies/galleryStrategy'
 import GreenaryStrategy from '../utils/terrainStrategies/greenaryStrategy'
@@ -14,7 +13,7 @@ type TTerrainStrategyProps = {
   cameraRef: React.RefObject<DefaultCamera>
   controlsRef: React.RefObject<IControls>
   loadingManager: THREE.LoadingManager
-  gallery: GalleryData
+  placeId: number
   postList: PostItemData[]
 }
 
@@ -27,7 +26,7 @@ const STRATEGY_TYPE: Record<number, new (...arg: any[]) => IGalleryStrategy> = {
 /**
  * Choose the terrain strategy
  */
-const useTerrainStrategy = ({ sceneRef, cameraRef, controlsRef, loadingManager, gallery, postList }: TTerrainStrategyProps) => {
+const useTerrainStrategy = ({ sceneRef, cameraRef, controlsRef, loadingManager, placeId, postList }: TTerrainStrategyProps) => {
   const terrainRef = useRef<IGalleryStrategy | null>(null)
   const [isTerrainBuilt, setIsTerrainBuilt] = useState(false)
 
@@ -36,10 +35,10 @@ const useTerrainStrategy = ({ sceneRef, cameraRef, controlsRef, loadingManager, 
     const camera = cameraRef.current
     const controls = controlsRef.current
 
-    if (!scene || !camera || !controls || !loadingManager || !gallery || !postList) return
+    if (!scene || !camera || !controls || !loadingManager || !placeId || !postList) return
 
     // Select the terrain type
-    const terrainStrategy = STRATEGY_TYPE[gallery.place.placeId]
+    const terrainStrategy = STRATEGY_TYPE[placeId]
     if (!terrainStrategy) throw new Error('Invalid gallery placeId')
 
     // Build the terrain
@@ -66,7 +65,7 @@ const useTerrainStrategy = ({ sceneRef, cameraRef, controlsRef, loadingManager, 
       terrainRef.current = null
       terrain.dispose()
     }
-  }, [sceneRef, cameraRef, controlsRef, loadingManager, gallery, postList])
+  }, [sceneRef.current, cameraRef.current, controlsRef.current, loadingManager, placeId, postList])
 
   return { terrainRef, isTerrainBuilt }
 }

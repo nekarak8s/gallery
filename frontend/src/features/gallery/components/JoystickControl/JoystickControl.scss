@@ -19,8 +19,8 @@
   justify-content: center;
   gap: 2em;
   max-width: 90vw;
-  max-height: 70vh;
-  padding: 4em 8em;
+  max-height: calc(var(--vh, 1vh) * 70);
+  padding: 4em 4em;
   border-radius: 10px;
   background-color: rgba(0, 0, 0, 0.8);
   color: var(--color-ft-reverse, c.$ft-white);
@@ -35,16 +35,4 @@
   width: 100%;
   padding: 0 min(10%, 3em) min(15%, 5em) min(10%, 3em);
   pointer-events: auto;
-}
-
-@include tablet {
-  .joystick-control__modal {
-    padding: 3em 3em;
-  }
-}
-
-@include mobile {
-  .joystick-control__modal {
-    padding: 2em 2em;
-  }
 }

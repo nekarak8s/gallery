@@ -5,6 +5,8 @@ import { acceleratedRaycast } from 'three-mesh-bvh'
 import { IControls } from '..'
 
 const _vector3 = new THREE.Vector3()
+const _frontDirection = new THREE.Vector3(0, 0, 1)
+
 const DRAG_THRESHOLD = 0.05
 
 THREE.Mesh.prototype.raycast = acceleratedRaycast
@@ -40,15 +42,19 @@ class MouseControls implements IControls {
   constructor({ canvas, camera }: MouseControlsArgs) {
     this.canvas = canvas
     this.camera = camera
-    this.camera.rotation.order = 'YXZ'
+    this.camera.rotation.order = 'YZX'
     this.#orbitControls = new OrbitControls(camera, canvas)
+    this.#orbitControls.touches = {
+      ONE: THREE.TOUCH.ROTATE,
+      TWO: null,
+    }
     this.#orbitControls.enableDamping = true
     this.#orbitControls.maxDistance = 15
     this.#orbitControls.minDistance = 1
     this.#orbitControls.minPolarAngle = Math.PI / 3 // radians
     this.#orbitControls.maxPolarAngle = (2 * Math.PI) / 3 // radians
     this.#originPosition.copy(camera.position)
-    this.#orbitControls.target = camera.position.clone().sub(new THREE.Vector3(0, 0, -1))
+    this.setTargetOnFront()
 
     // Add event listener
     const _onMouseDown = this.onMouseDown.bind(this)
@@ -65,6 +71,14 @@ class MouseControls implements IControls {
 
   get postTargets() {
     return this.targets.filter((target) => target.userData.isPost)
+  }
+
+  get position() {
+    return this.camera.position
+  }
+
+  get rotationY() {
+    return Math.PI - this.camera.rotation.y
   }
 
   onMouseDown(e: MouseEvent) {
@@ -85,12 +99,18 @@ class MouseControls implements IControls {
 
   setPosition(x: number, y: number, z: number) {
     this.camera.position.set(x, y, z)
-    this.#orbitControls.target = this.camera.position.clone().sub(new THREE.Vector3(0, 0, 1))
     this.#originPosition.copy(this.camera.position)
+    this.setTargetOnFront()
   }
 
   setQuaternion(x: number, y: number, z: number) {
     this.camera.rotation.set(x, y, z)
+    this.setTargetOnFront()
+  }
+
+  setTargetOnFront() {
+    const cameraDirection = _frontDirection.applyQuaternion(this.camera.quaternion)
+    this.#orbitControls.target = this.camera.position.clone().add(cameraDirection)
   }
 
   moveToNextPost() {

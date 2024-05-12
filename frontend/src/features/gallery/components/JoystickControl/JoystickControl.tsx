@@ -30,26 +30,32 @@ const JoystickControl = ({ controlsRef, loadingManager }: JoystickControlProps) 
       .catch((err) => {
         console.error(err)
       })
-  }, [controlsRef])
+  }, [controlsRef.current])
 
   const joystickControl = useCallback(
     (x: number, y: number) => {
-      if (!controlsRef.current) return
-      controlsRef.current.rotateSpeedRatio = x
-      controlsRef.current.moveSpeedRatio = -y
+      const controls = controlsRef.current
+      if (!controls) return
+
+      controls.rotateSpeedRatio = x
+      controls.moveSpeedRatio = -y
     },
-    [controlsRef]
+    [controlsRef.current]
   )
 
   const joystickShoot = useCallback(() => {
-    if (!controlsRef.current) return
-    controlsRef.current.raycastTargets()
-  }, [controlsRef])
+    const controls = controlsRef.current
+    if (!controls) return
+
+    controls.raycastTargets()
+  }, [controlsRef.current])
 
   const joystickJump = useCallback(() => {
-    if (!controlsRef.current) return
-    controlsRef.current.jump()
-  }, [controlsRef])
+    const controls = controlsRef.current
+    if (!controls) return
+
+    controls.jump()
+  }, [controlsRef.current])
 
   return (
     <div className="joystick-control">

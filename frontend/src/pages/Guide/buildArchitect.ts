@@ -133,7 +133,7 @@ export function buildArchitect(props: buildArchitectProps): ThreeItem {
   // Create sky
   const sky = new SkyFactory().addItem({
     container: props.scene,
-    size: 20000,
+    size: 1000,
   }) as SkyItem
   items.push(sky)
 
@@ -141,8 +141,8 @@ export function buildArchitect(props: buildArchitectProps): ThreeItem {
   const water = new OceanFactory().addItem({
     container: props.scene,
     textureLoader,
-    width: 10000,
-    depth: 10000,
+    width: 500,
+    depth: 500,
   }) as OceanItem
   items.push(water)
 

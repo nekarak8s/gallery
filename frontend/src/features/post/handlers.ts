@@ -1,9 +1,17 @@
 import { HttpResponse, delay, http } from 'msw'
-import { postListData } from './data'
+import { portfolioListData, postListData } from './data'
+import { PORTFOLIO_GALLERY_ID } from '@/pages/ExampleGallery/ExampleGallery'
 
 export const postHandlers = [
-  http.get('*/api/post/list/:galleryId', async () => {
+  http.get('*/api/post/list/:galleryId', async ({ request, params }) => {
     await delay()
+
+    const { galleryId } = params
+    const portfolioIds = Object.values(PORTFOLIO_GALLERY_ID)
+    if (portfolioIds.includes(parseInt(galleryId as string))) {
+      return HttpResponse.json({ data: portfolioListData }, { status: 200 })
+    }
+
     return HttpResponse.json({ data: postListData }, { status: 200 })
   }),
   http.patch('*/api/post/list/:galleryId', async () => {

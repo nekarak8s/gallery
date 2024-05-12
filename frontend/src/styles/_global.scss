@@ -2,6 +2,7 @@
 @use './colors' as c;
 
 :root {
+  --vh: 1vh;
   --color-primary: #{c.$primary};
   --color-secondary: #{c.$secondary};
   --color-tertiary: #{c.$tertiary};
@@ -13,6 +14,17 @@
   --color-ft-reverse: #{c.$ft-white};
   --color-ft-subtle: #{c.$ft-gray};
   --color-ft-warning: #{c.$ft-red};
+}
+
+@supports (height: 1dvh) {
+  :root {
+    --vh: 1dvh;
+  }
+}
+
+#root {
+  height: 100%;
+  min-height: calc(var(--vh, 1vh) * 100);
 }
 
 body {

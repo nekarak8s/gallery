@@ -51,7 +51,9 @@
     "author": "Author"
   },
   "controller": {
-    "chooseType": "Choose the type of controller you'd like play with"
+    "chooseType": "Choose the type of controller you'd like play with",
+    "mouse": "Convenient viewing",
+    "keypad": "Direct viewing"
   },
   "joystickControl": {
     "move": "Move the character forward and backward",
@@ -63,5 +65,6 @@
     "button": "Press the button to move the artwork",
     "click": "Open the artwork by clicking on it",
     "drag": "Rotate the screen by dragging"
-  }
+  },
+  "minimap": "Minimap"
 }

@@ -87,11 +87,10 @@ const Guide = () => {
     // Clean-up function: Release resources
     return () => {
       camera.resetFov()
-      setRequiredCount(0)
-      setLoadedCount(0)
       architect.dispose && architect.dispose()
+      renderer.setAnimationLoop(null)
     }
-  }, [rendererRef, sceneRef, cameraRef, loadingManager])
+  }, [rendererRef.current, sceneRef.current, cameraRef.current, loadingManager])
 
   /**
    * Handle Scroll: Move camera position by scroll
@@ -152,7 +151,7 @@ const Guide = () => {
     return () => {
       window.addEventListener('scroll', optimizedHandleScroll)
     }
-  }, [cameraRef])
+  }, [cameraRef.current])
 
   return (
     <div className="guide">

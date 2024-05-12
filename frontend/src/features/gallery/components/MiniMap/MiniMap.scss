@@ -1,0 +1,92 @@
+@use '@/styles/_responsive.scss' as *;
+@use '@/styles/_z-index.scss' as *;
+@use '@/styles/_colors.scss' as c;
+
+.mini-map {
+  overflow: hidden;
+  position: fixed;
+  width: var(--data-width, 200px);
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+.mini-map__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 2em;
+  padding: 0 0.5em;
+  background-color: rgb(121, 121, 121);
+  color: var(--color-ft-reverse, c.$ft-white);
+
+  > div {
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+  }
+}
+
+.mini-map__bar-icons {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  flex-wrap: nowrap;
+  overflow: hidden;
+  width: 2em;
+  height: 1em;
+
+  svg {
+    min-height: 100%;
+    transition: transform 0.3s;
+  }
+}
+
+.mini-map.close {
+  .mini-map__bar-icons svg {
+    transform: translateY(-100%);
+  }
+}
+
+.mini-map__map {
+  display: block;
+  position: relative;
+  max-width: var(--data-width, 200px);
+  max-height: var(--data-width, 200px);
+  overflow: hidden;
+
+  img {
+    width: 100%;
+    height: 100%;
+    filter: opacity(70%);
+  }
+
+  svg {
+    position: absolute;
+    width: 8%;
+    height: 8%;
+    left: 0;
+    top: 0;
+    transform: translate(calc(var(--data-x, 0px) - 50%), calc(var(--data-y, 0px) - 50%)) rotate(var(--data-rad, 0));
+
+    path {
+      fill: rgb(255, 42, 42);
+    }
+  }
+}
+
+.mini-map.close {
+  .mini-map__map {
+    display: none;
+  }
+}
+
+@include mobile {
+  .mini-map {
+    font-size: 0.9rem;
+  }
+
+  .mini-map__bar {
+    height: 2.3em;
+    padding: 0 0.6em;
+  }
+}

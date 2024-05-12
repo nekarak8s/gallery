@@ -1,14 +1,12 @@
 @use '@/styles/_responsive.scss' as *;
 
 .gallery-navbar {
-  width: 100%;
   padding: 1em;
   font-size: 1.2rem;
 
   > ul {
     display: flex;
     justify-content: space-between;
-    width: 100%;
   }
 
   > ul > li > button {

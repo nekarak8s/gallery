@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import GalleryNavbar from './GalleryNavbar'
+import { PORTFOLIO_GALLERY_ID } from '../ExampleGallery/ExampleGallery'
 import galleryBgm from '@/assets/audios/MapleStory-Pantheon.mp3'
 import greenaryBgm from '@/assets/audios/MapleStory-Raindrop-Flower.mp3'
 import kyotoBgm from '@/assets/audios/Tokyo-Music-Walker-Colorful-Flowers.mp3'
@@ -38,6 +39,17 @@ const Gallery = () => {
 
   const { data: gallery, isLoading: isGalleryLoading, isError: isGalleryError } = useGalleryQuery(parseInt(galleryId as string))
   const { data: postList, isLoading: isPostLoading, isError: isPostError } = usePostListQuery(parseInt(galleryId as string))
+
+  // Redirect if it's portfolio
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    const portfolioKeys = Object.keys(PORTFOLIO_GALLERY_ID)
+    const portfolioKey = portfolioKeys.find((key) => PORTFOLIO_GALLERY_ID[key] === parseInt(galleryId as string))
+    if (portfolioKey) {
+      navigate(`/portfolio/${portfolioKey}`, { replace: true })
+    }
+  }, [galleryId])
 
   /**
    * Select controller

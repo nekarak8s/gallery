@@ -7,23 +7,23 @@
   top: 0;
   left: 0;
   width: 100vw;
-  height: 100vh;
+  height: calc(var(--vh, 1vh) * 100);
 
   &__back {
     width: 100vw;
-    height: 100vh;
-    background-color: rgba(0, 0, 0, 0.3);
+    height: calc(var(--vh, 1vh) * 100);
+    background-color: rgba(0, 0, 0, 0.6);
   }
 
   &__content {
     overflow: scroll;
     position: absolute;
-    top: 47vh;
+    top: calc(var(--vh, 1vh) * 50);
     left: 50vw;
     width: fit-content;
     max-width: 90vw;
     height: fit-content;
-    max-height: 80vh;
+    max-height: calc(var(--vh, 1vh) * 80);
     border-radius: 10px;
     background-color: var(--color-bg, c.$bg-white);
     transform: translate(-50%, -50%);

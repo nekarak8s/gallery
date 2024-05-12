@@ -123,7 +123,7 @@ export const WALLS_DATA = [
     y: 2,
     z: 33.19,
     width: 5,
-    height: 3,
+    height: 4,
     depth: WALL_INFO.depth,
   },
   {
@@ -446,7 +446,7 @@ export const FRAMES_DATA = [
   {
     // 6
     x: 35.4,
-    y: 3.6,
+    y: 4.5,
     z: 33.29,
     width: 1.5,
     height: 1.5,

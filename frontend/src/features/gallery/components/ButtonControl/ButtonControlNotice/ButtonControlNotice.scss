@@ -2,7 +2,6 @@
 @use '@/styles/_responsive.scss' as *;
 
 .button-control-notice {
-  padding: 1em;
   background-color: transparent;
   font-size: 1.5rem;
 
@@ -15,7 +14,7 @@
 
   > ul > li {
     display: grid;
-    grid-template-columns: 6em 1fr;
+    grid-template-columns: 4em 1fr;
     align-items: center;
     gap: 1em;
     white-space: nowrap;
