@@ -11,16 +11,7 @@ type RadioProps = {
   flexDirection?: 'row' | 'row-reverse' | 'column' | 'column-reverse'
 }
 
-const Radio = ({
-  id,
-  className,
-  name,
-  value,
-  label,
-  defaultChecked,
-  flexDirection = 'row',
-  children,
-}: PropsWithChildren<RadioProps>) => {
+const Radio = ({ id, className, name, value, label, defaultChecked, flexDirection = 'row', children }: PropsWithChildren<RadioProps>) => {
   return (
     <label
       htmlFor={id}

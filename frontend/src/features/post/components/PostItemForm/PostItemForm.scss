@@ -79,6 +79,7 @@
   overflow: hidden;
   grid-template-columns: repeat(6, 1fr);
   grid-template-rows: 1fr 1fr auto auto;
+  align-items: flex-start;
   gap: 1em;
   padding: 0em 1em;
   transition: padding 0.2s ease-in-out;

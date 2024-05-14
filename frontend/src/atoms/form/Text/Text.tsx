@@ -14,17 +14,7 @@ interface InputProps {
   onChange?: ChangeEventHandler<HTMLInputElement>
 }
 
-const Text = ({
-  id,
-  className,
-  label,
-  name,
-  initialValue,
-  placeholder = ' ',
-  readOnly = false,
-  disabled = false,
-  onChange,
-}: InputProps) => {
+const Text = ({ id, className, label, name, initialValue, placeholder = ' ', readOnly = false, disabled = false, onChange }: InputProps) => {
   const handleKeyDown: KeyboardEventHandler<HTMLInputElement> = function focusNextEle(e) {
     // Check whether 'Enter' is pressed
     if (e.key !== 'Enter') return
@@ -62,7 +52,7 @@ const Text = ({
         readOnly={readOnly}
         disabled={disabled}
       />
-      <label>{label}</label>
+      <label htmlFor={id}>{label}</label>
     </div>
   )
 }

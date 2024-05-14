@@ -1,4 +1,4 @@
-import { ChangeEvent, useMemo, useRef, useState } from 'react'
+import { ChangeEvent, DragEventHandler, useEffect, useMemo, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { PostData } from '../../types'
 import DragIcon from '@/assets/svgs/drag.svg'
@@ -87,6 +87,44 @@ const PostItemForm = ({ post, index }: PostItemFormProps) => {
 
   const [music, setMusic] = useState<MusicData | undefined>(post.music)
 
+  /**
+   * Load image by Drag and Drop
+   */
+  const handleDrop: DragEventHandler<HTMLInputElement> = (event) => {
+    event.preventDefault()
+    event.stopPropagation()
+
+    const file = event.dataTransfer?.files[0]
+    if (file && file.type.startsWith('image')) {
+      const fileReader = new FileReader()
+      fileReader.readAsDataURL(file)
+      fileReader.onload = function () {
+        if (typeof fileReader.result === 'string') {
+          setImageUrl(fileReader.result)
+        }
+      }
+    }
+  }
+
+  const handleDragOVer: DragEventHandler = (event) => {
+    event.preventDefault()
+    event.stopPropagation()
+  }
+
+  // Disable default drop event
+  useEffect(() => {
+    const disableDrag = (event: DragEvent) => {
+      event.preventDefault()
+    }
+
+    addEventListener('drop', disableDrag)
+    addEventListener('dragover', disableDrag)
+    return () => {
+      removeEventListener('drop', disableDrag)
+      removeEventListener('dragover', disableDrag)
+    }
+  }, [])
+
   return (
     <>
       <article className={`post-item-form`} ref={cardRef}>
@@ -123,6 +161,8 @@ const PostItemForm = ({ post, index }: PostItemFormProps) => {
             resetBtnText={t('buttons.cancel')}
             onChange={handleFileChange}
             onReset={handleFileReset}
+            onDrop={handleDrop}
+            onDragOver={handleDragOVer}
           />
           <div className="post-item-form__music">
             <Select name={`posts[${index}].musicId`}>
