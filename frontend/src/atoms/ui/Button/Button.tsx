@@ -31,7 +31,6 @@ const Button = ({
   onBlur,
 }: ButtonProps) => {
   const handleClick: MouseEventHandler<HTMLButtonElement> = (e) => {
-    e.preventDefault()
     e.stopPropagation()
 
     onClick && onClick(e)
