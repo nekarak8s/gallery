@@ -15,13 +15,18 @@ const axiosInstance: AxiosInstance = axios.create({
 })
 
 // Axios Interceptor
+axiosInstance.interceptors.request.use((config) => {
+  console.log('config', config)
+  return config
+})
+
 axiosInstance.interceptors.response.use(
   (res: AxiosResponse) => {
-    console.log(res)
+    console.log('res', res)
     return res.data
   },
   (err: AxiosError<ErrorResponse>) => {
-    console.log(err)
+    console.log('err', err)
 
     /*eslint-disable*/
     // for (const key of err.config!.data!.keys()) {

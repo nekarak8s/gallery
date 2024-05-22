@@ -37,7 +37,7 @@ const PostItemForm = ({ post, index }: PostItemFormProps) => {
   const [title, setTitle] = useState(post.title)
 
   const handleChangeTitle = (event: ChangeEvent<HTMLInputElement>) => {
-    setTitle(event.target.value)
+    setTitle(event.currentTarget.value)
   }
 
   /**
@@ -46,7 +46,7 @@ const PostItemForm = ({ post, index }: PostItemFormProps) => {
   const [isActive, setIsActive] = useState(post.isActive)
 
   const handleIsActiveChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setIsActive(event.target.checked)
+    setIsActive(event.currentTarget.checked)
   }
 
   /**
@@ -55,11 +55,11 @@ const PostItemForm = ({ post, index }: PostItemFormProps) => {
   const [imageURL, setImageUrl] = useState<string | undefined>(post.imageURL)
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (!event.target.files || !event.target.files.length) return
+    if (!event.currentTarget.files || !event.currentTarget.files.length) return
 
     // Load image url
     const fileReader = new FileReader()
-    const imageFile = event.target.files[0]
+    const imageFile = event.currentTarget.files[0]
 
     fileReader.readAsDataURL(imageFile)
     fileReader.onload = function () {
@@ -95,15 +95,21 @@ const PostItemForm = ({ post, index }: PostItemFormProps) => {
     event.stopPropagation()
 
     const file = event.dataTransfer?.files[0]
-    if (file && file.type.startsWith('image')) {
-      const fileReader = new FileReader()
-      fileReader.readAsDataURL(file)
-      fileReader.onload = function () {
-        if (typeof fileReader.result === 'string') {
-          setImageUrl(fileReader.result)
-        }
+    if (!file || !file.type.startsWith('image')) return
+
+    // load image url
+    const fileReader = new FileReader()
+    fileReader.readAsDataURL(file)
+    fileReader.onload = function () {
+      if (typeof fileReader.result === 'string') {
+        setImageUrl(fileReader.result)
       }
     }
+
+    // Set file to input
+    const newDataTransfer = new DataTransfer()
+    newDataTransfer.items.add(file)
+    event.currentTarget.getElementsByTagName('input')[0].files = newDataTransfer.files
   }
 
   const handleDragOVer: DragEventHandler = (event) => {
