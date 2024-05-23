@@ -4,8 +4,8 @@ export const name: RegexCondition = {
 }
 
 export const content: RegexCondition = {
-  regex: /^[\s\S]{1,150}$/,
-  condition: '공백 포함 150자로 입력해주세요',
+  regex: /^[\s\S]{1,500}$/,
+  condition: '공백 포함 500자로 입력해주세요',
 }
 
 export const placeId: RegexCondition = {

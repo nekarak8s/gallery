@@ -38,7 +38,7 @@
     "display": "On display",
     "storage": "In storage",
     "noMusic": "No music",
-    "uploadWork": "Upload your work",
+    "uploadWork": "Drag and drop your work",
     "order": "No. {{order}}"
   },
   "galleryNav": {

@@ -30,6 +30,11 @@ const Button = ({
   onFocus,
   onBlur,
 }: ButtonProps) => {
+  const handleClick: MouseEventHandler<HTMLButtonElement> = (e) => {
+    e.stopPropagation()
+
+    onClick && onClick(e)
+  }
   return (
     <>
       {to ? (
@@ -48,7 +53,7 @@ const Button = ({
         <button
           className={`button ${direction} ${size} ${color}  ${isTransparent ? 'trans' : ''}`}
           type={type}
-          onClick={onClick}
+          onClick={handleClick}
           onFocus={onFocus}
           onBlur={onBlur}
           aria-label={ariaLabel}

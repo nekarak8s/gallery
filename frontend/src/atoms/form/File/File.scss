@@ -9,7 +9,7 @@
   width: 100%;
   font-size: 1rem;
 
-  input {
+  label {
     width: 100%;
     padding: 0.5em 0.5em;
     border-bottom: 2px solid black;
@@ -17,8 +17,10 @@
     font-size: 1em;
   }
 
-  input::file-selector-button {
-    display: none;
+  input {
+    width: 0;
+    height: 0;
+    opacity: 0;
   }
 }
 

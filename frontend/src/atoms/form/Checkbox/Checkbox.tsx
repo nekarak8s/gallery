@@ -27,7 +27,7 @@ const Checkbox = ({
 
   const handleChange = function toggleIsChecked(event: ChangeEvent<HTMLInputElement>) {
     event.stopPropagation()
-    setIsChecked(event.target.checked)
+    setIsChecked(event.currentTarget.checked)
     onChange && onChange(event)
   }
 
@@ -41,14 +41,7 @@ const Checkbox = ({
     >
       {!isChecked && <input type="hidden" name={name} value={falseValue} />}
       <div className="checkbox__label">
-        <input
-          id={id}
-          type="checkbox"
-          name={name}
-          value={value}
-          defaultChecked={defaultChecked}
-          onChange={handleChange}
-        />
+        <input id={id} type="checkbox" name={name} value={value} defaultChecked={defaultChecked} onChange={handleChange} />
         {label}
       </div>
       {children}

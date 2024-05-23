@@ -38,7 +38,7 @@
     "display": "전시 중",
     "storage": "보관 중",
     "noMusic": "노래 없음",
-    "uploadWork": "작품을 업로드하세요",
+    "uploadWork": "여기에 파일을 드래그 하세요",
     "order": "{{order}} 번"
   },
   "galleryNav": {
