@@ -5,11 +5,12 @@
   grid-template-columns: repeat(2, min(35vw, 400px));
   grid-template-rows: minmax(0, 1fr);
   gap: 1em;
+  overflow: auto;
   height: 100%;
   max-height: calc(var(--vh, 1vh) * 70);
   padding: 1em 1em 1em 0.6em;
   font-size: 1rem;
-  overflow: auto;
+  font-family: 'GowunDodum-Regular';
 }
 
 .portfolio-detail__summary {
@@ -37,7 +38,7 @@
 
     > h1 {
       margin: 0.5em 0 0 0;
-      font-size: 1.1em;
+      font-size: 1.3em;
       font-weight: 600;
     }
   }

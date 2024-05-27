@@ -12,6 +12,7 @@ import ControlSelection from '@/features/gallery/components/ControlSelection'
 import GalleryCanvas from '@/features/gallery/components/GalleryCanvas'
 import { TControlType } from '@/features/gallery/hooks/useControlsStrategy'
 import { useGalleryQuery } from '@/features/gallery/services'
+import { portfolioListData } from '@/features/post/data'
 import { usePostListQuery } from '@/features/post/services'
 import './ExampleGallery.scss'
 
@@ -60,6 +61,13 @@ const ExampleGallery = () => {
     }
   }, [developer])
 
+  useEffect(() => {
+    if (developer !== 'byongho' || !postList) return
+    for (let i = 0; i < postList?.length; i++) {
+      postList[i].content = portfolioListData[i].content
+    }
+  }, [postList, developer])
+
   /**
    * Select gallery
    */
@@ -98,7 +106,7 @@ const ExampleGallery = () => {
   if (isGalleryLoading || isPostLoading) return <Fallback />
 
   return (
-    <div className="example-gallery">
+    <div className={`example-gallery ${isPortfolio ? 'portfolio' : ''}`}>
       <CSSTransition isShow={placeId == null} className="example-gallery__selection" duration={500}>
         <GallerySelection onSelect={selectGallery} />
       </CSSTransition>
