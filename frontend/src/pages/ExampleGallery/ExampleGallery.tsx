@@ -63,9 +63,10 @@ const ExampleGallery = () => {
 
   useEffect(() => {
     if (developer !== 'byongho' || !postList) return
-    for (let i = 0; i < portfolioListData.length; i++) {
-      if (postList[i].isActive) postList[i].content = portfolioListData[i].content
-    }
+    let idx = 0
+    postList.forEach((post) => {
+      if (post.isActive) post.content = portfolioListData[idx++].content
+    })
   }, [postList, developer])
 
   /**

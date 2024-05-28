@@ -1,4 +1,5 @@
 import { PostData, PostItemData } from './types'
+import imageUrl from '@/assets/images/gallery/mock.png'
 
 export const postData: PostData = {
   postId: 1,
@@ -6,7 +7,7 @@ export const postData: PostData = {
   title: '그때 그날',
   content:
     '이것은 정말로 멋진 작품인데요, 제가 LA에 있을때가 생각나에요. 그날은 유난히도 날이 더웠어요. 카페에가서 아이스 아메리카노를 시켜먹으려고 했었죠 그런데 그 때 문뜩 이런 생각이 나는거에요 왜 콜드아메리카노가 아니라 아이스아메리카노 일까',
-  imageURL: 'https://source.unsplash.com/500x500',
+  imageURL: imageUrl,
   createdDate: '2023-08-03T23:59:59',
   modifiedDate: '2023-08-04T00:59:59',
   isActive: true,
@@ -16,7 +17,7 @@ export const postData: PostData = {
     artist: '윤하',
     releasedDate: '2023-08-03T23:59:59',
     videoId: 'iEfIcJHEb70',
-    coverURL: 'https://source.unsplash.com/500x500',
+    coverURL: imageUrl,
   },
 }
 
@@ -26,7 +27,7 @@ export const postItemData: PostItemData = {
   title: '그때 그날 1',
   content:
     '이것은 정말로 멋진 작품인데요, 제가 LA에 있을때가 생각나에요. 그날은 유난히도 날이 더웠어요. 카페에가서 아이스 아메리카노를 시켜먹으려고 했었죠 그런데 그 때 문뜩 이런 생각이 나는거에요 왜 콜드아메리카노가 아니라 아이스아메리카노 일까',
-  imageURL: 'https://source.unsplash.com/500x500',
+  imageURL: imageUrl,
   createdDate: '2023-08-03T23:59:59',
   modifiedDate: '2023-08-04T00:59:59',
   isActive: true,
@@ -36,7 +37,7 @@ export const postItemData: PostItemData = {
     artist: '윤하',
     releasedDate: '2023-08-03T23:59:59',
     videoId: 'iEfIcJHEb70',
-    coverURL: 'https://source.unsplash.com/500x500',
+    coverURL: imageUrl,
   },
 }
 
@@ -47,7 +48,7 @@ export const postListData: PostItemData[] = [
     title: '그때 그날 1',
     content:
       '이것은 정말로 멋진 작품인데요, 제가 LA에 있을때가 생각나에요. 그날은 유난히도 날이 더웠어요. 카페에가서 아이스 아메리카노를 시켜먹으려고 했었죠 그런데 그 때 문뜩 이런 생각이 나는거에요 왜 콜드아메리카노가 아니라 아이스아메리카노 일까',
-    imageURL: 'https://source.unsplash.com/500x500',
+    imageURL: imageUrl,
     createdDate: '2023-08-03T23:59:59',
     modifiedDate: '2023-08-04T00:59:59',
     isActive: true,
@@ -57,7 +58,7 @@ export const postListData: PostItemData[] = [
       artist: '윤하',
       releasedDate: '2023-08-03T23:59:59',
       videoId: 'iEfIcJHEb70',
-      coverURL: 'https://source.unsplash.com/500x500',
+      coverURL: imageUrl,
     },
   },
   {
@@ -66,7 +67,7 @@ export const postListData: PostItemData[] = [
     title: '그때 그날 2',
     content:
       '이것은 정말로 멋진 작품인데요, 제가 LA에 있을때가 생각나에요. 그날은 유난히도 날이 더웠어요. 카페에가서 아이스 아메리카노를 시켜먹으려고 했었죠 그런데 그 때 문뜩 이런 생각이 나는거에요 왜 콜드아메리카노가 아니라 아이스아메리카노 일까',
-    imageURL: 'https://source.unsplash.com/500x500',
+    imageURL: imageUrl,
     createdDate: '2023-08-03T23:59:59',
     modifiedDate: '2023-08-04T00:59:59',
     isActive: true,
@@ -76,7 +77,7 @@ export const postListData: PostItemData[] = [
       artist: '윤하',
       releasedDate: '2023-08-03T23:59:59',
       videoId: 'iEfIcJHEb70',
-      coverURL: 'https://source.unsplash.com/500x500',
+      coverURL: imageUrl,
     },
   },
   {
@@ -85,7 +86,7 @@ export const postListData: PostItemData[] = [
     title: '그때 그날 3',
     content:
       '이것은 정말로 멋진 작품인데요, 제가 LA에 있을때가 생각나에요. 그날은 유난히도 날이 더웠어요. 카페에가서 아이스 아메리카노를 시켜먹으려고 했었죠 그런데 그 때 문뜩 이런 생각이 나는거에요 왜 콜드아메리카노가 아니라 아이스아메리카노 일까',
-    imageURL: 'https://source.unsplash.com/500x500',
+    imageURL: imageUrl,
     createdDate: '2023-08-03T23:59:59',
     modifiedDate: '2023-08-04T00:59:59',
     isActive: true,
@@ -95,7 +96,7 @@ export const postListData: PostItemData[] = [
       artist: '윤하',
       releasedDate: '2023-08-03T23:59:59',
       videoId: 'iEfIcJHEb70',
-      coverURL: 'https://source.unsplash.com/500x500',
+      coverURL: imageUrl,
     },
   },
   {
@@ -104,7 +105,7 @@ export const postListData: PostItemData[] = [
     title: '그때 그날 4',
     content:
       '이것은 정말로 멋진 작품인데요, 제가 LA에 있을때가 생각나에요. 그날은 유난히도 날이 더웠어요. 카페에가서 아이스 아메리카노를 시켜먹으려고 했었죠 그런데 그 때 문뜩 이런 생각이 나는거에요 왜 콜드아메리카노가 아니라 아이스아메리카노 일까',
-    imageURL: 'https://source.unsplash.com/500x500',
+    imageURL: imageUrl,
     createdDate: '2023-08-03T23:59:59',
     modifiedDate: '2023-08-04T00:59:59',
     isActive: true,
@@ -114,7 +115,7 @@ export const postListData: PostItemData[] = [
       artist: '윤하',
       releasedDate: '2023-08-03T23:59:59',
       videoId: 'iEfIcJHEb70',
-      coverURL: 'https://source.unsplash.com/500x500',
+      coverURL: imageUrl,
     },
   },
   {
@@ -123,7 +124,7 @@ export const postListData: PostItemData[] = [
     title: '그때 그날 5',
     content:
       '이것은 정말로 멋진 작품인데요, 제가 LA에 있을때가 생각나에요. 그날은 유난히도 날이 더웠어요. 카페에가서 아이스 아메리카노를 시켜먹으려고 했었죠 그런데 그 때 문뜩 이런 생각이 나는거에요 왜 콜드아메리카노가 아니라 아이스아메리카노 일까',
-    imageURL: 'https://source.unsplash.com/500x500',
+    imageURL: imageUrl,
     createdDate: '2023-08-03T23:59:59',
     modifiedDate: '2023-08-04T00:59:59',
     isActive: true,
@@ -133,7 +134,7 @@ export const postListData: PostItemData[] = [
       artist: '윤하',
       releasedDate: '2023-08-03T23:59:59',
       videoId: 'iEfIcJHEb70',
-      coverURL: 'https://source.unsplash.com/500x500',
+      coverURL: imageUrl,
     },
   },
   {
@@ -142,7 +143,7 @@ export const postListData: PostItemData[] = [
     title: '그때 그날 6',
     content:
       '이것은 정말로 멋진 작품인데요, 제가 LA에 있을때가 생각나에요. 그날은 유난히도 날이 더웠어요. 카페에가서 아이스 아메리카노를 시켜먹으려고 했었죠 그런데 그 때 문뜩 이런 생각이 나는거에요 왜 콜드아메리카노가 아니라 아이스아메리카노 일까',
-    imageURL: 'https://source.unsplash.com/500x500',
+    imageURL: imageUrl,
     createdDate: '2023-08-03T23:59:59',
     modifiedDate: '2023-08-04T00:59:59',
     isActive: true,
@@ -152,7 +153,7 @@ export const postListData: PostItemData[] = [
       artist: '윤하',
       releasedDate: '2023-08-03T23:59:59',
       videoId: 'iEfIcJHEb70',
-      coverURL: 'https://source.unsplash.com/500x500',
+      coverURL: imageUrl,
     },
   },
   {
@@ -161,7 +162,7 @@ export const postListData: PostItemData[] = [
     title: '그때 그날 7',
     content:
       '이것은 정말로 멋진 작품인데요, 제가 LA에 있을때가 생각나에요. 그날은 유난히도 날이 더웠어요. 카페에가서 아이스 아메리카노를 시켜먹으려고 했었죠 그런데 그 때 문뜩 이런 생각이 나는거에요 왜 콜드아메리카노가 아니라 아이스아메리카노 일까',
-    imageURL: 'https://source.unsplash.com/500x500',
+    imageURL: imageUrl,
     createdDate: '2023-08-03T23:59:59',
     modifiedDate: '2023-08-04T00:59:59',
     isActive: true,
@@ -171,7 +172,7 @@ export const postListData: PostItemData[] = [
       artist: '윤하',
       releasedDate: '2023-08-03T23:59:59',
       videoId: 'iEfIcJHEb70',
-      coverURL: 'https://source.unsplash.com/500x500',
+      coverURL: imageUrl,
     },
   },
   {
@@ -180,7 +181,7 @@ export const postListData: PostItemData[] = [
     title: '그때 그날 8',
     content:
       '이것은 정말로 멋진 작품인데요, 제가 LA에 있을때가 생각나에요. 그날은 유난히도 날이 더웠어요. 카페에가서 아이스 아메리카노를 시켜먹으려고 했었죠 그런데 그 때 문뜩 이런 생각이 나는거에요 왜 콜드아메리카노가 아니라 아이스아메리카노 일까',
-    imageURL: 'https://source.unsplash.com/500x500',
+    imageURL: imageUrl,
     createdDate: '2023-08-03T23:59:59',
     modifiedDate: '2023-08-04T00:59:59',
     isActive: true,
@@ -190,7 +191,7 @@ export const postListData: PostItemData[] = [
       artist: '윤하',
       releasedDate: '2023-08-03T23:59:59',
       videoId: 'iEfIcJHEb70',
-      coverURL: 'https://source.unsplash.com/500x500',
+      coverURL: imageUrl,
     },
   },
   {
@@ -199,7 +200,7 @@ export const postListData: PostItemData[] = [
     title: '그때 그날 9',
     content:
       '이것은 정말로 멋진 작품인데요, 제가 LA에 있을때가 생각나에요. 그날은 유난히도 날이 더웠어요. 카페에가서 아이스 아메리카노를 시켜먹으려고 했었죠 그런데 그 때 문뜩 이런 생각이 나는거에요 왜 콜드아메리카노가 아니라 아이스아메리카노 일까',
-    imageURL: 'https://source.unsplash.com/500x500',
+    imageURL: imageUrl,
     createdDate: '2023-08-03T23:59:59',
     modifiedDate: '2023-08-04T00:59:59',
     isActive: true,
@@ -209,7 +210,7 @@ export const postListData: PostItemData[] = [
       artist: '윤하',
       releasedDate: '2023-08-03T23:59:59',
       videoId: 'iEfIcJHEb70',
-      coverURL: 'https://source.unsplash.com/500x500',
+      coverURL: imageUrl,
     },
   },
   {
@@ -218,7 +219,7 @@ export const postListData: PostItemData[] = [
     title: '그때 그날 10',
     content:
       '이것은 정말로 멋진 작품인데요, 제가 LA에 있을때가 생각나에요. 그날은 유난히도 날이 더웠어요. 카페에가서 아이스 아메리카노를 시켜먹으려고 했었죠 그런데 그 때 문뜩 이런 생각이 나는거에요 왜 콜드아메리카노가 아니라 아이스아메리카노 일까',
-    imageURL: 'https://source.unsplash.com/500x500',
+    imageURL: imageUrl,
     createdDate: '2023-08-03T23:59:59',
     modifiedDate: '2023-08-04T00:59:59',
     isActive: true,
@@ -228,7 +229,7 @@ export const postListData: PostItemData[] = [
       artist: '윤하',
       releasedDate: '2023-08-03T23:59:59',
       videoId: 'iEfIcJHEb70',
-      coverURL: 'https://source.unsplash.com/500x500',
+      coverURL: imageUrl,
     },
   },
 ]
@@ -238,7 +239,7 @@ export const portfolioItemData: PostItemData = {
   order: 8,
   title: '맺음글',
   content: '<p>summary</p>SPLIT<p>detail</p>',
-  imageURL: 'https://source.unsplash.com/500x500',
+  imageURL: imageUrl,
   createdDate: '2023-08-03T23:59:59',
   modifiedDate: '2023-08-04T00:59:59',
   isActive: true,
@@ -248,7 +249,7 @@ export const portfolioItemData: PostItemData = {
     artist: '윤하',
     releasedDate: '2023-08-03T23:59:59',
     videoId: 'iEfIcJHEb70',
-    coverURL: 'https://source.unsplash.com/500x500',
+    coverURL: imageUrl,
   },
 }
 
@@ -258,8 +259,8 @@ export const portfolioListData: PostItemData[] = [
     order: 1,
     title: '이병호',
     content:
-      '<p>전세계와 소통할 수 있는 웹 기술이 흥미로워 개발을 시작했습니다. 사용자와 보다 더 다양한 방식으로 소통하는 웹을 만들고 싶습니다. 복잡한 서비스에서 일관된 특징을 추출하고, 이를 단일한 함수들의 조합으로 구현하는 것을 좋아합니다.</p>SPLIT<h2 id="education">Education</h2><h3 id="-2015-03-2022-08">고려대학교</h3><ul><li>Unity 2인용 모바일 게임</li><li>건물 열 에너지 변화 모델링</li><li>상수도망 사이버 공격감지 알고리즘</li></ul><h3 id="-2021-09-2021-12">뉴욕대학교(교환학생)</h3><ul><li>맨해튼 시내 셔틀버스 추천경로 서비스 기획</li></ul><h2 id="experience">Experience</h2><h3 id="-2022-07-2023-06">삼성청년소프트웨어 아카데미</h3><ul><li>webRTC 기반 실시간 화상채팅</li><li>신경망 AI 모델 기반 영어동화구연</li></ul><h3 id="-2024-02-">티맥스 메타에이아이</h3><ul><li>웹 3D 에디터 툴 MxStudio 프론트 개발</li></ul>',
-    imageURL: 'https://source.unsplash.com/500x500',
+      '<p>전세계와 소통할 수 있는 웹 기술이 흥미로워 개발을 시작했습니다. 사용자와 보다 더 다양한 방식으로 소통하는 웹을 만들고 싶습니다. 복잡한 서비스에서 일관된 특징을 추출하고, 이를 단일한 함수들의 조합으로 구현하는 것을 좋아합니다.</p>SPLIT<h2 id="education">Education</h2><ul><li><strong>고려대학교</strong><ul><li>Unity 2인용 모바일 게임</li><li>건물 열 에너지 변화 모델링</li><li>상수도망 사이버 공격감지 알고리즘</li></ul></li><li><strong>New York University(교환학생)</strong><ul><li>맨해튼 시내 셔틀버스 추천경로 서비스 기획</li></ul></li></ul><h2 id="experience">Experience</h2><ul><li><strong>삼성청년소프트웨어 아카데미</strong><ul><li>webRTC 실시간 화상 채팅 서비스</li><li>AI 모델 기반 참여형 영어 동화 구연</li></ul></li><li><strong>티맥스 메타에이아이</strong><ul><li>웹 3D 에디터 툴 MxStudio 프론트 개발</li></ul></li></ul>',
+    imageURL: imageUrl,
     createdDate: '2023-08-03T23:59:59',
     modifiedDate: '2023-08-04T00:59:59',
     isActive: true,
@@ -269,7 +270,7 @@ export const portfolioListData: PostItemData[] = [
       artist: '윤하',
       releasedDate: '2023-08-03T23:59:59',
       videoId: 'iEfIcJHEb70',
-      coverURL: 'https://source.unsplash.com/500x500',
+      coverURL: imageUrl,
     },
   },
   {
@@ -278,7 +279,7 @@ export const portfolioListData: PostItemData[] = [
     title: 'The Gallery: 웹 표준',
     content:
       '<p>3D 공간에서 유저 컨텐츠를 공유할 수 있는 인터랙티브 웹 사이트입니다. 웹 표준을 준수해 제작했으며, 페이지 내 모든 UI와 인터랙션을 직접 디자인하고 구현했습니다.</p>SPLIT<h2 id="-">웹 접근성</h2><ul><li>시멘틱 태그 &amp; 접근성 속성 사용</li><li>키보드 접근성 확보 (포커스 트랩, 오토 포커싱)</li><li>4개 breakpoint를 가진 반응형 UI</li></ul><h2 id="-">디자인</h2><a href="https://6581ad67bc8d05b6620ff016-ffsouutxpi.chromatic.com/?path=/story/overview-ui--default">Storybook 쇼케이스</a><ul><li>재사용 가능한 SCSS mixin 설계 </li><li>브라우저 렌더링을 고려한 CSS 최적화</li><li>컴포넌트 언마운트 애니메이션 구현 및 모듈화</li></ul><h2 id="-">인터랙션</h2><ul><li>재사용 가능한 인터랙션 커스텀 훅 분리</li><li>클로저와 화면 분할을 이용한 인터랙션 최적화</li></ul>',
-    imageURL: 'https://source.unsplash.com/500x500',
+    imageURL: imageUrl,
     createdDate: '2023-08-03T23:59:59',
     modifiedDate: '2023-08-04T00:59:59',
     isActive: true,
@@ -288,7 +289,7 @@ export const portfolioListData: PostItemData[] = [
       artist: '윤하',
       releasedDate: '2023-08-03T23:59:59',
       videoId: 'iEfIcJHEb70',
-      coverURL: 'https://source.unsplash.com/500x500',
+      coverURL: imageUrl,
     },
   },
   {
@@ -297,7 +298,7 @@ export const portfolioListData: PostItemData[] = [
     title: 'The Gallery: 3D',
     content:
       '<p>다양한 객체로 구성된 3D 공간을 구현했습니다. Three.js 메모리 관리와 렌더링 성능 최적화에 집중했습니다. 디자인 패턴을 사용하여 확장에 열려있는 프로젝트를 구조를 구축했습니다.</p>SPLIT<h2 id="-">성능 최적화</h2><ul><li>물리현상 모방한 커스텀 컨트롤러 설계</li><li>draco, meshopt 활용 3D 에셋 크기 최소화 (평균 75% 감소)</li><li>three-mesh-bvh 활용 스크립팅 시간 최적화 (약 60% 개선)</li></ul><h2 id="-">메모리 관리</h2><ul><li>팩토리 패턴 기반 3D 아이템 해제 후처리 자동화</li><li>커스텀 훅 활용 라이프 사이클 기반 메모리 정리</li></ul><h2 id="-">디자인 패턴</h2><ul><li>팩토리 패턴 : 다양한 동물 객체 추가</li><li>전략 패턴 : 3D 배경 공간 확장성 확보</li><li>빌더 패턴 : 비동기적으로 객체 생성</li></ul>',
-    imageURL: 'https://source.unsplash.com/500x500',
+    imageURL: imageUrl,
     createdDate: '2023-08-03T23:59:59',
     modifiedDate: '2023-08-04T00:59:59',
     isActive: true,
@@ -307,7 +308,7 @@ export const portfolioListData: PostItemData[] = [
       artist: '윤하',
       releasedDate: '2023-08-03T23:59:59',
       videoId: 'iEfIcJHEb70',
-      coverURL: 'https://source.unsplash.com/500x500',
+      coverURL: imageUrl,
     },
   },
   {
@@ -316,7 +317,7 @@ export const portfolioListData: PostItemData[] = [
     title: 'The Gallery: 네트워크',
     content:
       '<p>웹팩 번들러와 바벨 컴파일러를 직접 설정하고 구성했습니다. 번들링한 파일은 도커 이미지화하여 쿠버네티스 상에 배포·관리 했으며, GitOps를 기반으로 동작하는 CI/CD 파이프라인을 구축했습니다.</p>SPLIT<h2 id="-">번들러</h2><ul><li>빌드 환경 별 번들링 최적화</li><li>에셋 유형 별 로더 설정 및 정적 이미지 최적화</li></ul><h2 id="-">네트워크</h2><ul><li>react-query를 활용한 네트워크 서비스 훅 설계</li><li>msw를 이용한 독립적인 프론트 개발 환경 구축</li><li>Nginx 웹서버로 제공되는 프론트 도커 이미지 생성</li></ul><h2 id="-">인프라</h2><p><a href="https://byongho96.github.io/TIL/posts/Kubernetes/">쿠버네티스 CI/CD 구축 문서</a></p><ul><li>Nginx와 Docker를 이용한 리액트 도커 생성</li><li>AWS Lighthouse 상 쿠버네티스 클러스터 구축</li><li>Github Actions &amp; Argo 연계 CI/CD 파이프라인 구축</li></ul>',
-    imageURL: 'https://source.unsplash.com/500x500',
+    imageURL: imageUrl,
     createdDate: '2023-08-03T23:59:59',
     modifiedDate: '2023-08-04T00:59:59',
     isActive: true,
@@ -326,7 +327,7 @@ export const portfolioListData: PostItemData[] = [
       artist: '윤하',
       releasedDate: '2023-08-03T23:59:59',
       videoId: 'iEfIcJHEb70',
-      coverURL: 'https://source.unsplash.com/500x500',
+      coverURL: imageUrl,
     },
   },
   {
@@ -335,7 +336,7 @@ export const portfolioListData: PostItemData[] = [
     title: 'MxStudio',
     content:
       '<p>웹에서 사용하는 3D 에디터 툴입니다. 커맨드 패턴으로 사용자의 작업 히스토리 내역을 쌓습니다. 또한 레이어드 아키텍쳐로 스토어 &amp; 비즈니스 로직 &amp; UI를 계층화하여, 복잡한 사용자 동작의 결과를 스토어에 구조화하여 저장합니다.</p>SPLIT<h2 id="css-styled-component-">Styled Components</h2><ul><li>Zeplin 기반 CSS 디자인 시스템 구축 </li><li>px 하드 코딩 레이아웃 -&gt; Grid 레이아웃</li></ul><h2 id="-">네비게이션 탭</h2><ul><li>단일 책임을 가진 MobX 스토어 구축</li><li>네비게이션 탭 비즈니스 로직 설계</li><li>네비게이션 탭 UI 구현 및 비즈니스 로직 매핑</li></ul><h2 id="-">네트워크 서비스</h2><ul><li>네트워크 서비스 리액트 훅으로 모듈화</li><li>전략패턴을 이용한 환경 별 서비스 모듈 교체</li><li>웹 워커를 활요한 대용량 네트워크 데이터 전처리</li></ul>',
-    imageURL: 'https://source.unsplash.com/500x500',
+    imageURL: imageUrl,
     createdDate: '2023-08-03T23:59:59',
     modifiedDate: '2023-08-04T00:59:59',
     isActive: true,
@@ -345,7 +346,7 @@ export const portfolioListData: PostItemData[] = [
       artist: '윤하',
       releasedDate: '2023-08-03T23:59:59',
       videoId: 'iEfIcJHEb70',
-      coverURL: 'https://source.unsplash.com/500x500',
+      coverURL: imageUrl,
     },
   },
   {
@@ -354,7 +355,7 @@ export const portfolioListData: PostItemData[] = [
     title: 'react-responsive-3d-carousel',
     content:
       '<p>리액트 컴포넌트로 제작된 3D 캐러셀 라이브러리입니다.아주 간편한 사용을 특징으로 하며, 사용자의 커스텀을 최대한으로 지원했습니다.오픈소스 제공되는 프로젝트이기 때문에, 코드 품질 관리에 힘썼습니다.</p>SPLIT<h2 id="-">코드 품질 관리</h2><p><a href="https://github.com/Byongho96/react-responsive-3d-carousel/pull/8">오픈소스 PR 리뷰</a></p><ul><li>husky &amp; prettier &amp; eslint 를 이용한 코드 포맷팅</li><li>react-testing-library 기반 유닛 테스트 코드 작성</li><li>commitlint를 이용한 커밋 관리 & 업데이트 내역 문서화</li></ul><h2 id="-">라이브러리 제공</h2><p><a href="https://byongho96.github.io/react-responsive-3d-carousel/">npm 라이브러리</a><br><a href="https://byongho96.github.io/react-responsive-3d-carousel/">데모 플레이그라운드</a></p><ul><li>28개의 독립적인 props 지원</li><li>번들링 사이즈 최적화 (44KB -&gt; 12KB)</li><li>CSS BEM 네이밍을 통한 CSS 세부 커스텀 지원</li></ul>',
-    imageURL: 'https://source.unsplash.com/500x500',
+    imageURL: imageUrl,
     createdDate: '2023-08-03T23:59:59',
     modifiedDate: '2023-08-04T00:59:59',
     isActive: true,
@@ -364,7 +365,7 @@ export const portfolioListData: PostItemData[] = [
       artist: '윤하',
       releasedDate: '2023-08-03T23:59:59',
       videoId: 'iEfIcJHEb70',
-      coverURL: 'https://source.unsplash.com/500x500',
+      coverURL: imageUrl,
     },
   },
   {
@@ -373,7 +374,7 @@ export const portfolioListData: PostItemData[] = [
     title: 'ATIBO',
     content:
       '<p>학생들의 출결 및 인바디 데이터 관리를 위한 프로그램입니다. (주)주안건설의 외주를 받아 제작되었습니다. 교내 컴퓨터에서 구동하고, 내부 네트워크에서 접근할 수 있는 로컬 배포 구현이 핵심과제였습니다.</p>SPLIT<h2 id="-">데이터베이스</h2><ul><li>ERD 설계 및 데이터베이스 인덱스 생성</li><li>다수 사용자가 동시 수정 가능한 데이터 무결성 확보</li><li>유니크 제약 조건에서의 멀티 레코드 업데이트 이슈 해결</li></ul><h2 id="-">인증/인가</h2><ul><li>JWT 토큰 기반 커스텀 인증 수단 추가</li><li>관리자, 선생님, 학생 3개 인가 권한 분리</li></ul><h2 id="-">로컬 배포</h2><ul><li>도커 컴포즈를 이용한 로컬 운영 환경 구축</li><li>쉘 스크립트를 이용한 Django 고유 시크릿키 생성</li><li>IP 주소 및 DB 패스워드 수정 기능 지원</li></ul>',
-    imageURL: 'https://source.unsplash.com/500x500',
+    imageURL: imageUrl,
     createdDate: '2023-08-03T23:59:59',
     modifiedDate: '2023-08-04T00:59:59',
     isActive: true,
@@ -383,7 +384,7 @@ export const portfolioListData: PostItemData[] = [
       artist: '윤하',
       releasedDate: '2023-08-03T23:59:59',
       videoId: 'iEfIcJHEb70',
-      coverURL: 'https://source.unsplash.com/500x500',
+      coverURL: imageUrl,
     },
   },
   {
@@ -391,7 +392,7 @@ export const portfolioListData: PostItemData[] = [
     order: 8,
     title: '그때 그날 8',
     content: '<p>summary</p>SPLIT<p>detail</p>',
-    imageURL: 'https://source.unsplash.com/500x500',
+    imageURL: imageUrl,
     createdDate: '2023-08-03T23:59:59',
     modifiedDate: '2023-08-04T00:59:59',
     isActive: true,
@@ -401,7 +402,7 @@ export const portfolioListData: PostItemData[] = [
       artist: '윤하',
       releasedDate: '2023-08-03T23:59:59',
       videoId: 'iEfIcJHEb70',
-      coverURL: 'https://source.unsplash.com/500x500',
+      coverURL: imageUrl,
     },
   },
   {
@@ -409,17 +410,17 @@ export const portfolioListData: PostItemData[] = [
     order: 9,
     title: '그때 그날 9',
     content: '<p>summary</p>SPLIT<p>detail</p>',
-    imageURL: 'https://source.unsplash.com/500x500',
+    imageURL: imageUrl,
     createdDate: '2023-08-03T23:59:59',
     modifiedDate: '2023-08-04T00:59:59',
-    isActive: true,
+    isActive: false,
     music: {
       musicId: 1,
       title: '비밀번호 486',
       artist: '윤하',
       releasedDate: '2023-08-03T23:59:59',
       videoId: 'iEfIcJHEb70',
-      coverURL: 'https://source.unsplash.com/500x500',
+      coverURL: imageUrl,
     },
   },
   {
@@ -427,17 +428,17 @@ export const portfolioListData: PostItemData[] = [
     order: 10,
     title: '그때 그날 10',
     content: '<p>summary</p>SPLIT<p>detail</p>',
-    imageURL: 'https://source.unsplash.com/500x500',
+    imageURL: imageUrl,
     createdDate: '2023-08-03T23:59:59',
     modifiedDate: '2023-08-04T00:59:59',
-    isActive: true,
+    isActive: false,
     music: {
       musicId: 1,
       title: '비밀번호 486',
       artist: '윤하',
       releasedDate: '2023-08-03T23:59:59',
       videoId: 'iEfIcJHEb70',
-      coverURL: 'https://source.unsplash.com/500x500',
+      coverURL: imageUrl,
     },
   },
 ]

@@ -81,6 +81,7 @@ module.exports = merge(common, {
           },
         ],
         type: 'javascript/auto',
+        resourceQuery: /format=(png|jpe?g|webp)$/,
       },
     ],
   },

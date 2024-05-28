@@ -26,15 +26,21 @@
 
 .markdown ul,
 .markdown ol {
-  margin-top: 0.5em;
+  margin-top: 0.8em;
   padding-left: 1.2em;
+
+  ul,
+  ol {
+    margin-top: 0.2em;
+  }
 }
 
 .markdown li {
-  margin-bottom: 0.5em;
+  margin-bottom: 0.6em;
   list-style-type: disc;
 
-  > li {
+  li {
+    margin-bottom: 0.5em;
     list-style-type: circle;
   }
 }

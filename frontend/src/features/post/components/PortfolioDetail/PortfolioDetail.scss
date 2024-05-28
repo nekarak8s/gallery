@@ -8,7 +8,7 @@
   overflow: auto;
   height: 100%;
   max-height: calc(var(--vh, 1vh) * 70);
-  padding: 0.5em 1em 1.5em 0.6em;
+  padding: 0.7em 1.2em 1.7em 0.8em;
   font-size: 1rem;
   font-family: 'GowunDodum-Regular';
 }
@@ -23,9 +23,9 @@
   overflow: auto;
 
   > img {
-    width: 95%;
+    width: 90%;
     margin-top: 1em;
-    aspect-ratio: 4/3;
+    aspect-ratio: 1 / 1;
     object-fit: cover;
     align-self: center;
   }
