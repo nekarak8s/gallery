@@ -8,10 +8,6 @@
   grid-template-rows: 1fr;
   width: 100vw;
   height: calc(var(--vh, 1vh) * 100);
-
-  &.portfolio {
-    font-family: 'GowunDodum-Regular';
-  }
 }
 
 .example-gallery__music {

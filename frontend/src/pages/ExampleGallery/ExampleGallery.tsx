@@ -63,8 +63,8 @@ const ExampleGallery = () => {
 
   useEffect(() => {
     if (developer !== 'byongho' || !postList) return
-    for (let i = 0; i < postList?.length; i++) {
-      postList[i].content = portfolioListData[i].content
+    for (let i = 0; i < portfolioListData.length; i++) {
+      if (postList[i].isActive) postList[i].content = portfolioListData[i].content
     }
   }, [postList, developer])
 
@@ -106,7 +106,7 @@ const ExampleGallery = () => {
   if (isGalleryLoading || isPostLoading) return <Fallback />
 
   return (
-    <div className={`example-gallery ${isPortfolio ? 'portfolio' : ''}`}>
+    <div className="example-gallery">
       <CSSTransition isShow={placeId == null} className="example-gallery__selection" duration={500}>
         <GallerySelection onSelect={selectGallery} />
       </CSSTransition>

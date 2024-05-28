@@ -8,7 +8,7 @@
   overflow: auto;
   height: 100%;
   max-height: calc(var(--vh, 1vh) * 70);
-  padding: 1em 1em 1em 0.6em;
+  padding: 0.5em 1em 1.5em 0.6em;
   font-size: 1rem;
   font-family: 'GowunDodum-Regular';
 }
@@ -24,7 +24,8 @@
 
   > img {
     width: 95%;
-    aspect-ratio: 1/1;
+    margin-top: 1em;
+    aspect-ratio: 4/3;
     object-fit: cover;
     align-self: center;
   }
@@ -55,8 +56,7 @@
     height: calc(var(--vh, 1vh) * 80);
     grid-template-columns: minmax(0, 1fr);
     grid-template-rows: repeat(2, max-content);
-    padding: 0.8em 0.6em;
-    gap: 1em;
+    padding: 0.5em 0.6em 1.2em 0.6em;
     overflow: auto;
     font-size: 0.9rem;
   }
@@ -66,6 +66,7 @@
 
     > img {
       width: 98%;
+      margin-top: 0.5em;
     }
   }
 }
