@@ -18,12 +18,13 @@
   "copyright": {
     "column1": "Work, Author",
     "column2": "License",
-    "row1": "Font",
-    "row2": "Home BGM",
-    "row3": "Greenary BGM",
-    "row4": "Gallery BGM",
-    "row5": "Kyoto BGM",
-    "row6": "Kyoto Map"
+    "row1": "Main Font",
+    "row2": "Portfolio Font",
+    "row3": "Home BGM",
+    "row4": "Greenary BGM",
+    "row5": "Gallery BGM",
+    "row6": "Kyoto BGM",
+    "row7": "Kyoto Map"
   },
   "login": {
     "title": "The Gallery is departing",

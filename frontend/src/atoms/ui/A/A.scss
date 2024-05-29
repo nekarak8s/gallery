@@ -1,24 +1,12 @@
 @use '@/styles/_colors.scss' as c;
 
 .a {
-  position: relative;
-
-  &::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 0;
-    height: 1px;
-    background-color: var(--color-ft, c.$ft-black);
-    transform: translate(0px, 2px);
-    transition: width 200ms ease-in-out;
-  }
+  background: linear-gradient(0deg, var(--color-ft, c.$ft-black), var(--color-ft, c.$ft-black)) no-repeat right bottom / 0 1px;
+  transition: background-size 350ms;
 }
 
 .a:hover,
 a:focus {
-  &::after {
-    width: 100%;
-  }
+  background-size: 100% 1px;
+  background-position-x: left;
 }

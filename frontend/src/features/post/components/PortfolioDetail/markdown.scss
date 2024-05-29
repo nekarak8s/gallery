@@ -1,5 +1,6 @@
 .markdown {
   line-height: 1.5;
+  --color-a: #005fc4;
 }
 
 .markdown h1 {
@@ -21,7 +22,7 @@
 }
 
 .markdown p {
-  margin-top: 0.5em;
+  margin-bottom: 0.5em;
 }
 
 .markdown ul,
@@ -46,11 +47,17 @@
 }
 
 .markdown a {
-  color: #025fc3;
+  display: inline-block;
+  margin-top: 0.5em;
+  background: linear-gradient(0deg, var(--color-a), var(--color-a)) no-repeat right bottom / 0 1px;
+  transition: background-size 350ms;
+  color: var(--color-a);
 }
 
-.markdown a:hover {
-  text-decoration: underline;
+.markdown a:hover,
+.markdown a:focus {
+  background-size: 100% 1px;
+  background-position-x: left;
 }
 
 .markdown code {

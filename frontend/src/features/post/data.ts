@@ -238,8 +238,9 @@ export const postListData: PostItemData[] = [
 export const portfolioItemData: PostItemData = {
   postId: 8,
   order: 8,
-  title: '맺음글',
-  content: '<p>summary</p>SPLIT<p>detail</p>',
+  title: '맺음말',
+  content:
+    '<p>Github: <a target="_blank" href="https://github.com/Byongho96">github.com/Byongho96</a><br>Linkedin: <a target="_blank" href="https://www.linkedin.com/in/byongho-lee-b445ba22a/">byongho-lee-b445ba22a</a><br>Emoji : <a target="_blank" href="https://e.kakao.com/t/korean-chicken-in-america">미국물 먹은 토종닭 바비팍</a></p>SPLIT<p>학부 시절 Unity로 모바일 게임을 제작한 것이 개발의 시작이었습니다. 졸업 후 삼성청년소프트웨어 아카데미에서 다양한 웹 서비스를 제작하였고, 현재는 티맥스 메타에이아이에서 프론트 개발자로 일하고 있습니다. 최근에는 웹 성능 최적화와 관련해 Rust를 공부하고 있습니다.</p><p>구현 가능 여부를 넘어 &#39;어떻게&#39; 구현할지 고민합니다. 프론트는 다양한 요구의 사용자를 마주하는 곳입니다. 사용자의 요구를 만족시키기 위해 프론트는 끊임없이 변화합니다. 하지만 그 안에서도 변하지 않는 핵심을 추출해 구조화 한다면. 보다 더 재사용성 좋은, 확장성 있는, 수용성 높은 구조를 만들 수 있다고 기대합니다. </p>',
   imageURL: postImg,
   createdDate: '2023-08-03T23:59:59',
   modifiedDate: '2023-08-04T00:59:59',
@@ -279,7 +280,7 @@ export const portfolioListData: PostItemData[] = [
     order: 2,
     title: 'The Gallery: 웹 표준',
     content:
-      '<p>3D 공간에서 유저 컨텐츠를 공유할 수 있는 인터랙티브 웹 사이트입니다. 웹 표준을 준수해 제작했으며, 페이지 내 모든 UI와 인터랙션을 직접 디자인하고 구현했습니다.</p>SPLIT<h2 id="-">웹 접근성</h2><ul><li>시멘틱 태그 &amp; 접근성 속성 사용</li><li>키보드 접근성 확보 (포커스 트랩, 오토 포커싱)</li><li>4개 breakpoint를 가진 반응형 UI</li></ul><h2 id="-">디자인</h2><a href="https://6581ad67bc8d05b6620ff016-ffsouutxpi.chromatic.com/?path=/story/overview-ui--default">Storybook 쇼케이스</a><ul><li>재사용 가능한 SCSS mixin 설계 </li><li>브라우저 렌더링을 고려한 CSS 최적화</li><li>컴포넌트 언마운트 애니메이션 구현 및 모듈화</li></ul><h2 id="-">인터랙션</h2><ul><li>재사용 가능한 인터랙션 커스텀 훅 분리</li><li>클로저와 화면 분할을 이용한 인터랙션 최적화</li></ul>',
+      '<p>3D 공간에서 유저 컨텐츠를 공유할 수 있는 인터랙티브 웹 사이트입니다. 웹 표준을 준수해 제작했으며, 페이지 내 모든 UI와 인터랙션을 직접 디자인하고 구현했습니다.</p>SPLIT<h2 id="-">웹 접근성</h2><ul><li>시멘틱 태그 &amp; 접근성 속성 사용</li><li>키보드 접근성 확보 (포커스 트랩, 오토 포커싱)</li><li>4개 breakpoint를 가진 반응형 UI</li></ul><h2 id="-">디자인</h2><a target="_blank" href="https://6581ad67bc8d05b6620ff016-ffsouutxpi.chromatic.com/?path=/story/overview-ui--default">Storybook 쇼케이스</a><ul><li>재사용 가능한 SCSS mixin 설계 </li><li>브라우저 렌더링을 고려한 CSS 최적화</li><li>컴포넌트 언마운트 애니메이션 구현 및 모듈화</li></ul><h2 id="-">인터랙션</h2><ul><li>재사용 가능한 인터랙션 커스텀 훅 분리</li><li>클로저와 화면 분할을 이용한 인터랙션 최적화</li></ul>',
     imageURL: postImg,
     createdDate: '2023-08-03T23:59:59',
     modifiedDate: '2023-08-04T00:59:59',
@@ -317,7 +318,7 @@ export const portfolioListData: PostItemData[] = [
     order: 4,
     title: 'The Gallery: 네트워크',
     content:
-      '<p>웹팩 번들러와 바벨 컴파일러를 직접 설정하고 구성했습니다. 번들링한 파일은 도커 이미지화하여 쿠버네티스 상에 배포·관리 했으며, GitOps를 기반으로 동작하는 CI/CD 파이프라인을 구축했습니다.</p>SPLIT<h2 id="-">번들러</h2><ul><li>빌드 환경 별 번들링 최적화</li><li>에셋 유형 별 로더 설정 및 정적 이미지 최적화</li></ul><h2 id="-">네트워크</h2><ul><li>react-query를 활용한 네트워크 서비스 훅 설계</li><li>msw를 이용한 독립적인 프론트 개발 환경 구축</li><li>Nginx 웹서버로 제공되는 프론트 도커 이미지 생성</li></ul><h2 id="-">인프라</h2><p><a href="https://byongho96.github.io/TIL/posts/Kubernetes/">쿠버네티스 CI/CD 구축 문서</a></p><ul><li>Nginx와 Docker를 이용한 리액트 도커 생성</li><li>AWS Lighthouse 상 쿠버네티스 클러스터 구축</li><li>Github Actions &amp; Argo 연계 CI/CD 파이프라인 구축</li></ul>',
+      '<p>웹팩 번들러와 바벨 컴파일러를 직접 설정하고 구성했습니다. 번들링한 파일은 도커 이미지화하여 쿠버네티스 상에 배포·관리 했으며, GitOps를 기반으로 동작하는 CI/CD 파이프라인을 구축했습니다.</p>SPLIT<h2 id="-">번들러</h2><ul><li>빌드 환경 별 번들링 최적화</li><li>에셋 유형 별 로더 설정 및 정적 이미지 최적화</li></ul><h2 id="-">네트워크</h2><ul><li>react-query를 활용한 네트워크 서비스 훅 설계</li><li>msw를 이용한 독립적인 프론트 개발 환경 구축</li><li>Nginx 웹서버로 제공되는 프론트 도커 이미지 생성</li></ul><h2 id="-">인프라</h2><p><a target="_blank" href="https://byongho96.github.io/TIL/posts/Kubernetes/">쿠버네티스 CI/CD 구축 문서</a></p><ul><li>Nginx와 Docker를 이용한 리액트 도커 생성</li><li>AWS Lighthouse 상 쿠버네티스 클러스터 구축</li><li>Github Actions &amp; Argo 연계 CI/CD 파이프라인 구축</li></ul>',
     imageURL: postImg,
     createdDate: '2023-08-03T23:59:59',
     modifiedDate: '2023-08-04T00:59:59',
@@ -355,7 +356,7 @@ export const portfolioListData: PostItemData[] = [
     order: 6,
     title: 'react-responsive-3d-carousel',
     content:
-      '<p>리액트 컴포넌트로 제작된 3D 캐러셀 라이브러리입니다.아주 간편한 사용을 특징으로 하며, 사용자의 커스텀을 최대한으로 지원했습니다.오픈소스 제공되는 프로젝트이기 때문에, 코드 품질 관리에 힘썼습니다.</p>SPLIT<h2 id="-">코드 품질 관리</h2><p><a href="https://github.com/Byongho96/react-responsive-3d-carousel/pull/8">오픈소스 PR 리뷰</a></p><ul><li>husky &amp; prettier &amp; eslint 를 이용한 코드 포맷팅</li><li>react-testing-library 기반 유닛 테스트 코드 작성</li><li>commitlint를 이용한 커밋 관리 & 업데이트 내역 문서화</li></ul><h2 id="-">라이브러리 제공</h2><p><a href="https://byongho96.github.io/react-responsive-3d-carousel/">npm 라이브러리</a><br><a href="https://byongho96.github.io/react-responsive-3d-carousel/">데모 플레이그라운드</a></p><ul><li>28개의 독립적인 props 지원</li><li>번들링 사이즈 최적화 (44KB -&gt; 12KB)</li><li>CSS BEM 네이밍을 통한 CSS 세부 커스텀 지원</li></ul>',
+      '<p>리액트 컴포넌트로 제작된 3D 캐러셀 라이브러리입니다.아주 간편한 사용을 특징으로 하며, 사용자의 커스텀을 최대한으로 지원했습니다.오픈소스 제공되는 프로젝트이기 때문에, 코드 품질 관리에 힘썼습니다.</p>SPLIT<h2 id="-">코드 품질 관리</h2><p><a target="_blank" href="https://github.com/Byongho96/react-responsive-3d-carousel/pull/8">오픈소스 PR 리뷰</a></p><ul><li>husky &amp; prettier &amp; eslint 를 이용한 코드 포맷팅</li><li>react-testing-library 기반 유닛 테스트 코드 작성</li><li>commitlint를 이용한 커밋 관리 & 업데이트 내역 문서화</li></ul><h2 id="-">라이브러리 제공</h2><p><a target="_blank" href="https://byongho96.github.io/react-responsive-3d-carousel/">npm 라이브러리</a><br><a target="_blank" href="https://byongho96.github.io/react-responsive-3d-carousel/">데모 플레이그라운드</a></p><ul><li>28개의 독립적인 props 지원</li><li>번들링 사이즈 최적화 (44KB -&gt; 12KB)</li><li>CSS BEM 네이밍을 통한 CSS 세부 커스텀 지원</li></ul>',
     imageURL: postImg,
     createdDate: '2023-08-03T23:59:59',
     modifiedDate: '2023-08-04T00:59:59',
@@ -391,8 +392,9 @@ export const portfolioListData: PostItemData[] = [
   {
     postId: 8,
     order: 8,
-    title: '그때 그날 8',
-    content: '<p>summary</p>SPLIT<p>detail</p>',
+    title: '맺음말',
+    content:
+      '<p>Github: <a target="_blank" href="https://github.com/Byongho96">github.com/Byongho96</a><br>Linkedin: <a target="_blank" href="https://www.linkedin.com/in/byongho-lee-b445ba22a/">byongho-lee-b445ba22a</a><br>Emoji : <a target="_blank" href="https://e.kakao.com/t/korean-chicken-in-america">미국물 먹은 토종닭 바비팍</a></p>SPLIT<p>학부 시절 Unity로 모바일 게임을 제작한 것이 개발의 시작이었습니다. 졸업 후 삼성청년소프트웨어 아카데미에서 다양한 웹 서비스를 제작하였고, 현재는 티맥스 메타에이아이에서 프론트 개발자로 일하고 있습니다. 최근에는 웹 성능 최적화와 관련해 Rust를 공부하고 있습니다.</p><p>구현 가능 여부를 넘어 &#39;어떻게&#39; 구현할지 고민합니다. 프론트는 다양한 요구의 사용자를 마주하는 곳입니다. 사용자의 요구를 만족시키기 위해 프론트는 끊임없이 변화합니다. 하지만 그 안에서도 변하지 않는 핵심을 추출해 구조화 한다면. 보다 더 재사용성 좋은, 확장성 있는, 수용성 높은 구조를 만들 수 있다고 기대합니다. </p>',
     imageURL: postImg,
     createdDate: '2023-08-03T23:59:59',
     modifiedDate: '2023-08-04T00:59:59',
