@@ -58,8 +58,8 @@ const File = ({
 
   return (
     <div className={`file ${className ? className : ''}`} onDragOver={onDragOver} onDrop={onDrop}>
-      <label htmlFor={id} data-cursor-scale={CURSOR_SCALE} ref={labelRef}>
-        {placeholder}
+      <label htmlFor={id} data-cursor-scale={CURSOR_SCALE}>
+        <span ref={labelRef}>{placeholder}</span>
         <input id={id} ref={inputRef} type="file" name={name} accept={accept} onChange={handleChange} data-cursor-scale={CURSOR_SCALE} />
       </label>
       <div className="file__buttons">

@@ -106,7 +106,6 @@ function MiniMap({ galleryType, controlsRef, defaultPosition }: MiniMapProps) {
     }
   }, [galleryType, controlsRef.current])
 
-  console.log('minimap', TERRAIN_IMAGE[galleryType][0])
   return (
     <section className={`mini-map ${!isOpen ? 'close' : ''}`} ref={containerRef}>
       <div className="mini-map__bar" data-cursor-scale={CURSOR_SCALE}>
