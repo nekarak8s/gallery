@@ -238,9 +238,9 @@ export const postListData: PostItemData[] = [
 export const portfolioItemData: PostItemData = {
   postId: 8,
   order: 8,
-  title: '맺음말',
+  title: '연락처',
   content:
-    '<p>Github: <a target="_blank" href="https://github.com/Byongho96">github.com/Byongho96</a><br>Linkedin: <a target="_blank" href="https://www.linkedin.com/in/byongho-lee-b445ba22a/">byongho-lee-b445ba22a</a><br>Emoji : <a target="_blank" href="https://e.kakao.com/t/korean-chicken-in-america">미국물 먹은 토종닭 바비팍</a></p>SPLIT<p>학부 시절 Unity로 모바일 게임을 제작한 것이 개발의 시작이었습니다. 졸업 후 삼성청년소프트웨어 아카데미에서 다양한 웹 서비스를 제작하였고, 현재는 티맥스 메타에이아이에서 프론트 개발자로 일하고 있습니다. 최근에는 웹 성능 최적화와 관련해 Rust를 공부하고 있습니다.</p><p>구현 가능 여부를 넘어 &#39;어떻게&#39; 구현할지 고민합니다. 프론트는 다양한 요구의 사용자를 마주하는 곳입니다. 사용자의 요구를 만족시키기 위해 프론트는 끊임없이 변화합니다. 하지만 그 안에서도 변하지 않는 핵심을 추출해 구조화 한다면. 보다 더 재사용성 좋은, 확장성 있는, 수용성 높은 구조를 만들 수 있다고 기대합니다. </p>',
+    '<span>Email : <a target="_blank" href="mailto:unlike96@gmail.com">unlike96@gmail.com</a><br>Github: <a target="_blank" href="https://github.com/Byongho96">github.com/Byongho96</a><br>Linkedin: <a target="_blank" href="https://www.linkedin.com/in/byongho-lee-b445ba22a/">byongho-lee-b445ba22a</a></span>SPLIT<p class="hidden"><a target="_blank" href="https://e.kakao.com/t/korean-chicken-in-america">미국물 먹은 토종닭 바비팍</a></p><h2 id="-">맺음말</h2><p>서비스를 개발하는 것은 건물을 짓는 것과 유사합니다. 내장재는 얼마든지 입맛에 따라 다시 인테리어할 수 있지만, 한 번 구축된 뼈대는 허물기 어렵습니다. 따라서 실제 하중을 받는 기둥과 눈에 보이는 벽을 구분해서 설계해야 합니다. 서비스도 마찬가지입니다. 유저플로우를 있는 그대로 옮기면 그 프로젝트는 재사용하거나 수정하기 어렵습니다.</p><p>특히 프론트엔드는 사람과 맞닿아 있기 때문에, 기술이 발전함에 따라 사용자가 바라는 플로우도 변화합니다. 아마 그것이 프론트엔드 기술스택이 계속해서 바뀌는 원인 중 하나일 것입니다. 하지만 그 속에서 변하지 않는 핵심을 추출해 뼈대로 삼고, 내장재 또한 기능 단위로 모듈링한다면, 프론트 프로젝트도 재사용 가능하고 확장성 있게 구축할 수 있다고 생각합니다.</p>',
   imageURL: postImg,
   createdDate: '2023-08-03T23:59:59',
   modifiedDate: '2023-08-04T00:59:59',
@@ -261,7 +261,7 @@ export const portfolioListData: PostItemData[] = [
     order: 1,
     title: '이병호',
     content:
-      '<p>전세계와 소통할 수 있는 웹 기술이 흥미로워 개발을 시작했습니다. 사용자와 보다 더 다양한 방식으로 소통하는 웹을 만들고 싶습니다. 복잡한 서비스에서 일관된 특징을 추출하고, 이를 단일한 함수들의 조합으로 구현하는 것을 좋아합니다.</p>SPLIT<h2 id="education">Education</h2><ul><li><strong>고려대학교</strong><ul><li>Unity 2인용 모바일 게임</li><li>건물 열 에너지 변화 모델링</li><li>상수도망 사이버 공격감지 알고리즘</li></ul></li><li><strong>New York University(교환학생)</strong><ul><li>맨해튼 시내 셔틀버스 추천경로 서비스 기획</li></ul></li></ul><h2 id="experience">Experience</h2><ul><li><strong>삼성청년소프트웨어 아카데미</strong><ul><li>webRTC 실시간 화상 채팅 서비스</li><li>AI 모델 기반 참여형 영어 동화 구연</li></ul></li><li><strong>티맥스 메타에이아이</strong><ul><li>웹 3D 에디터 툴 MxStudio 프론트 개발</li></ul></li></ul>',
+      '<p>학부 시절 졸업 과제로 모바일 게임을 제작하며 개발에 발을 딛였습니다. 졸업 후 삼성청년소프트웨어 아카데미를 수료하며 웹 기술 서비스를 제작하였고, 현재는 티맥스 메타에이아이에서 프론트 개발자로 일하고 있습니다.</p><p>다양한 방식으로 상호작용할 수 있는 서비스를, 안정적이고 확장성 있는 구조로 만드는데 관심이 있습니다. 또한 최근에는 웹 성능과 관련해 Rust를 학습을 학습하고 있습니다.</p>SPLIT<h2 id="education">Education</h2><ul><li><strong>고려대학교</strong><ul><li>Unity 2인용 모바일 게임</li><li>건물 열 에너지 변화 모델링</li><li>상수도망 사이버 공격감지 알고리즘</li></ul></li><li><strong>New York University(교환학생)</strong><ul><li>맨해튼 시내 셔틀버스 추천경로 서비스 기획</li></ul></li></ul><h2 id="experience">Experience</h2><ul><li><strong>삼성청년소프트웨어 아카데미</strong><ul><li>webRTC 실시간 화상 채팅 서비스</li><li>AI 모델 기반 참여형 영어 동화 구연</li></ul></li><li><strong>티맥스 메타에이아이</strong><ul><li>웹 3D 에디터 툴 MxStudio 프론트 개발</li></ul></li></ul>',
     imageURL: postImg,
     createdDate: '2023-08-03T23:59:59',
     modifiedDate: '2023-08-04T00:59:59',
@@ -392,9 +392,9 @@ export const portfolioListData: PostItemData[] = [
   {
     postId: 8,
     order: 8,
-    title: '맺음말',
+    title: '',
     content:
-      '<p>Github: <a target="_blank" href="https://github.com/Byongho96">github.com/Byongho96</a><br>Linkedin: <a target="_blank" href="https://www.linkedin.com/in/byongho-lee-b445ba22a/">byongho-lee-b445ba22a</a><br>Emoji : <a target="_blank" href="https://e.kakao.com/t/korean-chicken-in-america">미국물 먹은 토종닭 바비팍</a></p>SPLIT<p>학부 시절 Unity로 모바일 게임을 제작한 것이 개발의 시작이었습니다. 졸업 후 삼성청년소프트웨어 아카데미에서 다양한 웹 서비스를 제작하였고, 현재는 티맥스 메타에이아이에서 프론트 개발자로 일하고 있습니다. 최근에는 웹 성능 최적화와 관련해 Rust를 공부하고 있습니다.</p><p>구현 가능 여부를 넘어 &#39;어떻게&#39; 구현할지 고민합니다. 프론트는 다양한 요구의 사용자를 마주하는 곳입니다. 사용자의 요구를 만족시키기 위해 프론트는 끊임없이 변화합니다. 하지만 그 안에서도 변하지 않는 핵심을 추출해 구조화 한다면. 보다 더 재사용성 좋은, 확장성 있는, 수용성 높은 구조를 만들 수 있다고 기대합니다. </p>',
+      '<p class="hidden"><a target="_blank" href="https://e.kakao.com/t/korean-chicken-in-america">미국물 먹은 토종닭 바비팍</a></p><p>SPLIT</p><h2 id="-">연락처</h2><p>Email : <a target="_blank" href="mailto:unlike96@gmail.com">unlike96@gmail.com</a><br>Github: <a target="_blank" href="https://github.com/Byongho96">github.com/Byongho96</a><br>Linkedin: <a target="_blank" href="https://www.linkedin.com/in/byongho-lee-b445ba22a/">byongho-lee-b445ba22a</a>  </p><h2 id="-">맺음말</h2><p>서비스를 개발하는 것은 건물을 짓는 것과 유사한 것 같습니다. 내장재는 얼마든지 입맛에 따라 다시 인테리어할 수 있지만, 한 번 구축된 뼈대는 허물기 어렵습니다. 따라서 실제 하중을 받는 기둥과 단순한 벽을 구분해서 지어야 합니다. 서비스도 마찬가지로 유저플로우를 그대로 옮기면 재사용하거나 수정하기 어려워집니다.</p><p>특히 프론트엔드는 사람과 맞닿아 있기 때문에, 기술이 발전함에 따라 사용자가 바라는 플로우도 변화합니다. 하지만 그 속에서 변하지 않는 핵심을 파악하고 이를 뼈대로 프로젝트를 구조화한다면, 프론트 프로젝트도 확장성 있고 재사용 가능할 것이라고 생각합니다.</p>',
     imageURL: postImg,
     createdDate: '2023-08-03T23:59:59',
     modifiedDate: '2023-08-04T00:59:59',

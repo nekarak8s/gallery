@@ -15,7 +15,7 @@
 @include mobile {
   .post-detail {
     width: min(800px, 85vw);
-    max-height: calc(var(--vh, 1vh) * 80);
+    max-height: calc(var(--vh, 1vh) * 83);
     grid-template-columns: minmax(0, 1fr);
     grid-template-rows: repeat(2, max-content);
     padding: 0.8em 0.6em;

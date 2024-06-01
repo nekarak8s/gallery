@@ -191,6 +191,7 @@ const GalleryCanvas = ({ controlType, gallery, postList, isPortfolio = false }: 
         <ButtonControl controlsRef={controlsRef as React.RefObject<MouseControls>} />
       )}
       <Modal
+        autoFocus={false}
         isOpen={selectedPostIdx !== null}
         onClose={() => {
           setSelectedPostIdx(null)
