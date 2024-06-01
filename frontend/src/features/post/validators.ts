@@ -1,7 +1,7 @@
 import * as regexes from './regexes'
 
 export async function validatePostListForm(formData: FormData): Promise<RegexResult<FormData>> {
-  const imageMimeTypes = ['image/jpeg', 'image/png', 'image/webp' /* add more as needed */]
+  const imageMimeTypes = ['image/jpg', 'image/jpeg', 'image/png', 'image/webp' /* add more as needed */]
   const reader = new FileReader()
 
   for (let i = 0; i < 10; i++) {
@@ -43,12 +43,11 @@ export async function validatePostListForm(formData: FormData): Promise<RegexRes
 
     // validate image File
     const file = formData.get(`posts[${i}].image`) as File
-    formData.delete(`posts[${i}].image`)
     if (imageMimeTypes.includes(file.type)) {
       try {
         const resizedImage = await resizeImage(file, reader)
+        formData.delete(`posts[${i}].image`)
         formData.append(`posts[${i}].image`, resizedImage)
-        console.log(resizedImage, 'resie')
       } catch (e) {
         return { result: false, reason: `${i + 1}번째 게시물: 이미지 변환 실패` }
       }

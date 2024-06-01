@@ -1,5 +1,5 @@
 export const name: RegexCondition = {
-  regex: /^[A-Za-z0-9ㄱ-ㅎㅏ-ㅣ가-힣\s]{1,15}$/,
+  regex: /^[\s\S]{1,50}$/,
   condition: '한/영/숫자 조합 1~15자로 입력해주세요',
 }
 

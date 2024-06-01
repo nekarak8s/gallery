@@ -21,6 +21,8 @@ import musicManager from '@/utils/musicManager'
 import toastManager from '@/utils/toastManager'
 import './GalleryCanvas.scss'
 
+const POST_TRIGGER_DISTANCE = 15
+
 type GalleryCanvasProps = {
   controlType: TControlType
   gallery: GalleryData
@@ -127,7 +129,7 @@ const GalleryCanvas = ({ controlType, gallery, postList, isPortfolio = false }: 
       apply(target: Function, thisArg: object, args: any[]) {
         const item = Reflect.apply(target, thisArg, args) // Use reflect to access private properties
         if (!item || !item.object.userData.isPost) return
-        if (item.distance > 10) toastManager.addToast('error', '앨범이 너무 멀리 있습니다')
+        if (item.distance > POST_TRIGGER_DISTANCE) toastManager.addToast('error', '앨범이 너무 멀리 있습니다')
         else {
           setSelectedPostIdx(item.object.userData.idx as number)
         }
@@ -189,6 +191,7 @@ const GalleryCanvas = ({ controlType, gallery, postList, isPortfolio = false }: 
         <ButtonControl controlsRef={controlsRef as React.RefObject<MouseControls>} />
       )}
       <Modal
+        autoFocus={false}
         isOpen={selectedPostIdx !== null}
         onClose={() => {
           setSelectedPostIdx(null)

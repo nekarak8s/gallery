@@ -46,7 +46,7 @@ class MouseControls implements IControls {
     this.#orbitControls = new OrbitControls(camera, canvas)
     this.#orbitControls.touches = {
       ONE: THREE.TOUCH.ROTATE,
-      TWO: null,
+      TWO: THREE.TOUCH.DOLLY_ROTATE,
     }
     this.#orbitControls.enableDamping = true
     this.#orbitControls.maxDistance = 15
@@ -55,6 +55,10 @@ class MouseControls implements IControls {
     this.#orbitControls.maxPolarAngle = (2 * Math.PI) / 3 // radians
     this.#originPosition.copy(camera.position)
     this.setTargetOnFront()
+
+    // Limit the raycaster distance
+    this.#raycaster.far = 20
+    this.#raycaster.firstHitOnly = true
 
     // Add event listener
     const _onMouseDown = this.onMouseDown.bind(this)

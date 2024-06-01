@@ -171,9 +171,9 @@ const PostItemForm = ({ post, index }: PostItemFormProps) => {
             onDragOver={handleDragOVer}
           />
           <div className="post-item-form__music">
-            <Select name={`posts[${index}].musicId`}>
+            <Select name={`posts[${index}].musicId`} defaultValue={music ? music.musicId : ''}>
               {music && (
-                <option selected className="post-form__music" value={music.musicId}>
+                <option className="post-form__music" value={music.musicId}>
                   {music.title} - {music.artist}
                 </option>
               )}

@@ -5,11 +5,12 @@
   grid-template-columns: repeat(2, min(35vw, 400px));
   grid-template-rows: minmax(0, 1fr);
   gap: 1em;
-  height: 100%;
-  max-height: calc(var(--vh, 1vh) * 70);
-  padding: 1em 1em 1em 0.6em;
-  font-size: 1rem;
   overflow: auto;
+  height: 100%;
+  max-height: calc(var(--vh, 1vh) * 75);
+  padding: 0.7em 1.2em 1.7em 0.8em;
+  font-size: 1rem;
+  font-family: 'GowunDodum-Regular';
 }
 
 .portfolio-detail__summary {
@@ -22,8 +23,9 @@
   overflow: auto;
 
   > img {
-    width: 95%;
-    aspect-ratio: 1/1;
+    width: 75%;
+    margin-top: 1em;
+    aspect-ratio: 10 / 9;
     object-fit: cover;
     align-self: center;
   }
@@ -37,7 +39,7 @@
 
     > h1 {
       margin: 0.5em 0 0 0;
-      font-size: 1.1em;
+      font-size: 1.3em;
       font-weight: 600;
     }
   }
@@ -51,11 +53,10 @@
 @include mobile {
   .portfolio-detail {
     width: min(800px, 85vw);
-    height: calc(var(--vh, 1vh) * 80);
+    height: calc(var(--vh, 1vh) * 83);
     grid-template-columns: minmax(0, 1fr);
     grid-template-rows: repeat(2, max-content);
-    padding: 0.8em 0.6em;
-    gap: 1em;
+    padding: 0.5em 0.6em 1.2em 0.6em;
     overflow: auto;
     font-size: 0.9rem;
   }
@@ -65,6 +66,7 @@
 
     > img {
       width: 98%;
+      margin-top: 0.5em;
     }
   }
 }

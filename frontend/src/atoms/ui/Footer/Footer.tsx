@@ -90,7 +90,7 @@ const Footer = () => {
               <tr>
                 <th scope="row">{t('copyright.row1')}</th>
                 <td>
-                  <A href="https://www.youtube.com/watch?v=tFcJsB-pekY" title="프리텐다드 글꼴" target="_blank">
+                  <A href="https://cactus.tistory.com/306" title="프리텐다드 글꼴" target="_blank">
                     Pretendard, orioncactus
                   </A>
                 </td>
@@ -103,6 +103,19 @@ const Footer = () => {
               <tr>
                 <th scope="row">{t('copyright.row2')}</th>
                 <td>
+                  <A href="https://github.com/yangheeryu/Gowun-Dodum" title="고운돋움 글꼴" target="_blank">
+                    Gowun-Dodum, yangheeryu
+                  </A>
+                </td>
+                <td>
+                  <A href="https://openfontlicense.org/" title="SIL 라이선스" target="_blank">
+                    SIL Open Font
+                  </A>
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">{t('copyright.row3')}</th>
+                <td>
                   <A href="https://www.youtube.com/watch?v=tFcJsB-pekY" title="Youtube 메이플스토리 리스항구 피아노 커버" target="_blank">
                     Above the Treetops, Pair Piano
                   </A>
@@ -110,7 +123,7 @@ const Footer = () => {
                 <td> </td>
               </tr>
               <tr>
-                <th scope="row">{t('copyright.row3')}</th>
+                <th scope="row">{t('copyright.row4')}</th>
                 <td>
                   <A href="https://www.youtube.com/watch?v=YhQnBDHCMk4" title="Youtube 메이플스토리 수련의 숲 피아노 커버" target="_blank">
                     Raindrop Flower, Pair Piano
@@ -119,7 +132,7 @@ const Footer = () => {
                 <td> </td>
               </tr>
               <tr>
-                <th scope="row">{t('copyright.row4')}</th>
+                <th scope="row">{t('copyright.row5')}</th>
                 <td>
                   <A href="https://www.youtube.com/watch?v=JOT0auAGc_U" title="Youtube 메이플스토리 판테온 피아노 커버" target="_blank">
                     Pantheon, Pair Piano
@@ -128,7 +141,7 @@ const Footer = () => {
                 <td> </td>
               </tr>
               <tr>
-                <th scope="row">{t('copyright.row5')}</th>
+                <th scope="row">{t('copyright.row6')}</th>
                 <td>
                   <A href="https://soundcloud.com/user-356546060/colorful-flowers" title="Soundcloud,Tokyo Music Walker" target="_blank">
                     Colorful Flowers, Tokyo Music Walker
@@ -137,7 +150,7 @@ const Footer = () => {
                 <td>CC BY 3.0 DEED</td>
               </tr>
               <tr>
-                <th scope="row">{t('copyright.row6')}</th>
+                <th scope="row">{t('copyright.row7')}</th>
                 <td>
                   <A
                     href="https://sketchfab.com/3d-models/tanabata-evening-kyoto-inspired-city-scene-04dc9402b74d43ef86c4795311c0e4bb"

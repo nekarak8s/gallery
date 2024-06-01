@@ -1,6 +1,10 @@
 import { GalleryData, GalleryItemData, PlaceData } from './types'
-import twoDimImage from '@/assets/images/gallery/greenary-2d.png'
-import threeDimImage from '@/assets/images/gallery/greenary-3d.png'
+import twoDimGalleryImage from '@/assets/images/gallery/2d-map/gallery.png'
+import twoDimGreenaryImage from '@/assets/images/gallery/2d-map/greenary.png'
+import twoDimKyotoImage from '@/assets/images/gallery/2d-map/kyoto.png'
+import threeDimGalleryImage from '@/assets/images/gallery/3d-map/gallery.png'
+import threeDimGreenaryImage from '@/assets/images/gallery/3d-map/greenary.png'
+import threeDimKyotoImage from '@/assets/images/gallery/3d-map/kyoto.png'
 
 export const galleryData: GalleryData = {
   galleryId: 1,
@@ -13,8 +17,8 @@ export const galleryData: GalleryData = {
     placeId: 1,
     name: 'Gallery A',
     maximumFrameNumber: 10,
-    threeDimensionImageUri: threeDimImage,
-    twoDimensionImageUri: twoDimImage,
+    threeDimensionImageUri: threeDimGalleryImage,
+    twoDimensionImageUri: twoDimGalleryImage,
   },
 }
 
@@ -29,8 +33,8 @@ export const galleryItemData: GalleryItemData = {
     placeId: 1,
     name: 'Gallery A',
     maximumFrameNumber: 10,
-    threeDimensionImageUri: threeDimImage,
-    twoDimensionImageUri: twoDimImage,
+    threeDimensionImageUri: threeDimGalleryImage,
+    twoDimensionImageUri: twoDimGalleryImage,
   },
 }
 
@@ -46,8 +50,8 @@ export const galleryListData: GalleryItemData[] = [
       placeId: 1,
       name: 'Gallery A',
       maximumFrameNumber: 10,
-      threeDimensionImageUri: threeDimImage,
-      twoDimensionImageUri: twoDimImage,
+      threeDimensionImageUri: threeDimGalleryImage,
+      twoDimensionImageUri: twoDimGalleryImage,
     },
   },
   {
@@ -61,8 +65,8 @@ export const galleryListData: GalleryItemData[] = [
       placeId: 2,
       name: 'Gallery A',
       maximumFrameNumber: 10,
-      threeDimensionImageUri: threeDimImage,
-      twoDimensionImageUri: twoDimImage,
+      threeDimensionImageUri: threeDimGalleryImage,
+      twoDimensionImageUri: twoDimGalleryImage,
     },
   },
   {
@@ -76,8 +80,8 @@ export const galleryListData: GalleryItemData[] = [
       placeId: 1,
       name: 'Gallery A',
       maximumFrameNumber: 10,
-      threeDimensionImageUri: threeDimImage,
-      twoDimensionImageUri: twoDimImage,
+      threeDimensionImageUri: threeDimGalleryImage,
+      twoDimensionImageUri: twoDimGalleryImage,
     },
   },
   {
@@ -91,8 +95,8 @@ export const galleryListData: GalleryItemData[] = [
       placeId: 2,
       name: 'Gallery A',
       maximumFrameNumber: 10,
-      threeDimensionImageUri: threeDimImage,
-      twoDimensionImageUri: twoDimImage,
+      threeDimensionImageUri: threeDimGalleryImage,
+      twoDimensionImageUri: twoDimGalleryImage,
     },
   },
   {
@@ -106,8 +110,8 @@ export const galleryListData: GalleryItemData[] = [
       placeId: 1,
       name: 'Gallery A',
       maximumFrameNumber: 10,
-      threeDimensionImageUri: threeDimImage,
-      twoDimensionImageUri: twoDimImage,
+      threeDimensionImageUri: threeDimGalleryImage,
+      twoDimensionImageUri: twoDimGalleryImage,
     },
   },
 ]
@@ -116,8 +120,8 @@ export const placeItemData: PlaceData = {
   placeId: 1,
   name: '공간1',
   maximumFrameNumber: 10,
-  twoDimensionImageUri: 'https://source.unsplash.com/random/300×300',
-  threeDimensionImageUri: 'https://source.unsplash.com/random/300×300',
+  twoDimensionImageUri: twoDimGalleryImage,
+  threeDimensionImageUri: threeDimGalleryImage,
 }
 
 export const placeListData: PlaceData[] = [
@@ -125,21 +129,21 @@ export const placeListData: PlaceData[] = [
     placeId: 1,
     name: '초원',
     maximumFrameNumber: 10,
-    twoDimensionImageUri: 'https://source.unsplash.com/random/300×300?greenary',
-    threeDimensionImageUri: 'https://source.unsplash.com/random/300×300?greenary',
+    twoDimensionImageUri: twoDimGreenaryImage,
+    threeDimensionImageUri: threeDimGreenaryImage,
   },
   {
     placeId: 2,
     name: '갤러리',
     maximumFrameNumber: 10,
-    twoDimensionImageUri: 'https://source.unsplash.com/random/300×300?gallery',
-    threeDimensionImageUri: 'https://source.unsplash.com/random/300×300?gallery',
+    twoDimensionImageUri: twoDimGalleryImage,
+    threeDimensionImageUri: threeDimGalleryImage,
   },
   {
     placeId: 3,
     name: '교토',
     maximumFrameNumber: 10,
-    twoDimensionImageUri: 'https://source.unsplash.com/random/300×300?kyoto',
-    threeDimensionImageUri: 'https://source.unsplash.com/random/300×300?kyoto',
+    twoDimensionImageUri: twoDimKyotoImage,
+    threeDimensionImageUri: threeDimKyotoImage,
   },
 ]

@@ -1,11 +1,11 @@
 import { MouseEventHandler, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import galleryImg from '@/assets/images/minimap/gallery.png?format=png'
-import galleryWebp from '@/assets/images/minimap/gallery.png?format=webp'
-import greenaryImg from '@/assets/images/minimap/greenary.png?format=png'
-import greenaryWebp from '@/assets/images/minimap/greenary.png?format=webp'
-import kyotoImg from '@/assets/images/minimap/kyoto.png?format=png'
-import kyotoWebp from '@/assets/images/minimap/kyoto.png?format=webp'
+import galleryImg from '@/assets/images/gallery/mini-map/gallery.png?format=png'
+import galleryWebp from '@/assets/images/gallery/mini-map/gallery.png?format=webp'
+import greenaryImg from '@/assets/images/gallery/mini-map/greenary.png?format=png'
+import greenaryWebp from '@/assets/images/gallery/mini-map/greenary.png?format=webp'
+import kyotoImg from '@/assets/images/gallery/mini-map/kyoto.png?format=png'
+import kyotoWebp from '@/assets/images/gallery/mini-map/kyoto.png?format=webp'
 import CloseSvg from '@/assets/svgs/close.svg'
 import DragSvg from '@/assets/svgs/drag.svg'
 import OpenSvg from '@/assets/svgs/open.svg'
@@ -68,6 +68,10 @@ function MiniMap({ galleryType, controlsRef, defaultPosition }: MiniMapProps) {
   // Drag and droppable component
   useDnd({ ref: containerRef })
 
+  /**
+   * Set the position of the minimap
+   * Set time interval to update current svg position
+   */
   useEffect(() => {
     const container = containerRef.current
     const controls = controlsRef.current

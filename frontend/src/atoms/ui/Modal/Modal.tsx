@@ -7,11 +7,12 @@ import './Modal.scss'
 interface ModalProps {
   isOpen: boolean
   onClose: () => void
+  autoFocus?: boolean
 }
 
-const Modal = ({ children, isOpen, onClose }: PropsWithChildren<ModalProps>) => {
+const Modal = ({ children, isOpen, onClose, autoFocus = true }: PropsWithChildren<ModalProps>) => {
   const backRef = useRef<HTMLDivElement>(null)
-  const contentRef = useFocusTrap(isOpen, onClose)
+  const contentRef = useFocusTrap(autoFocus ? isOpen : false, onClose)
 
   /**
    * Close modal

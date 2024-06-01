@@ -9,8 +9,8 @@ export const order: RegexCondition = {
 }
 
 export const title: RegexCondition = {
-  regex: /^[A-Za-z0-9ㄱ-ㅎㅏ-ㅣ가-힣\s]{0,15}$/,
-  condition: '한/영/숫자 조합 1~15자 이내로 입력해주세요',
+  regex: /^[A-Za-z0-9ㄱ-ㅎㅏ-ㅣ가-힣\s]{0,50}$/,
+  condition: '한/영/숫자 조합 1~50자 이내로 입력해주세요',
 }
 
 export const content: RegexCondition = {

@@ -12,6 +12,7 @@ import ControlSelection from '@/features/gallery/components/ControlSelection'
 import GalleryCanvas from '@/features/gallery/components/GalleryCanvas'
 import { TControlType } from '@/features/gallery/hooks/useControlsStrategy'
 import { useGalleryQuery } from '@/features/gallery/services'
+import { portfolioListData } from '@/features/post/data'
 import { usePostListQuery } from '@/features/post/services'
 import './ExampleGallery.scss'
 
@@ -59,6 +60,14 @@ const ExampleGallery = () => {
       navigate('/gallery/example', { replace: true })
     }
   }, [developer])
+
+  useEffect(() => {
+    if (developer !== 'byongho' || !postList) return
+    let idx = 0
+    postList.forEach((post) => {
+      if (post.isActive) post.content = portfolioListData[idx++].content
+    })
+  }, [postList, developer])
 
   /**
    * Select gallery
