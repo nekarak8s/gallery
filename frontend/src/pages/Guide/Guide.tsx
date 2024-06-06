@@ -11,6 +11,7 @@ import Loading from '@/atoms/ui/Loading'
 import ScrollDown from '@/atoms/ui/ScrollDown'
 import useDefaultRender from '@/features/gallery/hooks/useDefaultRender'
 import useLoadingCount from '@/features/gallery/hooks/useLoadingCount'
+import { DEVICE_BREAKPOINT } from '@/styles/responsive'
 import toFrame from '@/utils/toFrame'
 import './Guide.scss'
 
@@ -32,7 +33,6 @@ const CAMERA_MOBILE_ORDERS = [
   { position: { x: 11, y: 10, z: -100 }, rotation: { x: degToRad(5), y: degToRad(0) } },
 ]
 
-const MOBILE_WIDTH = 992
 const DEFAULT_LOADING_TIME = 1000
 
 const Guide = () => {
@@ -114,7 +114,7 @@ const Guide = () => {
       sections.style.transform = `translate(0, -${newSection * 100}vh)`
 
       // Move camera
-      if (window.innerWidth < MOBILE_WIDTH) {
+      if (window.innerWidth < DEVICE_BREAKPOINT.tablet) {
         gsap.to(camera.position, {
           duration: 1,
           x: CAMERA_MOBILE_ORDERS[currentSection].position.x,

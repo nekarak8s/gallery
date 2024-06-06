@@ -42,7 +42,7 @@ const GalleryItem = ({ gallery }: GalleryItemProps) => {
         .share({
           title: `${gallery.name}`,
           text: `${gallery.name} 전시회에 초대합니다`,
-          url: `${window.location.protocol}://${window.location.host}${process.env.REACT_APP_BASE_URL}/gallery/${gallery.galleryId}`,
+          url: `${process.env.REACT_APP_BASE_URL}/gallery/${gallery.galleryId}`,
         })
         .catch(() => {})
       return
