@@ -69,7 +69,7 @@ module.exports = merge(common, {
         ],
       },
       {
-        test: /\.(png|jpe?g|webp)\?format=(png|jpe?g|webp)$/,
+        test: /\.(png|jpe?g|webp)$/,
         use: [
           {
             loader: 'responsive-loader',

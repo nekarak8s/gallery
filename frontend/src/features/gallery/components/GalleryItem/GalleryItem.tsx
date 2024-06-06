@@ -50,7 +50,7 @@ const GalleryItem = ({ gallery }: GalleryItemProps) => {
 
     // 2. Use clipboard api
     navigator.clipboard
-      .writeText(`${window.location.protocol}://${window.location.host}${process.env.REACT_APP_BASE_URL}/gallery/${gallery.galleryId}`)
+      .writeText(`${window.location.protocol}://${window.location.host}${process.env.REACT_APP_BASE_URL ?? ''}/gallery/${gallery.galleryId}`)
       .then(() => {
         toastManager.addToast('success', '클립보드에 복사되었습니다')
       })
