@@ -55,7 +55,7 @@ export class Greenary {
   static async build(scene: THREE.Scene, gltfLoader: GLTFLoader) {
     // Set draco loader
     const dracoLoader = new DRACOLoader()
-    dracoLoader.setDecoderPath('/draco/')
+    dracoLoader.setDecoderPath(`${process.env.REACT_APP_BASE_URL}/draco/`)
     gltfLoader.setDRACOLoader(dracoLoader)
 
     // Load GLTF
