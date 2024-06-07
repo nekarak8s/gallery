@@ -18,6 +18,7 @@ import { TERRAIN_WIDTH as KYOTO_WIDTH } from '@/features/gallery/utils/terrainSt
 import useDnd from '@/hooks/useDnd'
 import { IControls } from '@/libs/three-custom/controls'
 import './MiniMap.scss'
+import { DEVICE_BREAKPOINT } from '@/styles/responsive'
 
 const TERRAIN_WIDTH: Record<number, number> = {
   1: GREENARY_WIDTH,
@@ -31,10 +32,12 @@ const TERRAIN_IMAGE: Record<number, [ResponsiveImageOutput, ResponsiveImageOutpu
   3: [kyotoImg, kyotoWebp],
 }
 
-const DESKTOP_MINIMAP_WIDTH = 250 // width of the minimap. px
-const LAPTOP_MINIMAP_WIDTH = 240 // width of the minimap. px
-const TABLET_MINIMAP_WIDTH = 230 // width of the minimap. px
-const MOBILE_MINIMAP_WIDTH = 170 // width of the minimap. px
+const DEVICE_MINIMAP_WIDTH = {
+  desktop: 250,
+  laptop: 240,
+  tablet: 230,
+  mobile: 170,
+}
 
 type MiniMapProps = {
   galleryType: number
@@ -78,7 +81,7 @@ function MiniMap({ galleryType, controlsRef, defaultPosition }: MiniMapProps) {
 
     if (!container || !controls) return
 
-    let MINIMAP_WIDTH = DESKTOP_MINIMAP_WIDTH
+    let MINIMAP_WIDTH = DEVICE_MINIMAP_WIDTH.desktop
 
     // update position & rotation data
     const width = TERRAIN_WIDTH[galleryType]
@@ -89,10 +92,10 @@ function MiniMap({ galleryType, controlsRef, defaultPosition }: MiniMapProps) {
     }
 
     const handleResize = () => {
-      MINIMAP_WIDTH = DESKTOP_MINIMAP_WIDTH
-      if (window.innerWidth < 1280) MINIMAP_WIDTH = LAPTOP_MINIMAP_WIDTH
-      if (window.innerWidth < 992) MINIMAP_WIDTH = TABLET_MINIMAP_WIDTH
-      if (window.innerWidth < 640) MINIMAP_WIDTH = MOBILE_MINIMAP_WIDTH
+      MINIMAP_WIDTH = DEVICE_MINIMAP_WIDTH.desktop
+      if (window.innerWidth < DEVICE_BREAKPOINT.laptop) MINIMAP_WIDTH = DEVICE_MINIMAP_WIDTH.laptop
+      if (window.innerWidth < DEVICE_BREAKPOINT.tablet) MINIMAP_WIDTH = DEVICE_MINIMAP_WIDTH.tablet
+      if (window.innerWidth < DEVICE_BREAKPOINT.mobile) MINIMAP_WIDTH = DEVICE_MINIMAP_WIDTH.mobile
       container.style.setProperty('--data-width', `${MINIMAP_WIDTH}px`)
     }
 

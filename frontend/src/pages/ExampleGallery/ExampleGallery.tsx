@@ -65,7 +65,12 @@ const ExampleGallery = () => {
     if (developer !== 'byongho' || !postList) return
     let idx = 0
     postList.forEach((post) => {
-      if (post.isActive) post.content = portfolioListData[idx++].content
+      if (post.isActive) {
+        while (!portfolioListData[idx].isActive) idx += 1
+        post.title = portfolioListData[idx].title
+        post.content = portfolioListData[idx].content
+        idx += 1
+      }
     })
   }, [postList, developer])
 
