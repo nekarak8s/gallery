@@ -10,9 +10,12 @@ const WIDTH_RATIO = {
   tablet: 0.8,
   mobile: 0.7,
 }
+const time = new Date().getTime()
 const loadingImgBitmap = await fetch(KubernetesImg)
   .then((res) => res.blob())
   .then((blob) => createImageBitmap(blob))
+console.log(loadingImgBitmap)
+console.log('loading time:', new Date().getTime() - time)
 
 function Loading() {
   const canvasRef = useRef<HTMLCanvasElement>(null)

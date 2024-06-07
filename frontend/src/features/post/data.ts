@@ -248,7 +248,7 @@ export const portfolioItemData: PostItemData = {
   order: 8,
   title: '연락처',
   content:
-    '<span>Email : <a target="_blank" data-cursor-scale="5" href="mailto:unlike96@gmail.com">unlike96@gmail.com</a><br>Github: <a target="_blank" data-cursor-scale="5" href="https://github.com/Byongho96">github.com/Byongho96</a><br>Linkedin: <a target="_blank" data-cursor-scale="5" href="https://www.linkedin.com/in/byongho-lee-b445ba22a/">byongho-lee-b445ba22a</a></span>SPLIT<p class="hidden"><a target="_blank" data-cursor-scale="5" href="https://e.kakao.com/t/korean-chicken-in-america">미국물 먹은 토종닭 바비팍</a></p><h2 id="-">맺음말</h2><p>서비스를 개발하는 것은 건물을 짓는 것과 유사합니다. 내장재는 얼마든지 입맛에 따라 다시 인테리어할 수 있지만, 한 번 구축된 뼈대는 허물기 어렵습니다. 따라서 실제 하중을 받는 기둥과 눈에 보이는 벽을 구분해서 설계해야 합니다. 서비스도 마찬가지입니다. 유저플로우를 있는 그대로 옮기면 그 프로젝트는 재사용하거나 수정하기 어렵습니다.</p><p>특히 프론트엔드는 사람과 맞닿아 있기 때문에, 기술이 발전함에 따라 사용자가 바라는 플로우도 변화합니다. 아마 그것이 프론트엔드 기술스택이 계속해서 바뀌는 원인 중 하나일 것입니다. 하지만 그 속에서 변하지 않는 핵심을 추출해 뼈대로 삼고, 내장재 또한 기능 단위로 모듈링한다면, 프론트 프로젝트도 재사용 가능하고 확장성 있게 구축할 수 있다고 생각합니다.</p>',
+    '<span>Email : <a target="_blank" data-cursor-scale="5" href="mailto:unlike96@gmail.com">unlike96@gmail.com</a><br>Github: <a target="_blank" data-cursor-scale="5" href="https://github.com/Byongho96">github.com/Byongho96</a><br>Linkedin: <a target="_blank" data-cursor-scale="5" href="https://www.linkedin.com/in/byongho-lee-b445ba22a/">byongho-lee-b445ba22a</a></span>SPLIT<a target="_blank" data-cursor-scale="5" class="transparent" href="https://e.kakao.com/t/korean-chicken-in-america">미국물 먹은 토종닭 바비팍</a><h2 id="-">맺음말</h2><p>서비스를 개발하는 것은 마치 건물을 짓는 것과 유사하다고 생각합니다. 내장재는 언제든 다시 인테리어할 수 있지만, 한 번 구축된 뼈대는 허물기 어렵습니다. 건축에서 실제 하중을 받는 기둥과 단순한 벽을 구분하여 설계 하는 것처럼, 서비스도 마찬가지라고 생각합니다. 만약 유저 플로우를 그대로 코드로 옮기면,  프로젝트를 재사용하거나 수정하기 어려워질 것입니다.</p><p>프론트엔드는 사용자와 직접 맞닿기 때문에 유저 플로우에 민감할 수 밖에 없습니다. 그리고 기술이 발전함에 따라 사용자가 요구하는 플로우는 점점 더 다양해지고 있습니다. 그러나 복잡해지는 변화 속에서 오히려 일관되게 요구되는 핵심 기능을 파악한다면, 이를 프로젝트의 뼈대로 삼는다면, 그 외 내부 기능을 모듈화한다면, 재사용 가능하고 확장성 있는 프론트엔드 프로젝트를 구축할 수 있다고 기대합니다.</p>',
   imageURL: postImg,
   createdDate: '2023-08-03T23:59:59',
   modifiedDate: '2023-08-04T00:59:59',
@@ -269,7 +269,7 @@ export const portfolioListData: PostItemData[] = [
     order: 1,
     title: '이병호',
     content:
-      '<p>학부 시절 졸업 과제로 모바일 게임을 제작하며 개발을 시작했습니다. 졸업 후에는 삼성청년소프트웨어 아카데미를 통해 웹 기술을 익히고 다양한 서비스를 제작했습니다. 현재는 Tmax MetaAI에서 프론트 개발자로 일하고 있습니다.</p>SPLIT<h2 id="education">Education</h2><ul><li><strong>고려대학교</strong><ul><li>Unity 2인용 모바일 게임</li><li>건물 열 에너지 변화 모델링</li><li>상수도망 사이버 공격감지 알고리즘</li></ul></li><li><strong>New York University(교환학생)</strong><ul><li>맨해튼 시내 셔틀버스 추천경로 서비스 기획</li></ul></li></ul><h2 id="experience">Experience</h2><ul><li><strong>삼성청년소프트웨어 아카데미</strong><ul><li>webRTC 실시간 화상 채팅 서비스</li><li>AI 모델 기반 참여형 영어 동화 서비스</li><li>등산 소모임 안드로이드 애플리케이션</li></ul></li><li><strong>티맥스 메타에이아이</strong><ul><li>3D 웹 에디터 툴 MxStudio 프론트 개발</li></ul></li></ul>',
+      '<p>학부 시절 졸업 과제로 모바일 게임을 제작하면서 개발을 시작했습니다. 컴퓨터만 있으면 프로젝트를 만들 수 있다는 점이 건축공학과는 또 다른 매력이었습니다. 졸업 후 삼성 청년 SW 아카데미를 통해, 다양한 웹 서비스를 직접 제작하며 실력을 쌓았습니다. 현재는 Tmax MetaAI 에서 프론트 개발자로 일하며 3D 웹 에디터를 만들고 있씁니다.</p>SPLIT<h2 id="education">Education</h2><ul><li><strong>고려대학교</strong><ul><li>2인용 모바일 게임 with Unity</li><li>건물 열에너지 변화 모델링 with MATLAB</li><li>상수도망 사이버 공격 감지 알고리즘 설계</li></ul></li><li><strong>New York University (교환학생)</strong><ul><li>맨해튼 시내 셔틀버스 경로 추천 서비스 기획</li></ul></li></ul><h2 id="experience">Experience</h2><ul><li><strong>삼성 청년 SW 아카데미</strong><ul><li>webRTC 실시간 화상 채팅 서비스</li><li>참여형 영어 동화 구연 AI 서비스</li><li>등산 소모임 안드로이드 애플리케이션</li></ul></li><li><strong>티맥스 MetaAI</strong><ul><li>3D 웹 에디터 툴 MxStudio 프론트 개발</li></ul></li></ul>',
     imageURL: portfolioImg1,
     createdDate: '2023-08-03T23:59:59',
     modifiedDate: '2023-08-04T00:59:59',
@@ -288,7 +288,7 @@ export const portfolioListData: PostItemData[] = [
     order: 2,
     title: 'The Gallery: 웹 표준',
     content:
-      '<p>3D 공간에서 컨텐츠를 공유할 수 있는 새로운 SNS 인터페이스입니다. 웹 표준을 따라 제작하였으며, 서비스의 모든 UI와 인터랙션을 직접 디자인하고 구현했습니다.</p>SPLIT<h2 id="-">웹 접근성</h2><ul><li>시멘틱 태그 &amp; 접근성 속성자 사용</li><li>키보드 접근성 확보 (포커스 트랩, 오토 포커싱...)</li><li>4개 브레이크 포인트로 동작하는 반응형 UI</li></ul><h2 id="-">디자인</h2><p><a target="_blank" data-cursor-scale="5" href="https://6581ad67bc8d05b6620ff016-ffsouutxpi.chromatic.com/?path=/story/overview-ui--default">Storybook 쇼케이스</a></p><ul><li>재사용 가능한 SCSS mixin 설계</li><li>브라우저 렌더링 과정을 고려한 CSS 최적화</li><li>컴포넌트 언마운트 애니메이션 구현 및 모듈화</li></ul><h2 id="-">인터랙션</h2><ul><li>쓰로틀링과 화면 분할을 이용한 인터랙션 최적화</li><li>재사용 가능한 커스텀 인터랙션 훅 분리</li></ul>',
+      '<p>3D 공간에서 사용자 컨텐츠를 공유할 수 있는 소셜 네트워크 서비스(SNS)입니다. 웹 표준을 준수하여 제작했으며, 서비스 내 모든 UI와 인터랙션을 라이브러리 없이 직접 디자인하고 구현했습니다.</p>SPLIT<h2 id="-">웹 접근성</h2><ul><li>시멘틱 태그 &amp; 시청각 속성 사용 준수</li><li>패이지 내 모든 컴포넌트 키보드 접근 가능</li><li>총 4개 기준점에 따라 동작하는 반응형 UI</li></ul><h2 id="-">디자인</h2><p><a target="_blank" data-cursor-scale="5" href="https://6581ad67bc8d05b6620ff016-ffsouutxpi.chromatic.com/?path=/story/overview-ui--default">Storybook 쇼케이스</a></p><ul><li>CSS, SVG, Canvas 애니메이션 활용</li><li>리액트 컴포넌트 언마운트 애니메이션 모듈화</li><li>브라운저 렌더링 과정으로 고려한 CSS 최적화</li></ul><h2 id="-">인터랙션</h2><ul><li>클로저를 활용한 인터랙션 최적화</li><li>인터랙션 로직 모듈화를 통한 재사용성 확보</li></ul>',
     imageURL: portfolioImg2,
     createdDate: '2023-08-03T23:59:59',
     modifiedDate: '2023-08-04T00:59:59',
@@ -307,7 +307,7 @@ export const portfolioListData: PostItemData[] = [
     order: 3,
     title: 'The Gallery: 3D',
     content:
-      '<p>객체 지향적인 설계로 3D 공간을 구현했습니다. 다양한 디자인 패턴을 적용하여 확장에 열려있는 프로젝트를 구조를 만들었습니다. 또한 Three.js 메모리 관리와 렌더링 성능 최적화에 집중했습니다.</p>SPLIT<h2 id="-">성능 최적화</h2><ul><li>필수 물리현상을 구현한 커스텀 컨트롤러</li><li>Draco, Meshopt 알고리즘 활용 3D 에셋 최소화<br>(평균 70% 감소)</li><li>three-mesh-bvh 활용 렌더 스크립팅 시간 최소화<br>(약 60% 감소)</li></ul><h2 id="-">메모리 관리</h2><ul><li>팩토리 패턴 기반 아이템 삭제 후 메모리 자동 정리</li><li>기능별 훅 분리 & 라이프 사이클 기반 메모리 정리</li></ul><h2 id="-">디자인 패턴</h2><ul><li>팩토리 패턴 : 다양한 동물물 객체 확장성 확보</li><li>전략 패턴 : 3D 배경 공간 확장성 및 교체 가능</li><li>빌더 패턴 : 비동기적 glb 객체 생성 가능</li></ul>',
+      '<p>객체 지향 설계를 통해 3D 공간을 구현했으며, 다양한 디자인 패턴을 적용하여 확장성 있는 프로젝트를 구축했습니다. 또한 Three.js 메모리 관리와 렌더링 성능 최적화에 집중했습니다.</p>SPLIT<h2 id="-">성능 최적화</h2><ul><li>커스텀 물리엔진 컨트롤러 설계</li><li>3D 에셋 크기 최적화 (평균 약 70% 감소)</li><li>렌더 스크립팅 시간 최적화(평균 약 60% 감소)</li></ul><h2 id="-">메모리 관리</h2><ul><li>아이템 삭제 시점 메모리 자동 정리 구현</li><li>컴포넌트 라이프 사이클 기반 메모리 정리</li></ul><h2 id="-">디자인 패턴</h2><ul><li>빌더 패턴 : 비동기적 객체 생성 구현</li><li>팩토리 패턴 : 동물 객체 생성 확장성 확보</li><li>팩토리 패턴 : 3D 아이템 메모리 자동 관리</li><li>전략 패턴 : 3D 배경 공간 & 캐릭터 교체 가능</li></ul>',
     imageURL: portfolioImg3,
     createdDate: '2023-08-03T23:59:59',
     modifiedDate: '2023-08-04T00:59:59',
@@ -326,7 +326,7 @@ export const portfolioListData: PostItemData[] = [
     order: 4,
     title: 'The Gallery: 네트워크',
     content:
-      '<p>웹팩 & 바벨 등 번들러와 컴파일러를 처음부터 직접 설정했습니다. 프로젝트는 도커 이미지화하여 쿠버네티스 상에 배포·관리 했으며, GitOps를 기반으로 동작하는 CI/CD 파이프라인을 구축했습니다.</p>SPLIT<h2 id="-">번들러</h2><ul><li>빌드 환경별 번들링 설정 분리 & 최적화</li><li>에셋 유형별 로더 설정 & 제공 최적화</li></ul><h2 id="-">네트워크</h2><ul><li>react-query 기반 API 서비스 훅 설계</li><li>MSW를 이용한 독립적인 프론트 개발 환경 구축</li><li>Nginx 웹서버로 제공되는 프론트 도커 이미지 생성</li></ul><h2 id="-">인프라</h2><p><a target="_blank" data-cursor-scale="5" href="https://byongho96.github.io/TIL/posts/Kubernetes/">쿠버네티스 CI/CD 구축 문서</a></p><ul><li>AWS Lighthouse 상 쿠버네티스 클러스터 구축</li><li>인그레스 설정 및 SSH 키 등록 · 관리</li><li>Github Actions 와 Argo 연계한 파이프라인 구축</li></ul>',
+      '<p>Webpack과 Babel 등의 번들러와 컴파일러를 처음부터 직접 설정했습니다. 프로젝트를 도커 이미지화하여 쿠버네티스 상에 배포하고 관리했으며, GitOps를 기반으로 동작하는 CI/CD 파이프라인을 구축했습니다.</p>SPLIT<h2 id="-">번들러 설정</h2><ul><li>빌드 환경에 따른 번들링 최적화</li><li>에셋 종류별 로더 설정 최적화</li></ul><h2 id="-">네트워크 설계</h2><ul><li>React Query 기반 API 서비스 훅 설계</li><li>Mock Service Worker 활용한 독립적인 프론트 개발</li><li>Nginx 웹 서버를 가진 프론트 도커 이미지 생성</li></ul><h2 id="-">인프라 구축</h2><p><a target="_blank" data-cursor-scale="5" href="https://byongho96.github.io/TIL/posts/Kubernetes/">쿠버네티스 CI/CD 구축 문서</a></p><ul><li>AWS 인스턴스에 Kubernetes 클러스터 구축</li><li>인그레스 도메인 설정 및 SSH 키 등록·관리</li><li>Github Actions 와 Argo 연계한 파이프라인 구축</li></ul>',
     imageURL: portfolioImg4,
     createdDate: '2023-08-03T23:59:59',
     modifiedDate: '2023-08-04T00:59:59',
@@ -382,7 +382,7 @@ export const portfolioListData: PostItemData[] = [
     order: 7,
     title: 'react-responsive-3d-carousel',
     content:
-      '<p>리액트 컴포넌트로 제작된 3D 캐러셀 라이브러리입니다. 간편한 사용과 디테일한 커스터마이징을 특징으로 합니다. 오픈소스 제공되기 때문에 코드 품질 관리 방법을 많이 고민했습니다.</p>SPLIT<h2 id="-">코드 품질 관리</h2><p><a target="_blank" data-cursor-scale="5" href="https://github.com/Byongho96/react-responsive-3d-carousel/pull/8">오픈소스 PR 리뷰</a></p><ul><li>husky &amp; prettier &amp; eslint 를 이용한 코드 포맷팅</li><li>react-testing-library 기반 단위 테스트 코드 작성</li><li>commitlint 활용 커밋 메시지 & 업데이트 내역 관리</li></ul><h2 id="-">라이브러리 제공</h2><p><a target="_blank" data-cursor-scale="5" href="https://byongho96.github.io/react-responsive-3d-carousel/">npm 라이브러리</a><br><a target="_blank" data-cursor-scale="5" href="https://byongho96.github.io/react-responsive-3d-carousel/">데모 플레이그라운드</a></p><ul><li>28개 독립적인 props 커스터마이징 지원</li><li>번들링 사이즈 최적화 (44KB → 12KB)</li><li>CSS BEM 네이밍을 이용한 CSS 커스텀 지원</li></ul>',
+      '<p>리액트 컴포넌트로 제작된 3D 캐러셀 라이브러리입니다. 간편한 사용과 디테일한 커스터마이징을 특징으로 합니다. 오픈소스로 제공되기 때문에 코드 품질 관리에 많은 노력을 기울였습니다.</p>SPLIT<h2 id="-">코드 품질 관리</h2><p><a target="_blank" data-cursor-scale="5" href="https://github.com/Byongho96/react-responsive-3d-carousel/pull/8">오픈소스 PR 리뷰</a></p><ul><li>husky, prettier, eslint를 이용한 코드 포맷팅</li><li>react-testing-library 기반으로 단위 테스트 코드 작성</li><li>commitlint 를 활용해 커밋 메시지와 업데이트 내역 관리</li></ul><h2 id="-">라이브러리 제공</h2><p><a target="_blank" data-cursor-scale="5" href="https://byongho96.github.io/react-responsive-3d-carousel/">npm 라이브러리</a><br><a target="_blank" data-cursor-scale="5" href="https://byongho96.github.io/react-responsive-3d-carousel/">데모 플레이그라운드</a></p><ul><li>최종 번들 사이즈 최소화 (44KB → 12KB)</li><li>총 28개의 props를 통한 커스터마이징 지원</li><li>CSS BEM 네이밍을 활용한 CSS 커스텀 지원</li></ul>',
     imageURL: portfolioImg6,
     createdDate: '2023-08-03T23:59:59',
     modifiedDate: '2023-08-04T00:59:59',
@@ -419,7 +419,7 @@ export const portfolioListData: PostItemData[] = [
     order: 9,
     title: 'ATIBO',
     content:
-      '<p>학생들의 출결 및 인바디 데이터 관리를 위한 프로그램입니다. (주)주안건설의 외주를 받아 제작했습니다. 교내에서 직접 서버를 관리하고, 내부 네트워크에서 접근할 있도록 로컬 배포를 구현하는 것이 핵심과제였습니다.</p>SPLIT<h2 id="-">데이터베이스</h2><ul><li>ERD 설계 및 데이터베이스 인덱스 생성</li><li>UNIQUE 제약 조건에서 멀티 레코드 업데이트 구현</li><li>다수 사용자가 동시 수정 가능한 데이터 무결성 확보</li></ul><h2 id="-">인증/인가</h2><ul><li>JWT 토큰 기반 커스텀 인증 방법 추가</li><li>관리자, 선생님, 학생 3개의 인가 권한 분리</li></ul><h2 id="-">로컬 배포</h2><p><a target="_blank" data-cursor-scale="5" href="https://student-inbody-kiosk.github.io/ATIBO/">도커 컴포즈 배포 페이지</a></p><ul><li>도커 컴포즈 활용 로컬 배포 환경 구축</li><li>쉘 스크립트를 이용한 Django 고유 시크릿키 발급</li><li>IP & DB 패스워드 커스터마이징 지원</li></ul>',
+      '<p>학생들의 출결 및 인바디 데이터 관리를 위한 프로그램으로, (주)주안건설의 외주를 받아 제작했습니다. 교내 서버를 직접 관리하고, 내부 네트워크에서 접근 가능하도록 로컬 배포를 구현하는 것이 주요 과제였습니다.</p>SPLIT<h2 id="-">데이터베이스 관리</h2><ul><li>ERD 설계 및 데이터베이스 인덱스 생성</li><li>UNIQUE 제약 조건에서 멀티 레코드 업데이트 구현</li><li>다수 사용자의 동시 수정을 고려한 데이터 무결성 보장</li></ul><h2 id="-">인증/인가 처리</h2><ul><li>JWT 토큰 기반의 커스텀 인증 방법 추가</li><li>관리자, 선생님, 학생 등 3가지 권한의 인가 분리</li></ul><h2 id="-">로컬 배포 구현</h2><p><a target="_blank" data-cursor-scale="5" href="https://student-inbody-kiosk.github.io/ATIBO/">도커 컴포즈 배포 페이지</a></p><ul><li>도커 컴포즈를 활용한 로컬 배포 환경 구축</li><li>쉘 스크립트를 이용한 Django 고유 시크릿키 발급</li><li>IP 주소 & DB 패스워드 커스터마이징 지원</li></ul>',
     imageURL: portfolioImg7,
     createdDate: '2023-08-03T23:59:59',
     modifiedDate: '2023-08-04T00:59:59',
@@ -438,7 +438,7 @@ export const portfolioListData: PostItemData[] = [
     order: 10,
     title: '연락처',
     content:
-      '<span>Email : <a target="_blank" data-cursor-scale="5" href="mailto:unlike96@gmail.com">unlike96@gmail.com</a><br>Github: <a target="_blank" data-cursor-scale="5" href="https://github.com/Byongho96">github.com/Byongho96</a><br>Linkedin: <a target="_blank" data-cursor-scale="5" href="https://www.linkedin.com/in/byongho-lee-b445ba22a/">byongho-lee-b445ba22a</a></span>SPLIT<a target="_blank" data-cursor-scale="5" class="transparent" href="https://e.kakao.com/t/korean-chicken-in-america">미국물 먹은 토종닭 바비팍</a><h2 id="-">맺음말</h2><p>서비스를 개발은 마치 건물을 짓는 것과 같다고 생각합니다. 내장재는 필요에 따라 다시 인테리어할 수 있지만, 한 번 구축된 뼈대는 허물기 어렵습니다. 따라서 건축에서 실제 하중을 받는 기둥과 단순한 벽을 구분해서 설계해야 하듯 서비스도 마찬가지입니다. 유저플로우를 보이는 그대로 옮기면 프로젝트를 재사용하거나 수정하기 어렵습니다.</p><p>특히 프론트엔드는 사람과 맞닿아 있기 때문에, 기술이 발전함에 따라 사용자가 바라는 플로우가 변화기 마련입니다. 하지만 그 속에서 변하지 않는 핵심을 파악해 뼈대로 삼고, 내장재 또한 기능 단위로 모듈링한다면, 재사용 가능하고 확장성 있는 프론트 프로젝트를 구축할 수 있을 것이라 기대합니다.</p>',
+      '<span>Email : <a target="_blank" data-cursor-scale="5" href="mailto:unlike96@gmail.com">unlike96@gmail.com</a><br>Github: <a target="_blank" data-cursor-scale="5" href="https://github.com/Byongho96">github.com/Byongho96</a><br>Linkedin: <a target="_blank" data-cursor-scale="5" href="https://www.linkedin.com/in/byongho-lee-b445ba22a/">byongho-lee-b445ba22a</a></span>SPLIT<a target="_blank" data-cursor-scale="5" class="transparent" href="https://e.kakao.com/t/korean-chicken-in-america">미국물 먹은 토종닭 바비팍</a><h2 id="-">맺음말</h2><p>서비스를 개발하는 것은 마치 건물을 짓는 것과 유사하다고 생각합니다. 내장재는 언제든 다시 인테리어할 수 있지만, 한 번 구축된 뼈대는 허물기 어렵습니다. 건축에서 실제 하중을 받는 기둥과 단순한 벽을 구분하여 설계 하는 것처럼, 서비스도 마찬가지라고 생각합니다. 만약 유저 플로우를 그대로 코드로 옮기면,  프로젝트를 재사용하거나 수정하기 어려워질 것입니다.</p><p>프론트엔드는 사용자와 직접 맞닿기 때문에 유저 플로우에 민감할 수 밖에 없습니다. 그리고 기술이 발전함에 따라 사용자가 요구하는 플로우는 점점 더 다양해지고 있습니다. 그러나 복잡해지는 변화 속에서 오히려 일관되게 요구되는 핵심 기능을 파악한다면, 이를 프로젝트의 뼈대로 삼는다면, 그 외 내부 기능을 모듈화한다면, 재사용 가능하고 확장성 있는 프론트엔드 프로젝트를 구축할 수 있다고 기대합니다.</p>',
     imageURL: portfolioImg8,
     createdDate: '2023-08-03T23:59:59',
     modifiedDate: '2023-08-04T00:59:59',
