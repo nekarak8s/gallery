@@ -1,6 +1,6 @@
 type InitMessage = {
   canvas: OffscreenCanvas
-  imgUrl: string
+  imgBitmap: ImageBitmap
 }
 
 type ResizeMessage = {
@@ -19,8 +19,6 @@ self.onmessage = async function (e: MessageEvent<InitMessage>) {
   self.onmessage = function (e: MessageEvent<Message>) {
     switch (e.data.type) {
       case 'resize':
-        width = canvas.width
-        height = canvas.height
         imgWidth = e.data.width
         break
 
@@ -31,11 +29,11 @@ self.onmessage = async function (e: MessageEvent<InitMessage>) {
     }
   }
 
-  const { canvas, imgUrl } = e.data
+  const { canvas, imgBitmap } = e.data
   const ctx = canvas.getContext('2d')!
 
-  let width = canvas.width
-  let height = canvas.height
+  const width = canvas.width
+  const height = canvas.height
   let imgWidth = 64
 
   let animationFrameId: number
@@ -59,10 +57,5 @@ self.onmessage = async function (e: MessageEvent<InitMessage>) {
     draw()
   }
 
-  // Load image
-  const response = await fetch(imgUrl)
-  const blob = await response.blob()
-  const imageBitmap = await createImageBitmap(blob)
-
-  drawAndRotateImage(imageBitmap)
+  drawAndRotateImage(imgBitmap)
 }

@@ -10,6 +10,9 @@ const WIDTH_RATIO = {
   tablet: 0.8,
   mobile: 0.7,
 }
+const loadingImgBitmap = await fetch(KubernetesImg)
+  .then((res) => res.blob())
+  .then((blob) => createImageBitmap(blob))
 
 function Loading() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
@@ -18,15 +21,17 @@ function Loading() {
     return 'OffscreenCanvas' in window
   }, [])
 
+  // Draw loading animation with web worker (OffscreenCanvas)
   useEffect(() => {
     const canvas = canvasRef.current
     if (!canvas) return
 
+    // start web worker
     const offscreen = canvas.transferControlToOffscreen()
     const worker = new Worker(new URL('./loadingWorker.ts', import.meta.url))
-    worker.postMessage({ type: 'init', canvas: offscreen, imgUrl: KubernetesImg }, [offscreen])
+    worker.postMessage({ type: 'init', canvas: offscreen, imgBitmap: loadingImgBitmap }, [offscreen])
 
-    const postResize = () => {
+    const handleResize = () => {
       let ratio = 1
       switch (true) {
         case window.innerWidth < DEVICE_BREAKPOINT.mobile:
@@ -47,13 +52,13 @@ function Loading() {
       worker.postMessage({ type: 'resize', width })
     }
 
-    postResize()
-    window.addEventListener('resize', postResize)
+    handleResize()
+    window.addEventListener('resize', handleResize)
 
     return () => {
       worker.postMessage({ type: 'stop' })
       worker.terminate()
-      window.removeEventListener('resize', postResize)
+      window.removeEventListener('resize', handleResize)
     }
   }, [isOffscreen])
 

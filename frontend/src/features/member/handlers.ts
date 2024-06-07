@@ -12,7 +12,7 @@ export const memberHandlers = [
     // make response
     return HttpResponse.json(
       {
-        data: (process.env.REACT_APP_BASE_URL as string) + `/oauth/${type}`,
+        data: (process.env.REACT_APP_BASE_URL ?? '') + `/oauth/${type}`,
       },
       { status: 200 }
     )
