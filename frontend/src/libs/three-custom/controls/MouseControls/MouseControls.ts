@@ -4,6 +4,7 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import { acceleratedRaycast } from 'three-mesh-bvh'
 import { IControls } from '..'
 
+const _canvasOrigin = new THREE.Vector2(0, 0)
 const _vector3 = new THREE.Vector3()
 const _frontDirection = new THREE.Vector3(0, 0, 1)
 
@@ -61,13 +62,16 @@ class MouseControls implements IControls {
     this.#raycaster.firstHitOnly = true
 
     // Add event listener
+    const _onKeyDown = this.onKeyDown.bind(this)
     const _onMouseDown = this.onMouseDown.bind(this)
     const _onMouseUp = this.onMouseUp.bind(this)
+    window.addEventListener('keydown', _onKeyDown)
     canvas.addEventListener('mousedown', _onMouseDown)
     canvas.addEventListener('mouseup', _onMouseUp)
 
     this.dispose = () => {
       this.#orbitControls.dispose()
+      window.removeEventListener('keydown', _onKeyDown)
       canvas.removeEventListener('mousedown', _onMouseDown)
       canvas.removeEventListener('mouseup', _onMouseUp)
     }
@@ -85,19 +89,31 @@ class MouseControls implements IControls {
     return Math.PI - this.camera.rotation.y
   }
 
+  // Raycast on Ctrl key for keyboard accessibility
+  onKeyDown(event: KeyboardEvent) {
+    if (!this.enabled) return
+
+    switch (event.code) {
+      case 'ControlLeft':
+        event.preventDefault()
+        this.raycastTargets(_canvasOrigin)
+        break
+    }
+  }
+
   onMouseDown(e: MouseEvent) {
     this.#mouse.x = (e.clientX / window.innerWidth) * 2 - 1
     this.#mouse.y = -(e.clientY / window.innerHeight) * 2 + 1
   }
 
   onMouseUp(e: MouseEvent) {
-    // disable if it's dragged
+    // Disable if it's dragged
     const prevX = this.#mouse.x
     const prevY = this.#mouse.y
     this.#mouse.x = (e.clientX / window.innerWidth) * 2 - 1
     this.#mouse.y = -(e.clientY / window.innerHeight) * 2 + 1
-
     if (Math.abs(prevX - this.#mouse.x) > DRAG_THRESHOLD || Math.abs(prevY - this.#mouse.y) > DRAG_THRESHOLD) return
+
     this.raycastTargets()
   }
 
@@ -166,9 +182,9 @@ class MouseControls implements IControls {
     })
   }
 
-  raycastTargets() {
+  raycastTargets(origin?: THREE.Vector2) {
     if (this.isMoving) return
-    this.#raycaster.setFromCamera(this.#mouse, this.camera)
+    this.#raycaster.setFromCamera(origin ?? this.#mouse, this.camera)
     const intersects = this.#raycaster.intersectObjects(this.targets)
     return intersects[0]
   }

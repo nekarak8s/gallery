@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSearchGalleryQuery } from '../../services'
 import GallerySearchItem from '../GallerySearchItem'
@@ -8,6 +8,7 @@ import Text from '@/atoms/form/Text'
 import CSSTransition from '@/atoms/ui/CSSTransition'
 import Loading from '@/atoms/ui/Loading'
 import { CURSOR_SCALE } from '@/constants'
+import useAutoFocus from '@/hooks/useAutoFocus'
 import useDebounce from '@/hooks/useDebounce'
 import useFocusTrap from '@/hooks/useFocusTrap'
 import './GallerySearch.scss'
@@ -19,13 +20,13 @@ type GallerySearchProps = {
 
 const GallerySearch = ({ isShow, onClose }: GallerySearchProps) => {
   const { t } = useTranslation()
+  const focusRef = useRef<HTMLDivElement>(null)
 
   /**
    * Toggle Search
    */
-  const focusRef = useFocusTrap(isShow, () => {
-    onClose()
-  })
+  useFocusTrap(focusRef, isShow, onClose)
+  useAutoFocus(focusRef, isShow)
 
   /**
    * Search Gallery
