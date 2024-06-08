@@ -22,8 +22,8 @@ public class RateLimitUtil {
         Bucket bucket = buckets.get(memberId);
 
         if (bucket == null) {
-            Refill refill = Refill.intervally(1, Duration.ofSeconds(10));
-            Bandwidth limit = Bandwidth.classic(1, refill);
+            Refill refill = Refill.intervally(2, Duration.ofSeconds(3));
+            Bandwidth limit = Bandwidth.classic(3, refill);
             Bucket newBucket = Bucket.builder()
                     .addLimit(limit)
                     .build();

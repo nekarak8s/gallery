@@ -1,7 +1,6 @@
 package com.nekarak8s.post.app.service.impl;
 
 import com.nekarak8s.post.app.data.dto.request.PostModifyDTO;
-import com.nekarak8s.post.app.data.dto.response.MusicResponse;
 import com.nekarak8s.post.app.data.dto.response.PostResponse;
 import com.nekarak8s.post.app.data.entity.Post;
 import com.nekarak8s.post.app.data.repo.MusicRepo;
@@ -44,27 +43,24 @@ public class PostServiceImpl implements PostService {
 
         for (Post post : posts) {
             PostResponse postResponse = post.toPostInfo(getImageURL(post.getImageURL()));
-
-            if (post.getMusic() == null) {
-                postResponse.setMusic(null);
-            } else {
-                MusicResponse musicResponse = post.getMusic().toMusicInfo();
-                postResponse.setMusic(musicResponse);
-            }
+            postResponse.setMusic(post.getMusic() != null ? post.getMusic().toMusicInfo() : null);
             postResponses.add(postResponse);
         }
 
         postResponses.sort(Comparator.comparing(PostResponse::getOrder));
-
-        int idx = 1;
-        for (PostResponse postResponse : postResponses) {
-            postResponse.setOrder(idx++);
-        }
+        calculateOrderForClient(postResponses);
         return postResponses;
     }
 
     private String getImageURL(String imageURL) {
         return BUCKET_BASE_URL + imageURL;
+    }
+
+    private void calculateOrderForClient(List<PostResponse> postResponses) {
+        int idx = 1;
+        for (PostResponse res : postResponses) {
+            res.setOrder(idx++);
+        }
     }
 
     @Transactional
@@ -119,20 +115,16 @@ public class PostServiceImpl implements PostService {
         if (prePosts.size() > 0) throw new CustomException(HttpStatus.CONFLICT, "GP006", "이미 존재하는 갤러리입니다");
 
         List<Post> posts = new ArrayList<>();
+        for (int i=1; i<=count; i++) {
+            Post post = Post.createInitPost(galleryId, i, DEFAULT_IMAGE);
+            posts.add(post);
+        }
+
         try {
-            for (int i = 0; i < count; i++) {
-                Post post = new Post();
-                post.setGalleryId(galleryId);
-                post.setOrder((long) (i + 1));
-                post.setTitle("");
-                post.setContent("");
-                post.setImageURL(DEFAULT_IMAGE);
-                post.setActive(true);
-                posts.add(post);
-            }
             postRepo.saveAll(posts);
         } catch (Exception e) {
             log.error("게시물 생성 중 예외 발생 : {}", e.getMessage());
+            throw new CustomException(HttpStatus.INTERNAL_SERVER_ERROR, "GP000", "게시물을 생성하는 도중에 예외가 발생했습니다.");
         }
     }
 

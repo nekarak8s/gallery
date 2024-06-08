@@ -5,6 +5,7 @@ import com.nekarak8s.post.app.data.dto.response.MusicResponse;
 import com.nekarak8s.post.app.data.dto.spotify.SpotifyTrackDTO;
 import com.nekarak8s.post.base.exception.CustomException;
 import com.nekarak8s.post.app.service.MusicService;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -24,8 +25,7 @@ public class MusicController {
 
     // 음악 목록 조회
     @GetMapping("/list")
-    public ResponseEntity<?> getMusicList(@RequestParam(value = "q", required = false) String query) throws CustomException {
-        if (query == null || "".equals(query)) throw new CustomException(HttpStatus.BAD_REQUEST, "GP004", "필수 파라미터 누락");
+    public ResponseEntity<?> getMusicList(@NotEmpty @RequestParam(value = "q") String query) throws CustomException {
         List<SpotifyTrackDTO> albums = musicService.getTracks(query);
         return ResponseEntity.ok(createApiResponse("음악 목록 조회를 성공했습니다.", albums));
     }
