@@ -1,25 +1,7 @@
-import { useCallback, useEffect, useRef } from 'react'
+import { RefObject, useEffect } from 'react'
+import { findFocusEles } from '@/libs/dom'
 
-function useFocusTrap(enabled: boolean, escape: () => void = () => {}) {
-  const containerRef = useRef<HTMLDivElement>(null)
-
-  /**
-   * Find focusable elements
-   */
-  const findFocusEles = useCallback(() => {
-    const container = containerRef.current
-
-    if (!container) return false
-
-    const focusEles = container.querySelectorAll(
-      'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
-    ) as NodeListOf<HTMLElement>
-
-    if (focusEles.length === 0) return false
-
-    return Array.from(focusEles)
-  }, [])
-
+function useFocusTrap(containerRef: RefObject<HTMLElement>, enabled: boolean = true, escape: () => void = () => {}) {
   /**
    * Focus Trap
    */
@@ -36,7 +18,7 @@ function useFocusTrap(enabled: boolean, escape: () => void = () => {}) {
      */
     const handleKeyDown = (e: KeyboardEvent) => {
       // Get focusable elements
-      const focusEles = findFocusEles()
+      const focusEles = findFocusEles(container)
       if (!focusEles) return
 
       const N = focusEles.length
@@ -75,13 +57,6 @@ function useFocusTrap(enabled: boolean, escape: () => void = () => {}) {
         return
       }
     }
-
-    // Auto focus
-    setTimeout(() => {
-      const focusEles = findFocusEles()
-      if (!focusEles) return
-      focusEles[0].focus()
-    }, 300)
 
     // Add event listener
     document.addEventListener('keydown', handleKeyDown)

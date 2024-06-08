@@ -1,5 +1,6 @@
 import { useEffect, useRef, PropsWithChildren } from 'react'
 import ReactDOM from 'react-dom'
+import useAutoFocus from '@/hooks/useAutoFocus'
 import useFocusTrap from '@/hooks/useFocusTrap'
 
 import './Modal.scss'
@@ -12,7 +13,10 @@ interface ModalProps {
 
 const Modal = ({ children, isOpen, onClose, autoFocus = true }: PropsWithChildren<ModalProps>) => {
   const backRef = useRef<HTMLDivElement>(null)
-  const contentRef = useFocusTrap(autoFocus ? isOpen : false, onClose)
+  const contentRef = useRef<HTMLDivElement>(null)
+
+  useFocusTrap(contentRef, isOpen, onClose)
+  useAutoFocus(contentRef, autoFocus ? isOpen : false)
 
   /**
    * Close modal
