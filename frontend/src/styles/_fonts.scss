@@ -1,6 +1,9 @@
 @font-face {
   font-family: 'SCoreDream';
-  src: url('../assets/fonts/Pretendard-Regular.woff');
+  src:
+    url('../assets/fonts/Pretendard-Regular.woff2') format('woff2'),
+    url('../assets/fonts/Pretendard-Regular.woff') format('woff'),
+    url('../assets/fonts/Pretendard-Regular.otf') format('otf');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -8,7 +11,10 @@
 
 @font-face {
   font-family: 'SCoreDream';
-  src: url('../assets/fonts/Pretendard-SemiBold.woff');
+  src:
+    url('../assets/fonts/Pretendard-SemiBold.woff2') format('woff2'),
+    url('../assets/fonts/Pretendard-SemiBold.woff') format('woff'),
+    url('../assets/fonts/Pretendard-SemiBold.otf') format('otf');
   font-weight: 600;
   font-style: normal;
   font-display: swap;
@@ -16,7 +22,10 @@
 
 @font-face {
   font-family: 'SCoreDream';
-  src: url('../assets/fonts/Pretendard-ExtraBold.woff');
+  src:
+    url('../assets/fonts/Pretendard-ExtraBold.woff2') format('woff2'),
+    url('../assets/fonts/Pretendard-ExtraBold.woff') format('woff'),
+    url('../assets/fonts/Pretendard-ExtraBold.otf') format('otf');
   font-weight: 800;
   font-style: normal;
   font-display: swap;
@@ -24,7 +33,10 @@
 
 @font-face {
   font-family: 'GowunDodum-Regular';
-  src: url('../assets/fonts/GowunDodum-Regular.woff') format('woff');
+  src:
+    url('../assets/fonts/GowunDodum-Regular.woff2') format('woff2'),
+    url('../assets/fonts/GowunDodum-Regular.woff') format('woff'),
+    url('../assets/fonts/GowunDodum-Regular.ttf') format('ttf');
   font-weight: normal;
-  font-style: normal;
+  font-style: swap;
 }

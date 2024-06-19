@@ -133,9 +133,6 @@ module.exports = merge(common, {
     },
   },
   plugins: [
-    new HtmlWebpackPlugin({
-      template: './public/index2.html',
-    }),
     new Dotenv({
       path: '.env.gh',
     }),
