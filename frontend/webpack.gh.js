@@ -8,6 +8,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
 const ImageMinimizerPlugin = require('image-minimizer-webpack-plugin')
 const Dotenv = require('dotenv-webpack')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 
@@ -131,6 +132,9 @@ module.exports = merge(common, {
     },
   },
   plugins: [
+    new HtmlWebpackPlugin({
+      template: './public/index2.html',
+    }),
     new Dotenv({
       path: '.env.gh',
     }),
