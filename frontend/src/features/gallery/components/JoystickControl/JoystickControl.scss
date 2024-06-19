@@ -28,11 +28,49 @@
   overflow-y: auto;
 }
 
+.joystick-control__container {
+  position: relative;
+  align-self: flex-end;
+  width: 100%;
+}
+
 .joystick-control__controller {
-  position: fixed;
-  bottom: 0;
-  left: 0;
   width: 100%;
   padding: 0 min(10%, 3em) min(15%, 5em) min(10%, 3em);
   pointer-events: auto;
+}
+
+.joystick-control__buttons {
+  display: flex;
+  gap: 1.5em;
+  position: absolute;
+  left: 1em;
+  top: 0;
+  transform: translateY(-180%);
+
+  button {
+    opacity: 0.5;
+    pointer-events: auto;
+  }
+
+  button.selected {
+    opacity: 1;
+  }
+
+  svg {
+    width: 3em;
+    height: 3em;
+  }
+
+  path {
+    fill: var(--color-ft-reverse, c.$ft-white);
+  }
+}
+
+@include mobile {
+  .joystick-control__buttons {
+    flex-direction: column;
+    gap: 1em;
+    transform: translateY(-100%);
+  }
 }
