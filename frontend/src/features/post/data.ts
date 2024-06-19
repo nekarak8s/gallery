@@ -248,7 +248,7 @@ export const portfolioItemData: PostItemData = {
   order: 8,
   title: '연락처',
   content:
-    '<span>Email : <a target="_blank" data-cursor-scale="5" href="mailto:unlike96@gmail.com">unlike96@gmail.com</a><br>Github: <a target="_blank" data-cursor-scale="5" href="https://github.com/Byongho96">github.com/Byongho96</a><br>Linkedin: <a target="_blank" data-cursor-scale="5" href="https://www.linkedin.com/in/byongho-lee-b445ba22a/">byongho-lee-b445ba22a</a></span>SPLIT<a target="_blank" data-cursor-scale="5" class="transparent" href="https://e.kakao.com/t/korean-chicken-in-america">미국물 먹은 토종닭 바비팍</a><h2 id="-">맺음말</h2><p>서비스를 개발하는 것은 마치 건물을 짓는 것과 유사하다고 생각합니다. 내장재는 언제든 다시 인테리어할 수 있지만, 한 번 구축된 뼈대는 허물기 어렵습니다. 건축에서 실제 하중을 받는 기둥과 단순한 벽을 구분하여 설계 하는 것처럼, 서비스도 마찬가지라고 생각합니다. 만약 유저 플로우를 그대로 코드로 옮기면,  프로젝트를 재사용하거나 수정하기 어려워질 것입니다.</p><p>프론트엔드는 사용자와 직접 맞닿기 때문에 유저 플로우에 민감할 수 밖에 없습니다. 그리고 기술이 발전함에 따라 사용자가 요구하는 플로우는 점점 더 다양해지고 있습니다. 그러나 복잡해지는 변화 속에서 오히려 일관되게 요구되는 핵심 기능을 파악한다면, 이를 프로젝트의 뼈대로 삼는다면, 그 외 내부 기능을 모듈화한다면, 재사용 가능하고 확장성 있는 프론트엔드 프로젝트를 구축할 수 있다고 기대합니다.</p>',
+    '<p>웹에서 사용하는 3D 에디터 툴입니다. 커맨드 패턴으로 사용자의 작업 히스토리를 기억합니다. 레이어드 아키텍쳐로 구성되어 복잡한 사용자 동작의 결과를 스토어에 구조화하여 저장합니다.</p>SPLIT<h2 id="-">디자인</h2><ul><li>Zeplin 기반 CSS 디자인 시스템 구축 </li><li>고정 px 레이아웃 → Grid 레이아웃</li></ul><h2 id="-">네비게이션 탭</h2><ul><li>단일 책임을 가진 MobX 클래스 스토어</li><li>MVVM 패턴의 비즈니스 로직 설계 및 UI 매핑</li></ul><h2 id="-">네트워크 서비스</h2><ul><li>네트워크 서비스 리액트 훅으로 모듈화</li><li>전략패턴을 이용한 환경 별 네트워크 모듈 교체</li><li>웹 워커를 활용한 네트워크 데이터 전처리</li></ul><h2 id="-">기타 개선사항</h2><ul><li>메인스레드 블락 시 OffscreenCanvas 로딩 처리</li><li>Observer 패턴 기반의 메모리 자동 회수</li><li>프로젝트 Vite 번들링 최적화 (약 40% 감소)</li></ul>',
   imageURL: postImg,
   createdDate: '2023-08-03T23:59:59',
   modifiedDate: '2023-08-04T00:59:59',
@@ -269,7 +269,7 @@ export const portfolioListData: PostItemData[] = [
     order: 1,
     title: '이병호',
     content:
-      '<p>학부 시절 졸업 과제로 모바일 게임을 제작하면서 개발을 시작했습니다. 컴퓨터만 있으면 프로젝트를 만들 수 있다는 점이 건축공학과는 또 다른 매력이었습니다. 졸업 후 삼성 청년 SW 아카데미를 통해, 다양한 웹 서비스를 직접 제작하며 실력을 쌓았습니다. 현재는 Tmax MetaAI 에서 프론트 개발자로 일하며 3D 웹 에디터를 만들고 있씁니다.</p>SPLIT<h2 id="education">Education</h2><ul><li><strong>고려대학교</strong><ul><li>2인용 모바일 게임 with Unity</li><li>건물 열에너지 변화 모델링 with MATLAB</li><li>상수도망 사이버 공격 감지 알고리즘 설계</li></ul></li><li><strong>New York University (교환학생)</strong><ul><li>맨해튼 시내 셔틀버스 경로 추천 서비스 기획</li></ul></li></ul><h2 id="experience">Experience</h2><ul><li><strong>삼성 청년 SW 아카데미</strong><ul><li>webRTC 실시간 화상 채팅 서비스</li><li>참여형 영어 동화 구연 AI 서비스</li><li>등산 소모임 안드로이드 애플리케이션</li></ul></li><li><strong>티맥스 MetaAI</strong><ul><li>3D 웹 에디터 툴 MxStudio 프론트 개발</li></ul></li></ul>',
+      '<p>학부 시절 졸업 과제로 모바일 게임을 제작하면서 개발을 시작했습니다. 컴퓨터만 있으면 프로젝트를 만들 수 있다는 점이 건축공학과는 또 다른 매력이었습니다. 졸업 후 삼성 청년 SW 아카데미를 통해, 다양한 웹 서비스를 직접 제작하며 실력을 쌓았습니다. 현재는 Tmax MetaAI 에서 프론트 개발자로 일하며 3D 웹 에디터를 만들고 있씁니다.</p>SPLIT<h2 id="education">Education</h2><ul><li><strong>고려대학교</strong><ul><li>2인용 모바일 게임 with Unity</li><li>건물 열에너지 변화 모델링 with MATLAB</li><li>상수도망 사이버 공격 감지 알고리즘 설계</li></ul></li><li><strong>New York University (교환학생)</strong><ul><li>맨해튼 시내 셔틀버스 경로 추천 서비스 기획</li></ul></li></ul><h2 id="experience">Experience</h2><ul><li><strong>삼성 청년 SW 아카데미</strong><ul><li>webRTC 실시간 화상 채팅 서비스</li><li>참여형 영어 동화 구연 AI 서비스</li><li>등산 소모임 안드로이드 애플리케이션</li></ul></li><li><strong>티맥스 MetaAI</strong><ul><li>3D 웹 에디터 툴 MxStudio 프론트 개발</li></ul></li></ul><h2 id="certificates">Certificates</h2><ul><li>정보처리기사</li><li>SQLD</li><li>TOEIC 985 / OPIc AL</li></ul>',
     imageURL: portfolioImg1,
     createdDate: '2023-08-03T23:59:59',
     modifiedDate: '2023-08-04T00:59:59',
@@ -326,7 +326,7 @@ export const portfolioListData: PostItemData[] = [
     order: 4,
     title: 'The Gallery: 네트워크',
     content:
-      '<p>Webpack과 Babel 등의 번들러와 컴파일러를 처음부터 직접 설정했습니다. 프로젝트를 도커 이미지화하여 쿠버네티스 상에 배포하고 관리했으며, GitOps를 기반으로 동작하는 CI/CD 파이프라인을 구축했습니다.</p>SPLIT<h2 id="-">번들러 설정</h2><ul><li>빌드 환경에 따른 번들링 최적화</li><li>에셋 종류별 로더 설정 최적화</li></ul><h2 id="-">네트워크 설계</h2><ul><li>React Query 기반 API 서비스 훅 설계</li><li>Mock Service Worker 활용한 독립적인 프론트 개발</li><li>Nginx 웹 서버를 가진 프론트 도커 이미지 생성</li></ul><h2 id="-">인프라 구축</h2><p><a target="_blank" data-cursor-scale="5" href="https://byongho96.github.io/TIL/posts/Kubernetes/">쿠버네티스 CI/CD 구축 문서</a></p><ul><li>AWS 인스턴스에 Kubernetes 클러스터 구축</li><li>인그레스 도메인 설정 및 SSH 키 등록·관리</li><li>Github Actions 와 Argo 연계한 파이프라인 구축</li></ul>',
+      '<p>Webpack과 Babel 등의 번들러와 컴파일러를 처음부터 직접 설정했습니다. 프로젝트를 도커 이미지화하여 쿠버네티스 상에 배포하고 관리했으며, GitOps를 기반으로 동작하는 CI/CD 파이프라인을 구축했습니다.</p>SPLIT<h2 id="-">번들러 설정</h2><ul><li>빌드 환경에 따른 번들링 최적화</li><li>정적 에셋별 로더 설정 및 제공 최적화</li></ul><h2 id="-">네트워크 설계</h2><ul><li>React Query 기반 API 서비스 훅 설계</li><li>Mock Service Worker 활용한 독립적인 프론트 개발</li><li>Nginx 설정 및 프론트엔드 도커 이미지 생성</li></ul><h2 id="-">인프라 구축</h2><p><a target="_blank" data-cursor-scale="5" href="https://byongho96.github.io/TIL/posts/Kubernetes/">쿠버네티스 CI/CD 구축 문서</a></p><ul><li>AWS 인스턴스에 Kubernetes 클러스터 구축</li><li>인그레스 도메인 설정 및 SSH 키 등록·관리</li><li>Github Actions 와 Argo 연계한 파이프라인 구축</li></ul>',
     imageURL: portfolioImg4,
     createdDate: '2023-08-03T23:59:59',
     modifiedDate: '2023-08-04T00:59:59',
@@ -363,7 +363,7 @@ export const portfolioListData: PostItemData[] = [
     order: 6,
     title: 'MxStudio',
     content:
-      '<p>웹에서 사용하는 3D 에디터 툴입니다. 커맨드 패턴으로 사용자의 작업 히스토리를 기억합니다. 레이어드 아키텍쳐로 구성되어 복잡한 사용자 동작의 결과를 스토어에 구조화하여 저장합니다.</p>SPLIT<h2 id="-">디자인</h2><ul><li>Zeplin 기반 CSS 디자인 시스템 구축 </li><li>고정 px 레이아웃 → Grid 레이아웃</li></ul><h2 id="-">네비게이션 탭</h2><ul><li>단일 책임을 가진 MobX 크래스 스토어</li><li>스토어 액션함수를 조합한 비즈니스 로직 설계</li><li>네비게이션 탭 UI 구현 및 비즈니스 로직 매핑</li></ul><h2 id="-">네트워크 서비스</h2><ul><li>네트워크 서비스 리액트 훅으로 모듈화</li><li>전략패턴을 이용한 환경 별 네트워크 모듈 교체</li><li>웹 워커를 활용한 네트워크 데이터 전처리</li></ul>',
+      '<p>웹에서 사용하는 3D 에디터 툴입니다. 커맨드 패턴으로 사용자의 작업 히스토리를 기억합니다. 레이어드 아키텍쳐로 구성되어 복잡한 사용자 동작의 결과를 스토어에 구조화하여 저장합니다.</p>SPLIT<h2 id="-">디자인</h2><ul><li>Zeplin 기반 CSS 디자인 시스템 구축 </li><li>고정 px 레이아웃 → Grid 레이아웃</li></ul><h2 id="-">네비게이션 탭</h2><ul><li>단일 책임을 가진 MobX 클래스 스토어</li><li>MVVM 패턴의 비즈니스 로직 설계 및 UI 매핑</li></ul><h2 id="-">네트워크 서비스</h2><ul><li>네트워크 서비스 리액트 훅으로 모듈화</li><li>전략패턴을 이용한 환경 별 네트워크 모듈 교체</li><li>웹 워커를 활용한 네트워크 데이터 전처리</li></ul><h2 id="-">기타 개선사항</h2><ul><li>메인스레드 블락 시 OffscreenCanvas 로딩 처리</li><li>Observer 패턴 기반의 메모리 자동 회수</li><li>프로젝트 Vite 번들링 최적화 (약 40% 감소)</li></ul>',
     imageURL: portfolioImg5,
     createdDate: '2023-08-03T23:59:59',
     modifiedDate: '2023-08-04T00:59:59',
