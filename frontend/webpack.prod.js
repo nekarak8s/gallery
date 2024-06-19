@@ -7,6 +7,7 @@ const TerserPlugin = require('terser-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
 const Dotenv = require('dotenv-webpack')
+const CompressionPlugin = require('compression-webpack-plugin')
 
 module.exports = merge(common, {
   mode: 'production',
@@ -132,5 +133,9 @@ module.exports = merge(common, {
       path: '.env.production',
     }),
     new MiniCssExtractPlugin({ filename: 'main.css' }),
+    new CompressionPlugin({
+      algorithm: 'gzip',
+      test: /\.(js|jsx|ts|tsx|css|html|svg)$/,
+    }),
   ],
 })

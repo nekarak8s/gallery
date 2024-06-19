@@ -9,6 +9,7 @@ const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
 const ImageMinimizerPlugin = require('image-minimizer-webpack-plugin')
 const Dotenv = require('dotenv-webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const CompressionPlugin = require('compression-webpack-plugin')
 
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 
@@ -139,6 +140,10 @@ module.exports = merge(common, {
       path: '.env.gh',
     }),
     new MiniCssExtractPlugin({ filename: 'main.css' }),
+    new CompressionPlugin({
+      algorithm: 'gzip',
+      test: /\.(js|jsx|ts|tsx|css|html|svg)$/,
+    }),
     new BundleAnalyzerPlugin(),
   ],
 })
