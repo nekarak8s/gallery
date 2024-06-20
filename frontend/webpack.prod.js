@@ -9,7 +9,6 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
 const Dotenv = require('dotenv-webpack')
 const CompressionPlugin = require('compression-webpack-plugin')
-const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
 
 module.exports = merge(common, {
   mode: 'production',
@@ -157,6 +156,5 @@ module.exports = merge(common, {
       algorithm: 'gzip',
       test: /\.(js|jsx|ts|tsx|css|html|svg)$/,
     }),
-    new BundleAnalyzerPlugin(),
   ],
 })
