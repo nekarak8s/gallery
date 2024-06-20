@@ -6,7 +6,7 @@ import { MeshoptDecoder } from '@/libs/three-custom/decoder/MeshoptDecoder'
 import { toLambert } from '@/libs/three-custom/utils/changeMaterial'
 import { disposeObject } from '@/libs/three-custom/utils/disposeObject'
 
-const SCALE = 1.5
+const SCALE = 1.3
 
 class Vanguard implements IPlayer {
   object: THREE.Object3D
@@ -61,7 +61,7 @@ export class VanguardBuilder {
 
     // Extract animations
     const mixer = new THREE.AnimationMixer(object)
-    mixer.timeScale = 1.2
+    mixer.timeScale = 1
 
     const runBackward = mixer.clipAction(glb.animations[5])
     const run = mixer.clipAction(glb.animations[4])
