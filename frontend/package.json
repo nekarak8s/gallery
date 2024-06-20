@@ -74,6 +74,7 @@
     "cannon-es-debugger": "^1.0.0",
     "chromatic": "^10.1.0",
     "clean-webpack-plugin": "^4.0.0",
+    "compression-webpack-plugin": "^11.1.0",
     "copy-webpack-plugin": "^11.0.0",
     "core-js": "^3.32.1",
     "css-loader": "^6.8.1",

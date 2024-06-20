@@ -125,8 +125,26 @@ export const Default: Story = {
           <Loading />
         </Row>
         <Row>
-          <Music src={musicSrc} title="Maple Story - Lith Harbor (ver. Piano)" color="white" />
-          <Music src={musicSrc} title="Maple Story - Lith Harbor (ver. Piano)" color="black" />
+          <Music
+            sources={[
+              {
+                src: musicSrc,
+                type: 'audio/mpeg',
+              },
+            ]}
+            title="Maple Story - Lith Harbor (ver. Piano)"
+            color="white"
+          />
+          <Music
+            sources={[
+              {
+                src: musicSrc,
+                type: 'audio/mpeg',
+              },
+            ]}
+            title="Maple Story - Lith Harbor (ver. Piano)"
+            color="black"
+          />
         </Row>
         <Row>
           <ScrollDown />

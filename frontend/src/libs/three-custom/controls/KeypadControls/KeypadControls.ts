@@ -1,3 +1,4 @@
+import gsap from 'gsap'
 import * as THREE from 'three'
 import { acceleratedRaycast } from 'three-mesh-bvh'
 import { IControls } from '..'
@@ -17,6 +18,8 @@ const FALL_ANIMATION_HEIGHT = 0.8
 
 const CAMERA_OFFSET = new THREE.Vector3(0, 2.7, -4) // camera offset from the character's foot
 const CAMERA_LOOK_AT = new THREE.Vector3(0, 2.7, 2)
+
+const CHARACTER_CHANGE_SPEED = 500 //ms
 
 THREE.Mesh.prototype.raycast = acceleratedRaycast
 
@@ -250,26 +253,49 @@ class KeypadControls implements IControls {
     }
   }
 
-  set character(character: IPlayer) {
+  set character(player: IPlayer) {
+    // hide the character
     if (this.#character) {
-      this.#group.remove(this.#character.object)
-      this.#character.dispose()
+      gsap.to(this.#character.object.position, {
+        duration: CHARACTER_CHANGE_SPEED / 1000,
+        y: -1,
+        z: this.camera.position.z,
+        ease: 'power1.out',
+      })
     }
 
-    this.#character = character
-    this.#group.add(this.#character.object)
+    setTimeout(
+      () => {
+        // dispose the previous character
+        if (this.#character) {
+          this.#group.remove(this.#character.object)
+          this.#character.dispose()
+        }
 
-    this.#character.actions.jump.setLoop(THREE.LoopRepeat, 1)
-    this.#character.actions.jump.clampWhenFinished = true
-    this.#character.mixer.addEventListener('finished', (e) => {
-      if (e.action === this.#character?.actions.jump) {
-        this.#isJump = false
-      }
-    })
-  }
+        // set the new character
+        this.#character = player
+        this.#character.object.position.set(0, -1, this.#cameraOffset.z)
+        this.#group.add(this.#character.object)
 
-  get chracter() {
-    return this.#character
+        // set the character animation
+        this.#character.actions.jump.setLoop(THREE.LoopRepeat, 1)
+        this.#character.actions.jump.clampWhenFinished = true
+        this.#character.mixer.addEventListener('finished', (e) => {
+          if (e.action === this.#character?.actions.jump) {
+            this.#isJump = false
+          }
+        })
+
+        // show the character again
+        gsap.to(this.#character.object.position, {
+          duration: CHARACTER_CHANGE_SPEED / 1000,
+          y: 0,
+          z: 0,
+          ease: 'power1.in',
+        })
+      },
+      this.#character ? CHARACTER_CHANGE_SPEED : 0
+    )
   }
 
   set cameraOffset(offset: THREE.Vector3) {

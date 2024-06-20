@@ -1,6 +1,7 @@
 import { Suspense, lazy } from 'react'
 import { Routes, Route } from 'react-router-dom'
 import Fallback from './atoms/ui/Fallback'
+import useUrlLang from './hooks/useUrlLang'
 import ExampleGallery from './pages/ExampleGallery'
 import Cursor from '@/atoms/ui/Cursor'
 import useMobile from '@/hooks/useMobile'
@@ -35,6 +36,7 @@ export const routes = { ...plainRoutes, ...navbarRoutes }
 
 function App() {
   const isMobile = useMobile()
+  useUrlLang()
 
   return (
     <Suspense fallback={<Fallback />}>

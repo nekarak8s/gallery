@@ -2,7 +2,8 @@ import React, { useEffect, useRef } from 'react'
 import HomeSection1 from './HomeSection1'
 import HomeSection2 from './HomeSection2'
 import HomeSection3 from './HomeSection3'
-import bgm from '@/assets/audios/MapleStory-Lith-Harbor.mp3'
+import aacBgm from '@/assets/audios/MapleStory-Lith-Harbor.aac'
+import mp3Bgm from '@/assets/audios/MapleStory-Lith-Harbor.mp3'
 import Music from '@/atoms/ui/Music'
 import { getRandomInteger } from '@/libs/math'
 import './Home.scss'
@@ -32,7 +33,10 @@ function Home() {
       <div className="home__music">
         <Music
           id="home-audio"
-          src={bgm}
+          sources={[
+            { src: mp3Bgm, type: 'audio/mpeg' },
+            { src: aacBgm, type: 'audio/aac' },
+          ]}
           title="MapleStory - Above the Treetops (ver.Piano)"
           color="white"
         />
