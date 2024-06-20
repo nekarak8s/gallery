@@ -7,10 +7,16 @@ import cloud2Img from '@/assets/images/home-section-1/cloud-2.png?format=png'
 import cloud2Webp from '@/assets/images/home-section-1/cloud-2.png?format=webp'
 import cloud3Img from '@/assets/images/home-section-1/cloud-3.png?format=png'
 import cloud3Webp from '@/assets/images/home-section-1/cloud-3.png?format=webp'
+import galleryNarrowImg from '@/assets/images/home-section-1/gallery-narrow.png?format=png'
+import galleryNarrowWebp from '@/assets/images/home-section-1/gallery-narrow.png?format=webp'
 import galleryImg from '@/assets/images/home-section-1/gallery.png?format=png'
 import galleryWebp from '@/assets/images/home-section-1/gallery.png?format=webp'
+import oceanNarrowImg from '@/assets/images/home-section-1/ocean-narrow.png?format=png'
+import oceanNarrowWebp from '@/assets/images/home-section-1/ocean-narrow.png?format=webp'
 import oceanImg from '@/assets/images/home-section-1/ocean.png?format=png'
 import oceanWebp from '@/assets/images/home-section-1/ocean.png?format=webp'
+import skyNarrowImg from '@/assets/images/home-section-1/sky-narrow.png?format=png'
+import skyNarrowWebp from '@/assets/images/home-section-1/sky-narrow.png?format=webp'
 import skyImg from '@/assets/images/home-section-1/sky.png?format=png'
 import skyWebp from '@/assets/images/home-section-1/sky.png?format=webp'
 import Loading from '@/atoms/ui/Loading'
@@ -201,7 +207,14 @@ function HomeSection1() {
           </div>
           <div className="hs1-interact" ref={interactRef}>
             <div className="hs1-interact__sky" data-speedx="0" data-speedy="0" data-speedr="0">
-              <StaticImage imgSrc={skyImg} webpSrc={skyWebp} alt="푸른 하늘" loading="eager" onLoad={handleImageLoad} />
+              <StaticImage
+                imgSrc={window.innerWidth > window.innerHeight ? skyImg : skyNarrowImg}
+                webpSrc={window.innerWidth > window.innerHeight ? skyWebp : skyNarrowWebp}
+                sizes="100vw"
+                alt="푸른 하늘"
+                loading="eager"
+                onLoad={handleImageLoad}
+              />
             </div>
             <div className="hs1-interact__cloud-1" data-speedx="0.07" data-speedy="0.05" data-speedr="0.03">
               <StaticImage
@@ -250,9 +263,9 @@ function HomeSection1() {
             <div className="hs1-interact__ocean" data-speedx="0.07" data-speedy="0.08" data-speedr="0.09">
               <div className="hs1-interact__ocean-filter">
                 <StaticImage
-                  imgSrc={oceanImg}
-                  webpSrc={oceanWebp}
-                  sizes="(max-width: 720px) 200vw, (max-width: 1080px) 150vw, 120vw"
+                  imgSrc={window.innerWidth > window.innerHeight ? oceanImg : oceanNarrowImg}
+                  webpSrc={window.innerWidth > window.innerHeight ? oceanWebp : oceanNarrowWebp}
+                  sizes="(max-width: 720px) 110vw, (max-width: 1080px) 110vw, 120vw"
                   alt="일렁이는 수평선의 푸른 바다"
                   loading="eager"
                   onLoad={handleImageLoad}
@@ -266,10 +279,10 @@ function HomeSection1() {
             </div>
             <div className="hs1-interact__gallery" data-speedx="0.16" data-speedy="0.12" data-speedr="0.1">
               <StaticImage
-                imgSrc={galleryImg}
-                webpSrc={galleryWebp}
+                imgSrc={window.innerWidth > window.innerHeight ? galleryImg : galleryNarrowImg}
+                webpSrc={window.innerWidth > window.innerHeight ? galleryWebp : galleryNarrowWebp}
                 alt="바로 앞에 보이는 갤러리 테라스 바닥 일부"
-                sizes="(max-width: 720px) 300vw, (max-width: 1080px) 200vw, 100vw"
+                sizes="(max-width: 720px) 110vw, (max-width: 1080px) 110vw, 100vw"
                 loading="eager"
                 onLoad={handleImageLoad}
               />
