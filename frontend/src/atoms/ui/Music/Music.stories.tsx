@@ -16,14 +16,24 @@ type Story = StoryObj<typeof meta>
 
 export const Black: Story = {
   args: {
-    src: musicSrc,
+    sources: [
+      {
+        src: musicSrc,
+        type: 'audio/mpeg',
+      },
+    ],
     title: 'Maple Story - Lith Harbor (ver. Piano)',
     color: 'black',
   },
 }
 export const White: Story = {
   args: {
-    src: musicSrc,
+    sources: [
+      {
+        src: musicSrc,
+        type: 'audio/mpeg',
+      },
+    ],
     title: 'Maple Story - Lith Harbor (ver. Piano)',
     color: 'white',
   },

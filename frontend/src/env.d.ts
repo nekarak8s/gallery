@@ -26,6 +26,11 @@ declare module '*.mp3' {
   export default src
 }
 
+declare module '*.aac' {
+  const src: string
+  export default src
+}
+
 // svg
 declare module '*.svg' {
   const src: string

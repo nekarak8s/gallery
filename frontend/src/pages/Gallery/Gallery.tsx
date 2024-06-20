@@ -2,9 +2,12 @@ import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import GalleryNavbar from './GalleryNavbar'
 import { PORTFOLIO_GALLERY_ID } from '../ExampleGallery/ExampleGallery'
-import galleryBgm from '@/assets/audios/MapleStory-Pantheon.mp3'
-import greenaryBgm from '@/assets/audios/MapleStory-Raindrop-Flower.mp3'
-import kyotoBgm from '@/assets/audios/Tokyo-Music-Walker-Colorful-Flowers.mp3'
+import galleryAac from '@/assets/audios/MapleStory-Pantheon.aac'
+import galleryMp3 from '@/assets/audios/MapleStory-Pantheon.mp3'
+import greenaryAac from '@/assets/audios/MapleStory-Raindrop-Flower.aac'
+import greenaryMp3 from '@/assets/audios/MapleStory-Raindrop-Flower.mp3'
+import kyotoAac from '@/assets/audios/Tokyo-Music-Walker-Colorful-Flowers.aac'
+import kyotoMp3 from '@/assets/audios/Tokyo-Music-Walker-Colorful-Flowers.mp3'
 import CSSTransition from '@/atoms/ui/CSSTransition'
 import Fallback from '@/atoms/ui/Fallback'
 import Music from '@/atoms/ui/Music'
@@ -16,17 +19,26 @@ import { usePostListQuery } from '@/features/post/services'
 import './Gallery.scss'
 
 const MUSIC_TYPE = [
-  { src: '', title: '' },
+  { sources: [], title: '' },
   {
-    src: greenaryBgm,
+    sources: [
+      { src: greenaryAac, type: 'audio/aac' },
+      { src: greenaryMp3, type: 'audio/mpeg' },
+    ],
     title: 'MapleStory - Raindrop Flower (ver. Piano)',
   },
   {
-    src: galleryBgm,
+    sources: [
+      { src: galleryAac, type: 'audio/aac' },
+      { src: galleryMp3, type: 'audio/mpeg' },
+    ],
     title: 'MapleStory - Phantheon (ver. Piano)',
   },
   {
-    src: kyotoBgm,
+    sources: [
+      { src: kyotoAac, type: 'audio/aac' },
+      { src: kyotoMp3, type: 'audio/mpeg' },
+    ],
     title: 'Tokyo Music Walker - Colorful Flowers',
   },
 ]
@@ -84,7 +96,12 @@ const Gallery = () => {
       {controlType && (
         <>
           <div className="gallery__music">
-            <Music id="gallery-audio" src={MUSIC_TYPE[gallery.place.placeId].src} title={MUSIC_TYPE[gallery.place.placeId].title} color="white" />
+            <Music
+              id="gallery-audio"
+              sources={MUSIC_TYPE[gallery.place.placeId].sources}
+              title={MUSIC_TYPE[gallery.place.placeId].title}
+              color="white"
+            />
           </div>
           <div className="gallery__navbar">
             <GalleryNavbar />
