@@ -15,10 +15,6 @@ import oceanNarrowImg from '@/assets/images/home-section-1/ocean-narrow.png?form
 import oceanNarrowWebp from '@/assets/images/home-section-1/ocean-narrow.png?format=webp'
 import oceanImg from '@/assets/images/home-section-1/ocean.png?format=png'
 import oceanWebp from '@/assets/images/home-section-1/ocean.png?format=webp'
-import skyNarrowImg from '@/assets/images/home-section-1/sky-narrow.png?format=png'
-import skyNarrowWebp from '@/assets/images/home-section-1/sky-narrow.png?format=webp'
-import skyImg from '@/assets/images/home-section-1/sky.png?format=png'
-import skyWebp from '@/assets/images/home-section-1/sky.png?format=webp'
 import Loading from '@/atoms/ui/Loading'
 import ScrollDown from '@/atoms/ui/ScrollDown'
 import StaticImage from '@/atoms/ui/StaticImage'
@@ -27,7 +23,7 @@ import musicManager from '@/utils/musicManager'
 import toFrame from '@/utils/toFrame'
 import './HomeSection1.scss'
 
-const TOTAL_IMAGE = 6
+const TOTAL_IMAGE = 5
 const BACK_HEIGHT = 2 // * 100vh. background height
 const SCROLL_OFFSET = 300 // px. fade start offset on scroll
 const ROTATION_DEGREE = 20 // deg. max rotation degree on mousemove
@@ -206,16 +202,6 @@ function HomeSection1() {
             <ScrollDown />
           </div>
           <div className="hs1-interact" ref={interactRef}>
-            <div className="hs1-interact__sky" data-speedx="0" data-speedy="0" data-speedr="0">
-              <StaticImage
-                imgSrc={window.innerWidth > window.innerHeight ? skyImg : skyNarrowImg}
-                webpSrc={window.innerWidth > window.innerHeight ? skyWebp : skyNarrowWebp}
-                sizes="100vw"
-                alt="푸른 하늘"
-                loading="eager"
-                onLoad={handleImageLoad}
-              />
-            </div>
             <div className="hs1-interact__cloud-1" data-speedx="0.07" data-speedy="0.05" data-speedr="0.03">
               <StaticImage
                 imgSrc={cloud1Img}
