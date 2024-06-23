@@ -21,6 +21,7 @@ module.exports = merge(common, {
     publicPath: '/gallery/',
     filename: '[name].[contenthash].js',
   },
+  devtool: 'nosources-source-map',
   // externals: {
   //   react: 'React', // CDN에서 React 로드
   //   'react-dom': 'ReactDOM', // CDN에서 React DOM 로드

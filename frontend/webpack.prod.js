@@ -21,6 +21,7 @@ module.exports = merge(common, {
   //   react: 'React', // CDN에서 React 로드
   //   'react-dom': 'ReactDOM', // CDN에서 React DOM 로드
   // },
+  devtool: 'nosources-source-map',
   module: {
     rules: [
       {
