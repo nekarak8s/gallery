@@ -86,7 +86,7 @@ const JoystickControl = ({ controlsRef, loadingManager }: JoystickControlProps) 
       changeCharacter(type, controls)
       setCurType(type)
     },
-    [controlsRef.current]
+    [controlsRef.current, curType]
   )
 
   return (

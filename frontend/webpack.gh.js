@@ -18,9 +18,10 @@ module.exports = merge(common, {
   mode: 'production',
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: '[name].js',
     publicPath: '/gallery/',
+    filename: '[name].[contenthash].js',
   },
+  devtool: 'nosources-source-map',
   // externals: {
   //   react: 'React', // CDN에서 React 로드
   //   'react-dom': 'ReactDOM', // CDN에서 React DOM 로드
@@ -124,12 +125,14 @@ module.exports = merge(common, {
           name: 'vendor_react',
           chunks: 'all',
           priority: 10,
+          filename: 'vendor_react.js',
         },
         threePackage: {
           test: /[\\/]node_modules[\\/](three.*?)[\\/]/,
           name: 'vendor_three',
           chunks: 'all',
           priority: 5,
+          filename: 'vendor_three.js',
         },
         vendors: {
           test(module) {
@@ -154,7 +157,7 @@ module.exports = merge(common, {
     new Dotenv({
       path: '.env.gh',
     }),
-    new MiniCssExtractPlugin({ filename: 'main.css' }),
+    new MiniCssExtractPlugin({ filename: '[name].[contenthash].css', chunkFilename: '[id].[contenthash].css' }),
     new CompressionPlugin({
       algorithm: 'gzip',
       test: /\.(js|jsx|ts|tsx|css|html|svg)$/,
