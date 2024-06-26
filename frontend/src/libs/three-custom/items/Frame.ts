@@ -114,6 +114,8 @@ export class Frame implements IItem {
       )
       this.spotLight.target = this.object
       this.spotLight.castShadow = true
+      this.spotLight.shadow.camera.far = info.spotLight.distance || info.width * 2
+
       this.object.add(this.spotLight)
     }
   }

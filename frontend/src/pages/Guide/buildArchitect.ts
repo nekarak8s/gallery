@@ -111,6 +111,8 @@ const FRAMES_DATA = [
 
 type buildArchitectProps = {
   scene: THREE.Scene
+  renderer: THREE.WebGLRenderer
+  camera: THREE.PerspectiveCamera
   loadingManager: THREE.LoadingManager
 }
 
@@ -141,8 +143,8 @@ export function buildArchitect(props: buildArchitectProps): ThreeItem {
   const water = new OceanFactory().addItem({
     container: props.scene,
     textureLoader,
-    width: 500,
-    depth: 500,
+    width: 1000,
+    depth: 1000,
   }) as OceanItem
   items.push(water)
 
@@ -199,6 +201,14 @@ export function buildArchitect(props: buildArchitectProps): ThreeItem {
     })
     items.push(frame)
   })
+
+  items.forEach((item) => {
+    if (item instanceof Frame && item.spotLight) {
+      item.spotLight.shadow.autoUpdate = false
+      item.spotLight.shadow.needsUpdate = true
+    }
+  })
+  props.renderer.render(props.scene, props.camera)
 
   /**
    * Light
@@ -262,6 +272,7 @@ export function buildArchitect(props: buildArchitectProps): ThreeItem {
         item.spotLight.intensity = 3 * (1 - sunLightIntensity) + 5
       }
     })
+    props.renderer.render(props.scene, props.camera)
   }, 60 * 1000)
 
   /**

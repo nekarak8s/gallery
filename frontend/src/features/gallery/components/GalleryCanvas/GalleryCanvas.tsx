@@ -57,6 +57,7 @@ const GalleryCanvas = ({ controlType, gallery, postList, isPortfolio = false }: 
   const { controlsRef } = useControlsStrategy({ type: controlType, canvasRef, sceneRef, cameraRef, loadingManager })
   const { terrainRef, isTerrainBuilt } = useTerrainStrategy({
     sceneRef,
+    rendererRef,
     cameraRef,
     controlsRef,
     loadingManager,

@@ -44,7 +44,7 @@ export type PostFramesArgs = {
 
 export class PostFrames implements IItems {
   objects: THREE.Mesh[] = []
-  lights: THREE.Light[] = []
+  lights: THREE.SpotLight[] = []
   textures: Record<string, THREE.Texture> = {}
   isAnimation: boolean
 
@@ -128,6 +128,7 @@ export class PostFrames implements IItems {
         )
         spotLight.target = object
         spotLight.castShadow = true
+        spotLight.shadow.camera.far = info.spotLight.distance || frameData.width * 2
 
         object.add(spotLight)
         this.lights.push(spotLight)

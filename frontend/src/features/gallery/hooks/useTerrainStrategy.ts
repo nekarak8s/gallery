@@ -10,6 +10,7 @@ import { IControls } from '@/libs/three-custom/controls'
 
 type TTerrainStrategyProps = {
   sceneRef: React.RefObject<THREE.Scene>
+  rendererRef: React.RefObject<THREE.WebGLRenderer>
   cameraRef: React.RefObject<DefaultCamera>
   controlsRef: React.RefObject<IControls>
   loadingManager: THREE.LoadingManager
@@ -26,16 +27,17 @@ const STRATEGY_TYPE: Record<number, new (...arg: any[]) => IGalleryStrategy> = {
 /**
  * Choose the terrain strategy
  */
-const useTerrainStrategy = ({ sceneRef, cameraRef, controlsRef, loadingManager, placeId, postList }: TTerrainStrategyProps) => {
+const useTerrainStrategy = ({ sceneRef, rendererRef, cameraRef, controlsRef, loadingManager, placeId, postList }: TTerrainStrategyProps) => {
   const terrainRef = useRef<IGalleryStrategy | null>(null)
   const [isTerrainBuilt, setIsTerrainBuilt] = useState(false)
 
   useEffect(() => {
     const scene = sceneRef.current
+    const renderer = rendererRef.current
     const camera = cameraRef.current
     const controls = controlsRef.current
 
-    if (!scene || !camera || !controls || !loadingManager || !placeId || !postList) return
+    if (!scene || !renderer || !camera || !controls || !loadingManager || !placeId || !postList) return
 
     // Select the terrain type
     const terrainStrategy = STRATEGY_TYPE[placeId]
@@ -46,6 +48,7 @@ const useTerrainStrategy = ({ sceneRef, cameraRef, controlsRef, loadingManager, 
     terrain
       .build({
         scene,
+        renderer,
         camera,
         controls,
         loadingManager,
@@ -65,7 +68,7 @@ const useTerrainStrategy = ({ sceneRef, cameraRef, controlsRef, loadingManager, 
       terrainRef.current = null
       terrain.dispose()
     }
-  }, [sceneRef.current, cameraRef.current, controlsRef.current, loadingManager, placeId, postList])
+  }, [sceneRef.current, rendererRef.current, cameraRef.current, controlsRef.current, loadingManager, placeId, postList])
 
   return { terrainRef, isTerrainBuilt }
 }

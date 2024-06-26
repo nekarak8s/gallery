@@ -70,7 +70,7 @@ const Guide = () => {
     camera.updateProjectionMatrix()
 
     // Build architect
-    const architect = buildArchitect({ scene, loadingManager })
+    const architect = buildArchitect({ scene, renderer, camera, loadingManager })
 
     // Update canvas
     const clock = new THREE.Clock()
