@@ -29,13 +29,13 @@ export const disposeObject = (object: THREE.Object3D) => {
   // Mesh일 경우
   if (object instanceof THREE.Mesh) {
     // Geometry 해제
+
     if (object.geometry instanceof THREE.BufferGeometry) {
       object.geometry.dispose()
       object.geometry = null
     }
 
     // Material 해제
-    object.material
     if (object.material instanceof THREE.Material) {
       disposeMaterial(object.material)
       object.material = null

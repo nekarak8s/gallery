@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import * as THREE from 'three'
 import useControlsStrategy, { TControlType } from '../../hooks/useControlsStrategy'
 import useDefaultRender from '../../hooks/useDefaultRender'
@@ -52,14 +52,23 @@ const GalleryCanvas = ({ controlType, gallery, postList, isPortfolio = false }: 
    * Default render data / loadingManger -> controls -> terrain
    */
   const canvasRef = useRef<HTMLCanvasElement>(null)
-  const { sceneRef, rendererRef, cameraRef } = useDefaultRender({ canvasRef })
+  const { sceneRef, rendererRef, cameraRef, isDefaultRenderReady } = useDefaultRender({ canvasRef })
   const { loadingManager, requiredCount, loadedCount } = useLoadingCount()
-  const { controlsRef } = useControlsStrategy({ type: controlType, canvasRef, sceneRef, cameraRef, loadingManager })
-  const { terrainRef, isTerrainBuilt } = useTerrainStrategy({
+  const { controlsRef, isControlReady } = useControlsStrategy({
+    type: controlType,
+    canvasRef,
+    sceneRef,
+    cameraRef,
+    isDefaultRenderReady,
+    loadingManager,
+  })
+  const { terrainRef, isTerrainReady } = useTerrainStrategy({
     sceneRef,
     rendererRef,
     cameraRef,
+    isDefaultRenderReady,
     controlsRef,
+    isControlReady,
     loadingManager,
     placeId: gallery.place.placeId,
     postList,
@@ -73,7 +82,7 @@ const GalleryCanvas = ({ controlType, gallery, postList, isPortfolio = false }: 
     const scene = sceneRef.current
     const camera = cameraRef.current
 
-    if (!renderer || !scene || !camera) return
+    if (!isDefaultRenderReady || !renderer || !scene || !camera) return
 
     const clock = new THREE.Clock()
 
@@ -90,17 +99,18 @@ const GalleryCanvas = ({ controlType, gallery, postList, isPortfolio = false }: 
     return () => {
       renderer.setAnimationLoop(null)
     }
-  }, [rendererRef.current, sceneRef.current, cameraRef.current])
+  }, [isDefaultRenderReady])
 
   /**
    * Enable the controls
    */
   useEffect(() => {
-    if (!isEntered || loadedCount !== requiredCount || !isTerrainBuilt) return
+    if (!isEntered || loadedCount !== requiredCount) return
 
     const controls = controlsRef.current
     const terrain = terrainRef.current
-    if (!controls || !terrain) return
+
+    if (!isControlReady || !controls || !isTerrainReady || !terrain) return
 
     controls.targets = terrain.targets // Don't destruct (promise objects)
     if (controls instanceof KeypadControls) {
@@ -113,7 +123,7 @@ const GalleryCanvas = ({ controlType, gallery, postList, isPortfolio = false }: 
     return () => {
       controls.enabled = false
     }
-  }, [controlsRef.current, terrainRef.current, isEntered, loadedCount, requiredCount, isTerrainBuilt])
+  }, [isControlReady, isEntered, loadedCount, requiredCount, isTerrainReady])
 
   /**
    * Show selected frames modal
@@ -123,7 +133,8 @@ const GalleryCanvas = ({ controlType, gallery, postList, isPortfolio = false }: 
   // Show modal with controls
   useEffect(() => {
     const controls = controlsRef.current
-    if (!controls || !isTerrainBuilt) return
+
+    if (!isControlReady || !controls || !isTerrainReady) return
 
     /* eslint-disable */
     const handler = {
@@ -141,7 +152,7 @@ const GalleryCanvas = ({ controlType, gallery, postList, isPortfolio = false }: 
       ...args: any[]
     ) => THREE.Intersection<THREE.Object3D<THREE.Object3DEventMap>> // Type assertion for assignability
     /* eslint-enable */
-  }, [controlsRef, isTerrainBuilt])
+  }, [isControlReady, isTerrainReady])
 
   /**
    * Close post modal on ESC
@@ -176,21 +187,24 @@ const GalleryCanvas = ({ controlType, gallery, postList, isPortfolio = false }: 
   /**
    * Switch the control component
    */
-  const [isKeypad, setIsKeypad] = useState(false)
 
-  useEffect(() => {
-    setIsKeypad(controlsRef.current instanceof KeypadControls)
-  }, [controlsRef])
+  const isKeypad = useMemo(() => {
+    const controls = controlsRef.current
+    if (!isControlReady || !controls) return null
+
+    return controls instanceof KeypadControls
+  }, [isControlReady])
 
   return (
     <div className="gallery-canvas">
       <canvas ref={canvasRef} />
       <MiniMap controlsRef={controlsRef} galleryType={gallery.place.placeId} defaultPosition={{ top: '10px', right: '10px' }} />
-      {isKeypad ? (
-        <JoystickControl controlsRef={controlsRef as React.RefObject<KeypadControls>} loadingManager={loadingManager} />
-      ) : (
-        <ButtonControl controlsRef={controlsRef as React.RefObject<MouseControls>} />
-      )}
+      {isControlReady &&
+        (isKeypad ? (
+          <JoystickControl controlsRef={controlsRef as React.RefObject<KeypadControls>} loadingManager={loadingManager} />
+        ) : (
+          <ButtonControl controlsRef={controlsRef as React.RefObject<MouseControls>} />
+        ))}
       <Modal
         autoFocus={false}
         isOpen={selectedPostIdx !== null}

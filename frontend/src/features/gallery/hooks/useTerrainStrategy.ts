@@ -12,7 +12,9 @@ type TTerrainStrategyProps = {
   sceneRef: React.RefObject<THREE.Scene>
   rendererRef: React.RefObject<THREE.WebGLRenderer>
   cameraRef: React.RefObject<DefaultCamera>
+  isDefaultRenderReady: boolean
   controlsRef: React.RefObject<IControls>
+  isControlReady: boolean
   loadingManager: THREE.LoadingManager
   placeId: number
   postList: PostItemData[]
@@ -27,9 +29,19 @@ const STRATEGY_TYPE: Record<number, new (...arg: any[]) => IGalleryStrategy> = {
 /**
  * Choose the terrain strategy
  */
-const useTerrainStrategy = ({ sceneRef, rendererRef, cameraRef, controlsRef, loadingManager, placeId, postList }: TTerrainStrategyProps) => {
+const useTerrainStrategy = ({
+  sceneRef,
+  rendererRef,
+  cameraRef,
+  isDefaultRenderReady,
+  controlsRef,
+  isControlReady,
+  loadingManager,
+  placeId,
+  postList,
+}: TTerrainStrategyProps) => {
   const terrainRef = useRef<IGalleryStrategy | null>(null)
-  const [isTerrainBuilt, setIsTerrainBuilt] = useState(false)
+  const [isTerrainReady, setIsTerrainReady] = useState(false)
 
   useEffect(() => {
     const scene = sceneRef.current
@@ -37,7 +49,7 @@ const useTerrainStrategy = ({ sceneRef, rendererRef, cameraRef, controlsRef, loa
     const camera = cameraRef.current
     const controls = controlsRef.current
 
-    if (!scene || !renderer || !camera || !controls || !loadingManager || !placeId || !postList) return
+    if (!isDefaultRenderReady || !scene || !renderer || !camera || !isControlReady || !controls || !loadingManager || !placeId || !postList) return
 
     // Select the terrain type
     const terrainStrategy = STRATEGY_TYPE[placeId]
@@ -55,7 +67,7 @@ const useTerrainStrategy = ({ sceneRef, rendererRef, cameraRef, controlsRef, loa
         postList,
       })
       .then(() => {
-        setIsTerrainBuilt(true)
+        setIsTerrainReady(true)
       })
       .catch((err) => {
         console.error(err)
@@ -64,13 +76,13 @@ const useTerrainStrategy = ({ sceneRef, rendererRef, cameraRef, controlsRef, loa
     terrainRef.current = terrain
 
     return () => {
-      setIsTerrainBuilt(false)
+      setIsTerrainReady(false)
       terrainRef.current = null
       terrain.dispose()
     }
-  }, [sceneRef.current, rendererRef.current, cameraRef.current, controlsRef.current, loadingManager, placeId, postList])
+  }, [isDefaultRenderReady, isControlReady, loadingManager, placeId, postList])
 
-  return { terrainRef, isTerrainBuilt }
+  return { terrainRef, isTerrainReady }
 }
 
 export default useTerrainStrategy
