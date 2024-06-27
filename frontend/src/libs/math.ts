@@ -17,3 +17,24 @@ export function getRandomInteger(min: number, max: number) {
 export function getRandom(min: number, max: number) {
   return Math.random() * (max - min + 1) + min
 }
+
+/**
+ * Return the number with min and max value limitation
+ * @param num The number
+ * @param min The minimum limit
+ * @param max The maximum limit
+ * @returns The limited number
+ */
+export function getLimitedNumber(num: number, min?: number, max?: number) {
+  let limitedNum = num
+
+  if (min) {
+    limitedNum = Math.max(limitedNum, min)
+  }
+
+  if (max) {
+    limitedNum = Math.min(limitedNum, max)
+  }
+
+  return limitedNum
+}

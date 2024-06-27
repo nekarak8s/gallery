@@ -38,8 +38,8 @@ const GallerySearch = ({ isShow, onClose }: GallerySearchProps) => {
   const debouncedQuery = useDebounce(query, 300)
 
   useEffect(() => {
-    refetch()
-  }, [debouncedQuery])
+    isShow && refetch()
+  }, [isShow, debouncedQuery])
 
   return (
     <CSSTransition className="gallery-search" isShow={isShow} duration={700}>
