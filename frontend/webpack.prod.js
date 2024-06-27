@@ -107,7 +107,6 @@ module.exports = merge(common, {
       new CssMinimizerPlugin(),
     ],
     usedExports: true,
-    // https://webpack.kr/plugins/split-chunks-plugin/
     splitChunks: {
       chunks: 'all',
       minSize: 20000, // 20kb
@@ -125,11 +124,17 @@ module.exports = merge(common, {
           filename: 'vendor_react.js',
         },
         threePackage: {
-          test: /[\\/]node_modules[\\/](three.*?)[\\/]/,
+          test: /[\\/]node_modules[\\/](three.*|gsap)[\\/]/,
           name: 'vendor_three',
-          chunks: 'all',
-          priority: 5,
+
+          priority: 7,
           filename: 'vendor_three.js',
+        },
+        apiPackage: {
+          test: /[\\/]node_modules[\\/](.*query.*|axios)[\\/]/,
+          name: 'vendor_api',
+          priority: 5,
+          filename: 'vendor_api.js',
         },
         vendors: {
           test(module) {
