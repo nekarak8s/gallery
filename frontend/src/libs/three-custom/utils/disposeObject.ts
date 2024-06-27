@@ -1,44 +1,51 @@
 import * as THREE from 'three'
 
-// dispose TREE.Object3D method
-export const disposeObject = (object: THREE.Object3D) => {
-  // Dispose object
-  object.traverse((obj) => {
-    if (obj instanceof THREE.Mesh) {
-      // Dispose geometry
-      if (obj.geometry instanceof THREE.BufferGeometry) {
-        obj.geometry.dispose()
-        obj.geometry = null
-      }
-      // Dispose material
-      if (obj.material instanceof THREE.Material) {
-        disposeMaterial(obj.material)
-        obj.material = null
-      }
-    }
+// Material 자원 해제 함수
+export const disposeMaterial = (material: THREE.Material | THREE.Material[]) => {
+  // Array일 경우
+  if (Array.isArray(material)) {
+    material.forEach((material) => disposeMaterial(material))
+    return
+  }
 
-    // Dispose light
-    if (obj instanceof THREE.Light) {
-      obj.dispose()
-    }
-
-    // Dispose render target
-    if (obj instanceof THREE.WebGLRenderTarget) {
-      obj.dispose()
-    }
-  })
-
-  object.parent?.remove(object)
-  object.children = []
-}
-
-export const disposeMaterial = (material: THREE.Material) => {
-  // Dispose textures
+  // Texture 해제
   Object.entries(material).forEach(([key, value]) => {
     if (value instanceof THREE.Texture) {
       value.dispose()
     }
   })
-  // Dispose material
+
+  // Material 해제
   material.dispose()
+}
+
+// Object3D 자원 해제 함수
+export const disposeObject = (object: THREE.Object3D) => {
+  // 자식 Object3D 해제
+  object.children.forEach((child) => {
+    disposeObject(child)
+  })
+
+  // Mesh일 경우
+  if (object instanceof THREE.Mesh) {
+    // Geometry 해제
+    if (object.geometry instanceof THREE.BufferGeometry) {
+      object.geometry.dispose()
+      object.geometry = null
+    }
+
+    // Material 해제
+    object.material
+    if (object.material instanceof THREE.Material) {
+      disposeMaterial(object.material)
+      object.material = null
+    }
+  }
+
+  // Light 해제
+  else if (object instanceof THREE.Light) {
+    object.dispose()
+  }
+
+  object.removeFromParent()
 }

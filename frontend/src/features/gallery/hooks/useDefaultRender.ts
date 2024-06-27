@@ -47,7 +47,9 @@ const useDefaultRender = ({ canvasRef }: TDefaultRenderProps) => {
       cameraRef.current = null
 
       scene.remove(camera)
-      scene.children.forEach((child) => disposeObject(child))
+      disposeObject(scene)
+
+      renderer.getRenderTarget()?.dispose()
       renderer.dispose()
       window.removeEventListener('resize', handleSize)
     }
