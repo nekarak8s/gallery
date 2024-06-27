@@ -187,7 +187,6 @@ const GalleryCanvas = ({ controlType, gallery, postList, isPortfolio = false }: 
   /**
    * Switch the control component
    */
-
   const isKeypad = useMemo(() => {
     const controls = controlsRef.current
     if (!isControlReady || !controls) return null

@@ -23,13 +23,18 @@ const GallerySearchItem = ({ gallery }: GallerySearchItemProps) => {
     const rippleArray: Ripple[] = []
     const ctx = canvas.getContext('2d')!
 
-    canvas.width = canvas.offsetWidth
-    canvas.height = canvas.offsetHeight
+    let canvasLeft: number
+    let canvasTop: number
 
     const resizeCanvas = () => {
+      const { left, top } = canvas.getBoundingClientRect()
+      canvasLeft = left
+      canvasTop = top
       canvas.width = canvas.offsetWidth
       canvas.height = canvas.offsetHeight
     }
+
+    resizeCanvas()
 
     const addRipple = (x: number, y: number) => {
       rippleArray.push(
@@ -57,12 +62,23 @@ const GallerySearchItem = ({ gallery }: GallerySearchItemProps) => {
 
     drawRipple()
 
-    const handleMouseMove = (e: MouseEvent) => {
-      addRipple(e.offsetX, e.offsetY)
+    const handleMouseMove = (e: MouseEvent | TouchEvent) => {
+      let x: number
+      let y: number
+      if (e instanceof TouchEvent) {
+        const touch = e.touches[0]
+        x = touch.clientX - canvasLeft
+        y = touch.clientY - canvasTop
+      } else {
+        x = e.offsetX
+        y = e.offsetY
+      }
+      addRipple(x, y)
     }
 
-    const throttledHandleMouseMove = throttle(handleMouseMove, 200)
+    const throttledHandleMouseMove = throttle(handleMouseMove, 150)
     canvas.addEventListener('mousemove', throttledHandleMouseMove)
+    canvas.addEventListener('touchmove', throttledHandleMouseMove)
     window.addEventListener('resize', resizeCanvas)
     return () => {
       canvas.removeEventListener('mousemove', throttledHandleMouseMove)
