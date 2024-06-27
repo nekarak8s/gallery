@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import * as THREE from 'three'
 import { DefaultCamera } from '@/libs/three-custom/cameras/DefaultCamera'
 import { IControls } from '@/libs/three-custom/controls'
@@ -12,6 +12,7 @@ type TControlStrategyProps = {
   canvasRef: React.RefObject<HTMLCanvasElement>
   sceneRef: React.RefObject<THREE.Scene>
   cameraRef: React.RefObject<DefaultCamera>
+  isDefaultRenderReady: boolean
   loadingManager: THREE.LoadingManager
 }
 
@@ -23,7 +24,8 @@ const STRATEGY_TYPE: Record<TControlType, new (...args: any[]) => IControls> = {
 /**
  * Choose the control strategy
  */
-const useControlsStrategy = ({ type, canvasRef, sceneRef, cameraRef, loadingManager }: TControlStrategyProps) => {
+const useControlsStrategy = ({ type, canvasRef, sceneRef, cameraRef, isDefaultRenderReady, loadingManager }: TControlStrategyProps) => {
+  const [isControlReady, setIsControlReady] = useState(false)
   const controlsRef = useRef<IControls | null>(null)
 
   useEffect(() => {
@@ -31,24 +33,28 @@ const useControlsStrategy = ({ type, canvasRef, sceneRef, cameraRef, loadingMana
     const scene = sceneRef.current
     const camera = cameraRef.current
 
-    if (!canvas || !scene || !camera || !loadingManager) return
+    if (!isDefaultRenderReady || !canvas || !scene || !camera || !loadingManager) return
 
     // Select the controls type
     const controlType = STRATEGY_TYPE[type]
-    if (!controlType) throw new Error('Invalid contorl type')
+    if (!controlType) throw new Error('Invalid control type')
 
     // Create the control
     const controls = new controlType({ canvas, scene, camera })
     controls.enabled = false
     controlsRef.current = controls
 
+    setIsControlReady(true)
+
     return () => {
       controlsRef.current = null
       controls.dispose()
-    }
-  }, [type, canvasRef.current, sceneRef.current, cameraRef.current, loadingManager])
 
-  return { controlsRef }
+      setIsControlReady(false)
+    }
+  }, [type, isDefaultRenderReady, loadingManager])
+
+  return { controlsRef, isControlReady }
 }
 
 export default useControlsStrategy

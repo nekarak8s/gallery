@@ -10,8 +10,11 @@ import { IControls } from '@/libs/three-custom/controls'
 
 type TTerrainStrategyProps = {
   sceneRef: React.RefObject<THREE.Scene>
+  rendererRef: React.RefObject<THREE.WebGLRenderer>
   cameraRef: React.RefObject<DefaultCamera>
+  isDefaultRenderReady: boolean
   controlsRef: React.RefObject<IControls>
+  isControlReady: boolean
   loadingManager: THREE.LoadingManager
   placeId: number
   postList: PostItemData[]
@@ -26,16 +29,27 @@ const STRATEGY_TYPE: Record<number, new (...arg: any[]) => IGalleryStrategy> = {
 /**
  * Choose the terrain strategy
  */
-const useTerrainStrategy = ({ sceneRef, cameraRef, controlsRef, loadingManager, placeId, postList }: TTerrainStrategyProps) => {
+const useTerrainStrategy = ({
+  sceneRef,
+  rendererRef,
+  cameraRef,
+  isDefaultRenderReady,
+  controlsRef,
+  isControlReady,
+  loadingManager,
+  placeId,
+  postList,
+}: TTerrainStrategyProps) => {
   const terrainRef = useRef<IGalleryStrategy | null>(null)
-  const [isTerrainBuilt, setIsTerrainBuilt] = useState(false)
+  const [isTerrainReady, setIsTerrainReady] = useState(false)
 
   useEffect(() => {
     const scene = sceneRef.current
+    const renderer = rendererRef.current
     const camera = cameraRef.current
     const controls = controlsRef.current
 
-    if (!scene || !camera || !controls || !loadingManager || !placeId || !postList) return
+    if (!isDefaultRenderReady || !scene || !renderer || !camera || !isControlReady || !controls || !loadingManager || !placeId || !postList) return
 
     // Select the terrain type
     const terrainStrategy = STRATEGY_TYPE[placeId]
@@ -46,13 +60,14 @@ const useTerrainStrategy = ({ sceneRef, cameraRef, controlsRef, loadingManager, 
     terrain
       .build({
         scene,
+        renderer,
         camera,
         controls,
         loadingManager,
         postList,
       })
       .then(() => {
-        setIsTerrainBuilt(true)
+        setIsTerrainReady(true)
       })
       .catch((err) => {
         console.error(err)
@@ -61,13 +76,13 @@ const useTerrainStrategy = ({ sceneRef, cameraRef, controlsRef, loadingManager, 
     terrainRef.current = terrain
 
     return () => {
-      setIsTerrainBuilt(false)
+      setIsTerrainReady(false)
       terrainRef.current = null
       terrain.dispose()
     }
-  }, [sceneRef.current, cameraRef.current, controlsRef.current, loadingManager, placeId, postList])
+  }, [isDefaultRenderReady, isControlReady, loadingManager, placeId, postList])
 
-  return { terrainRef, isTerrainBuilt }
+  return { terrainRef, isTerrainReady }
 }
 
 export default useTerrainStrategy

@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import * as THREE from 'three'
 import { DefaultCamera } from '@/libs/three-custom/cameras/DefaultCamera'
 import { DefaultRenderer } from '@/libs/three-custom/renderers/DefaultRenderer'
@@ -12,6 +12,7 @@ type TDefaultRenderProps = {
  * Set Default render data
  */
 const useDefaultRender = ({ canvasRef }: TDefaultRenderProps) => {
+  const [isDefaultRenderReady, setIsDefaultRender] = useState(false)
   const sceneRef = useRef<THREE.Scene | null>(null)
   const rendererRef = useRef<THREE.WebGLRenderer | null>(null)
   const cameraRef = useRef<DefaultCamera | null>(null)
@@ -40,6 +41,8 @@ const useDefaultRender = ({ canvasRef }: TDefaultRenderProps) => {
     }
     window.addEventListener('resize', handleSize)
 
+    setIsDefaultRender(true)
+
     // Dispose the resources
     return () => {
       sceneRef.current = null
@@ -47,13 +50,17 @@ const useDefaultRender = ({ canvasRef }: TDefaultRenderProps) => {
       cameraRef.current = null
 
       scene.remove(camera)
-      scene.children.forEach((child) => disposeObject(child))
+      disposeObject(scene)
+
+      renderer.getRenderTarget()?.dispose()
       renderer.dispose()
       window.removeEventListener('resize', handleSize)
-    }
-  }, [canvasRef.current])
 
-  return { sceneRef, rendererRef, cameraRef }
+      setIsDefaultRender(false)
+    }
+  }, [])
+
+  return { sceneRef, rendererRef, cameraRef, isDefaultRenderReady }
 }
 
 export default useDefaultRender

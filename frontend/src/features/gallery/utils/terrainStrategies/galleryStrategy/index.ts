@@ -235,6 +235,7 @@ export default class GalleryStrategy implements IGalleryStrategy {
           })
         }
       })
+      props.renderer.render(props.scene, props.camera)
     }, 60 * 1000)
     this.lightInterval = lightInterval
 
@@ -247,7 +248,15 @@ export default class GalleryStrategy implements IGalleryStrategy {
       spotLight: {
         intensity: 3 * (1 - sunLightIntensity) + 5,
       },
+    }) as PostFrames
+
+    // Render the scene & make static shadow
+    props.renderer.render(props.scene, props.camera)
+    frames.lights.forEach((light) => {
+      light.shadow.autoUpdate = false
+      light.shadow.needsUpdate = true
     })
+
     this.items.push(frames)
     this.targets.push(...frames.objects)
   }

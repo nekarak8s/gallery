@@ -56,7 +56,8 @@ const Guide = () => {
    * Default render data, loadingManger
    */
   const canvasRef = useRef<HTMLCanvasElement>(null)
-  const { sceneRef, rendererRef, cameraRef } = useDefaultRender({ canvasRef })
+  const [isArchitectReady, setIsArchitectReady] = useState(false)
+  const { sceneRef, rendererRef, cameraRef, isDefaultRenderReady } = useDefaultRender({ canvasRef })
   const { loadingManager, requiredCount, loadedCount, setLoadedCount, setRequiredCount } = useLoadingCount()
 
   useEffect(() => {
@@ -64,13 +65,13 @@ const Guide = () => {
     const scene = sceneRef.current
     const camera = cameraRef.current
 
-    if (!renderer || !scene || !camera || !loadingManager) return
+    if (!isDefaultRenderReady || !renderer || !scene || !camera || !loadingManager) return
 
     camera.fov = 30
     camera.updateProjectionMatrix()
 
     // Build architect
-    const architect = buildArchitect({ scene, loadingManager })
+    const architect = buildArchitect({ scene, renderer, camera, loadingManager })
 
     // Update canvas
     const clock = new THREE.Clock()
@@ -84,13 +85,17 @@ const Guide = () => {
 
     draw()
 
+    setIsArchitectReady(true)
+
     // Clean-up function: Release resources
     return () => {
       camera.resetFov()
       architect.dispose && architect.dispose()
       renderer.setAnimationLoop(null)
+
+      setIsArchitectReady(false)
     }
-  }, [rendererRef.current, sceneRef.current, cameraRef.current, loadingManager])
+  }, [isDefaultRenderReady, loadingManager])
 
   /**
    * Handle Scroll: Move camera position by scroll
@@ -101,7 +106,7 @@ const Guide = () => {
     const camera = cameraRef.current
     const sections = sectionsRef.current
 
-    if (!camera || !sections) return
+    if (!isArchitectReady || !camera || !sections) return
 
     let currentSection = -1
 
@@ -151,7 +156,7 @@ const Guide = () => {
     return () => {
       window.addEventListener('scroll', optimizedHandleScroll)
     }
-  }, [cameraRef.current])
+  }, [isArchitectReady])
 
   return (
     <div className="guide">

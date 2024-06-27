@@ -6,6 +6,7 @@ export type TGalleryStrategyProps = {
   scene: THREE.Scene
   camera: DefaultCamera
   controls: IControls
+  renderer: THREE.WebGLRenderer
   loadingManager: THREE.LoadingManager
   postList: PostItemData[]
 }
