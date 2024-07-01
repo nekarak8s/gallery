@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import * as THREE from 'three'
+import Stats from 'three/examples/jsm/libs/stats.module'
 import useControlsStrategy, { TControlType } from '../../hooks/useControlsStrategy'
 import useDefaultRender from '../../hooks/useDefaultRender'
 import useLoadingCount from '../../hooks/useLoadingCount'
@@ -86,7 +87,11 @@ const GalleryCanvas = ({ controlType, gallery, postList, isPortfolio = false }: 
 
     const clock = new THREE.Clock()
 
+    const stats = new Stats() //프레임 렌더링 계산
+    document.body.appendChild(stats.dom)
+
     const draw = function renderCanvas() {
+      stats.update() //추가
       const delta = clock.getDelta()
       renderer.render(scene, camera)
       renderer.setAnimationLoop(draw)
@@ -97,6 +102,7 @@ const GalleryCanvas = ({ controlType, gallery, postList, isPortfolio = false }: 
     draw()
 
     return () => {
+      document.body.removeChild(stats.dom)
       renderer.setAnimationLoop(null)
     }
   }, [isDefaultRenderReady])

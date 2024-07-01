@@ -75,20 +75,23 @@ function MiniMap({ galleryType, controlsRef, defaultPosition }: MiniMapProps) {
    * Set the position of the minimap
    * Set time interval to update current svg position
    */
+
   useEffect(() => {
     const container = containerRef.current
+    const marker = container?.getElementsByClassName('mini-map__marker')[0] as SVGElement
     const controls = controlsRef.current
 
-    if (!container || !controls) return
+    if (!container || !marker || !controls) return
 
     let MINIMAP_WIDTH = DEVICE_MINIMAP_WIDTH.desktop
 
     // update position & rotation data
     const width = TERRAIN_WIDTH[galleryType]
-    const setPostion = () => {
-      container.style.setProperty('--data-x', `${(controls.position.x * MINIMAP_WIDTH) / width}px`)
-      container.style.setProperty('--data-y', `${(controls.position.z * MINIMAP_WIDTH) / width}px`)
-      container.style.setProperty('--data-rad', `${controls.rotationY}rad`)
+    const setPosition = () => {
+      marker.style.transform = `translate(
+      calc(${(controls.position.x * MINIMAP_WIDTH) / width ?? 0}px - 50%),
+      calc(${(controls.position.z * MINIMAP_WIDTH) / width ?? 0}px - 50%)) 
+      rotate(${controls.rotationY}rad)`
     }
 
     const handleResize = () => {
@@ -101,7 +104,7 @@ function MiniMap({ galleryType, controlsRef, defaultPosition }: MiniMapProps) {
 
     handleResize()
     window.addEventListener('resize', handleResize)
-    const intervalID = setInterval(setPostion, 16)
+    const intervalID = setInterval(setPosition, 16)
 
     return () => {
       window.removeEventListener('resize', handleResize)
@@ -123,7 +126,7 @@ function MiniMap({ galleryType, controlsRef, defaultPosition }: MiniMapProps) {
       </div>
       <div className="mini-map__map">
         <StaticImage imgSrc={TERRAIN_IMAGE[galleryType][0]} webpSrc={TERRAIN_IMAGE[galleryType][1]} alt="미니맵" sizes="200px" />
-        <WaterDropSvg />
+        <WaterDropSvg className="mini-map__marker" />
       </div>
     </section>
   )
