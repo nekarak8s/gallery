@@ -9,7 +9,6 @@ import kyotoWebp from '@/assets/images/gallery/mini-map/kyoto.png?format=webp'
 import CloseSvg from '@/assets/svgs/close.svg'
 import DragSvg from '@/assets/svgs/drag.svg'
 import OpenSvg from '@/assets/svgs/open.svg'
-import WaterDropSvg from '@/assets/svgs/water-drop.svg'
 import StaticImage from '@/atoms/ui/StaticImage'
 import { CURSOR_SCALE } from '@/constants'
 import { TERRAIN_WIDTH as GALLERY_WIDTH } from '@/features/gallery/utils/terrainStrategies/galleryStrategy/galleryTerrain'
@@ -17,8 +16,8 @@ import { TERRAIN_WIDTH as GREENARY_WIDTH } from '@/features/gallery/utils/terrai
 import { TERRAIN_WIDTH as KYOTO_WIDTH } from '@/features/gallery/utils/terrainStrategies/kyotoStrategy/kyotoTerrain'
 import useDnd from '@/hooks/useDnd'
 import { IControls } from '@/libs/three-custom/controls'
-import './MiniMap.scss'
 import { DEVICE_BREAKPOINT } from '@/styles/responsive'
+import './MiniMap.scss'
 
 const TERRAIN_WIDTH: Record<number, number> = {
   1: GREENARY_WIDTH,
@@ -75,23 +74,31 @@ function MiniMap({ galleryType, controlsRef, defaultPosition }: MiniMapProps) {
    * Set the position of the minimap
    * Set time interval to update current svg position
    */
+  const markerCanvasRef = useRef<HTMLCanvasElement>(null)
 
   useEffect(() => {
     const container = containerRef.current
-    const marker = container?.getElementsByClassName('mini-map__marker')[0] as SVGElement
+    const markerCanvas = markerCanvasRef.current
     const controls = controlsRef.current
 
-    if (!container || !marker || !controls) return
+    if (!container || !controls || !markerCanvas) return
 
     let MINIMAP_WIDTH = DEVICE_MINIMAP_WIDTH.desktop
 
+    const offscreen = markerCanvas.transferControlToOffscreen()
+    const worker = new Worker(new URL('./minimapWorker.ts', import.meta.url))
+    worker.postMessage({ canvas: offscreen }, [offscreen])
+
     // update position & rotation data
-    const width = TERRAIN_WIDTH[galleryType]
+    const terrainWidth = TERRAIN_WIDTH[galleryType]
+
     const setPosition = () => {
-      marker.style.transform = `translate(
-      calc(${(controls.position.x * MINIMAP_WIDTH) / width ?? 0}px - 50%),
-      calc(${(controls.position.z * MINIMAP_WIDTH) / width ?? 0}px - 50%)) 
-      rotate(${controls.rotationY}rad)`
+      worker.postMessage({
+        type: 'mark',
+        x: (controls.position.x * MINIMAP_WIDTH) / terrainWidth,
+        y: (controls.position.z * MINIMAP_WIDTH) / terrainWidth,
+        angle: controls.rotationY,
+      })
     }
 
     const handleResize = () => {
@@ -99,16 +106,17 @@ function MiniMap({ galleryType, controlsRef, defaultPosition }: MiniMapProps) {
       if (window.innerWidth < DEVICE_BREAKPOINT.laptop) MINIMAP_WIDTH = DEVICE_MINIMAP_WIDTH.laptop
       if (window.innerWidth < DEVICE_BREAKPOINT.tablet) MINIMAP_WIDTH = DEVICE_MINIMAP_WIDTH.tablet
       if (window.innerWidth < DEVICE_BREAKPOINT.mobile) MINIMAP_WIDTH = DEVICE_MINIMAP_WIDTH.mobile
+      worker.postMessage({ type: 'resize', width: MINIMAP_WIDTH })
       container.style.setProperty('--data-width', `${MINIMAP_WIDTH}px`)
     }
 
     handleResize()
     window.addEventListener('resize', handleResize)
-    const intervalID = setInterval(setPosition, 16)
+    const intervalId = setInterval(setPosition, 16)
 
     return () => {
       window.removeEventListener('resize', handleResize)
-      clearInterval(intervalID)
+      intervalId && clearInterval(intervalId)
     }
   }, [galleryType, controlsRef.current])
 
@@ -126,7 +134,7 @@ function MiniMap({ galleryType, controlsRef, defaultPosition }: MiniMapProps) {
       </div>
       <div className="mini-map__map">
         <StaticImage imgSrc={TERRAIN_IMAGE[galleryType][0]} webpSrc={TERRAIN_IMAGE[galleryType][1]} alt="미니맵" sizes="200px" />
-        <WaterDropSvg className="mini-map__marker" />
+        <canvas ref={markerCanvasRef} />
       </div>
     </section>
   )

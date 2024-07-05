@@ -8,6 +8,14 @@
   width: var(--data-width, 200px);
   border-radius: 5px;
   font-size: 1rem;
+
+  canvas {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
 }
 
 .mini-map__bar {
