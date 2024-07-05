@@ -15,7 +15,7 @@ import { IPlayer } from '@/libs/three-custom/items/Player/Player'
 import './JoystickControl.scss'
 
 type JoystickControlProps = {
-  controlsRef: React.RefObject<KeypadControls>
+  controls: KeypadControls
   loadingManager: THREE.LoadingManager
 }
 
@@ -37,56 +37,41 @@ const changeCharacter = async (type: CharacterType, controls: KeypadControls, lo
   controls.character = character
 }
 
-const JoystickControl = ({ controlsRef, loadingManager }: JoystickControlProps) => {
+const JoystickControl = ({ controls, loadingManager }: JoystickControlProps) => {
   const isMobile = useMobile()
   const { t } = useTranslation()
   const [isOpen, setIsOpen] = useState(true)
   const [curType, setCurType] = useState<CharacterType>('Michelle' as CharacterType)
 
   useEffect(() => {
-    const controls = controlsRef.current
-    if (!controls) return
-
     changeCharacter('Michelle', controls, loadingManager)
     setCurType('Michelle')
-  }, [controlsRef.current])
+  }, [controls])
 
   const joystickControl = useCallback(
     (x: number, y: number) => {
-      const controls = controlsRef.current
-      if (!controls) return
-
       controls.rotateSpeedRatio = x
       controls.moveSpeedRatio = -y
     },
-    [controlsRef.current]
+    [controls]
   )
 
   const joystickShoot = useCallback(() => {
-    const controls = controlsRef.current
-    if (!controls) return
-
     controls.raycastTargets()
-  }, [controlsRef.current])
+  }, [controls])
 
   const joystickJump = useCallback(() => {
-    const controls = controlsRef.current
-    if (!controls) return
-
     controls.jump()
-  }, [controlsRef.current])
+  }, [controls])
 
   const handleCharacterClick = useCallback(
     (type: CharacterType) => {
-      const controls = controlsRef.current
-      if (!controls) return
-
       if (type === curType) return
 
       changeCharacter(type, controls)
       setCurType(type)
     },
-    [controlsRef.current, curType]
+    [curType]
   )
 
   return (

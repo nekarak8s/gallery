@@ -197,12 +197,14 @@ const GalleryCanvas = ({ controlType, gallery, postList, isPortfolio = false }: 
   return (
     <div className="gallery-canvas">
       <canvas ref={canvasRef} />
-      <MiniMap controlsRef={controlsRef} galleryType={gallery.place.placeId} defaultPosition={{ top: '10px', right: '10px' }} />
+      {isControlReady && (
+        <MiniMap controls={controlsRef.current!} galleryType={gallery.place.placeId} defaultPosition={{ top: '10px', right: '10px' }} />
+      )}
       {isControlReady &&
         (isKeypad ? (
-          <JoystickControl controlsRef={controlsRef as React.RefObject<KeypadControls>} loadingManager={loadingManager} />
+          <JoystickControl controls={controlsRef.current as KeypadControls} loadingManager={loadingManager} />
         ) : (
-          <ButtonControl controlsRef={controlsRef as React.RefObject<MouseControls>} />
+          <ButtonControl controls={controlsRef.current as MouseControls} />
         ))}
       <Modal
         autoFocus={false}

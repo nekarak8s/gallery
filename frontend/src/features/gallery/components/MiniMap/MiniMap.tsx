@@ -40,11 +40,11 @@ const DEVICE_MINIMAP_WIDTH = {
 
 type MiniMapProps = {
   galleryType: number
-  controlsRef: React.RefObject<IControls>
+  controls: IControls
   defaultPosition?: { top?: string; right?: string; left?: string; bottom?: string }
 }
 
-function MiniMap({ galleryType, controlsRef, defaultPosition }: MiniMapProps) {
+function MiniMap({ galleryType, controls, defaultPosition }: MiniMapProps) {
   const { t } = useTranslation()
   const containerRef = useRef<HTMLDivElement>(null)
   const [isOpen, setIsOpen] = useState(true)
@@ -79,9 +79,8 @@ function MiniMap({ galleryType, controlsRef, defaultPosition }: MiniMapProps) {
   useEffect(() => {
     const container = containerRef.current
     const markerCanvas = markerCanvasRef.current
-    const controls = controlsRef.current
 
-    if (!container || !controls || !markerCanvas) return
+    if (!container || !markerCanvas) return
 
     let MINIMAP_WIDTH = DEVICE_MINIMAP_WIDTH.desktop
 
@@ -118,7 +117,7 @@ function MiniMap({ galleryType, controlsRef, defaultPosition }: MiniMapProps) {
       window.removeEventListener('resize', handleResize)
       intervalId && clearInterval(intervalId)
     }
-  }, [galleryType, controlsRef.current])
+  }, [galleryType])
 
   return (
     <section className={`mini-map ${!isOpen ? 'close' : ''}`} ref={containerRef}>
