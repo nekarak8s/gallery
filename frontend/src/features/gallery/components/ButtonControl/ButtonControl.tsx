@@ -7,10 +7,10 @@ import MouseControls from '@/libs/three-custom/controls/MouseControls'
 import './ButtonControl.scss'
 
 type ButtonControlProps = {
-  controlsRef: React.RefObject<MouseControls>
+  controls: MouseControls
 }
 
-const ButtonControl = ({ controlsRef }: ButtonControlProps) => {
+const ButtonControl = ({ controls }: ButtonControlProps) => {
   const { t } = useTranslation()
   const isMobile = useMobile()
 
@@ -18,39 +18,27 @@ const ButtonControl = ({ controlsRef }: ButtonControlProps) => {
   const [idx, setIdx] = useState(0)
 
   const handleClickModal = useCallback(() => {
-    const controls = controlsRef.current
-    if (!controls) return
-
     setIsOpen(false)
     controls.moveToNextPost()
-  }, [controlsRef.current])
+  }, [controls])
 
   const handleNextClick = useCallback(() => {
-    const controls = controlsRef.current
-    if (!controls || controls.isMoving) return
-
     setIdx((idx) => idx + 1)
     controls.moveToNextPost()
-  }, [controlsRef.current])
+  }, [controls])
 
   const handlePrevClick = useCallback(() => {
-    const controls = controlsRef.current
-    if (!controls || controls.isMoving) return
-
     setIdx((idx) => idx - 1)
     controls.moveToPrevPost()
-  }, [controlsRef.current])
+  }, [controls])
 
   useEffect(() => {
-    const controls = controlsRef.current
-    if (!controls) return
-
     if (isMobile) {
       controls.offsetDistance = 3.5
     } else {
       controls.offsetDistance = 2.5
     }
-  }, [controlsRef.current, isMobile])
+  }, [controls, isMobile])
 
   return (
     <div className="button-control">
@@ -62,7 +50,7 @@ const ButtonControl = ({ controlsRef }: ButtonControlProps) => {
       ) : (
         <div className="button-control__buttons">
           {idx !== 0 && <Button size="lg" text={t('buttons.prev')} onClick={handlePrevClick} isTransparent={true} color="white" />}
-          {idx + 1 !== controlsRef.current?.postTargets.length && (
+          {idx + 1 !== controls.postTargets.length && (
             <Button size="lg" text={t('buttons.next')} onClick={handleNextClick} isTransparent={true} color="white" />
           )}
         </div>

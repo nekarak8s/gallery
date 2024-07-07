@@ -33,11 +33,11 @@ declare module '*.aac' {
 
 // svg
 declare module '*.svg' {
-  const src: string
+  const src: JSX.IntrinsicElements.svg
   export default src
 }
 
-// responsive-laoder
+// responsive-loader
 interface ResponsiveImageOutput {
   src: string
   srcSet: string

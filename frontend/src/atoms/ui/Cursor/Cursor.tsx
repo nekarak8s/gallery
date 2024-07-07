@@ -21,13 +21,13 @@ function Cursor() {
       // Move custom cursor
       cursorX = e.clientX - cursor.offsetWidth / 2
       cursorY = e.clientY - cursor.offsetHeight / 2
-      cursor.style.transform = `translate3d(${cursorX}px, ${cursorY}px, 0)`
+      cursor.style.transform = `translate(${cursorX}px, ${cursorY}px)`
 
       // Scale custom cursor
       const targets = document.querySelectorAll(':hover')
       for (let i = 0; i < targets.length; i++) {
         const scale = targets[i].getAttribute('data-cursor-scale') // "3" | "" | null
-        cursorChild.style.setProperty('--cursor-scale', scale ? scale : '1')
+        cursorChild.style.transform = `scale(${scale ?? '1'})`
         if (scale) break
       }
     }
