@@ -201,6 +201,7 @@ export default class GalleryStrategy implements IGalleryStrategy {
     directLight.shadow.camera.top = 60
     directLight.shadow.camera.bottom = -100
     directLight.castShadow = true
+    directLight.shadow.bias = 0.0001
     this.scene.add(directLight)
     this.lights.push(directLight)
 

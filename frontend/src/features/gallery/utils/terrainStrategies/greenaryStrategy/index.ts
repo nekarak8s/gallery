@@ -116,6 +116,7 @@ export default class GreenaryStrategy implements IGalleryStrategy {
     directLight.shadow.camera.right = 60
     directLight.shadow.camera.top = 60
     directLight.shadow.camera.bottom = -100
+    directLight.shadow.bias = 0.0001
     directLight.castShadow = true
     directLight.target = greenary.objects.terrain
     props.scene.add(directLight)

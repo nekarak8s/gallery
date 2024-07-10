@@ -241,6 +241,7 @@ export function buildArchitect(props: buildArchitectProps): ThreeItem {
   directLight.shadow.camera.top = 60
   directLight.shadow.camera.bottom = -100
   directLight.castShadow = true
+  directLight.shadow.bias = -0.0001
   props.scene.add(directLight)
   lights.push(directLight)
 

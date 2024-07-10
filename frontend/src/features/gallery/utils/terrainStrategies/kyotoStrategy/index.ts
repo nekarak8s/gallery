@@ -92,6 +92,7 @@ export default class KyotoStrategy implements IGalleryStrategy {
     // Directional Light
     const directLight = new THREE.DirectionalLight(0xda9000, 2.2)
     directLight.position.set(-50, 30, 20)
+    directLight.shadow.bias = -0.0001
     directLight.castShadow = true
     directLight.target = kyoto.objects.terrain
     props.scene.add(directLight)
