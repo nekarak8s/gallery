@@ -2,7 +2,7 @@ import * as THREE from 'three'
 import * as BufferGeometryUtils from 'three/examples/jsm/utils/BufferGeometryUtils.js'
 import { IItem } from './Item'
 import { ItemFactory } from './ItemFactory'
-import { disposeObject } from '../utils/disposeObject'
+import { disposeObject } from '../utils/disposeResources'
 
 type EdgeData = {
   x: number

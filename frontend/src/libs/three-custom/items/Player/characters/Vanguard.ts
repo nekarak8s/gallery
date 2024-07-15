@@ -4,7 +4,7 @@ import { IPlayer } from '../Player'
 import vanguardGlb from '@/assets/glbs/players/vanguard-meshopt.glb'
 import { MeshoptDecoder } from '@/libs/three-custom/decoder/MeshoptDecoder'
 import { toLambert } from '@/libs/three-custom/utils/changeMaterial'
-import { disposeObject } from '@/libs/three-custom/utils/disposeObject'
+import { disposeObject } from '@/libs/three-custom/utils/disposeResources'
 
 const SCALE = 1.3
 

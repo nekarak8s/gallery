@@ -4,7 +4,7 @@ import { MeshBVH } from 'three-mesh-bvh'
 import kyogoGlb from '@/assets/glbs/terrains/kyoto-meshopt.glb'
 import { MeshoptDecoder } from '@/libs/three-custom/decoder/MeshoptDecoder'
 import { toLambert } from '@/libs/three-custom/utils/changeMaterial'
-import { disposeObject } from '@/libs/three-custom/utils/disposeObject'
+import { disposeObject } from '@/libs/three-custom/utils/disposeResources'
 
 export const TERRAIN_WIDTH = 100
 

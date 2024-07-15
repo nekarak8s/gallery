@@ -1,5 +1,5 @@
 import * as THREE from 'three'
-import { disposeMaterial } from './disposeObject'
+import { disposeMaterial } from './disposeResources'
 
 export const toLambert = (object: THREE.Mesh) => {
   const prevMaterial = object.material // eslint-disable-line

@@ -2,8 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import * as THREE from 'three'
 import { DefaultCamera } from '@/libs/three-custom/cameras/DefaultCamera'
 import { DefaultRenderer } from '@/libs/three-custom/renderers/DefaultRenderer'
-import { disposeObject } from '@/libs/three-custom/utils/disposeObject'
-import { disposeRenderer } from '@/libs/three-custom/utils/disposeRenderer'
+import { disposeObject, disposeRenderer } from '@/libs/three-custom/utils/disposeResources'
 
 type TDefaultRenderProps = {
   canvasRef: React.RefObject<HTMLCanvasElement>

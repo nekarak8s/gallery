@@ -16,7 +16,7 @@ import { DuckFactory, SheepFactory } from '@/libs/three-custom/items/Animal'
 import { IAnimal } from '@/libs/three-custom/items/Animal/Animal'
 import { FoxFactory } from '@/libs/three-custom/items/Animal/species/Fox'
 import PostFramesFactory from '@/libs/three-custom/items/PostFrames'
-import { disposeObject } from '@/libs/three-custom/utils/disposeObject'
+import { disposeObject } from '@/libs/three-custom/utils/disposeResources'
 
 THREE.Mesh.prototype.raycast = acceleratedRaycast
 

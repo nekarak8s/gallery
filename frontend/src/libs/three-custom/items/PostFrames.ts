@@ -1,7 +1,7 @@
 import * as THREE from 'three'
 import { IItems } from './Item'
 import { ItemsFactory } from './ItemFactory'
-import { disposeObject } from '../utils/disposeObject'
+import { disposeObject } from '../utils/disposeResources'
 import { PostData } from '@/features/post/types'
 
 type SpotLightProps = {

@@ -16,7 +16,7 @@ import FrameFactory, { Frame } from '@/libs/three-custom/items/Frame'
 import OceanFactory, { OceanItem } from '@/libs/three-custom/items/Ocean'
 import SkyFactory, { SkyItem } from '@/libs/three-custom/items/Sky'
 import WallsFactory from '@/libs/three-custom/items/Walls'
-import { disposeObject } from '@/libs/three-custom/utils/disposeObject'
+import { disposeObject } from '@/libs/three-custom/utils/disposeResources'
 
 const FLOOR_DATA = [
   {

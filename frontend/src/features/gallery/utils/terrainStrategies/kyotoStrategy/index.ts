@@ -15,7 +15,7 @@ import { IControls } from '@/libs/three-custom/controls'
 import KeypadControls from '@/libs/three-custom/controls/KeypadControls'
 import OceanFactory from '@/libs/three-custom/items/Ocean'
 import PostFramesFactory from '@/libs/three-custom/items/PostFrames'
-import { disposeObject } from '@/libs/three-custom/utils/disposeObject'
+import { disposeObject } from '@/libs/three-custom/utils/disposeResources'
 
 THREE.Mesh.prototype.raycast = acceleratedRaycast
 

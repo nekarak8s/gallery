@@ -9,7 +9,7 @@ export const disposeMaterial = (material: THREE.Material | THREE.Material[]) => 
   }
 
   // Texture 해제
-  Object.entries(material).forEach(([key, value]) => {
+  Object.entries(material).forEach(([_, value]) => {
     if (value instanceof THREE.Texture) {
       value.dispose()
     }
@@ -21,9 +21,10 @@ export const disposeMaterial = (material: THREE.Material | THREE.Material[]) => 
 
 // Dispose Object3D
 export const disposeObject = (object: THREE.Object3D) => {
-  object.children.forEach((child) => {
-    disposeObject(child)
-  })
+  // Traverse children backwards considering the removal of children
+  for (let i = object.children.length - 1; i >= 0; i--) {
+    disposeObject(object.children[i])
+  }
 
   // Dispose geometry
   if ('geometry' in object && object.geometry instanceof THREE.BufferGeometry) {
@@ -43,4 +44,10 @@ export const disposeObject = (object: THREE.Object3D) => {
   }
 
   object.removeFromParent()
+}
+
+export const disposeRenderer = (renderer: THREE.WebGLRenderer) => {
+  renderer.renderLists.dispose()
+  renderer.getRenderTarget()?.dispose()
+  renderer.dispose()
 }

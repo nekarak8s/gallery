@@ -1,6 +1,6 @@
 import * as THREE from 'three'
 import { acceleratedRaycast } from 'three-mesh-bvh'
-import { disposeObject } from '../../utils/disposeObject'
+import { disposeObject } from '../../utils/disposeResources'
 import { getRandom } from '@/libs/math'
 
 THREE.Mesh.prototype.raycast = acceleratedRaycast
