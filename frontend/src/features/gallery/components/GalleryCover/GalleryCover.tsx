@@ -59,11 +59,23 @@ const GalleryCover = ({ gallery, onClickEnter }: GalleryCoverProps) => {
         `
     }
 
+    const handleMouseOut = () => {
+      content.style.transform = `rotate3d(0, 0, 0,0deg)`
+      content.style.boxShadow = `0px 0px 20px rgba(0, 0, 0, 0.3)`
+      contentLight.style.backgroundImage = `
+          radial-gradient(
+            circle at 0px 0px, #ffffff00, #ffffff00, #ffffff00
+          )
+        `
+    }
+
     const optimizedHandleMousemove = toFrame(handleMousemove)
 
     content.addEventListener('mousemove', optimizedHandleMousemove)
+    content.addEventListener('mouseout', handleMouseOut)
     return () => {
       content.removeEventListener('mousemove', optimizedHandleMousemove)
+      content.removeEventListener('mouseout', handleMouseOut)
     }
   }, [])
 

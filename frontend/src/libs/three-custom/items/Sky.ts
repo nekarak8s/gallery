@@ -2,7 +2,7 @@ import * as THREE from 'three'
 import { Sky } from 'three/examples/jsm/objects/Sky.js'
 import { IItem } from './Item'
 import { ItemFactory } from './ItemFactory'
-import { disposeObject } from '../utils/disposeObject'
+import { disposeObject } from '../utils/disposeResources'
 
 type SkyArgs = {
   size: number

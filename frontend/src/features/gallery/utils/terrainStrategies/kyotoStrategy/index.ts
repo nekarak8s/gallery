@@ -15,7 +15,7 @@ import { IControls } from '@/libs/three-custom/controls'
 import KeypadControls from '@/libs/three-custom/controls/KeypadControls'
 import OceanFactory from '@/libs/three-custom/items/Ocean'
 import PostFramesFactory from '@/libs/three-custom/items/PostFrames'
-import { disposeObject } from '@/libs/three-custom/utils/disposeObject'
+import { disposeObject } from '@/libs/three-custom/utils/disposeResources'
 
 THREE.Mesh.prototype.raycast = acceleratedRaycast
 
@@ -92,6 +92,7 @@ export default class KyotoStrategy implements IGalleryStrategy {
     // Directional Light
     const directLight = new THREE.DirectionalLight(0xda9000, 2.2)
     directLight.position.set(-50, 30, 20)
+    directLight.shadow.bias = -0.0001
     directLight.castShadow = true
     directLight.target = kyoto.objects.terrain
     props.scene.add(directLight)

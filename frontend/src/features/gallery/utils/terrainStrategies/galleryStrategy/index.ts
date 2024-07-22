@@ -13,7 +13,7 @@ import OceanFactory, { OceanItem } from '@/libs/three-custom/items/Ocean'
 import PostFramesFactory, { PostFrames } from '@/libs/three-custom/items/PostFrames'
 import SkyFactory, { SkyItem } from '@/libs/three-custom/items/Sky'
 import WallsFactory from '@/libs/three-custom/items/Walls'
-import { disposeObject } from '@/libs/three-custom/utils/disposeObject'
+import { disposeObject } from '@/libs/three-custom/utils/disposeResources'
 
 THREE.Mesh.prototype.raycast = acceleratedRaycast
 
@@ -201,6 +201,7 @@ export default class GalleryStrategy implements IGalleryStrategy {
     directLight.shadow.camera.top = 60
     directLight.shadow.camera.bottom = -100
     directLight.castShadow = true
+    directLight.shadow.bias = 0.0001
     this.scene.add(directLight)
     this.lights.push(directLight)
 

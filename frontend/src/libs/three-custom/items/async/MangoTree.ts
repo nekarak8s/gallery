@@ -2,7 +2,7 @@ import * as THREE from 'three'
 import { GLTF, GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import { AsyncItemFactory } from './AsyncItemFactory'
 import treeGlb from '@/assets/glbs/items/mango-tree-meshopt.glb'
-import { disposeObject } from '@/libs/three-custom/utils/disposeObject'
+import { disposeObject } from '@/libs/three-custom/utils/disposeResources'
 
 type MangoTreeArgs = {
   gltfLoader: GLTFLoader

@@ -3,7 +3,7 @@ import { Water } from 'three/examples/jsm/objects/Water.js'
 import { IItem } from './Item'
 import { ItemFactory } from './ItemFactory'
 import waterNomals from '@/assets/textures/water/waternormals.jpg'
-import { disposeObject } from '@/libs/three-custom/utils/disposeObject'
+import { disposeObject } from '@/libs/three-custom/utils/disposeResources'
 
 type OceanArgs = {
   textureLoader: THREE.TextureLoader

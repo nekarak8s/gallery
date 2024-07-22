@@ -16,7 +16,7 @@ import { DuckFactory, SheepFactory } from '@/libs/three-custom/items/Animal'
 import { IAnimal } from '@/libs/three-custom/items/Animal/Animal'
 import { FoxFactory } from '@/libs/three-custom/items/Animal/species/Fox'
 import PostFramesFactory from '@/libs/three-custom/items/PostFrames'
-import { disposeObject } from '@/libs/three-custom/utils/disposeObject'
+import { disposeObject } from '@/libs/three-custom/utils/disposeResources'
 
 THREE.Mesh.prototype.raycast = acceleratedRaycast
 
@@ -116,6 +116,7 @@ export default class GreenaryStrategy implements IGalleryStrategy {
     directLight.shadow.camera.right = 60
     directLight.shadow.camera.top = 60
     directLight.shadow.camera.bottom = -100
+    directLight.shadow.bias = 0.0001
     directLight.castShadow = true
     directLight.target = greenary.objects.terrain
     props.scene.add(directLight)

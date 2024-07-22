@@ -114,6 +114,7 @@ function MiniMap({ galleryType, controls, defaultPosition }: MiniMapProps) {
     const intervalId = setInterval(setPosition, 16)
 
     return () => {
+      worker.postMessage({ type: 'stop' })
       window.removeEventListener('resize', handleResize)
       intervalId && clearInterval(intervalId)
     }

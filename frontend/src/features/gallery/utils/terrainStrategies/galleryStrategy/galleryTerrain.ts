@@ -3,7 +3,7 @@ import { GLTF, GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import { MeshBVH } from 'three-mesh-bvh'
 import galleryGlb from '@/assets/glbs/terrains/gallery.glb'
 import { toLambert } from '@/libs/three-custom/utils/changeMaterial'
-import { disposeObject } from '@/libs/three-custom/utils/disposeObject'
+import { disposeObject } from '@/libs/three-custom/utils/disposeResources'
 
 export const TERRAIN_WIDTH = 70
 

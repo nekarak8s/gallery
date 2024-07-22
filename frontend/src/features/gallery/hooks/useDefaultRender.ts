@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import * as THREE from 'three'
 import { DefaultCamera } from '@/libs/three-custom/cameras/DefaultCamera'
 import { DefaultRenderer } from '@/libs/three-custom/renderers/DefaultRenderer'
-import { disposeObject } from '@/libs/three-custom/utils/disposeObject'
+import { disposeObject, disposeRenderer } from '@/libs/three-custom/utils/disposeResources'
 
 type TDefaultRenderProps = {
   canvasRef: React.RefObject<HTMLCanvasElement>
@@ -52,8 +52,7 @@ const useDefaultRender = ({ canvasRef }: TDefaultRenderProps) => {
       scene.remove(camera)
       disposeObject(scene)
 
-      renderer.getRenderTarget()?.dispose()
-      renderer.dispose()
+      disposeRenderer(renderer)
       window.removeEventListener('resize', handleSize)
 
       setIsDefaultRender(false)

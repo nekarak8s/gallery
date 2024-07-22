@@ -172,7 +172,9 @@ class MouseControls implements IControls {
 
     gsap.to(this.camera.rotation, {
       duration: duration,
+      x: post.rotation.x,
       y: post.rotation.y,
+      z: post.rotation.z,
       onComplete: () => {
         this.#originPosition.copy(this.camera.position)
         this.#orbitControls.target = post.position

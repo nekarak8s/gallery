@@ -1,7 +1,7 @@
 import * as THREE from 'three'
 import { IItem } from './Item'
 import { ItemFactory } from './ItemFactory'
-import { disposeObject } from '../utils/disposeObject'
+import { disposeObject } from '../utils/disposeResources'
 
 type TextureProps = {
   textureLoader: THREE.TextureLoader
