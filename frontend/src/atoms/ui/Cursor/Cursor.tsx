@@ -1,5 +1,6 @@
-import { useEffect, useRef } from 'react'
+import React, { useEffect, useRef } from 'react'
 import throttle from '@/utils/throttle'
+
 import './Cursor.scss'
 
 function Cursor() {
@@ -8,64 +9,48 @@ function Cursor() {
    * 1. move custom cursor
    * 2. scale custom cursor
    */
-  const canvasRef = useRef<HTMLCanvasElement>(null)
+  const cursorRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    const canvas = canvasRef.current!
+    const cursor = cursorRef.current!
+    const cursorChild = cursor.children[0] as HTMLElement
 
-    if (!canvas) return
+    let cursorX = 0
+    let cursorY = 0
+    const mousemove = function moveCustomCursor(e: MouseEvent) {
+      // Move custom cursor
+      cursorX = e.clientX - cursor.offsetWidth / 2
+      cursorY = e.clientY - cursor.offsetHeight / 2
+      cursor.style.transform = `translate(${cursorX}px, ${cursorY}px)`
 
-    canvas.width = canvas.offsetWidth
-    canvas.height = canvas.offsetHeight
-
-    const offscreen = canvas.transferControlToOffscreen()
-    const worker = new Worker(new URL('./cursorWorker.ts', import.meta.url))
-    worker.postMessage({ canvas: offscreen }, [offscreen])
-
-    const handleResize = () => {
-      worker.postMessage({ type: 'resize', width: canvas.offsetWidth, height: canvas.offsetHeight })
-    }
-
-    const handleMouseMove = (e: MouseEvent) => {
-      let scale: string | null = null
+      // Scale custom cursor
       const targets = document.querySelectorAll(':hover')
       for (let i = 0; i < targets.length; i++) {
-        scale = targets[i].getAttribute('data-cursor-scale') // "3" | "" | null
+        const scale = targets[i].getAttribute('data-cursor-scale') // "3" | "" | null
+        cursorChild.style.transform = `scale(${scale ?? '1'})`
         if (scale) break
       }
-
-      worker.postMessage({
-        type: 'position',
-        scale: scale ? parseInt(scale) : 1,
-        x: e.clientX,
-        y: e.clientY,
-      })
     }
 
-    const handleMouseOut = () => {
-      worker.postMessage({
-        type: 'position',
-        scale: 1,
-        x: -100,
-        y: -100,
-      })
+    const mouseout = function hideCustomCursor() {
+      cursor.style.transform = `translate3d(-100px, -100px, 0)`
     }
 
-    const throttledMouseMove = throttle(handleMouseMove, 16)
+    const throttledMouseMove = throttle(mousemove, 10)
 
-    window.addEventListener('resize', handleResize)
-    window.addEventListener('mousemove', throttledMouseMove)
-    window.addEventListener('mouseout', handleMouseOut)
-
+    addEventListener('mousemove', throttledMouseMove)
+    addEventListener('mouseout', mouseout)
     return () => {
-      worker.postMessage({ type: 'stop' })
-      window.removeEventListener('resize', handleResize)
-      window.removeEventListener('mousemove', throttledMouseMove)
-      window.removeEventListener('mouseout', handleMouseOut)
+      removeEventListener('mousemove', throttledMouseMove)
+      removeEventListener('mouseout', mouseout)
     }
   }, [])
 
-  return <canvas className="cursor" ref={canvasRef} />
+  return (
+    <div className="cursor" ref={cursorRef}>
+      <div></div>
+    </div>
+  )
 }
 
 export default Cursor
